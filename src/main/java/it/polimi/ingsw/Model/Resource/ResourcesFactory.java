@@ -2,11 +2,24 @@ package it.polimi.ingsw.Model.Resource;
 
 import java.util.ArrayList;
 
+/**
+ * ResourceFactory class
+ * @author Mirko
+ *
+ * This class creates and provides resource materials through 2 public static methods, it's intended as a
+ * factory, as part of a factory method.
+ */
 public class ResourcesFactory {
 
     private void ResourcesFactor(){}
 
-    public static ArrayList<Resource> CreateMaterials(String material, int quantity){
+    /**
+     *
+     * @param material is a string that will identify the resource needed
+     * @param quantity is the quantity of resource needed
+     * @return an arraylist long as the quantity asked, all of the same resource that has been required
+     */
+    public static ArrayList<Resource> createMaterials(String material, int quantity){
         if(material.equals("coin") && quantity>0) {
             ArrayList<Resource> MaterialRequired = new ArrayList<>();
             for (int i=0 ; i < quantity; i++) {
@@ -50,10 +63,17 @@ public class ResourcesFactory {
             return MaterialRequired;
         }
         else{
+            //TODO: replace null return with an exception
             return null;
         }
     }
-    public static Resource CreateMaterials(String material){
+
+    /**
+     *
+     * @param material is a string that will identify the resource needed
+     * @return a single resource of the type required
+     */
+    public static Resource createMaterials(String material){
         if(material.equals("coin")) {
             return new Coin();
         }
@@ -73,6 +93,7 @@ public class ResourcesFactory {
             return new Stone();
         }
         else{
+            //TODO: replace null return with an exception
             return null;
         }
 
