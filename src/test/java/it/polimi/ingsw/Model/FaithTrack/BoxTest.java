@@ -10,7 +10,7 @@ public class BoxTest {
         Box myBox = null;
         myBox = new Box(5);
 
-        assertEquals(5, myBox.getPointPos());
+        assertEquals(5, myBox.getPointPosition());
     }
 
     @Test

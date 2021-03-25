@@ -21,7 +21,7 @@ public class Box {
      *
      * @return the point that a box grant
      */
-    public int getPointPos() {
+    public int getPointPosition() {
         return pointPos;
     }
 

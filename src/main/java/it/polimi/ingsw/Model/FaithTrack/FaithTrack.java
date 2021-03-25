@@ -32,7 +32,7 @@ public class FaithTrack {
                 track[i] = new Box(12);
             else if (i <= 23)
                 track[i] = new Box(16);
-            else if (i == 24)
+            else
                 track[i] = new Box(20);
         }
         //setting popeSpaces
@@ -95,7 +95,7 @@ public class FaithTrack {
      * @param section section of popeSection to pharse with the player
      * @return true if the player is in THAT section ()
      */
-    public boolean checkVaticanReportSection(int numPlayer, int section){
+    public boolean checkPlayerInVaticanReportSection(int numPlayer, int section){
         return playerInVaticanReportSection[numPlayer]==section;
     }
 

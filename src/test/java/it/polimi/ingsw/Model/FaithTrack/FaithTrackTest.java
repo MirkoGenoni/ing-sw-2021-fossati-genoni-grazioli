@@ -65,10 +65,10 @@ public class FaithTrackTest {
             testTrack.forwardPos(3);
         }
 
-        assertTrue(testTrack.checkVaticanReportSection(0,0));//return true because is in that vaticanSection
-        assertFalse(testTrack.checkVaticanReportSection(0, 1)); // return true because is NOT in that vaticanSection
-        assertTrue(testTrack.checkVaticanReportSection(3, 3)); //return true because is in that vaticanSection
-        assertFalse(testTrack.checkVaticanReportSection(3, 2)); // return true because is NOT in that vaticanSection
+        assertTrue(testTrack.checkPlayerInVaticanReportSection(0,0));//return true because is in that vaticanSection
+        assertFalse(testTrack.checkPlayerInVaticanReportSection(0, 1)); // return true because is NOT in that vaticanSection
+        assertTrue(testTrack.checkPlayerInVaticanReportSection(3, 3)); //return true because is in that vaticanSection
+        assertFalse(testTrack.checkPlayerInVaticanReportSection(3, 2)); // return true because is NOT in that vaticanSection
 
 
 
