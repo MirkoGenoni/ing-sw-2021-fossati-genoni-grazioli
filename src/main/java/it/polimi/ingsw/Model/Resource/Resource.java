@@ -1,12 +1,20 @@
 package it.polimi.ingsw.Model.Resource;
 
 /**
- * Resource interface
+ * Resource Enum Class
  * @author Mirko
  *
- * This interface provides a common type and method to all the types of resources, the common
- * method returns the name of the resource.
+ * This enum collects a group of String costants necessary to identify different type of resources
  */
-public interface Resource {
-    String getMaterialType();
+public enum  Resource {
+    COIN("coin"),
+    SERVANT("servant"),
+    SHIELD("shield"),
+    STONE("stone");
+
+    private final String material;
+
+    Resource(String material) {
+        this.material=material;
+    }
 }
