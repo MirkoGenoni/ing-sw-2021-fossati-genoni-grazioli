@@ -75,11 +75,7 @@ public class FaithTrackTest {
     }
 
 
-
-//THIS IS A TEST FOR A PRIVATE METOD, IT ISN'T PUBBLIC, BUT MAYBE...
-
-
-   /* @Test
+    @Test
     public void getVaticanReportSection() {
         FaithTrack testTrack = new FaithTrack();
 
@@ -96,11 +92,11 @@ public class FaithTrackTest {
             testTrack.forwardPos(3);
         }
 
-        assertEquals(0, testTrack.GetPlayerInVaticanReportSection(0));
-        assertEquals(1, testTrack.GetPlayerInVaticanReportSection(1));
-        assertEquals(2, testTrack.GetPlayerInVaticanReportSection(2));
-        assertEquals(3, testTrack.GetPlayerInVaticanReportSection(3));
+        assertEquals(0, testTrack.getSection(0));
+        assertEquals(1, testTrack.getSection(1));
+        assertEquals(2, testTrack.getSection(2));
+        assertEquals(3, testTrack.getSection(3));
 
-    }*/
+    }
 
 }

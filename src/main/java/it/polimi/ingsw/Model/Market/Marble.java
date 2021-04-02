@@ -3,7 +3,7 @@ package it.polimi.ingsw.Model.Market;
 /**
  * Enumeration of the marble, the Market could use six type of marble.
  * This Enumeration is used by the Market to manage the position of each marble
- * and to return the type of marble chose by the player.
+ * and to return the type of marble choose by the player.
  *
  * @author Stefano Fossati
  */

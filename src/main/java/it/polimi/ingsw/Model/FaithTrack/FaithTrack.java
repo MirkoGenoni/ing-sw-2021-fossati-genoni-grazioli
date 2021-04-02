@@ -104,7 +104,7 @@ public class FaithTrack {
      * @param numPlayer number of the player i want to know in which VaticanSection is
      * @return the number of the vatican section where numPlayer is
      */
-    private int getPlayerInVaticanReportSection(int numPlayer) {
+    public int getSection(int numPlayer) {
 
         return playerInVaticanReportSection[numPlayer];
     }
