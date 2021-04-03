@@ -22,7 +22,7 @@ public class DevelopmentCardHandler {
     }
 
     /**
-     *
+     * Return an Arraylist of the cards i can active the Develpment power
      * @return A copy of activeDevelopmentCard
      */
     public ArrayList<DevelopmentCard> getActiveDevelopmentCard() {
@@ -40,7 +40,7 @@ public class DevelopmentCardHandler {
     }
 
     /**
-     *
+     * Return all the card a player has in him gameBoard
      * @return A copy of developmentCardColl that is a collection of all the cards a player has
      */
     public ArrayList<DevelopmentCard> getDevelopmentCardColl() {
@@ -50,6 +50,7 @@ public class DevelopmentCardHandler {
 
 
     /**
+     * Put the development card bought in selected position, if a player choose a valid position
      * TODO adding throw of DevCard exception if selectedPosition > 2
      * @param cardBought card the player Bought at Market and want to activate
      * @param selectedPosition The selectedPosition is the position of the card to substitute, starting from zero
@@ -69,7 +70,7 @@ public class DevelopmentCardHandler {
 
 
     /**
-     *
+     * Check if a player could buy a card, giving him the position where he could put the bought card
      * @param cardLevel level of the card the player bought (from 1 to 3)
      * @return An arraylist with the positions where the player could put the bought card
      */
@@ -94,7 +95,7 @@ public class DevelopmentCardHandler {
 
 
     /**
-     *
+     * Check if a Player's collection of development card satisfy requirements of color and level in input
      * TODO it is UNACCEPTABLE that color.size() != level.size() adding error
      * @param colorToCheck describe in an ArrayList the color of the card to check if present
      * @param levelToCheck describe in an ArrayList the color of the card to check if present
