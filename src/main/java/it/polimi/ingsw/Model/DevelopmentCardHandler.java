@@ -1,5 +1,7 @@
 package it.polimi.ingsw.Model;
 
+import it.polimi.ingsw.Model.Exceptions.DevelopmentCardException;
+
 import java.util.ArrayList;
 
 /**
@@ -51,11 +53,10 @@ public class DevelopmentCardHandler {
 
     /**
      * Put the development card bought in selected position, if a player choose a valid position
-     * TODO adding throw of DevCard exception if selectedPosition > 2
      * @param cardBought card the player Bought at Market and want to activate
      * @param selectedPosition The selectedPosition is the position of the card to substitute, starting from zero
      */
-    public void setActiveDevelopmentCard(DevelopmentCard cardBought, int selectedPosition) {
+    public void setActiveDevelopmentCard (DevelopmentCard cardBought, int selectedPosition) throws DevelopmentCardException{
 
         try {
             activeDevelopmentCard[selectedPosition] = cardBought;   //2 is the max value, if I try to put in 3, throw an exception
@@ -63,7 +64,7 @@ public class DevelopmentCardHandler {
         }
         catch (ArrayIndexOutOfBoundsException e){
             //System.out.println("Can't add a card out of gameboard spaces");
-            //throw new...
+            throw new DevelopmentCardException("Can't add a card out of gameboard spaces");
         }
 
     }
@@ -96,35 +97,39 @@ public class DevelopmentCardHandler {
 
     /**
      * Check if a Player's collection of development card satisfy requirements of color and level in input
-     * TODO it is UNACCEPTABLE that color.size() != level.size() adding error
      * @param colorToCheck describe in an ArrayList the color of the card to check if present
      * @param levelToCheck describe in an ArrayList the color of the card to check if present
      * @return true if all the colors and them level in ArrayList are present in my collection false if not
      */
 
-    public boolean checkDevelopmentCard (ArrayList<String> colorToCheck, ArrayList<Integer> levelToCheck){
-        int numberOfElements = colorToCheck.size();
-        boolean finded = false;
+    public boolean checkDevelopmentCard (ArrayList<String> colorToCheck, ArrayList<Integer> levelToCheck) throws DevelopmentCardException {
 
-        for (int i = 0; i < numberOfElements; i++){
+        if (colorToCheck==null || levelToCheck==null || colorToCheck.size() != levelToCheck.size())
+            throw new DevelopmentCardException("Can't process check because of formatting error");
 
-            for (DevelopmentCard card : developmentCardColl){
-                if (card.getColor().equals(colorToCheck.get(i)) && card.getLevel() == levelToCheck.get(i)) { //stringhe devono essere equals se effettivamente è così
-                    finded = true;
-                    break;
+        else {   //correct format of input
+            int numberOfElements = colorToCheck.size();
+            boolean finded = false;
+
+            for (int i = 0; i < numberOfElements; i++) {
+
+                for (DevelopmentCard card : developmentCardColl) {
+                    if (card.getColor().equals(colorToCheck.get(i)) && card.getLevel() == levelToCheck.get(i)) { //stringhe devono essere equals se effettivamente è così
+                        finded = true;
+                        break;
+                    }
                 }
+
+                if (finded)                             //faccio ciclare la carta su tutta la collection. Se la trova mette a true un parametro finded
+                    finded = false;                     //se non la trova finded rimane falso. Se l'ho trovata (finded==true) allora lo metto a falso e vado avanti
+                else                                    //altrimenti ritorno falso direttamente. Alla fine delle carte richieste se non ho mai tornato falso esco dal ciclo
+                    return false;                       //e torno vero
             }
 
-            if (finded)                             //faccio ciclare la carta su tutta la collection. Se la trova mette a true un parametro finded
-                finded = false;                     //se non la trova finded rimane falso. Se l'ho trovata (finded==true) allora lo metto a falso e vado avanti
-            else                                    //altrimenti ritorno falso direttamente. Alla fine delle carte richieste se non ho mai tornato falso esco dal ciclo
-                return false;                       //e torno vero
+            return true;
+
         }
-
-        return true;
-
     }
-
 
 }
 
