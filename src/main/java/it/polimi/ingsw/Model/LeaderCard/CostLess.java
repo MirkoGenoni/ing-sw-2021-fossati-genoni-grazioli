@@ -1,5 +1,6 @@
 package it.polimi.ingsw.Model.LeaderCard;
 
+import java.util.ArrayList;
 
 /**
  * This class represents the special ability of leader cards of decrement the purchase cost of the development cards
@@ -16,7 +17,6 @@ public class CostLess implements SpecialAbility {
     private int quantityRequired2;
     private String materialCostLess;
 
-    //TODO methods
 
     @Override
     public String getEffect() {
@@ -24,7 +24,24 @@ public class CostLess implements SpecialAbility {
     }
 
     @Override
-    public int getVictoryPoint() {
+    public int getVictoryPoints() {
         return victoryPoints;
+    }
+
+    @Override
+    public ArrayList<String> getRequirements() {
+        ArrayList<String> requirementsCostLess = new ArrayList<>();
+        for( int i=0; i<quantityRequired1; i++){
+            requirementsCostLess.add(cardRequired1);
+        }
+        for( int i=0; i<quantityRequired2; i++){
+            requirementsCostLess.add(cardRequired2);
+        }
+        return requirementsCostLess;
+    }
+
+    @Override
+    public String getMaterialType() {
+        return materialCostLess;
     }
 }

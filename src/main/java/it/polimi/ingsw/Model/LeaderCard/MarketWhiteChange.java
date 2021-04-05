@@ -1,9 +1,10 @@
 package it.polimi.ingsw.Model.LeaderCard;
 
-import it.polimi.ingsw.Model.Resource.Resource;
+
+import java.util.ArrayList;
 
 /**
- * This class represents the special ability of leader cards of change a white marble of the market with another type of marble
+ * This class represents the special ability of leader cards of change a white marble of the market with another type of marble.
  *
  * @author Stefano Fossati
  */
@@ -18,19 +19,33 @@ public class MarketWhiteChange implements SpecialAbility{
     private String materialWhiteChangeTo;
 
 
-    //TODO methods
-
     @Override
     public String getEffect() {
         return effect;
     }
 
     @Override
-    public int getVictoryPoint() {
+    public int getVictoryPoints() {
         return victoryPoints;
     }
 
-    public Resource getMaterialWhiteChangeTo(){
-        return Resource.valueOf(materialWhiteChangeTo);
+    @Override
+    public ArrayList<String> getRequirements() {
+        ArrayList<String> requirementsMarketWhiteChange = new ArrayList<>();
+        for( int i=0; i<quantityRequired1; i++){
+            requirementsMarketWhiteChange.add(cardRequired1);
+        }
+        for( int i=0; i<quantityRequired2; i++){
+            requirementsMarketWhiteChange.add(cardRequired2);
+        }
+        return requirementsMarketWhiteChange;
     }
+
+
+    @Override
+    public String getMaterialType() {
+        return materialWhiteChangeTo;
+    }
+
+
 }

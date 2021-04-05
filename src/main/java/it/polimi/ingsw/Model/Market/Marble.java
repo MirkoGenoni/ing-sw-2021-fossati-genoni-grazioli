@@ -9,38 +9,39 @@ package it.polimi.ingsw.Model.Market;
  */
 
 public enum Marble {
+
     /**
-     *
+     *   This enum represent the faith marble, it is red.
      */
     FAITH("faith"),
 
     /**
-     *
+     *  This enum represent the gold marble, it is yellow.
      */
     GOLD("gold"),
 
     /**
-     *
+     *  This enum represent the nothing marble, it is white.
      */
     NOTHING("nothing"),
 
     /**
-     *
+     *  This enum represent the servant marble, it is purple.
      */
     SERVANT("servant"),
 
     /**
-     *
+     *  This enum represent the shield marble, it is blue,
      */
     SHIELD("shield"),
 
     /**
-     *
+     *  This enum represent the stone marble, is is gray.
      */
     STONE("stone");
 
 
-    private String marbleType;
+    private final String marbleType;
 
     Marble(String marbleType){
         this.marbleType = marbleType;

@@ -1,0 +1,43 @@
+{
+  "name" : "leaderCard1",
+  "specialAbility" :  {
+    "effect" : "additionalProduction",
+    "victoryPoints" : "4",
+    "cardRequired1" : "blue",
+    "quantityRequired1" : "1",
+    "materialAdditionalProduction" : "servant"
+  }
+}
+{
+  "name" : "leaderCard2",
+  "specialAbility" : {
+    "effect" : "biggerDeposit",
+    "victoryPoints" : "3",
+    "materialRequired1" : "shield",
+    "quantityRequired1" : "5",
+    "materialBiggerDeposit" : "gold"
+  }
+}
+{
+  "name" : "leaderCard3",
+  "specialAbility" : {
+    "effect" : "costLess",
+    "victoryPoints" : "2",
+    "cardRequired1" : "green",
+    "quantityRequired1" : "1",
+    "cardRequired2" : "blue",
+    "quantityRequired2" : "1",
+    "materialCostLess" : "stone"
+  }
+}
+{  "name" : "leaderCard4",
+  "specialAbility" : {
+    "effect" : "marketWhiteChange",
+    "victoryPoints" : "5",
+    "cardRequired1" : "purple",
+    "quantityRequired1" : "2",
+    "cardRequired2" : "green",
+    "quantityRequired2" : "1",
+    "materialWhiteChangeTo" : "gold"
+  }
+}
