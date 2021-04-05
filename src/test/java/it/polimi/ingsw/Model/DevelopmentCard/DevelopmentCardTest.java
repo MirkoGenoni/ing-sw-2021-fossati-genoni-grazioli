@@ -1,5 +1,6 @@
-package it.polimi.ingsw.Model;
+package it.polimi.ingsw.Model.DevelopmentCard;
 
+import it.polimi.ingsw.Model.DevelopmentCard.DevelopmentCard;
 import org.junit.Before;
 import org.junit.Test;
 
