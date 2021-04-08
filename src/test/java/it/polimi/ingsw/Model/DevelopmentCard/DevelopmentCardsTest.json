@@ -1,0 +1,35 @@
+{
+  "color": "yellow",
+  "level": 4,
+  "cost": {
+    "coin": 4,
+    "stone": 7
+  },
+  "victoryPoint": 13,
+  "materialRequired": {
+    "shield": 1,
+    "servant": 6,
+    "coin": 5
+  },
+  "productionResult": {
+    "faithPoint": 2,
+    "stone": 4
+  }
+}
+
+{
+  "color": "green",
+  "level": 1,
+  "cost": {
+    "shield": 1,
+    "coin": 11
+  },
+  "victoryPoint": 14,
+  "materialRequired": {
+    "stone": 4
+  },
+  "productionResult": {
+    "servant": 3,
+    "coin": 9
+  }
+}
