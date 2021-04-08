@@ -9,7 +9,7 @@ import java.util.Map;
  */
 
 public class DevelopmentCard {
-    private final String color;
+    private CardColor color;
     private final int level;
     private final Map<String, Integer> cost;
     private final int victoryPoint;
@@ -26,7 +26,7 @@ public class DevelopmentCard {
      * @param materialRequired specify with an HashMap what the card need to start the develop
      * @param productionResult specify with an HashMap what the card grant at the end of the develop
      */
-    public DevelopmentCard(String color, int level, Map<String, Integer> cost, int victoryPoint,
+    public DevelopmentCard(CardColor color, int level, Map<String, Integer> cost, int victoryPoint,
                            Map<String, Integer> materialRequired, Map<String, Integer> productionResult) {
         this.color = color;
         this.level = level;
@@ -40,7 +40,7 @@ public class DevelopmentCard {
      *
      * @return the color of the card
      */
-    public String getColor() {
+    public CardColor getColor() {
         return color;
     }
 

@@ -13,7 +13,7 @@ import static org.junit.Assert.*;
 
 public class DevelopmentCardTest {
 
-    String testColor = "green";
+    CardColor testColor = CardColor.GREEN;
     int testLevel = 3;
     Map<String, Integer> testCost = new HashMap<>();
     int testVictoryPoint = 8;
