@@ -1,0 +1,172 @@
+{
+  "name" : "leaderCard1",
+  "specialAbility" : {
+    "effect" : "additionalProduction",
+    "victoryPoints" : "4",
+    "cardRequired1" : "yellow",
+    "quantityRequired1" : "1",
+    "materialAdditionalProduction" : "shield"
+  }
+}
+{
+  "name" : "leaderCard2",
+  "specialAbility" : {
+    "effect" : "additionalProduction",
+    "victoryPoints" : "4",
+    "cardRequired1" : "blue",
+    "quantityRequired1" : "1",
+    "materialAdditionalProduction" : "servant"
+  }
+}
+{
+  "name" : "leaderCard3",
+  "specialAbility" : {
+    "effect" : "additionalProduction",
+    "victoryPoints" : "4",
+    "cardRequired1" : "purple",
+    "quantityRequired1" : "1",
+    "materialAdditionalProduction" : "stone"
+  }
+}
+{
+  "name" : "leaderCard4",
+  "specialAbility" : {
+    "effect" : "additionalProduction",
+    "victoryPoints" : "4",
+    "cardRequired1" : "green",
+    "quantityRequired1" : "1",
+    "materialAdditionalProduction" : "gold"
+  }
+}
+{
+  "name" : "leaderCard5",
+  "specialAbility" : {
+    "effect" : "biggerDeposit",
+    "victoryPoints" : "3",
+    "materialRequired1" : "gold",
+    "quantityRequired1" : "5",
+    "materialBiggerDeposit" : "stone"
+  }
+}
+{
+  "name" : "leaderCard6",
+  "specialAbility" : {
+    "effect" : "biggerDeposit",
+    "victoryPoints" : "3",
+    "materialRequired1" : "stone",
+    "quantityRequired1" : "5",
+    "materialBiggerDeposit" : "servant"
+  }
+}
+{
+  "name" : "leaderCard7",
+  "specialAbility" : {
+    "effect" : "biggerDeposit",
+    "victoryPoints" : "3",
+    "materialRequired1" : "servant",
+    "quantityRequired1" : "5",
+    "materialBiggerDeposit" : "shield"
+  }
+}
+{
+  "name" : "leaderCard8",
+  "specialAbility" : {
+    "effect" : "biggerDeposit",
+    "victoryPoints" : "3",
+    "materialRequired1" : "shield",
+    "quantityRequired1" : "5",
+    "materialBiggerDeposit" : "gold"
+  }
+}
+{
+  "name" : "leaderCard9",
+  "specialAbility" : {
+    "effect" : "costLess",
+    "victoryPoints" : "2",
+    "cardRequired1" : "yellow",
+    "quantityRequired1" : "1",
+    "cardRequired2" : "green",
+    "quantityRequired2" : "1",
+    "materialCostLess" : "servant"
+  }
+}
+{
+  "name" : "leaderCard10",
+  "specialAbility" : {
+    "effect" : "costLess",
+    "victoryPoints" : "2",
+    "cardRequired1" : "blue",
+    "quantityRequired1" : "1",
+    "cardRequired2" : "purple",
+    "quantityRequired2" : "1",
+    "materialCostLess" : "shield"
+  }
+}
+{
+  "name" : "leaderCard11",
+  "specialAbility" : {
+    "effect" : "costLess",
+    "victoryPoints" : "2",
+    "cardRequired1" : "green",
+    "quantityRequired1" : "1",
+    "cardRequired2" : "blue",
+    "quantityRequired2" : "1",
+    "materialCostLess" : "stone"
+  }
+}
+{
+  "name" : "leaderCard12",
+  "specialAbility" : {
+    "effect" : "costLess",
+    "victoryPoints" : "2",
+    "cardRequired1" : "yellow",
+    "quantityRequired1" : "1",
+    "cardRequired2" : "purple",
+    "quantityRequired2" : "1",
+    "materialCostLess" : "gold"
+  }
+}
+{  "name" : "leaderCard13",
+  "specialAbility" : {
+    "effect" : "marketWhiteChange",
+    "victoryPoints" : "5",
+    "cardRequired1" : "yellow",
+    "quantityRequired1" : "2",
+    "cardRequired2" : "blue",
+    "quantityRequired2" : "1",
+    "materialWhiteChangeTo" : "servant"
+  }
+}
+{  "name" : "leaderCard14",
+  "specialAbility" : {
+    "effect" : "marketWhiteChange",
+    "victoryPoints" : "5",
+    "cardRequired1" : "green",
+    "quantityRequired1" : "2",
+    "cardRequired2" : "purple",
+    "quantityRequired2" : "1",
+    "materialWhiteChangeTo" : "shield"
+  }
+}
+{  "name" : "leaderCard15",
+  "specialAbility" : {
+    "effect" : "marketWhiteChange",
+    "victoryPoints" : "5",
+    "cardRequired1" : "blue",
+    "quantityRequired1" : "2",
+    "cardRequired2" : "yellow",
+    "quantityRequired2" : "1",
+    "materialWhiteChangeTo" : "stone"
+  }
+}
+{  "name" : "leaderCard16",
+  "specialAbility" : {
+    "effect" : "marketWhiteChange",
+    "victoryPoints" : "5",
+    "cardRequired1" : "purple",
+    "quantityRequired1" : "2",
+    "cardRequired2" : "green",
+    "quantityRequired2" : "1",
+    "materialWhiteChangeTo" : "gold"
+  }
+}

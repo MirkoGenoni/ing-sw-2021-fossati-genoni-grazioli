@@ -71,23 +71,25 @@ public class Market {
         // this if manage the choose of a row
         if( line < 4){
             for(int i=0; i<4; i++){
-                if(grid.get(i+(line-1)*4).getType().equals("nothing")){
-                    marbleLine.add(Marble.NOTHING);
-                }
-                else if(grid.get(i+(line-1)*4).getType().equals("shield")){
-                    marbleLine.add(Marble.SHIELD);
-                }
-                else if(grid.get(i+(line-1)*4).getType().equals("servant")){
-                    marbleLine.add(Marble.SERVANT);
-                }
-                else if(grid.get(i+(line-1)*4).getType().equals("stone")){
-                    marbleLine.add(Marble.STONE);
-                }
-                else if(grid.get(i+(line-1)*4).getType().equals("gold")){
-                    marbleLine.add(Marble.GOLD);
-                }
-                else if(grid.get(i+(line-1)*4).getType().equals("faith")){
-                    marbleLine.add(Marble.FAITH);
+                switch (grid.get(i + (line - 1) * 4).getType()) {
+                    case "nothing":
+                        marbleLine.add(Marble.NOTHING);
+                        break;
+                    case "shield":
+                        marbleLine.add(Marble.SHIELD);
+                        break;
+                    case "servant":
+                        marbleLine.add(Marble.SERVANT);
+                        break;
+                    case "stone":
+                        marbleLine.add(Marble.STONE);
+                        break;
+                    case "gold":
+                        marbleLine.add(Marble.GOLD);
+                        break;
+                    case "faith":
+                        marbleLine.add(Marble.FAITH);
+                        break;
                 }
             }
             Marble tmpMarble =  grid.get(3+(line-1)*4);
@@ -101,23 +103,25 @@ public class Market {
         // this if manage the choose of a column
         else if(line >= 4 && line < 8){
             for(int i=0; i<3; i++){
-                if(grid.get(i*4+k).getType().equals("nothing")){
-                    marbleLine.add(Marble.NOTHING);
-                }
-                else if(grid.get(i*4+k).getType().equals("shield")){
-                    marbleLine.add(Marble.SHIELD);
-                }
-                else if(grid.get(i*4+k).getType().equals("servant")){
-                    marbleLine.add(Marble.SERVANT);
-                }
-                else if(grid.get(i*4+k).getType().equals("stone")){
-                    marbleLine.add(Marble.STONE);
-                }
-                else if(grid.get(i*4+k).getType().equals("gold")){
-                    marbleLine.add(Marble.GOLD);
-                }
-                else if(grid.get(i*4+k).getType().equals("faith")){
-                    marbleLine.add(Marble.FAITH);
+                switch (grid.get(i * 4 + k).getType()) {
+                    case "nothing":
+                        marbleLine.add(Marble.NOTHING);
+                        break;
+                    case "shield":
+                        marbleLine.add(Marble.SHIELD);
+                        break;
+                    case "servant":
+                        marbleLine.add(Marble.SERVANT);
+                        break;
+                    case "stone":
+                        marbleLine.add(Marble.STONE);
+                        break;
+                    case "gold":
+                        marbleLine.add(Marble.GOLD);
+                        break;
+                    case "faith":
+                        marbleLine.add(Marble.FAITH);
+                        break;
                 }
             }
             Marble tmpMarble = grid.get(8+k);
