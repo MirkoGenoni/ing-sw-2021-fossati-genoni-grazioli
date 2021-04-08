@@ -7,13 +7,17 @@ package it.polimi.ingsw.Model.FaithTrack;
 public class FaithTrack {
 
     private Box[] track = new Box[25];
-    private int[] faithMarkersPosition = new int[4];
-    private int[] playerInVaticanReportSection = new int[4];
+    private int[] faithMarkersPosition;
+    private int[] playerInVaticanReportSection;
 
     /**
      * Constructor of the class
      */
-    public FaithTrack() {
+    public FaithTrack(int numPlayer) {
+
+        faithMarkersPosition = new int[numPlayer];
+        playerInVaticanReportSection = new int[numPlayer];
+
         //creating all boxes with their points
         for (int i = 0; i <= 24; i++) {
             if (i <= 2)
