@@ -1,5 +1,5 @@
 {
-  "color": "yellow",
+  "color": "GREEN",
   "level": 4,
   "cost": {
     "coin": 4,
@@ -16,9 +16,8 @@
     "stone": 4
   }
 }
-
 {
-  "color": "green",
+  "color": "YELLOW",
   "level": 1,
   "cost": {
     "shield": 1,
