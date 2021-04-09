@@ -1,6 +1,5 @@
 package it.polimi.ingsw.Model.DevelopmentCard;
 
-import it.polimi.ingsw.Model.DevelopmentCard.DevelopmentCard;
 import it.polimi.ingsw.Model.Exceptions.DevelopmentCardException;
 
 import java.util.ArrayList;

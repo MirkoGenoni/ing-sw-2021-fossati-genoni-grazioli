@@ -12,6 +12,7 @@ public class FaithTrack {
 
     /**
      * Constructor of the class
+     * @param numPlayer specify how many players are going to play and the constructor instantiates the correct number of the Markers in Path
      */
     public FaithTrack(int numPlayer) {
 
