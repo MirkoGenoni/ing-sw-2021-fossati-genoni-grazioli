@@ -10,7 +10,7 @@ import java.util.Map;
  * @author Mirko Genoni
  */
 public class Strongbox {
-    Map<String, Integer> materials;
+    Map<Resource, Integer> materials;
 
     /**
      * initializes the strongbox adding every resource in the resource enum and setting the relative int to 0
@@ -19,14 +19,14 @@ public class Strongbox {
         this.materials = new HashMap<>();
 
         for (Resource r : Resource.values()) {
-            materials.put(r.toString(), 0);
+            materials.put(r, 0);
         }
     }
 
     /**
      * @return a copy of the current strongbox state
      */
-    public Map<String, Integer> getQuantity() {
+    public Map<Resource, Integer> getQuantity() {
         return new HashMap<>(materials);
     }
 
@@ -34,30 +34,30 @@ public class Strongbox {
      * @param required is a string that identifies the material required
      * @return a single material of the required type
      */
-    public int getQuantity(String required) {
+    public int getQuantity(Resource required) {
         return materials.get(required);
     }
 
     /**
      * @param received is a map with keys from the resource enum and the quantity of the relative material to add
      */
-    public void addMaterials(Map<String, Integer> received) {
+    public void addMaterials(Map<Resource, Integer> received) {
         for (Resource r : Resource.values()) {
-            materials.put(r.toString(), materials.get(r.toString()) + received.get(r.toString()));
+            materials.put(r, materials.get(r) + received.get(r));
         }
     }
 
     /**
      * @param required is a map with keys from the resource enum and the quantity of the relative material to remove
      */
-    public void returnMaterials(Map<String, Integer> required) throws ResourceException {
+    public void returnMaterials(Map<Resource, Integer> required) throws ResourceException {
         for (Resource r : Resource.values()) {
-            if (materials.get(r.toString()) - required.get(r.toString()) < 0)
+            if (materials.get(r) - required.get(r) < 0)
                 throw new ResourceException("Trying to put negative Materials inside strongbox");
         }
 
         for (Resource r1 : Resource.values()) {
-            materials.put(r1.toString(), materials.get(r1.toString()) - required.get(r1.toString()));
+            materials.put(r1, materials.get(r1) - required.get(r1));
         }
     }
 }

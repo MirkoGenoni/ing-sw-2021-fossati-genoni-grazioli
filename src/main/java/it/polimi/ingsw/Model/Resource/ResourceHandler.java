@@ -10,20 +10,26 @@ import java.util.Map;
  * ResourceHandler class
  * @author Mirko Genoni
  *
- * This class handles all the deposits available in the game
+ * This class handles all the deposits of resources available in the game
  */
 public class ResourceHandler {
     ArrayList<Resource> deposit;
-    Map<String, Integer> deposit_available;
+    Map<Resource, Integer> deposit_available;
     Strongbox strongbox;
-    Map<String, Integer> additional_deposit;
+    Map<Resource, Integer> additional_deposit;
 
     /**
      * The constructor initializes all the necessary data structures
      */
     public ResourceHandler(){
         this.deposit  = new ArrayList<>();
+        for(int i=0; i<6; i++)
+            deposit.add(null);
+
         this.deposit_available = new HashMap<>();
+        for(Resource r: Resource.values())
+            deposit_available.put(r, 0);
+
         this.strongbox  = new Strongbox();
         this.additional_deposit = new HashMap<>();
     }
@@ -34,7 +40,7 @@ public class ResourceHandler {
      * @param type represents the resource that can be inserted inside the additional deposit
      * @throws ResourceException when there are already two additional deposit or there is already another one with that resource
      */
-    public void addAdditionalDeposit(String type) throws ResourceException{
+    public void addAdditionalDeposit(Resource type) throws ResourceException{
         boolean check = additional_deposit.containsKey(type);
 
         if(additional_deposit.size()==2)
@@ -56,6 +62,22 @@ public class ResourceHandler {
     }
 
     /**
+     * This method returns the current state of the strongbox
+     * @return a map that represents the current state of the strongbox
+     */
+    public Map<Resource,Integer> getStrongboxState(){
+        return strongbox.getQuantity();
+    }
+
+    /**
+     * This method adds materials to the strongbox
+     * @param received is a map that represents the amount of resource to add
+     */
+    public void addMaterialStrongbox(Map<Resource, Integer> received){
+        strongbox.addMaterials(received);
+    }
+
+    /**
      * This method returns the current state of the additional deposit
      * @return an arraylist that represents the current state of the additional deposit
      */
@@ -63,11 +85,11 @@ public class ResourceHandler {
         ArrayList<Resource> tmp = new ArrayList<>();
 
         for(Resource r: Resource.values()){
-            if(additional_deposit.containsKey(r.toString()) && additional_deposit.get(r.toString())==0)
+            if(additional_deposit.containsKey(r) && additional_deposit.get(r)==0)
                 for(int i=0; i<2; i++)
                     tmp.add(null);
-            if(additional_deposit.containsKey(r.toString())) {
-                for (int i = 0; i < additional_deposit.get(r.toString()); i++)
+            if(additional_deposit.containsKey(r)) {
+                for (int i = 0; i < additional_deposit.get(r); i++)
                     tmp.add(r);
             }
         }
@@ -94,16 +116,16 @@ public class ResourceHandler {
      * @param received is a map that contains the resources that needs to be added
      * @throws ResourceException if the deposit is already full or if the resource is not compatible with the deposit
      */
-    public void addMaterialAdditionalDeposit(Map<String, Integer> received) throws ResourceException{
+    public void addMaterialAdditionalDeposit(Map<Resource, Integer> received) throws ResourceException{
 
         //This checks that the user is not trying to add more resources than the additional deposit can contain
-        for(String r: received.keySet()){
+        for(Resource r: received.keySet()){
             if(additional_deposit.containsKey(r) && additional_deposit.get(r) + received.get(r)>2)
                 throw new ResourceException("Additional deposit already full");
         }
 
         //This checks that the deposit can contain the type of the resources passed by the user
-        for(String r: received.keySet()){
+        for(Resource r: received.keySet()){
             if(additional_deposit.containsKey(r) && received.get(r)>0)
                 additional_deposit.put(r, additional_deposit.get(r) + received.get(r));
 
@@ -118,10 +140,10 @@ public class ResourceHandler {
      * @param requirements is a map with keys from the resource enum and the relative quantity
      * @return a boolean that tells if there are the material asked
      */
-    public boolean checkMaterials(Map<String, Integer> requirements) {
+    public boolean checkMaterials(Map<Resource, Integer> requirements) {
         for (Resource r : Resource.values()) {
-            int quantity_available = strongbox.getQuantity(r.toString()) + deposit_available.get(r.toString());
-            if (requirements.get(r.toString()) > quantity_available)
+            int quantity_available = strongbox.getQuantity(r) + deposit_available.get(r);
+            if (requirements.get(r) > quantity_available)
                 return false;
         }
         return true;
@@ -135,40 +157,49 @@ public class ResourceHandler {
      * @throws ResourceException generated by the strongbox
      */
 
-    public void takeMaterials(Map<String, Integer> taken) throws ResourceException{
+    public void takeMaterials(Map<Resource, Integer> taken) throws ResourceException{
         int i = 0;
+        int j = 0;
 
         for (Resource r : Resource.values()) {
 
             //This checks if there are eventual additional deposits and remove from them firstly the resources
-            if(taken.get(r.toString())!=0) {
-                if(additional_deposit.containsKey(r.toString()) && additional_deposit.get(r.toString())>0){
-                    if(taken.get(r.toString())-additional_deposit.get(r.toString())>0){
-                        taken.put(r.toString(), taken.get(r.toString())-additional_deposit.get(r.toString()));
-                        additional_deposit.put(r.toString(), 0);
+            if(taken.get(r)!=0) {
+                if(additional_deposit.containsKey(r) && additional_deposit.get(r)>0){
+                    if(taken.get(r)-additional_deposit.get(r)>0){
+                        taken.put(r, taken.get(r)-additional_deposit.get(r));
+                        additional_deposit.put(r, 0);
                     }
-                    if(additional_deposit.containsKey(r.toString()) && additional_deposit.get(r.toString())==0){
-                        taken.put(r.toString(), 0);
-                        additional_deposit.put(r.toString(), 0);
+                    if(additional_deposit.containsKey(r) && additional_deposit.get(r)==0){
+                        taken.put(r, 0);
+                        additional_deposit.put(r, 0);
                     }
                     else{
-                        taken.put(r.toString(), 0);
-                        additional_deposit.put(r.toString(), additional_deposit.get(r.toString())-taken.get(r.toString()));
+                        taken.put(r, 0);
+                        additional_deposit.put(r, additional_deposit.get(r)-taken.get(r));
                     }
                 }
             }
 
             //this checks eventual materials inside the deposit and remove them
-            if(taken.get(r.toString())!=0 && taken.get(r.toString())<deposit_available.get(r.toString())) {
-                deposit_available.put(r.toString(), deposit_available.get(r.toString()) - taken.get(r.toString()));
-                taken.put(r.toString(), 0);
+            if(taken.get(r)!=0 && taken.get(r)<deposit_available.get(r)) {
+                deposit_available.put(r, deposit_available.get(r) - taken.get(r));
+                taken.put(r, 0);
                 i++;
+            }
+            else if(taken.get(r)!=0 && taken.get(r)>deposit_available.get(r)) {
+                deposit_available.put(r, 0);
+                taken.put(r, taken.get(r) - deposit_available.get(r));
+                j++;
             }
         }
 
         //if there are other materials required remove them from the strongbox
-        if (i!= 0 && i< Resource.values().length)
+        if (i< Resource.values().length)
             strongbox.returnMaterials(taken);
+
+        if(i!=0 || j!=0)
+            this.correctDeposit();
     }
 
     /**
@@ -217,5 +248,9 @@ public class ResourceHandler {
             }
         }
         return true;
+    }
+
+    private void correctDeposit(){
+
     }
 }
