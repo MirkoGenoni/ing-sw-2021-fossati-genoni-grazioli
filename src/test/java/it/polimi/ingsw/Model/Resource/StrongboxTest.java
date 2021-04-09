@@ -17,12 +17,12 @@ public class StrongboxTest {
     @Test
     public void getQuantity() {
 
-        Map<String, Integer> test = new HashMap<>();
+        Map<Resource, Integer> test = new HashMap<>();
 
-        test.put(Resource.COIN.toString(), 0);
-        test.put(Resource.SERVANT.toString(), 0);
-        test.put(Resource.SHIELD.toString(), 0);
-        test.put(Resource.STONE.toString(), 0);
+        test.put(Resource.COIN, 0);
+        test.put(Resource.SERVANT, 0);
+        test.put(Resource.SHIELD, 0);
+        test.put(Resource.STONE, 0);
 
         Strongbox strongbox = new Strongbox();
 
@@ -37,25 +37,25 @@ public class StrongboxTest {
     @Test
     public void testAddReturnMaterials() {
 
-        Map<String, Integer> test = new HashMap<>();
+        Map<Resource, Integer> test = new HashMap<>();
 
-        test.put(Resource.COIN.toString(), 0);
-        test.put(Resource.SERVANT.toString(), 5);
-        test.put(Resource.SHIELD.toString(), 5);
-        test.put(Resource.STONE.toString(), 0);
+        test.put(Resource.COIN, 0);
+        test.put(Resource.SERVANT, 5);
+        test.put(Resource.SHIELD, 5);
+        test.put(Resource.STONE, 0);
 
         Strongbox strongbox = new Strongbox();
         strongbox.addMaterials(test);
 
-        assert(test.get(Resource.COIN.toString()).equals(strongbox.getQuantity(Resource.COIN.toString())));
-        assert(test.get(Resource.SHIELD.toString()).equals(strongbox.getQuantity(Resource.SHIELD.toString())));
-        assert(test.get(Resource.SERVANT.toString()).equals(strongbox.getQuantity(Resource.SERVANT.toString())));
-        assert(test.get(Resource.STONE.toString()).equals(strongbox.getQuantity(Resource.STONE.toString())));
+        assert(test.get(Resource.COIN).equals(strongbox.getQuantity(Resource.COIN)));
+        assert(test.get(Resource.SHIELD).equals(strongbox.getQuantity(Resource.SHIELD)));
+        assert(test.get(Resource.SERVANT).equals(strongbox.getQuantity(Resource.SERVANT)));
+        assert(test.get(Resource.STONE).equals(strongbox.getQuantity(Resource.STONE)));
 
-        test.put(Resource.COIN.toString(), 0);
-        test.put(Resource.SERVANT.toString(), 2);
-        test.put(Resource.SHIELD.toString(), 2);
-        test.put(Resource.STONE.toString(), 0);
+        test.put(Resource.COIN, 0);
+        test.put(Resource.SERVANT, 2);
+        test.put(Resource.SHIELD, 2);
+        test.put(Resource.STONE, 0);
 
         try{
             strongbox.returnMaterials(test);
@@ -63,17 +63,17 @@ public class StrongboxTest {
             System.out.println(e.getMessage());
         }
 
-        test.put(Resource.COIN.toString(), 0);
-        test.put(Resource.SERVANT.toString(), 3);
-        test.put(Resource.SHIELD.toString(), 3);
-        test.put(Resource.STONE.toString(), 0);
+        test.put(Resource.COIN, 0);
+        test.put(Resource.SERVANT, 3);
+        test.put(Resource.SHIELD, 3);
+        test.put(Resource.STONE, 0);
 
         assert(test.equals(strongbox.getQuantity()));
 
-        test.put(Resource.COIN.toString(), 0);
-        test.put(Resource.SERVANT.toString(), 4);
-        test.put(Resource.SHIELD.toString(), 4);
-        test.put(Resource.STONE.toString(), 0);
+        test.put(Resource.COIN, 0);
+        test.put(Resource.SERVANT, 4);
+        test.put(Resource.SHIELD, 4);
+        test.put(Resource.STONE, 0);
 
         try{
             strongbox.returnMaterials((test));
