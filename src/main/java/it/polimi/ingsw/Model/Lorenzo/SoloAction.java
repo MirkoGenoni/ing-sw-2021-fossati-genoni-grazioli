@@ -8,7 +8,7 @@ public enum SoloAction {
 
     ONLYMOVE,
     MOVESHUFFLE,
-    DICARDBLUE,
+    DISCARDBLUE,
     DISCARDYELLOW,
     DISCARDPURPLE,
     DISCARDGREEN

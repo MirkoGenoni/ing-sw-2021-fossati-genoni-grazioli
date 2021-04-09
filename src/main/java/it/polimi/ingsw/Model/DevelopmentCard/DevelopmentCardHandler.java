@@ -102,7 +102,7 @@ public class DevelopmentCardHandler {
      * @return true if all the colors and them level in ArrayList are present in my collection false if not
      */
 
-    public boolean checkDevelopmentCard (ArrayList<String> colorToCheck, ArrayList<Integer> levelToCheck) throws DevelopmentCardException {
+    public boolean checkDevelopmentCard (ArrayList<CardColor> colorToCheck, ArrayList<Integer> levelToCheck) throws DevelopmentCardException {
 
         if (colorToCheck==null || levelToCheck==null || colorToCheck.size() != levelToCheck.size())
             throw new DevelopmentCardException("Can't process check because of formatting error");
@@ -114,7 +114,7 @@ public class DevelopmentCardHandler {
             for (int i = 0; i < numberOfElements; i++) {
 
                 for (DevelopmentCard card : developmentCardColl) {
-                    if (card.getColor().equals(colorToCheck.get(i)) && card.getLevel() == levelToCheck.get(i)) { //stringhe devono essere equals se effettivamente è così
+                    if (card.getColor().name().equals(colorToCheck.get(i).name()) && card.getLevel() == levelToCheck.get(i)) { //stringhe devono essere equals se effettivamente è così
                         finded = true;
                         break;
                     }

@@ -1,5 +1,7 @@
 package it.polimi.ingsw.Model.DevelopmentCard;
 
+import it.polimi.ingsw.Model.Resource.Resource;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -11,10 +13,10 @@ import java.util.Map;
 public class DevelopmentCard {
     private CardColor color;
     private final int level;
-    private final Map<String, Integer> cost;
+    private final Map<Resource, Integer> cost;
     private final int victoryPoint;
-    private final Map<String, Integer> materialRequired;
-    private final Map<String, Integer> productionResult;
+    private final Map<ProductedMaterials, Integer> materialRequired;
+    private final Map<ProductedMaterials, Integer> productionResult;
 
     /**
      * Constructor of the class
@@ -26,8 +28,8 @@ public class DevelopmentCard {
      * @param materialRequired specify with an HashMap what the card need to start the develop
      * @param productionResult specify with an HashMap what the card grant at the end of the develop
      */
-    public DevelopmentCard(CardColor color, int level, Map<String, Integer> cost, int victoryPoint,
-                           Map<String, Integer> materialRequired, Map<String, Integer> productionResult) {
+    public DevelopmentCard(CardColor color, int level, Map<Resource, Integer> cost, int victoryPoint,
+                           Map<ProductedMaterials, Integer> materialRequired, Map<ProductedMaterials, Integer> productionResult) {
         this.color = color;
         this.level = level;
         this.cost = cost;
@@ -56,7 +58,7 @@ public class DevelopmentCard {
      *
      * @return the cost of the card: HashMap with their cost, with no FaithPoint
      */
-    public Map<String, Integer> getCost() {
+    public Map<Resource, Integer> getCost() {
 
         return new HashMap<>(cost);
     }
@@ -73,7 +75,7 @@ public class DevelopmentCard {
      *
      * @return with an HashMap the number of each material needed to develop (number of: Coins, Servants, Shields, Stones, FaithPoints)
      */
-    public Map<String, Integer> getMaterialRequired() {
+    public Map<ProductedMaterials, Integer> getMaterialRequired() {
 
         return new HashMap<>(materialRequired);
     }
@@ -82,7 +84,7 @@ public class DevelopmentCard {
      *
      * @return with an HashMap the number of resources the card grant at the end of the develop (number of: Coins, Servants, Shields, Stones, FaithPoints)
      */
-    public Map<String, Integer> getProductionResult() {
+    public Map<ProductedMaterials, Integer> getProductionResult() {
 
         return new HashMap<>(productionResult);
     }

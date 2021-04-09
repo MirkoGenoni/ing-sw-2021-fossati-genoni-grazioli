@@ -1,10 +1,18 @@
 package it.polimi.ingsw.Model.DevelopmentCard;
 
-import it.polimi.ingsw.Model.DevelopmentCard.DevelopmentCard;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonStreamParser;
+import it.polimi.ingsw.Model.Resource.Resource;
 import org.junit.Before;
 import org.junit.Test;
 
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.Set;
@@ -13,92 +21,67 @@ import static org.junit.Assert.*;
 
 public class DevelopmentCardTest {
 
-    CardColor testColor = CardColor.GREEN;
-    int testLevel = 3;
-    Map<String, Integer> testCost = new HashMap<>();
-    int testVictoryPoint = 8;
-    Map<String, Integer> testMaterialRequired = new HashMap<>();
-    Map<String, Integer> testProductionResult = new HashMap<>();
-    DevelopmentCard provaCarta;
-
+DevelopmentCard testCard = null;
 
     @Before
-    public void setUp(){
-        testCost.put("coin", 4);
-        testCost.put("stone", 7);
+    public void setUp() {
 
-        testMaterialRequired.put("coin",5);
-        testMaterialRequired.put("servant", 6);
-        testMaterialRequired.put("shield", 1);
+        Gson testGson = new GsonBuilder().create();
+        JsonStreamParser testParser;
+        try {
+            testParser = new JsonStreamParser(new InputStreamReader(new FileInputStream
+                    ("src/test/java/it/polimi/ingsw/Model/DevelopmentCard/DevelopmentCardsTest.json"), "UTF-8"));
 
-        testProductionResult.put("stone", 4);
-        testProductionResult.put("faithPoint", 2);
+                JsonElement testElem = testParser.next();
+                if (testElem.isJsonObject()) {
+                    testCard = testGson.fromJson(testElem, DevelopmentCard.class);
+                }
 
-        provaCarta = new DevelopmentCard(testColor,testLevel,testCost,testVictoryPoint,
-                                            testMaterialRequired,testProductionResult);
+        }
+        catch (FileNotFoundException e) {
+            fail(); //test Failed
+        }
+        catch (UnsupportedEncodingException e){
+            e.printStackTrace();
+            fail();
+        }
 
     }
 
     @Test
     public void getColor() {
-        assertEquals(provaCarta.getColor(), testColor);
+        assertEquals(testCard.getColor(), CardColor.GREEN);
     }
 
     @Test
     public void getLevel() {
-        assertEquals(provaCarta.getLevel(), testLevel);
+        assertEquals(testCard.getLevel(), 1);
     }
 
     @Test
     public void getCost() {
-        Set <String> allKeys = provaCarta.getCost().keySet(); //give all the keys of provaCarta
-
-        for (String s : allKeys){
-            assertEquals(testCost.get(s), provaCarta.getCost().get(s));
-        }
-
-        allKeys = testCost.keySet(); //give all the keys of Test
-
-        for (String s : allKeys){
-            assertEquals(testCost.get(s), provaCarta.getCost().get(s));
-        }
-
+        Map<Resource, Integer> testCost = testCard.getCost();
+        assertEquals(testCost.toString(), "{SHIELD=2}");
     }
 
     @Test
     public void getVictorypoint() {
-        assertEquals(provaCarta.getVictoryPoint(), testVictoryPoint);
+        assertEquals(testCard.getVictoryPoint(),1);
+
     }
 
     @Test
     public void getMaterialRequired() {
-
-        Set <String> allKeys = provaCarta.getMaterialRequired().keySet(); //give all the keys of provaCarta
-
-        for (String s : allKeys){
-            assertEquals(testMaterialRequired.get(s), provaCarta.getMaterialRequired().get(s));
-        }
-
-        allKeys = testMaterialRequired.keySet(); //give all the keys of Test
-
-        for (String s : allKeys){
-            assertEquals(testMaterialRequired.get(s), provaCarta.getMaterialRequired().get(s));
-        }
-
+        Map<ProductedMaterials, Integer> testCost = testCard.getMaterialRequired();
+        assertEquals(testCost.toString(), "{COIN=1}");
     }
 
     @Test
     public void getProductionResult() {
-        Set <String> allKeys = provaCarta.getProductionResult().keySet(); //give all the keys of provaCarta
 
-        for (String s : allKeys){
-            assertEquals(testProductionResult.get(s), provaCarta.getProductionResult().get(s));
-        }
-
-        allKeys = testProductionResult.keySet(); //give all the keys of Test
-
-        for (String s : allKeys){
-            assertEquals(testProductionResult.get(s), provaCarta.getProductionResult().get(s));
-        }
+        Map<ProductedMaterials, Integer> testCost = testCard.getProductionResult();
+        assertEquals(testCost.toString(), "{FAITHPOINT=1}");
     }
+
+
 }
