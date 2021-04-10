@@ -70,3 +70,18 @@
     "SERVANT": 1
   }
 }
+{
+  "color": "BLUE",
+  "level": 3,
+  "cost": {
+    "COIN": 6
+  },
+  "victoryPoint": 9,
+  "materialRequired": {
+    "SERVANT": 2
+  },
+  "productionResult": {
+    "SHIELD": 3,
+    "FAITHPOINT": 2
+  }
+}

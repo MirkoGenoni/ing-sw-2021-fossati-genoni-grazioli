@@ -20,6 +20,16 @@ public class FaithTrackTest {
         assertTrue(testTrack.forwardPos(0)); //return true because is popeSpace
         assertFalse(testTrack.forwardPos(3));//return false because is not popeSpace anymore
 
+        for (int i = 0; i<7; i++){
+            testTrack.forwardPos(0);
+        }
+        for (int i = 0; i<7; i++){
+            testTrack.forwardPos(3);
+        }
+        assertEquals(15, testTrack.getPosition(0));
+        assertTrue(testTrack.forwardPos(3));//return true because is popeSpace
+        assertFalse(testTrack.forwardPos(0));//return false because is not popeSpace anymore
+        assertEquals(16, testTrack.getPosition(3));
 
     }
 
@@ -49,8 +59,6 @@ public class FaithTrackTest {
         assertEquals(18, testTrack.getPosition(1));
         assertEquals(24, testTrack.getPosition(2));
         assertEquals(5, testTrack.getPosition(3));
-
-
 
     }
 

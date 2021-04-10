@@ -109,12 +109,15 @@ public class DevelopmentCardHandler {
 
         else {   //correct format of input
             int numberOfElements = colorToCheck.size();
+            ArrayList<DevelopmentCard> collection = new ArrayList<>(developmentCardColl); //duplicated list
+
             boolean finded = false;
 
             for (int i = 0; i < numberOfElements; i++) {
 
-                for (DevelopmentCard card : developmentCardColl) {
+                for (DevelopmentCard card : collection) { //modified collection
                     if (card.getColor().name().equals(colorToCheck.get(i).name()) && card.getLevel() == levelToCheck.get(i)) { //stringhe devono essere equals se effettivamente è così
+                        collection.remove(card); //can't count duplicated cards
                         finded = true;
                         break;
                     }
