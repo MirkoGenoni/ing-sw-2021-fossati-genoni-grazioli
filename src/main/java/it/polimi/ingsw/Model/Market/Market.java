@@ -53,13 +53,13 @@ public class Market {
     /*  The ArrayList of Marble is managed in the following way:
 
           4    5    6    7 -----> is the parameter line passed to chooseLine (these are the column)
-       ---------------------
+       +----+----+----+----+
    1   | 00 | 01 | 02 | 03 |
-       ---------------------
+       +----+----+----+----+
    2   | 04 | 05 | 06 | 07 |
-       ---------------------
+       +----+----+----+----+
    3   | 08 | 09 | 10 | 11 |
-   |   ---------------------
+   |   +----+----+----+----+
    |-->  is the parameter line passed to chooseLine (these are the row)
 
    */
@@ -142,7 +142,7 @@ public class Market {
      */
 
     public ArrayList<Marble> getGrid(){
-        return grid;
+        return new ArrayList<>(grid);
     }
 
     /**

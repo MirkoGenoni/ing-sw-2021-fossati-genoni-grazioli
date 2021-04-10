@@ -68,7 +68,7 @@ public class LeaderCardHandler{
 
     public ArrayList<LeaderCard> getLeaderCardsAvailable() throws LeaderCardException {
         if(leaderCardsAvailable!=null && leaderCardsAvailable.size()!=0){
-            return leaderCardsAvailable;
+            return new ArrayList<>(leaderCardsAvailable);
         }else{
             throw new LeaderCardException("you haven't leader card available");
         }
@@ -82,7 +82,7 @@ public class LeaderCardHandler{
 
     public ArrayList<LeaderCard> getLeaderCardsActive() throws LeaderCardException {
         if(leaderCardsActive !=null && leaderCardsActive.size()!=0){
-            return leaderCardsActive;
+            return new ArrayList<>(leaderCardsActive);
         }else{
             throw new LeaderCardException("you haven't leader card active");
         }

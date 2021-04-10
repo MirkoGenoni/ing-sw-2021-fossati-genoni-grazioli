@@ -12,31 +12,11 @@ import java.util.Map;
 
 public class DevelopmentCard {
     private CardColor color;
-    private final int level;
-    private final Map<Resource, Integer> cost;
-    private final int victoryPoint;
-    private final Map<ProductedMaterials, Integer> materialRequired;
-    private final Map<ProductedMaterials, Integer> productionResult;
-
-    /**
-     * Constructor of the class
-     *
-     * @param color specify the color of the developmentCard
-     * @param level specify the level (min 1, max 3) of the developmentCard
-     * @param cost specify the cost of the card a player have to pay to play with this specific card. The cost is given by a 5 elements HashMap
-     * @param victoryPoint specify the victory points this card grants at the end of the game
-     * @param materialRequired specify with an HashMap what the card need to start the develop
-     * @param productionResult specify with an HashMap what the card grant at the end of the develop
-     */
-    public DevelopmentCard(CardColor color, int level, Map<Resource, Integer> cost, int victoryPoint,
-                           Map<ProductedMaterials, Integer> materialRequired, Map<ProductedMaterials, Integer> productionResult) {
-        this.color = color;
-        this.level = level;
-        this.cost = cost;
-        this.victoryPoint = victoryPoint;
-        this.materialRequired = materialRequired;
-        this.productionResult = productionResult;
-    }
+    private int level;
+    private Map<Resource, Integer> cost;
+    private int victoryPoint;
+    private Map<ProductedMaterials, Integer> materialRequired;
+    private Map<ProductedMaterials, Integer> productionResult;
 
     /**
      *
