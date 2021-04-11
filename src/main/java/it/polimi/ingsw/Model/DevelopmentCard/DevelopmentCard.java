@@ -15,7 +15,7 @@ public class DevelopmentCard {
     private final int level;
     private final Map<Resource, Integer> cost;
     private final int victoryPoint;
-    private final Map<ProductedMaterials, Integer> materialRequired;
+    private final Map<Resource, Integer> materialRequired;
     private final Map<ProductedMaterials, Integer> productionResult;
 
     /**
@@ -29,7 +29,7 @@ public class DevelopmentCard {
      * @param productionResult specify with an HashMap what the card grant at the end of the develop
      */
     private DevelopmentCard(CardColor color, int level, Map<Resource, Integer> cost, int victoryPoint,
-                           Map<ProductedMaterials, Integer> materialRequired, Map<ProductedMaterials, Integer> productionResult) {
+                           Map<Resource, Integer> materialRequired, Map<ProductedMaterials, Integer> productionResult) {
         this.color = color;
         this.level = level;
         this.cost = cost;
@@ -75,7 +75,7 @@ public class DevelopmentCard {
      *
      * @return with an HashMap the number of each material needed to develop (number of: Coins, Servants, Shields, Stones, FaithPoints)
      */
-    public Map<ProductedMaterials, Integer> getMaterialRequired() {
+    public Map<Resource, Integer> getMaterialRequired() {
 
         return new HashMap<>(materialRequired);
     }

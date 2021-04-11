@@ -15,7 +15,6 @@ import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.util.Map;
 import java.util.HashMap;
-import java.util.Set;
 
 import static org.junit.Assert.*;
 
@@ -72,7 +71,7 @@ DevelopmentCard testCard = null;
 
     @Test
     public void getMaterialRequired() {
-        Map<ProductedMaterials, Integer> testCost = testCard.getMaterialRequired();
+        Map<Resource, Integer> testCost = testCard.getMaterialRequired();
         assertEquals(testCost.toString(), "{COIN=1}");
     }
 

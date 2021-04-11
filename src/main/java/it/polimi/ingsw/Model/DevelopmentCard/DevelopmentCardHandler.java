@@ -24,7 +24,7 @@ public class DevelopmentCardHandler {
     }
 
     /**
-     * Return an Arraylist of the cards i can active the Develpment power
+     * Return an Arraylist of the cards i can active the Development power
      * @return A copy of activeDevelopmentCard
      */
     public ArrayList<DevelopmentCard> getActiveDevelopmentCard() {
@@ -73,23 +73,26 @@ public class DevelopmentCardHandler {
     /**
      * Check if a player could buy a card, giving him the position where he could put the bought card
      * @param cardLevel level of the card the player bought (from 1 to 3)
-     * @return An arraylist with the positions where the player could put the bought card
+     * @return An arraylist with boolean that specifies for every position if the player could put the bought card in that space (true if he can, false if he can't)
      */
-    public ArrayList<Integer> checkBoughtable (int cardLevel) {
+    public ArrayList<Boolean> checkBoughtable (int cardLevel) {
 
-        ArrayList<Integer> boughtablePositions = new ArrayList<>();
+        ArrayList<Boolean> boughtablePositions = new ArrayList<>();
 
         if (cardLevel == 1) {
             for (int i = 0; i < 3; i++)
                 if (activeDevelopmentCard[i] == null)
-                    boughtablePositions.add(i);
+                    boughtablePositions.add(i, true);
+                else
+                    boughtablePositions.add(i,false);
         }
         else { //if cardLevel == 2 || cardLevel == 3
 
             for (int i = 0; i < 3; i++)
                 if (activeDevelopmentCard[i] != null && activeDevelopmentCard[i].getLevel() == cardLevel - 1)
-                    boughtablePositions.add(i);
-
+                    boughtablePositions.add(i,true);
+                else
+                    boughtablePositions.add(i,false);
         }
         return boughtablePositions;
     }

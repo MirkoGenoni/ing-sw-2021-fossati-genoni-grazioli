@@ -84,14 +84,29 @@ public class DevelopmentCardHandlerTest {
     }
 
     @Test
-    public void CheckBoughtable() {
-        int position;
-        ArrayList<Integer> bouthablePositions = handler.checkBoughtable(1);
-        position = bouthablePositions.get(0);
-        assertEquals(position,1);
+    public void CheckBoughtable() throws Exception{
 
-        //handler.setActiveDevelopmentCard(cardCollection.get(2),2); //level 1 in every position
-        //bouthablePositions = handler.checkBoughtable(1); //can't buy an other card
+        ArrayList<Boolean> checkReturned = handler.checkBoughtable(cardCollection.get(2).getLevel()); //level = 1
+        assertFalse(checkReturned.get(0));
+        assertTrue(checkReturned.get(1)); //can put level 1 card only in the first position
+        assertFalse(checkReturned.get(2));
+
+        handler.setActiveDevelopmentCard(cardCollection.get(2),1);
+        checkReturned= handler.checkBoughtable(cardCollection.get(3).getLevel()); //level = 1
+        for(Boolean condition : checkReturned)
+            assertFalse(condition); //can't buy an other level 1 card
+
+        checkReturned = handler.checkBoughtable(cardCollection.get(4).getLevel()); //level = 2
+        for(Boolean condition : checkReturned)
+            assertTrue(condition); //can put a level 2 card everywhere
+
+
+        handler.setActiveDevelopmentCard(cardCollection.get(4), 2); //set level 2 card active
+        checkReturned = handler.checkBoughtable(cardCollection.get(5).getLevel()); //level = 3
+        assertFalse(checkReturned.get(0));
+        assertFalse(checkReturned.get(1));
+        assertTrue(checkReturned.get(2));//can put level 3 card only in the third position
+
 
     }
 
