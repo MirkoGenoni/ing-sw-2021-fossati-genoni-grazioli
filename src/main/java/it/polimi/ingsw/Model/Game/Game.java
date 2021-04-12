@@ -35,6 +35,10 @@ public abstract class Game {
         playersFaithTrack = new FaithTrack(numPlayer);
     }
 
+    public FaithTrack getPlayersFaithTrack() {
+        return playersFaithTrack;
+    }
+
     public ArrayList[][] getDevelopmentCards(){
         return developmentCards;
     }

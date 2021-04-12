@@ -46,7 +46,7 @@ public class FaithTrack {
         track[24].setPopeSpace(true);
 
         //setting zero markerPos e report section at the beginning
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < numPlayer; i++) {
             faithMarkersPosition[i] = 0;
             playerInVaticanReportSection[i] = 0;
         }

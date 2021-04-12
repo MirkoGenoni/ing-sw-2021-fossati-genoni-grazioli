@@ -19,6 +19,8 @@ public class MultiPlayerGame extends Game{
     public MultiPlayerGame(int numPlayer) {
         super(numPlayer);
         players = new Player[numPlayer];
+        // forse shuflle
+
     }
 
     public void addPlayer(String name) throws StartGameException {

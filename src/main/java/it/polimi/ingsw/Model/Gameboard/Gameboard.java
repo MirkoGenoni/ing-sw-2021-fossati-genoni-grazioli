@@ -43,7 +43,7 @@ public class Gameboard {
     }
 
     public void removePopeFavorTiles(int section) {
-        popeFavorTiles.set(section, 0);
+        popeFavorTiles.set(section - 1, 0);  // non può entrare delle section 0: le section sono 1 2 3;
     }
 
     public ArrayList<Integer> getPopeFavorTilesState() {
