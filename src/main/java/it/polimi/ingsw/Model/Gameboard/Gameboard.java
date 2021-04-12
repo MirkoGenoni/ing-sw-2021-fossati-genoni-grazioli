@@ -3,6 +3,7 @@ package it.polimi.ingsw.Model.Gameboard;
 import it.polimi.ingsw.Model.DevelopmentCard.DevelopmentCardHandler;
 import it.polimi.ingsw.Model.Exceptions.LeaderCardException;
 import it.polimi.ingsw.Model.Exceptions.ResourceException;
+import it.polimi.ingsw.Model.FaithTrack.FaithTrack;
 import it.polimi.ingsw.Model.LeaderCard.LeaderCard;
 import it.polimi.ingsw.Model.LeaderCard.LeaderCardHandler;
 import it.polimi.ingsw.Model.Resource.Resource;
@@ -18,10 +19,11 @@ public class Gameboard {
     DevelopmentCardHandler developmentCardHandler;
     ArrayList<Integer> popeFavorTiles;
 
-    Gameboard(ArrayList<LeaderCard> leaderCardGiven) throws LeaderCardException {
+    public Gameboard(ArrayList<LeaderCard> leaderCardGiven) throws LeaderCardException {
         this.resourceHandler = new ResourceHandler();
         this.leaderCardHandler = new LeaderCardHandler(leaderCardGiven);
         this.developmentCardHandler = new DevelopmentCardHandler();
+        this.popeFavorTiles = new ArrayList<>();
 
         for (int i = 2; i < 5; i++) {
             popeFavorTiles.add(i);
@@ -60,6 +62,7 @@ public class Gameboard {
         }
 
         if (resourceHandler.checkMaterials(toTake)) {
+            resourceHandler.checkMaterials(toTake);
             resourceHandler.takeMaterials(toTake);
             Map<Resource, Integer> give = new HashMap<>();
             give.put(selected, 1);

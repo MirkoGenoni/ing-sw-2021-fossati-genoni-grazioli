@@ -43,7 +43,8 @@ public class Strongbox {
      */
     public void addMaterials(Map<Resource, Integer> received) {
         for (Resource r : Resource.values()) {
-            materials.put(r, materials.get(r) + received.get(r));
+            if(received.containsKey(r))
+                materials.put(r, materials.get(r) + received.get(r));
         }
     }
 
@@ -52,12 +53,13 @@ public class Strongbox {
      */
     public void returnMaterials(Map<Resource, Integer> required) throws ResourceException {
         for (Resource r : Resource.values()) {
-            if (materials.get(r) - required.get(r) < 0)
+            if (required.containsKey(r) && materials.get(r) - required.get(r) < 0)
                 throw new ResourceException("Trying to put negative Materials inside strongbox");
         }
 
         for (Resource r1 : Resource.values()) {
-            materials.put(r1, materials.get(r1) - required.get(r1));
+            if(required.containsKey(r1))
+                materials.put(r1, materials.get(r1) - required.get(r1));
         }
     }
 }
