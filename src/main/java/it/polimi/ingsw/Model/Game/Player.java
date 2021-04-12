@@ -1,5 +1,6 @@
-package it.polimi.ingsw.Model;
+package it.polimi.ingsw.Model.Game;
 
+import it.polimi.ingsw.Model.Exceptions.LeaderCardException;
 import it.polimi.ingsw.Model.Gameboard.Gameboard;
 import it.polimi.ingsw.Model.LeaderCard.LeaderCard;
 
@@ -27,11 +28,11 @@ public class Player {
     }
 
     public void createGameBoard(ArrayList<LeaderCard> leaderCardGiven){
-       /* try{
+      try{
             playerBoard = new Gameboard(leaderCardGiven);
-        }catch(LeaderCardException e){
-            System.out.println(e.getMessage());
-        }*/
+      }catch(LeaderCardException e) {
+          System.out.println(e.getMessage());
+      }
     }
 
     public boolean checkTurn(){

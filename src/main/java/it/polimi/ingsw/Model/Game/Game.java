@@ -1,4 +1,4 @@
-package it.polimi.ingsw.Model;
+package it.polimi.ingsw.Model.Game;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -26,13 +26,13 @@ import static it.polimi.ingsw.Model.DevelopmentCard.CardColor.*;
  */
 
 public abstract class Game {
-    private Market marketBoard;
-    private ArrayList<LeaderCard> allLeaderCards;
-    private ArrayList[][] developmentCards;
-    private FaithTrack playersFaithTrack;
+    protected Market marketBoard;
+    protected ArrayList<LeaderCard> allLeaderCards;
+    protected ArrayList[][] developmentCards;
+    protected FaithTrack playersFaithTrack;
 
     public Game(int numPlayer){
-        //playersFaithTrack = new FaithTrack(numPlayer);
+        playersFaithTrack = new FaithTrack(numPlayer);
     }
 
     public ArrayList[][] getDevelopmentCards(){
@@ -76,13 +76,6 @@ public abstract class Game {
         marketBoard = new Market();
         leaderCardCreation();       //creates leader cards
         developmentCardCreation();  //creates development cards
-        //distribution of the four initial leader cards
-        //distribution of the resource
-
-
-
-
-
     }
 
 

@@ -33,6 +33,8 @@ public class LeaderCardHandler{
      * @param selected2 The second card that the player want to discard.
      * @exception LeaderCardException if the selection of the leader cards is wrong or the leader cards selected doesn't exist.
      */
+
+    // The index of the array is from 0 to 3
     public void removeInitialLeaderCard( int selected1, int selected2) throws LeaderCardException {
         int card1;
         int card2;
@@ -67,7 +69,7 @@ public class LeaderCardHandler{
      */
 
     public ArrayList<LeaderCard> getLeaderCardsAvailable() throws LeaderCardException {
-        if(leaderCardsAvailable!=null && leaderCardsAvailable.size()!=0){
+        if(!leaderCardsAvailable.isEmpty()){
             return new ArrayList<>(leaderCardsAvailable);
         }else{
             throw new LeaderCardException("you haven't leader card available");
@@ -81,7 +83,7 @@ public class LeaderCardHandler{
      */
 
     public ArrayList<LeaderCard> getLeaderCardsActive() throws LeaderCardException {
-        if(leaderCardsActive !=null && leaderCardsActive.size()!=0){
+        if(!leaderCardsActive.isEmpty()){
             return new ArrayList<>(leaderCardsActive);
         }else{
             throw new LeaderCardException("you haven't leader card active");
@@ -94,8 +96,8 @@ public class LeaderCardHandler{
      * @return The special ability of the leader card that the player want to use.
      * @exception LeaderCardException if the ArrayList of the leader card active selected is null or doesn't exist.
      */
-
-    public SpecialAbility getLeaderActivePower(int selected) throws LeaderCardException {
+    // the index of the leader card is form 0 to 1
+    public SpecialAbility getLeaderActivePower(int selected) throws LeaderCardException {       //
         if(selected < leaderCardsActive.size() && leaderCardsActive.get(selected)!=null){
             return getLeaderCardsActive().get(selected).getSpecialAbility();
         }else{
@@ -111,7 +113,7 @@ public class LeaderCardHandler{
      * @param selected The leader card that the player want to activate.
      * @exception LeaderCardException if the leader card available selected doesn't exist or is null.
      */
-
+    // the index of the leader card is form 0 to 1
     public void activateLeaderCard(int selected) throws LeaderCardException {
         if(selected < leaderCardsAvailable.size() && leaderCardsAvailable.get(selected)!=null){
             LeaderCard tmp = leaderCardsAvailable.remove(selected);
@@ -128,7 +130,7 @@ public class LeaderCardHandler{
      * @param selected The leader card available that the player want to discard.
      * @exception LeaderCardException if the leader card available selected doesn't exist or is null;
      */
-
+    // the index of the leader card is form 0 to 1
     public void discardLeaderCard( int selected) throws LeaderCardException {
         if(selected < leaderCardsAvailable.size() && leaderCardsAvailable.get(selected)!=null){
             leaderCardsAvailable.remove(selected);
