@@ -2,171 +2,171 @@
   "name" : "leaderCard1",
   "specialAbility" : {
     "effect" : "additionalProduction",
-    "victoryPoints" : "4",
-    "cardRequired1" : "yellow",
-    "quantityRequired1" : "1",
-    "materialAdditionalProduction" : "shield"
+    "victoryPoints" : 4,
+    "cardRequired1" : "YELLOW",
+    "quantityRequired1" : 1,
+    "materialAdditionalProduction" : "SHIELD"
   }
 }
 {
   "name" : "leaderCard2",
   "specialAbility" : {
     "effect" : "additionalProduction",
-    "victoryPoints" : "4",
-    "cardRequired1" : "blue",
-    "quantityRequired1" : "1",
-    "materialAdditionalProduction" : "servant"
+    "victoryPoints" : 4,
+    "cardRequired1" : "BLUE",
+    "quantityRequired1" : 1,
+    "materialAdditionalProduction" : "SERVANT"
   }
 }
 {
   "name" : "leaderCard3",
   "specialAbility" : {
     "effect" : "additionalProduction",
-    "victoryPoints" : "4",
-    "cardRequired1" : "purple",
-    "quantityRequired1" : "1",
-    "materialAdditionalProduction" : "stone"
+    "victoryPoints" : 4,
+    "cardRequired1" : "PURPLE",
+    "quantityRequired1" : 1,
+    "materialAdditionalProduction" : "STONE"
   }
 }
 {
   "name" : "leaderCard4",
   "specialAbility" : {
     "effect" : "additionalProduction",
-    "victoryPoints" : "4",
-    "cardRequired1" : "green",
-    "quantityRequired1" : "1",
-    "materialAdditionalProduction" : "gold"
+    "victoryPoints" : 4,
+    "cardRequired1" : "GREEN",
+    "quantityRequired1" : 1,
+    "materialAdditionalProduction" : "COIN"
   }
 }
 {
   "name" : "leaderCard5",
   "specialAbility" : {
     "effect" : "biggerDeposit",
-    "victoryPoints" : "3",
-    "materialRequired1" : "gold",
-    "quantityRequired1" : "5",
-    "materialBiggerDeposit" : "stone"
+    "victoryPoints" : 3,
+    "materialRequired1" : "COIN",
+    "quantityRequired1" : 5,
+    "materialBiggerDeposit" : "STONE"
   }
 }
 {
   "name" : "leaderCard6",
   "specialAbility" : {
     "effect" : "biggerDeposit",
-    "victoryPoints" : "3",
-    "materialRequired1" : "stone",
-    "quantityRequired1" : "5",
-    "materialBiggerDeposit" : "servant"
+    "victoryPoints" : 3,
+    "materialRequired1" : "STONE",
+    "quantityRequired1" : 5,
+    "materialBiggerDeposit" : "SERVANT"
   }
 }
 {
   "name" : "leaderCard7",
   "specialAbility" : {
     "effect" : "biggerDeposit",
-    "victoryPoints" : "3",
-    "materialRequired1" : "servant",
-    "quantityRequired1" : "5",
-    "materialBiggerDeposit" : "shield"
+    "victoryPoints" : 3,
+    "materialRequired1" : "SERVANT",
+    "quantityRequired1" : 5,
+    "materialBiggerDeposit" : "SHIELD"
   }
 }
 {
   "name" : "leaderCard8",
   "specialAbility" : {
     "effect" : "biggerDeposit",
-    "victoryPoints" : "3",
-    "materialRequired1" : "shield",
-    "quantityRequired1" : "5",
-    "materialBiggerDeposit" : "gold"
+    "victoryPoints" : 3,
+    "materialRequired1" : "SHIELD",
+    "quantityRequired1" : 5,
+    "materialBiggerDeposit" : "COIN"
   }
 }
 {
   "name" : "leaderCard9",
   "specialAbility" : {
     "effect" : "costLess",
-    "victoryPoints" : "2",
-    "cardRequired1" : "yellow",
-    "quantityRequired1" : "1",
-    "cardRequired2" : "green",
-    "quantityRequired2" : "1",
-    "materialCostLess" : "servant"
+    "victoryPoints" : 2,
+    "cardRequired1" : "YELLOW",
+    "quantityRequired1" : 1,
+    "cardRequired2" : "GREEN",
+    "quantityRequired2" : 1,
+    "materialCostLess" : "SERVANT"
   }
 }
 {
   "name" : "leaderCard10",
   "specialAbility" : {
     "effect" : "costLess",
-    "victoryPoints" : "2",
-    "cardRequired1" : "blue",
-    "quantityRequired1" : "1",
-    "cardRequired2" : "purple",
-    "quantityRequired2" : "1",
-    "materialCostLess" : "shield"
+    "victoryPoints" : 2,
+    "cardRequired1" : "BLUE",
+    "quantityRequired1" : 1,
+    "cardRequired2" : "PURPLE",
+    "quantityRequired2" : 1,
+    "materialCostLess" : "SHIELD"
   }
 }
 {
   "name" : "leaderCard11",
   "specialAbility" : {
     "effect" : "costLess",
-    "victoryPoints" : "2",
-    "cardRequired1" : "green",
-    "quantityRequired1" : "1",
-    "cardRequired2" : "blue",
-    "quantityRequired2" : "1",
-    "materialCostLess" : "stone"
+    "victoryPoints" : 2,
+    "cardRequired1" : "GREEN",
+    "quantityRequired1" : 1,
+    "cardRequired2" : "BLUE",
+    "quantityRequired2" : 1,
+    "materialCostLess" : "STONE"
   }
 }
 {
   "name" : "leaderCard12",
   "specialAbility" : {
     "effect" : "costLess",
-    "victoryPoints" : "2",
-    "cardRequired1" : "yellow",
-    "quantityRequired1" : "1",
-    "cardRequired2" : "purple",
-    "quantityRequired2" : "1",
-    "materialCostLess" : "gold"
+    "victoryPoints" : 2,
+    "cardRequired1" : "YELLOW",
+    "quantityRequired1" : 1,
+    "cardRequired2" : "PURPLE",
+    "quantityRequired2" : 1,
+    "materialCostLess" : "COIN"
   }
 }
 {  "name" : "leaderCard13",
   "specialAbility" : {
     "effect" : "marketWhiteChange",
-    "victoryPoints" : "5",
-    "cardRequired1" : "yellow",
-    "quantityRequired1" : "2",
-    "cardRequired2" : "blue",
-    "quantityRequired2" : "1",
-    "materialWhiteChangeTo" : "servant"
+    "victoryPoints" : 5,
+    "cardRequired1" : "YELLOW",
+    "quantityRequired1" : 2,
+    "cardRequired2" : "BLUE",
+    "quantityRequired2" : 1,
+    "materialWhiteChangeTo" : "SERVANT"
   }
 }
 {  "name" : "leaderCard14",
   "specialAbility" : {
     "effect" : "marketWhiteChange",
-    "victoryPoints" : "5",
-    "cardRequired1" : "green",
-    "quantityRequired1" : "2",
-    "cardRequired2" : "purple",
-    "quantityRequired2" : "1",
-    "materialWhiteChangeTo" : "shield"
+    "victoryPoints" : 5,
+    "cardRequired1" : "GREEN",
+    "quantityRequired1" : 2,
+    "cardRequired2" : "PURPLE",
+    "quantityRequired2" : 1,
+    "materialWhiteChangeTo" : "SHIELD"
   }
 }
 {  "name" : "leaderCard15",
   "specialAbility" : {
     "effect" : "marketWhiteChange",
-    "victoryPoints" : "5",
-    "cardRequired1" : "blue",
-    "quantityRequired1" : "2",
-    "cardRequired2" : "yellow",
-    "quantityRequired2" : "1",
-    "materialWhiteChangeTo" : "stone"
+    "victoryPoints" : 5,
+    "cardRequired1" : "BLUE",
+    "quantityRequired1" : 2,
+    "cardRequired2" : "YELLOW",
+    "quantityRequired2" : 1,
+    "materialWhiteChangeTo" : "STONE"
   }
 }
 {  "name" : "leaderCard16",
   "specialAbility" : {
     "effect" : "marketWhiteChange",
-    "victoryPoints" : "5",
-    "cardRequired1" : "purple",
-    "quantityRequired1" : "2",
-    "cardRequired2" : "green",
-    "quantityRequired2" : "1",
-    "materialWhiteChangeTo" : "gold"
+    "victoryPoints" : 5,
+    "cardRequired1" : "PURPLE",
+    "quantityRequired1" : 2,
+    "cardRequired2" : "GREEN",
+    "quantityRequired2" : 1,
+    "materialWhiteChangeTo" : "COIN"
   }
 }

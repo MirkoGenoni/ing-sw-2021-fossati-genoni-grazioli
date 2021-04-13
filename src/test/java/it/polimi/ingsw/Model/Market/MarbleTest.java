@@ -30,8 +30,8 @@ public class MarbleTest {
         assertEquals("servant", servant.getType());
         Marble stone = Marble.STONE;
         assertEquals("stone", stone.getType());
-        Marble gold = Marble.GOLD;
-        assertEquals("gold", gold.getType());
+        Marble coin = Marble.COIN;
+        assertEquals("coin", coin.getType());
         Marble faith = Marble.FAITH;
         assertEquals("faith", faith.getType());
     }

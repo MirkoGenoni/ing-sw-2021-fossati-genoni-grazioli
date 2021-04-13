@@ -18,7 +18,7 @@ public enum Marble {
     /**
      *  This enum represent the gold marble, it is yellow.
      */
-    GOLD("gold"),
+    COIN("coin"),
 
     /**
      *  This enum represent the nothing marble, it is white.

@@ -114,19 +114,19 @@ public class LeaderCardTest {
     @Test
     public void testGetRequirements(){
         ArrayList<String> testArrayList = new ArrayList<>();
-        testArrayList.add("blue");
+        testArrayList.add("BLUE");
         assertEquals(testArrayList, testLeaderCards.get(0).getSpecialAbility().getRequirements());
         testArrayList.clear();
-        testArrayList.add("shield");
+        testArrayList.add("SHIELD");
         assertEquals(testArrayList, testLeaderCards.get(1).getSpecialAbility().getRequirements());
         testArrayList.clear();
-        testArrayList.add("green");
-        testArrayList.add("blue");
+        testArrayList.add("GREEN");
+        testArrayList.add("BLUE");
         assertEquals(testArrayList, testLeaderCards.get(2).getSpecialAbility().getRequirements());
         testArrayList.clear();
-        testArrayList.add("purple");
-        testArrayList.add("purple");
-        testArrayList.add("green");
+        testArrayList.add("PURPLE");
+        testArrayList.add("PURPLE");
+        testArrayList.add("GREEN");
         assertEquals(testArrayList, testLeaderCards.get(3).getSpecialAbility().getRequirements());
     }
 
@@ -135,9 +135,9 @@ public class LeaderCardTest {
      */
     @Test
     public void testGetMaterialType(){
-        assertEquals("servant", testLeaderCards.get(0).getSpecialAbility().getMaterialType());
-        assertEquals("gold", testLeaderCards.get(1).getSpecialAbility().getMaterialType());
-        assertEquals("stone", testLeaderCards.get(2).getSpecialAbility().getMaterialType());
-        assertEquals("gold", testLeaderCards.get(3).getSpecialAbility().getMaterialType());
+        assertEquals("SERVANT", testLeaderCards.get(0).getSpecialAbility().getMaterialType());
+        assertEquals("COIN", testLeaderCards.get(1).getSpecialAbility().getMaterialType());
+        assertEquals("STONE", testLeaderCards.get(2).getSpecialAbility().getMaterialType());
+        assertEquals("COIN", testLeaderCards.get(3).getSpecialAbility().getMaterialType());
     }
 }

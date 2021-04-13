@@ -25,8 +25,8 @@ public class Market {
         grid.add(Marble.NOTHING);
         grid.add(Marble.NOTHING);
         grid.add(Marble.NOTHING);
-        grid.add(Marble.GOLD);
-        grid.add(Marble.GOLD);
+        grid.add(Marble.COIN);
+        grid.add(Marble.COIN);
         grid.add(Marble.SERVANT);
         grid.add(Marble.SERVANT);
         grid.add(Marble.SHIELD);
@@ -84,8 +84,8 @@ public class Market {
                     case "stone":
                         marbleLine.add(Marble.STONE);
                         break;
-                    case "gold":
-                        marbleLine.add(Marble.GOLD);
+                    case "coin":
+                        marbleLine.add(Marble.COIN);
                         break;
                     case "faith":
                         marbleLine.add(Marble.FAITH);
@@ -116,8 +116,8 @@ public class Market {
                     case "stone":
                         marbleLine.add(Marble.STONE);
                         break;
-                    case "gold":
-                        marbleLine.add(Marble.GOLD);
+                    case "coin":
+                        marbleLine.add(Marble.COIN);
                         break;
                     case "faith":
                         marbleLine.add(Marble.FAITH);
