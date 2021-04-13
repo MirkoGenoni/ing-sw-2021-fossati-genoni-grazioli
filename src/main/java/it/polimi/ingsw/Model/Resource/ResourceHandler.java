@@ -177,15 +177,15 @@ public class ResourceHandler {
             //This checks if there are eventual additional deposits and remove from them firstly the resources
             if(taken.containsKey(r) && taken.get(r)!=0) {
                 if(additional_deposit.containsKey(r) && additional_deposit.get(r)>0){
-                    if(taken.get(r)-additional_deposit.get(r)>0){
+                    if(taken.get(r) > additional_deposit.get(r)){
                         taken.put(r, taken.get(r)-additional_deposit.get(r));
                         additional_deposit.put(r, 0);
                     }
-                    if(additional_deposit.containsKey(r) && additional_deposit.get(r)==0){
+                    if(taken.get(r).equals(additional_deposit.get(r))){
                         taken.put(r, 0);
                         additional_deposit.put(r, 0);
                     }
-                    else{
+                    if(taken.get(r) < additional_deposit.get(r)){
                         taken.put(r, 0);
                         additional_deposit.put(r, additional_deposit.get(r)-taken.get(r));
                     }

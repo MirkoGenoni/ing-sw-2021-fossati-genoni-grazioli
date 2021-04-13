@@ -21,56 +21,59 @@ public class ResourceHandlerTest {
         testArrayList.add(null);
         testArrayList.add(null);
 
-        try{
+        try {
             resourceHandler.addAdditionalDeposit(Resource.COIN);
-        } catch(ResourceException e){}
+        } catch (ResourceException e) {
+        }
 
         ArrayList<Resource> ReturnGetterAdditionalDeposit;
         ReturnGetterAdditionalDeposit = resourceHandler.getAdditionalDeposit();
-        assert(ReturnGetterAdditionalDeposit.equals(testArrayList));
+        assert (ReturnGetterAdditionalDeposit.equals(testArrayList));
 
         //This tries to add an additional deposit with a type already added, checks the error and
         // that the state of the additional deposit didn't change
-        try{
+        try {
             resourceHandler.addAdditionalDeposit(Resource.COIN);
-        } catch(ResourceException e){
+        } catch (ResourceException e) {
             assertEquals(e.getMessage(), "Already added an additional deposit with this resource");
         }
 
-        assert(ReturnGetterAdditionalDeposit.equals(testArrayList));
+        assert (ReturnGetterAdditionalDeposit.equals(testArrayList));
 
         //This tries to add another type of resource to the additional deposit and checks the
         // return of the method getAdditionalDeposit
         testArrayList.add(null);
         testArrayList.add(null);
 
-        try{
+        try {
             resourceHandler.addAdditionalDeposit(Resource.SHIELD);
-        } catch(ResourceException e){}
+        } catch (ResourceException e) {
+        }
 
         ReturnGetterAdditionalDeposit = resourceHandler.getAdditionalDeposit();
-        assert(ReturnGetterAdditionalDeposit.equals(testArrayList));
+        assert (ReturnGetterAdditionalDeposit.equals(testArrayList));
 
         //This tries to add a third type of resource to the additional deposit and then checks the
         // error received and that the state hasn't changed
-        try{
+        try {
             resourceHandler.addAdditionalDeposit(Resource.STONE);
-        } catch(ResourceException e){
+        } catch (ResourceException e) {
             assertEquals(e.getMessage(), "Already 2 additional deposit");
         }
 
         ReturnGetterAdditionalDeposit = resourceHandler.getAdditionalDeposit();
-        assert(ReturnGetterAdditionalDeposit.equals(testArrayList));
+        assert (ReturnGetterAdditionalDeposit.equals(testArrayList));
 
         //This tries to add two materials of a type compatible with the additional deposit and checks
         // the correct return of the method getAdditionalDeposit
-        Map<Resource,Integer> TestInputMap = new HashMap<>();
+        Map<Resource, Integer> TestInputMap = new HashMap<>();
 
-        TestInputMap.put(Resource.COIN , 2);
+        TestInputMap.put(Resource.COIN, 2);
 
-        try{
+        try {
             resourceHandler.addMaterialAdditionalDeposit(TestInputMap);
-        } catch(ResourceException e){}
+        } catch (ResourceException e) {
+        }
 
         testArrayList.set(0, Resource.COIN);
         testArrayList.set(1, Resource.COIN);
@@ -79,16 +82,17 @@ public class ResourceHandlerTest {
 
         ReturnGetterAdditionalDeposit = resourceHandler.getAdditionalDeposit();
 
-        assert(ReturnGetterAdditionalDeposit.equals(testArrayList));
+        assert (ReturnGetterAdditionalDeposit.equals(testArrayList));
 
         //This tries to add two materials of a type different from the previous but compatible
         // with the additional deposit and checks the correct return of the method getAdditionalDeposit
         TestInputMap.remove(Resource.COIN);
         TestInputMap.put(Resource.SHIELD, 2);
 
-        try{
+        try {
             resourceHandler.addMaterialAdditionalDeposit(TestInputMap);
-        } catch(ResourceException e){}
+        } catch (ResourceException e) {
+        }
 
         testArrayList.set(0, Resource.COIN);
         testArrayList.set(1, Resource.COIN);
@@ -97,40 +101,40 @@ public class ResourceHandlerTest {
 
         ReturnGetterAdditionalDeposit = resourceHandler.getAdditionalDeposit();
 
-        assert(ReturnGetterAdditionalDeposit.equals(testArrayList));
+        assert (ReturnGetterAdditionalDeposit.equals(testArrayList));
 
         //This tries to add more materials than the one that can be inserted inside the additional deposit
         // and checks the throw of the correct error and that the state of the additional deposit hasn't changed
         TestInputMap.put(Resource.COIN, 1);
 
-        try{
+        try {
             resourceHandler.addMaterialAdditionalDeposit(TestInputMap);
-        } catch(ResourceException e){
+        } catch (ResourceException e) {
             assertEquals(e.getMessage(), "Additional deposit already full");
         }
 
         ReturnGetterAdditionalDeposit = resourceHandler.getAdditionalDeposit();
 
-        assert(ReturnGetterAdditionalDeposit.equals(testArrayList));
+        assert (ReturnGetterAdditionalDeposit.equals(testArrayList));
 
         //This tries to add two materials of a type not compatible with the additional deposit and checks
         // the throw of the correct error and that the state of the additional deposit hasn't changed
         TestInputMap.clear();
         TestInputMap.put(Resource.SERVANT, 1);
 
-        try{
+        try {
             resourceHandler.addMaterialAdditionalDeposit(TestInputMap);
-        } catch(ResourceException e){
+        } catch (ResourceException e) {
             assertEquals(e.getMessage(), "Resource not compatible with the additional deposit");
         }
 
         ReturnGetterAdditionalDeposit = resourceHandler.getAdditionalDeposit();
-        assert(ReturnGetterAdditionalDeposit.equals(testArrayList));
+        assert (ReturnGetterAdditionalDeposit.equals(testArrayList));
 
     }
 
     @Test
-    public void testNewDepositState(){
+    public void testNewDepositState() {
         ResourceHandler testResourceHandler = new ResourceHandler();
 
         ArrayList<Resource> inputState = new ArrayList<>();
@@ -150,10 +154,11 @@ public class ResourceHandlerTest {
 
         try {
             testResourceHandler.newDepositState(inputState);
-        } catch(ResourceException e){}
+        } catch (ResourceException e) {
+        }
 
         output = testResourceHandler.getDepositState();
-        assert(output.equals(inputState));
+        assert (output.equals(inputState));
 
         //Checks the correct insertion of a correct new deposit state inside the handler
         inputState.set(0, Resource.SHIELD);
@@ -165,10 +170,11 @@ public class ResourceHandlerTest {
 
         try {
             testResourceHandler.newDepositState(inputState);
-        } catch(ResourceException e){}
+        } catch (ResourceException e) {
+        }
 
         output = testResourceHandler.getDepositState();
-        assert(output.equals(inputState));
+        assert (output.equals(inputState));
 
         //Checks the correct insertion of a correct new deposit state inside the handler
         inputState.set(0, Resource.SHIELD);
@@ -180,10 +186,11 @@ public class ResourceHandlerTest {
 
         try {
             testResourceHandler.newDepositState(inputState);
-        } catch(ResourceException e){}
+        } catch (ResourceException e) {
+        }
 
         output = testResourceHandler.getDepositState();
-        assert(output.equals(inputState));
+        assert (output.equals(inputState));
 
         //Checks the correct insertion of a correct new deposit state inside the handler
         inputState.set(0, null);
@@ -195,10 +202,11 @@ public class ResourceHandlerTest {
 
         try {
             testResourceHandler.newDepositState(inputState);
-        } catch(ResourceException e){}
+        } catch (ResourceException e) {
+        }
 
         output = testResourceHandler.getDepositState();
-        assert(output.equals(inputState));
+        assert (output.equals(inputState));
 
         //Checks the correct insertion of a correct new deposit state inside the handler
         inputState.set(0, Resource.SHIELD);
@@ -210,10 +218,11 @@ public class ResourceHandlerTest {
 
         try {
             testResourceHandler.newDepositState(inputState);
-        } catch(ResourceException e){}
+        } catch (ResourceException e) {
+        }
 
         output = testResourceHandler.getDepositState();
-        assert(output.equals(inputState));
+        assert (output.equals(inputState));
 
         //Checks the correct insertion of an incorrect new deposit state inside the handler
         inputState.set(0, Resource.COIN);
@@ -225,11 +234,11 @@ public class ResourceHandlerTest {
 
         try {
             testResourceHandler.newDepositState(inputState);
-        } catch(ResourceException e){
+        } catch (ResourceException e) {
             assertEquals(e.getMessage(), "Error in deposit format");
         }
 
-        assert(output.equals(testResourceHandler.getDepositState()));
+        assert (output.equals(testResourceHandler.getDepositState()));
 
         //Checks the correct insertion of an incorrect new deposit state inside the handler
         inputState.set(0, Resource.STONE);
@@ -241,11 +250,11 @@ public class ResourceHandlerTest {
 
         try {
             testResourceHandler.newDepositState(inputState);
-        } catch(ResourceException e){
+        } catch (ResourceException e) {
             assertEquals(e.getMessage(), "Error in deposit format");
         }
 
-        assert(output.equals(testResourceHandler.getDepositState()));
+        assert (output.equals(testResourceHandler.getDepositState()));
     }
 
     @Test
@@ -313,7 +322,7 @@ public class ResourceHandlerTest {
     }
 
     @Test
-    public void checkCollectionResourcesTwoSources(){
+    public void checkCollectionResourcesTwoSources() {
         //Test that checks the correct initialization of the deposit state
         //and the strongbox state and the correct collect of resources, half from
         //the deposit, half from the strongbox without emptying them
@@ -339,18 +348,20 @@ public class ResourceHandlerTest {
         testStrongboxState.put(Resource.SHIELD, 2);
         testStrongboxState.put(Resource.SERVANT, 0);
 
-        try{
+        try {
             resourceHandler.newDepositState(testAdd);
             resourceHandler.addMaterialStrongbox(testStrongbox);
-        } catch(ResourceException e){}
+        } catch (ResourceException e) {
+        }
 
-        assert(resourceHandler.getDepositState().equals(testAdd));
+        assert (resourceHandler.getDepositState().equals(testAdd));
 
         assertEquals(resourceHandler.getStrongboxState(), testStrongboxState);
 
-        try{
+        try {
             resourceHandler.takeMaterials(requirements);
-        }catch(ResourceException e){}
+        } catch (ResourceException e) {
+        }
 
         testAdd.set(0, Resource.STONE);
         testAdd.set(1, null);
@@ -361,8 +372,8 @@ public class ResourceHandlerTest {
 
         testStrongboxState.put(Resource.SHIELD, 1);
 
-        assert(resourceHandler.getDepositState().equals(testAdd));
-        assert(resourceHandler.getStrongboxState().equals(testStrongboxState));
+        assert (resourceHandler.getDepositState().equals(testAdd));
+        assert (resourceHandler.getStrongboxState().equals(testStrongboxState));
 
         //This takes the resources that are in excess from before and leaves all the
         //data structures at the initial state, empty
@@ -372,13 +383,13 @@ public class ResourceHandlerTest {
         requirements.remove(Resource.SERVANT);
 
 
-        try{
+        try {
             resourceHandler.takeMaterials(requirements);
-        }catch(ResourceException e){
+        } catch (ResourceException e) {
             assertEquals(e.getMessage(), "Trying to put negative Materials inside strongbox");
         }
 
-        assert(resourceHandler.getDepositState().equals(testAdd));
-        assert(resourceHandler.getStrongboxState().equals(testStrongboxState));
+        assert (resourceHandler.getDepositState().equals(testAdd));
+        assert (resourceHandler.getStrongboxState().equals(testStrongboxState));
     }
 }
