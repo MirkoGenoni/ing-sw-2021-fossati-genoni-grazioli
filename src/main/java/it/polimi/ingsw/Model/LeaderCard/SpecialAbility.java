@@ -1,5 +1,7 @@
 package it.polimi.ingsw.Model.LeaderCard;
 
+import it.polimi.ingsw.Model.Resource.Resource;
+
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -36,5 +38,5 @@ public interface SpecialAbility {
      * @return The type of material of the special ability of the card.
      */
 
-    String getMaterialType();
+    Resource getMaterialType();
 }

@@ -1,6 +1,8 @@
 package it.polimi.ingsw.Model.LeaderCard;
 
 
+import it.polimi.ingsw.Model.Resource.Resource;
+
 import java.util.ArrayList;
 
 /**
@@ -14,7 +16,7 @@ public class AdditionalProduction implements SpecialAbility{
     private int victoryPoints;
     private String cardRequired1;
     private int quantityRequired1;
-    private String materialAdditionalProduction;
+    private Resource materialAdditionalProduction;
 
     @Override
     public String getEffect() {
@@ -36,7 +38,7 @@ public class AdditionalProduction implements SpecialAbility{
     }
 
     @Override
-    public String getMaterialType() {
+    public Resource getMaterialType() {
         return materialAdditionalProduction;
     }
 }

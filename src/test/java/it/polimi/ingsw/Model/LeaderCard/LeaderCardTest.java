@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonStreamParser;
+import it.polimi.ingsw.Model.Resource.Resource;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -135,9 +136,9 @@ public class LeaderCardTest {
      */
     @Test
     public void testGetMaterialType(){
-        assertEquals("SERVANT", testLeaderCards.get(0).getSpecialAbility().getMaterialType());
-        assertEquals("COIN", testLeaderCards.get(1).getSpecialAbility().getMaterialType());
-        assertEquals("STONE", testLeaderCards.get(2).getSpecialAbility().getMaterialType());
-        assertEquals("COIN", testLeaderCards.get(3).getSpecialAbility().getMaterialType());
+        assertEquals(Resource.SERVANT, testLeaderCards.get(0).getSpecialAbility().getMaterialType());
+        assertEquals(Resource.COIN, testLeaderCards.get(1).getSpecialAbility().getMaterialType());
+        assertEquals(Resource.STONE, testLeaderCards.get(2).getSpecialAbility().getMaterialType());
+        assertEquals(Resource.COIN, testLeaderCards.get(3).getSpecialAbility().getMaterialType());
     }
 }

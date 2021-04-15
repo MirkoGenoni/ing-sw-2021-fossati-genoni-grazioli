@@ -1,6 +1,8 @@
 package it.polimi.ingsw.Model.LeaderCard;
 
 
+import it.polimi.ingsw.Model.Resource.Resource;
+
 import java.util.ArrayList;
 
 /**
@@ -16,7 +18,7 @@ public class MarketWhiteChange implements SpecialAbility{
     private int quantityRequired1;
     private String cardRequired2;
     private int quantityRequired2;
-    private String materialWhiteChangeTo;
+    private Resource materialWhiteChangeTo;
 
 
     @Override
@@ -43,7 +45,7 @@ public class MarketWhiteChange implements SpecialAbility{
 
 
     @Override
-    public String getMaterialType() {
+    public Resource getMaterialType() {
         return materialWhiteChangeTo;
     }
 

@@ -1,5 +1,7 @@
 package it.polimi.ingsw.Model.LeaderCard;
 
+import it.polimi.ingsw.Model.Resource.Resource;
+
 import java.util.ArrayList;
 
 /**
@@ -15,7 +17,7 @@ public class CostLess implements SpecialAbility {
     private int quantityRequired1;
     private String cardRequired2;
     private int quantityRequired2;
-    private String materialCostLess;
+    private Resource materialCostLess;
 
 
     @Override
@@ -41,7 +43,7 @@ public class CostLess implements SpecialAbility {
     }
 
     @Override
-    public String getMaterialType() {
+    public Resource getMaterialType() {
         return materialCostLess;
     }
 }
