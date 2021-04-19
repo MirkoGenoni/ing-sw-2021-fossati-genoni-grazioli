@@ -23,13 +23,13 @@ public class MultiPlayerGame extends Game{
 
     }
 
-    public void addPlayer(String name) throws StartGameException {
+    public void addPlayer(Player player) throws StartGameException {
         int i=0;
         while(players[i]!=null){
             i++;
         }
         if(i<players.length){
-            players[i] = new Player(name);
+            players[i] = player;
         }else{
             throw new StartGameException("players all initialized");
         }

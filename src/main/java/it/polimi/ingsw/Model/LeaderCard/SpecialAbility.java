@@ -3,7 +3,6 @@ package it.polimi.ingsw.Model.LeaderCard;
 import it.polimi.ingsw.Model.Resource.Resource;
 
 import java.util.ArrayList;
-import java.util.Map;
 
 /**
  * Interface of the special ability of the leader cards.

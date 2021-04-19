@@ -43,6 +43,10 @@ public abstract class Game {
         return developmentCards;
     }
 
+    public Market getMarketBoard() {
+        return marketBoard;
+    }
+
     /**
      * Getter of the development card that the player can buy.
      * @return All the development cards available, that the player can buy.
