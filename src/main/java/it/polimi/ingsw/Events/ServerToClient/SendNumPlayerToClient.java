@@ -1,10 +1,9 @@
 package it.polimi.ingsw.Events.ServerToClient;
 
-// this event notify the start of the game to the client
-public class StartMatchToClient extends EventToClient{
+public class SendNumPlayerToClient extends EventToClient{
     private final String message;
 
-    public StartMatchToClient(String message) {
+    public SendNumPlayerToClient(String message) {
         this.message = message;
     }
 

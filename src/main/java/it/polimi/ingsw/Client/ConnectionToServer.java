@@ -1,10 +1,7 @@
 package it.polimi.ingsw.Client;
 
 import it.polimi.ingsw.Client.CLI.CLI;
-import it.polimi.ingsw.Events.ClientToServer.ChooseLineToServer;
-import it.polimi.ingsw.Events.ClientToServer.EventToServer;
-import it.polimi.ingsw.Events.ClientToServer.EventToServerNotifier;
-import it.polimi.ingsw.Events.ClientToServer.TurnPlayedToServer;
+import it.polimi.ingsw.Events.ClientToServer.*;
 import it.polimi.ingsw.Events.ServerToClient.EventToClient;
 
 import java.io.IOException;
@@ -82,7 +79,13 @@ public class ConnectionToServer implements Runnable, EventToServerNotifier {
         this.playerName = playerName;
     }
 
-    // list of the event to send to server
+
+    @Override
+    public void sendNumPlayer(int numPlayer) {
+        NumPlayerToServer numPlayerToServer = new NumPlayerToServer(numPlayer, this.playerName);
+        new Thread(() -> asyncSendEvent(numPlayerToServer)).start();
+    }
+
     @Override
     public void sendTurnPlayed(String turnType) {
         TurnPlayedToServer turnPlayedToServer = new TurnPlayedToServer(turnType, this.playerName);
@@ -91,7 +94,7 @@ public class ConnectionToServer implements Runnable, EventToServerNotifier {
 
     @Override
     public void sendChooseLine(int numLine) {
-        ChooseLineToServer chooseLineToServer = new ChooseLineToServer(numLine);
+        ChooseLineToServer chooseLineToServer = new ChooseLineToServer(numLine, this.playerName);
         new Thread(() -> asyncSendEvent(chooseLineToServer)).start();
     }
 

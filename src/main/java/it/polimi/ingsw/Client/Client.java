@@ -14,8 +14,14 @@ public class Client {
     }
 
     public void startClient() throws IOException {
-        socket = new Socket(serverAddress, serverPort);
-        ConnectionToServer connectionToServer = new ConnectionToServer(socket);
-        new Thread(connectionToServer).start();
+        try{
+            socket = new Socket(serverAddress, serverPort);
+            ConnectionToServer connectionToServer = new ConnectionToServer(socket);
+            new Thread(connectionToServer).start();
+        } catch (IOException e) {
+            // System.out.println("connessione rifiutata: server non disponibile");
+            e.printStackTrace();
+        }
+
     }
 }

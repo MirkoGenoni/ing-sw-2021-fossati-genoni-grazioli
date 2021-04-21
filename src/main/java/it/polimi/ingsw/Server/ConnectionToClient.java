@@ -44,10 +44,9 @@ public class ConnectionToClient implements Runnable, EventToClientNotifier {
             while(isActive()){
                 EventToServer event = receiveEvent();
                 observeConnectionToClient.observeEvent(event); // ControllerConnection
+                Thread.sleep(10);
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
+        } catch (IOException | ClassNotFoundException | InterruptedException e) {
             e.printStackTrace();
         }
     }
@@ -94,6 +93,10 @@ public class ConnectionToClient implements Runnable, EventToClientNotifier {
         this.active = active;
     }
 
+    public void setNamePlayer(String namePlayer) {
+        this.namePlayer = namePlayer;
+    }
+
     public String getNamePlayer() {
         return namePlayer;
     }
@@ -110,9 +113,9 @@ public class ConnectionToClient implements Runnable, EventToClientNotifier {
     }
 
     @Override
-    public void sendStartGame(String message) {
-        StartMatchToClient startMatchToClient = new StartMatchToClient(message);
-        new Thread(() -> asyncSendEvent(startMatchToClient)).start();
+    public void sendNumPlayer(String message) {
+        SendNumPlayerToClient sendNumPlayerToClient = new SendNumPlayerToClient(message);
+        new Thread(() -> asyncSendEvent(sendNumPlayerToClient)).start();
     }
 
     @Override

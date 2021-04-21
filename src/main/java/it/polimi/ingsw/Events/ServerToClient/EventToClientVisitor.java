@@ -5,7 +5,7 @@ import java.io.IOException;
 // list of the event that the client receive from the server
 public interface EventToClientVisitor {
     void visit(SendPlayerNameToClient playerName);
-    void visit(StartMatchToClient message);
+    void visit(SendNumPlayerToClient numPlayer);
     void visit(NotifyClient message);
     void visit(NewTurnToClient notify);
     void visit(MarketToClient market);

@@ -1,9 +1,6 @@
 package it.polimi.ingsw.Controller;
 
-import it.polimi.ingsw.Events.ClientToServer.ChooseLineToServer;
-import it.polimi.ingsw.Events.ClientToServer.EventToServer;
-import it.polimi.ingsw.Events.ClientToServer.EventToServerVisitor;
-import it.polimi.ingsw.Events.ClientToServer.TurnPlayedToServer;
+import it.polimi.ingsw.Events.ClientToServer.*;
 
 public class ControllerConnection implements EventToServerVisitor, ObserveConnectionToClient {
     private final ControllerToModel controllerToModel;
@@ -22,7 +19,13 @@ public class ControllerConnection implements EventToServerVisitor, ObserveConnec
         event.acceptServerVisitor(this);
     }
 
-    // Events that arrive from the ConnectionToClient
+    // Events that arrive from the ConnectionToClient // Questi sono per il multiplayer...
+
+    @Override
+    public void visit(NumPlayerToServer numPlayer) {
+        System.out.println("ho ricevuto il numero di giocatori " + numPlayer.getNumPlayer());
+        controllerToModel.setNumPlayer(numPlayer.getNumPlayer());
+    }
 
     @Override
     public void visit(TurnPlayedToServer turn) {

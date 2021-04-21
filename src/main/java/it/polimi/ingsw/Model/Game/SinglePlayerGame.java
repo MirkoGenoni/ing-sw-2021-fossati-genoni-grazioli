@@ -10,10 +10,10 @@ public class SinglePlayerGame extends Game{
     Player player;
     LorenzoIlMagnifico lorenzoIlMagnifico;
 
-    public SinglePlayerGame(String name) {
+    public SinglePlayerGame(Player player) {
         super(1);
         this.lorenzoIlMagnifico = new LorenzoIlMagnifico();
-        this.player = new Player(name);
+        this.player = player;
     }
 
     public Player getPlayer() {

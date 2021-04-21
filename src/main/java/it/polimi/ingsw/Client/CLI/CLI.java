@@ -3,7 +3,6 @@ package it.polimi.ingsw.Client.CLI;
 import it.polimi.ingsw.Client.ConnectionToServer;
 import it.polimi.ingsw.Events.ServerToClient.*;
 
-import java.io.IOException;
 import java.util.Scanner;
 
 public class CLI implements EventToClientVisitor {
@@ -21,18 +20,24 @@ public class CLI implements EventToClientVisitor {
     // Events that arrive from ConnectionToServer
     @Override
     public void visit(SendPlayerNameToClient playerName) {
-        System.out.println("ho ricevuto il mio nome" + playerName.getPlayerName());
+        System.out.println("ho ricevuto il mio nome " + playerName.getPlayerName());
         namePlayer = playerName.getPlayerName();
         connectionToServer.setPlayerName(playerName.getPlayerName());
     }
+
     @Override
-    public void visit(StartMatchToClient message) {
-        System.out.print("ho ricevuto: ");
-        System.out.println(message.getMessage());
+    public void visit(SendNumPlayerToClient numPlayer) {
+        System.out.println("ho ricevuto la richiesta di numero di giocatori");
+        System.out.println(numPlayer.getMessage());
+        Scanner scanIn = new Scanner(System.in);
+        int num = scanIn.nextInt();
+        connectionToServer.sendNumPlayer(num);
     }
+
 
     @Override
     public void visit(NotifyClient message) {
+        System.out.print("ho ricevuto: ");
         System.out.println(message.getMessage());
     }
 
