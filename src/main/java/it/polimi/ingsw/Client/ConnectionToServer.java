@@ -87,6 +87,12 @@ public class ConnectionToServer implements Runnable, EventToServerNotifier {
     }
 
     @Override
+    public void sendDiscardInitialLeaderCards(int leaderCard1, int leaderCard2) {
+        DiscardInitialLeaderCards discardInitialLeaderCards = new DiscardInitialLeaderCards(leaderCard1, leaderCard2, this.playerName);
+        new Thread(() -> asyncSendEvent(discardInitialLeaderCards)).start();
+    }
+
+    @Override
     public void sendTurnPlayed(String turnType) {
         TurnPlayedToServer turnPlayedToServer = new TurnPlayedToServer(turnType, this.playerName);
         new Thread(()-> asyncSendEvent(turnPlayedToServer)).start();

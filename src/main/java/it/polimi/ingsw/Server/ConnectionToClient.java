@@ -3,6 +3,7 @@ package it.polimi.ingsw.Server;
 import it.polimi.ingsw.Events.ClientToServer.EventToServer;
 import it.polimi.ingsw.Events.ServerToClient.*;
 import it.polimi.ingsw.Controller.ObserveConnectionToClient;
+import it.polimi.ingsw.Model.LeaderCard.LeaderCard;
 import it.polimi.ingsw.Model.Market.Marble;
 
 import java.io.IOException;
@@ -119,9 +120,33 @@ public class ConnectionToClient implements Runnable, EventToClientNotifier {
     }
 
     @Override
+    public void sendLeaderCard(LeaderCard leaderCard) {
+        SendLeaderCardToClient sendLeaderCardToClient = new SendLeaderCardToClient(leaderCard.getSpecialAbility().getRequirements(),
+                leaderCard.getSpecialAbility().getVictoryPoints(),
+                leaderCard.getSpecialAbility().getEffect(),
+                leaderCard.getSpecialAbility().getMaterialType().toString());
+        new Thread(() -> asyncSendEvent(sendLeaderCardToClient)).start();
+    }
+
+    @Override
+    public void sendArrayLeaderCards(ArrayList<LeaderCard> leaderCards) {
+        ArrayList<SendLeaderCardToClient> tmp = new ArrayList<>();
+        for(int i =0; i<leaderCards.size(); i++){
+            SendLeaderCardToClient sendLeaderCardToClient = new SendLeaderCardToClient(leaderCards.get(i).getSpecialAbility().getRequirements(),
+                    leaderCards.get(i).getSpecialAbility().getVictoryPoints(),
+                    leaderCards.get(i).getSpecialAbility().getEffect(),
+                    leaderCards.get(i).getSpecialAbility().getMaterialType().toString());
+            tmp.add(sendLeaderCardToClient);
+        }
+        SendArrayLeaderCardsToClient sendArrayLeaderCardsToClient = new SendArrayLeaderCardsToClient(tmp);
+        new Thread(() -> asyncSendEvent(sendArrayLeaderCardsToClient)).start();
+    }
+
+
+    @Override
     public void sendNotify(String message) {
-        NotifyClient notifyClient = new NotifyClient(message);
-        new Thread(() -> asyncSendEvent(notifyClient)).start();
+        NotifyToClient notifyToClient = new NotifyToClient(message);
+        new Thread(() -> asyncSendEvent(notifyToClient)).start();
     }
 
     @Override

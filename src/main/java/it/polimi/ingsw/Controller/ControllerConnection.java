@@ -28,6 +28,12 @@ public class ControllerConnection implements EventToServerVisitor, ObserveConnec
     }
 
     @Override
+    public void visit(DiscardInitialLeaderCards leaderCards) {
+        System.out.println("scarto le leaderCard di " + leaderCards.getPlayerName());
+        controllerToModel.discardInitialLeaderCards(leaderCards);
+    }
+
+    @Override
     public void visit(TurnPlayedToServer turn) {
         System.out.println("mi è arrivato il messaggio di turno giocato");
         if(turn.getTurnType().equals("turn")){

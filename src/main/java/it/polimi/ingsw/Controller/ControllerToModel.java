@@ -1,6 +1,8 @@
 package it.polimi.ingsw.Controller;
 
 
+import it.polimi.ingsw.Events.ClientToServer.DiscardInitialLeaderCards;
+import it.polimi.ingsw.Model.Exceptions.LeaderCardException;
 import it.polimi.ingsw.Model.Exceptions.StartGameException;
 import it.polimi.ingsw.Model.Game.Game;
 import it.polimi.ingsw.Model.Game.MultiPlayerGame;
@@ -49,6 +51,14 @@ public class ControllerToModel {
             }
             game = multiGame; // riguardo
             multiGame.startGame();
+            for(int i=0; i<connectionsToClient.size(); i++){
+                try{
+                    connectionsToClient.get(i).sendArrayLeaderCards(multiGame.getPlayers()[i].getPlayerBoard().getLeaderCardHandler().getLeaderCardsAvailable());
+                } catch (LeaderCardException e) {
+                    e.printStackTrace();
+                }
+
+            }
             this.activePlayer = players[0];
             turnNumber = 0;
             newTurn();
@@ -88,6 +98,20 @@ public class ControllerToModel {
         turnNumber++;
     }
 
+    public void discardInitialLeaderCards(DiscardInitialLeaderCards discardInitialLeaderCards){
+        System.out.println("prova");
+        for(int i =0; i< players.length; i++){
+            if(discardInitialLeaderCards.getPlayerName().equals(players[i].getName())){
+                try{
+                    System.out.println("rimuovo le carte");
+                    players[i].getPlayerBoard().getLeaderCardHandler().removeInitialLeaderCard(discardInitialLeaderCards.getLeaderCard1(), discardInitialLeaderCards.getLeaderCard2());
+                } catch (LeaderCardException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
     public void marketTurn(){
         System.out.println("prendo il market");
         connectionsToClient.get(currentPlayerIndex).sendMarket(game.getMarketBoard().getGrid(), game.getMarketBoard().getOutMarble());
@@ -95,7 +119,7 @@ public class ControllerToModel {
 
     public void marketChooseLine(int line){
         System.out.println("aggiungo al player");
-        ArrayList<Marble> tmpM =  multiGame.getMarketBoard().chooseLine(line);
+        ArrayList<Marble> tmpM =  game.getMarketBoard().chooseLine(line);
         System.out.println(tmpM); // da finire
         newTurn();
     }

@@ -34,9 +34,37 @@ public class CLI implements EventToClientVisitor {
         connectionToServer.sendNumPlayer(num);
     }
 
+    @Override
+    public void visit(SendLeaderCardToClient leaderCard) {
+        System.out.println("mi è arrivata la leaderCArd");
+        System.out.println(leaderCard.getEffect());
+        System.out.println(leaderCard.getVictoryPoint());
+        System.out.println(leaderCard.getRequirement());
+        System.out.println(leaderCard.getResourceType());
+    }
 
     @Override
-    public void visit(NotifyClient message) {
+    public void visit(SendArrayLeaderCardsToClient leaderCardArray) {
+        System.out.println("mi è arrivato un array forse");
+        for(int i=0; i<leaderCardArray.getLeaderCardArray().size(); i++){
+            System.out.println(leaderCardArray.getLeaderCardArray().get(i).getEffect());
+            System.out.println(leaderCardArray.getLeaderCardArray().get(i).getVictoryPoint());
+            System.out.println(leaderCardArray.getLeaderCardArray().get(i).getRequirement());
+            System.out.println(leaderCardArray.getLeaderCardArray().get(i).getResourceType());
+        }
+        if(leaderCardArray.getLeaderCardArray().size()==4){
+            System.out.println("dammi le due carte da scartare: num 1");
+            Scanner scanIn = new Scanner(System.in);
+            int num1 = scanIn.nextInt();
+            System.out.println("num 2:");
+            int num2 = scanIn.nextInt();
+            connectionToServer.sendDiscardInitialLeaderCards(num1, num2);
+        }
+    }
+
+
+    @Override
+    public void visit(NotifyToClient message) {
         System.out.print("ho ricevuto: ");
         System.out.println(message.getMessage());
     }

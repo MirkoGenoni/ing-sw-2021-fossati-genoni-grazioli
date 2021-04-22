@@ -2,19 +2,19 @@ package it.polimi.ingsw.Events.ClientToServer;
 
 public class NumPlayerToServer extends EventToServer{
     private final int numPlayer;
-    private final String namePlayer;
+    private final String PlayerName;
 
-    public NumPlayerToServer(int numPlayer, String namePlayer) {
+    public NumPlayerToServer(int numPlayer, String PlayerName) {
         this.numPlayer = numPlayer;
-        this.namePlayer = namePlayer;
+        this.PlayerName = PlayerName;
     }
 
     public int getNumPlayer() {
         return numPlayer;
     }
 
-    public String getNamePlayer() {
-        return namePlayer;
+    public String getPlayerName() {
+        return PlayerName;
     }
 
     @Override
