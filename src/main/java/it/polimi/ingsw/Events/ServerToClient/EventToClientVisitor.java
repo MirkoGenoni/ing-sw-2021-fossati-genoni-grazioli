@@ -6,8 +6,9 @@ public interface EventToClientVisitor {
     void visit(SendNumPlayerToClient numPlayer);
     void visit(SendLeaderCardToClient leaderCard);
     void visit(SendArrayLeaderCardsToClient leaderCardArray);
+    void visit(SendReorganizeDepositToClient newResources);
     void visit(NotifyToClient message);
     void visit(NewTurnToClient notify);
-    void visit(MarketToClient market);
+    void visit(MarketTurnToClient market);
 
 }

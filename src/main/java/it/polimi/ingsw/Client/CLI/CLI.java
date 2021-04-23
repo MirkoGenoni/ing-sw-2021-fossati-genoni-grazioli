@@ -62,6 +62,13 @@ public class CLI implements EventToClientVisitor {
         }
     }
 
+    @Override
+    public void visit(SendReorganizeDepositToClient newResources) {
+        System.out.println("mi è arrivato il deposito");
+        System.out.println("nuove risorse: " + newResources.getMarketResources());
+        System.out.println("stato attuale deposito" + newResources.getDepositResources());
+    }
+
 
     @Override
     public void visit(NotifyToClient message) {
@@ -78,7 +85,7 @@ public class CLI implements EventToClientVisitor {
     }
 
     @Override
-    public void visit(MarketToClient market) {
+    public void visit(MarketTurnToClient market) {
         for(int i=0; i<market.getGrid().size(); i++){
             System.out.print("  " + market.getGrid().get(i).toString());
             if(i==3 || i==7 || i==11){

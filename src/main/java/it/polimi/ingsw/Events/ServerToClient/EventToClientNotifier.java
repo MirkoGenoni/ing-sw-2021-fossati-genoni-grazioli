@@ -2,6 +2,7 @@ package it.polimi.ingsw.Events.ServerToClient;
 
 import it.polimi.ingsw.Model.LeaderCard.LeaderCard;
 import it.polimi.ingsw.Model.Market.Marble;
+import it.polimi.ingsw.Model.Resource.Resource;
 
 import java.util.ArrayList;
 
@@ -11,6 +12,7 @@ public interface EventToClientNotifier {
     void sendNumPlayer(String message);
     void sendLeaderCard(LeaderCard leaderCard);
     void sendArrayLeaderCards(ArrayList<LeaderCard> leaderCards);
+    void sendReorganizeDeposit(ArrayList<Resource> marketResources, ArrayList<Resource> depositState);
     void sendNotify(String message);
     void sendNewTurn(int turnNumber);
     void sendMarket(ArrayList<Marble> grid, Marble outMarble);

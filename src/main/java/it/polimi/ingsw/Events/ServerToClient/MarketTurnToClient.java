@@ -5,11 +5,11 @@ import it.polimi.ingsw.Model.Market.Marble;
 import java.util.ArrayList;
 
 // this event send the structure of the market to the client. the client could visualize it
-public class MarketToClient extends EventToClient{
+public class MarketTurnToClient extends EventToClient{
     private final ArrayList<Marble> grid;
     private final Marble outMarble;
 
-    public MarketToClient(ArrayList<Marble> grid, Marble outMarble) {
+    public MarketTurnToClient(ArrayList<Marble> grid, Marble outMarble) {
         this.grid = grid;
         this.outMarble = outMarble;
     }

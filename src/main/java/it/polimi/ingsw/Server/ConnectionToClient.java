@@ -5,6 +5,7 @@ import it.polimi.ingsw.Events.ServerToClient.*;
 import it.polimi.ingsw.Controller.ObserveConnectionToClient;
 import it.polimi.ingsw.Model.LeaderCard.LeaderCard;
 import it.polimi.ingsw.Model.Market.Marble;
+import it.polimi.ingsw.Model.Resource.Resource;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -144,6 +145,12 @@ public class ConnectionToClient implements Runnable, EventToClientNotifier {
         new Thread(() -> asyncSendEvent(sendArrayLeaderCardsToClient)).start();
     }
 
+    @Override
+    public void sendReorganizeDeposit(ArrayList<Resource> marketResources, ArrayList<Resource> depositState) {
+        SendReorganizeDepositToClient sendReorganizeDepositToClient = new SendReorganizeDepositToClient(marketResources, depositState);
+        new Thread(() -> asyncSendEvent(sendReorganizeDepositToClient)).start();
+    }
+
 
     @Override
     public void sendNotify(String message) {
@@ -159,7 +166,7 @@ public class ConnectionToClient implements Runnable, EventToClientNotifier {
 
     @Override
     public void sendMarket(ArrayList<Marble> grid, Marble outMarble) {
-        MarketToClient marketToClient = new MarketToClient(grid, outMarble);
-        new Thread(() -> asyncSendEvent(marketToClient)).start();
+        MarketTurnToClient marketTurnToClient = new MarketTurnToClient(grid, outMarble);
+        new Thread(() -> asyncSendEvent(marketTurnToClient)).start();
     }
 }

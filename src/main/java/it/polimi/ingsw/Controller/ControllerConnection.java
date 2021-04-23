@@ -46,6 +46,6 @@ public class ControllerConnection implements EventToServerVisitor, ObserveConnec
     @Override
     public void visit(ChooseLineToServer numLine) {
         System.out.println("mi è arrivato il turno chooseline");
-        controllerToModel.marketChooseLine(numLine.getNumLine());
+        controllerToModel.marketChooseLine(numLine.getPlayerName() ,numLine.getNumLine());
     }
 }

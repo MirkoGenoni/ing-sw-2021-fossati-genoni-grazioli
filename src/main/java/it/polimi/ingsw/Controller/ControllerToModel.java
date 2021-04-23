@@ -1,14 +1,15 @@
 package it.polimi.ingsw.Controller;
 
 
-import it.polimi.ingsw.Events.ClientToServer.DiscardInitialLeaderCards;
 import it.polimi.ingsw.Model.Exceptions.LeaderCardException;
 import it.polimi.ingsw.Model.Exceptions.StartGameException;
 import it.polimi.ingsw.Model.Game.Game;
 import it.polimi.ingsw.Model.Game.MultiPlayerGame;
 import it.polimi.ingsw.Model.Game.Player;
 import it.polimi.ingsw.Model.Game.SinglePlayerGame;
+import it.polimi.ingsw.Model.LeaderCard.LeaderCard;
 import it.polimi.ingsw.Model.Market.Marble;
+import it.polimi.ingsw.Model.Resource.Resource;
 import it.polimi.ingsw.Server.ConnectionToClient;
 
 import java.util.ArrayList;
@@ -51,13 +52,14 @@ public class ControllerToModel {
             }
             game = multiGame; // riguardo
             multiGame.startGame();
+            // Send initial leadercard to client
             for(int i=0; i<connectionsToClient.size(); i++){
                 try{
                     connectionsToClient.get(i).sendArrayLeaderCards(multiGame.getPlayers()[i].getPlayerBoard().getLeaderCardHandler().getLeaderCardsAvailable());
                 } catch (LeaderCardException e) {
                     e.printStackTrace();
                 }
-
+            // manca la distribuzione di risorse e dei punti fede all'inizio della partite
             }
             this.activePlayer = players[0];
             turnNumber = 0;
@@ -116,10 +118,42 @@ public class ControllerToModel {
         connectionsToClient.get(currentPlayerIndex).sendMarket(game.getMarketBoard().getGrid(), game.getMarketBoard().getOutMarble());
     }
 
-    public void marketChooseLine(int line){
+    public void marketChooseLine(String namePlayer, int line){
         System.out.println("aggiungo al player");
         ArrayList<Marble> tmpM =  game.getMarketBoard().chooseLine(line);
-        System.out.println(tmpM); // da finire
+        System.out.println(tmpM);
+
+        if(tmpM.contains(Marble.FAITH)){    // se ci sono marbel di tipo faith incrementa direttamente la pedina del giocatore sul tracciato fede
+            game.getPlayersFaithTrack().forwardPos(currentPlayerIndex);
+            tmpM.remove(Marble.FAITH);
+        }
+
+        if(tmpM.contains(Marble.NOTHING)){   // le leader card da usare sarebbero da scegliere....
+            try{
+                ArrayList<LeaderCard> tmpL = players[currentPlayerIndex].getPlayerBoard().getLeaderCardHandler().getLeaderCardsActive();
+                if(!tmpL.isEmpty()){                                        // controlla se ci sono carte leader attive
+                    for(int i=0; i< tmpL.size() && tmpM.contains(Marble.NOTHING); i++){
+                        if(tmpL.get(i).getSpecialAbility().getEffect().equals("marketWhiteChange") && tmpM.contains(Marble.NOTHING)){  // se ci sono carte leader attive di tipo marketWhiteChenge converte la marble
+                            tmpM.remove(Marble.NOTHING);
+                            tmpM.add(Marble.valueOf(tmpL.get(i).getSpecialAbility().getMaterialType().toString()));
+                        }
+                    }
+                }
+            } catch (LeaderCardException e) {
+                System.out.println(players[currentPlayerIndex].getName() + e.getMessage());
+            }
+        }
+        System.out.println(tmpM);
+        while(tmpM.contains(Marble.NOTHING)){           // toglie le marble nothing in eccesso
+            tmpM.remove(Marble.NOTHING);
+        }
+
+        ArrayList<Resource> tmpR = new ArrayList<>();  // converte da marble a resource
+        for( Marble m : tmpM){
+            tmpR.add(Resource.valueOf(m.toString()));
+        }
+
+        connectionsToClient.get(currentPlayerIndex).sendReorganizeDeposit(tmpR, players[currentPlayerIndex].getPlayerBoard().getResourceHandler().getDepositState());
         newTurn();
     }
 
