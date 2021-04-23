@@ -121,7 +121,8 @@ public class ConnectionToClient implements Runnable, EventToClientNotifier {
 
     @Override
     public void sendLeaderCard(LeaderCard leaderCard) {
-        SendLeaderCardToClient sendLeaderCardToClient = new SendLeaderCardToClient(leaderCard.getSpecialAbility().getRequirements(),
+        SendLeaderCardToClient sendLeaderCardToClient = new SendLeaderCardToClient(leaderCard.getName(),
+                leaderCard.getSpecialAbility().getRequirements(),
                 leaderCard.getSpecialAbility().getVictoryPoints(),
                 leaderCard.getSpecialAbility().getEffect(),
                 leaderCard.getSpecialAbility().getMaterialType().toString());
@@ -132,7 +133,8 @@ public class ConnectionToClient implements Runnable, EventToClientNotifier {
     public void sendArrayLeaderCards(ArrayList<LeaderCard> leaderCards) {
         ArrayList<SendLeaderCardToClient> tmp = new ArrayList<>();
         for(int i =0; i<leaderCards.size(); i++){
-            SendLeaderCardToClient sendLeaderCardToClient = new SendLeaderCardToClient(leaderCards.get(i).getSpecialAbility().getRequirements(),
+            SendLeaderCardToClient sendLeaderCardToClient = new SendLeaderCardToClient(leaderCards.get(i).getName(),
+                    leaderCards.get(i).getSpecialAbility().getRequirements(),
                     leaderCards.get(i).getSpecialAbility().getVictoryPoints(),
                     leaderCards.get(i).getSpecialAbility().getEffect(),
                     leaderCards.get(i).getSpecialAbility().getMaterialType().toString());

@@ -30,7 +30,7 @@ public class ControllerConnection implements EventToServerVisitor, ObserveConnec
     @Override
     public void visit(DiscardInitialLeaderCards leaderCards) {
         System.out.println("scarto le leaderCard di " + leaderCards.getPlayerName());
-        controllerToModel.discardInitialLeaderCards(leaderCards);
+        controllerToModel.discardInitialLeaderCards(leaderCards.getPlayerName(), leaderCards.getLeaderCard1(), leaderCards.getLeaderCard2());
     }
 
     @Override

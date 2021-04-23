@@ -98,13 +98,12 @@ public class ControllerToModel {
         turnNumber++;
     }
 
-    public void discardInitialLeaderCards(DiscardInitialLeaderCards discardInitialLeaderCards){
-        System.out.println("prova");
+    public void discardInitialLeaderCards(String playerName, int leaderCard1, int leaderCard2){
         for(int i =0; i< players.length; i++){
-            if(discardInitialLeaderCards.getPlayerName().equals(players[i].getName())){
+            if(playerName.equals(players[i].getName())){
                 try{
                     System.out.println("rimuovo le carte");
-                    players[i].getPlayerBoard().getLeaderCardHandler().removeInitialLeaderCard(discardInitialLeaderCards.getLeaderCard1(), discardInitialLeaderCards.getLeaderCard2());
+                    players[i].getPlayerBoard().getLeaderCardHandler().removeInitialLeaderCard(leaderCard1, leaderCard2);
                 } catch (LeaderCardException e) {
                     e.printStackTrace();
                 }
