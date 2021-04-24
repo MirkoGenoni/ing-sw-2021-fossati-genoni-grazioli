@@ -3,11 +3,13 @@ package it.polimi.ingsw.Client;
 import it.polimi.ingsw.Client.CLI.CLI;
 import it.polimi.ingsw.Events.ClientToServer.*;
 import it.polimi.ingsw.Events.ServerToClient.EventToClient;
+import it.polimi.ingsw.Model.Resource.Resource;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.ArrayList;
 
 public class ConnectionToServer implements Runnable, EventToServerNotifier {
     private final Socket socket;
@@ -79,7 +81,7 @@ public class ConnectionToServer implements Runnable, EventToServerNotifier {
         this.playerName = playerName;
     }
 
-
+    // event that the cli/gui calls to send event to the server
     @Override
     public void sendNumPlayer(int numPlayer) {
         NumPlayerToServer numPlayerToServer = new NumPlayerToServer(numPlayer, this.playerName);
@@ -87,9 +89,21 @@ public class ConnectionToServer implements Runnable, EventToServerNotifier {
     }
 
     @Override
+    public void sendNewPlayerName(String newPlayerName) {
+        PlayerNameToServer playerNameToServer = new PlayerNameToServer(newPlayerName, this.playerName);
+        new Thread(() -> asyncSendEvent(playerNameToServer)).start();
+    }
+
+    @Override
     public void sendDiscardInitialLeaderCards(int leaderCard1, int leaderCard2) {
         DiscardInitialLeaderCards discardInitialLeaderCards = new DiscardInitialLeaderCards(leaderCard1, leaderCard2, this.playerName);
         new Thread(() -> asyncSendEvent(discardInitialLeaderCards)).start();
+    }
+
+    @Override
+    public void sendNewDepositState(ArrayList<Resource> newDepositState, ArrayList<Resource> discardResources) {
+        NewDepositStateToServer newDepositStateToServer = new NewDepositStateToServer(newDepositState, discardResources, this.playerName);
+        new Thread(() -> asyncSendEvent(newDepositStateToServer)).start();
     }
 
     @Override

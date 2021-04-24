@@ -2,6 +2,7 @@ package it.polimi.ingsw.Controller;
 
 
 import it.polimi.ingsw.Model.Exceptions.LeaderCardException;
+import it.polimi.ingsw.Model.Exceptions.ResourceException;
 import it.polimi.ingsw.Model.Exceptions.StartGameException;
 import it.polimi.ingsw.Model.Game.Game;
 import it.polimi.ingsw.Model.Game.MultiPlayerGame;
@@ -60,6 +61,7 @@ public class ControllerToModel {
                     e.printStackTrace();
                 }
             // manca la distribuzione di risorse e dei punti fede all'inizio della partite
+            // metodo private initialResources
             }
             this.activePlayer = players[0];
             turnNumber = 0;
@@ -92,6 +94,15 @@ public class ControllerToModel {
 
     // questi metodi servono per il multiPlayer
 
+    public void SetPlayerName(String newPlayerName, String oldPlayerName){
+        for(int i=0; i< connectionsToClient.size(); i++){
+            if(connectionsToClient.get(i).getNamePlayer().equals(oldPlayerName)){
+                System.out.println("setto il nuovo nome");
+                connectionsToClient.get(i).setNamePlayer(newPlayerName);
+            }
+        }
+    }
+
     public void newTurn(){
         System.out.println("è iniziato un nuovo turno");
         activePlayer = nextPlayer();
@@ -112,6 +123,8 @@ public class ControllerToModel {
             }
         }
     }
+
+    // metodi per il turno del market
 
     public void marketTurn(){
         System.out.println("prendo il market");
@@ -156,6 +169,18 @@ public class ControllerToModel {
         connectionsToClient.get(currentPlayerIndex).sendReorganizeDeposit(tmpR, players[currentPlayerIndex].getPlayerBoard().getResourceHandler().getDepositState());
         newTurn();
     }
+
+    public void saveNewDepositState(ArrayList<Resource> newDepositState, ArrayList<Resource> discardResources){
+        // deve fare il check del nuovo stato del deposito se non va bene rimanda l'evento di riorganizzare il deposito
+        try{
+            players[currentPlayerIndex].getPlayerBoard().getResourceHandler().newDepositState(newDepositState);
+        } catch (ResourceException e) {
+            connectionsToClient.get(currentPlayerIndex).sendNotify(e.getMessage());
+            connectionsToClient.get(currentPlayerIndex).sendReorganizeDeposit(discardResources, newDepositState);
+        }
+
+    }
+
 
     private Player nextPlayer(){
         if(currentPlayerIndex < players.length-1) {

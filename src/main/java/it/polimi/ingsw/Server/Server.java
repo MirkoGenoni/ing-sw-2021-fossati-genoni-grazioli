@@ -45,14 +45,28 @@ public class Server implements Runnable{
                 System.out.println("New client is connected " + playerName);
                 // salvo la connessione con il client
                 ConnectionToClient connectionToClient = new ConnectionToClient(clientSocket);
+
                 clientList.add(connectionToClient);
                 new Thread(connectionToClient).start();
+
                 // setto il controller come colui che riceve gli eventi dalla connessione al client
                 connectionToClient.setObserveConnectionToClient(controllerConnection);
                 // aggiungo la connessione al client al Controller to model in modo che possa notificare gli eventi al client
                 controllerToModel.addConnectionToClient(connectionToClient);
                 connectionToClient.setNamePlayer(playerName);
                 connectionToClient.sendPlayerName(playerName);
+
+                if(connectionToClient.getNamePlayer().equals("Player " + (i))){
+                    System.out.println("aspetto il nome utente");
+                    while(connectionToClient.getNamePlayer().equals("Player " + (i))){
+                        try{
+                            Thread.sleep(10);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+
 
                 // se il numPlayer è ancora a zero significa che è il primo client connesso
                 if(numPlayer == 0){

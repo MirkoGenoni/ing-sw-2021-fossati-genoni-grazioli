@@ -28,9 +28,22 @@ public class ControllerConnection implements EventToServerVisitor, ObserveConnec
     }
 
     @Override
+    public void visit(PlayerNameToServer newPlayerName) {
+        System.out.println(" mi è arrivato il nome del giocatore " + newPlayerName.getOldPlayerName());
+        System.out.println(" il nuovo è : " + newPlayerName.getNewPlayerName());
+        controllerToModel.SetPlayerName(newPlayerName.getNewPlayerName(), newPlayerName.getOldPlayerName());
+    }
+
+    @Override
     public void visit(DiscardInitialLeaderCards leaderCards) {
         System.out.println("scarto le leaderCard di " + leaderCards.getPlayerName());
         controllerToModel.discardInitialLeaderCards(leaderCards.getPlayerName(), leaderCards.getLeaderCard1(), leaderCards.getLeaderCard2());
+    }
+
+    @Override
+    public void visit(NewDepositStateToServer newDepositState) {
+        System.out.println("ho ricevuto il nuovo stato del deposito");
+        //controllerToModel.saveNewDepositState(newDepositState.getNewDepositState(), newDepositState.getDiscardResources());
     }
 
     @Override

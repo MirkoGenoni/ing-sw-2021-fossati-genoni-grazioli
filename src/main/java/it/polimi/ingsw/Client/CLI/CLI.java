@@ -17,12 +17,19 @@ public class CLI implements EventToClientVisitor {
         event.acceptVisitor(this);
     }
 
-    // Events that arrive from ConnectionToServer
+    // Events that arrive from ConnectionToServer, so from the server
     @Override
     public void visit(SendPlayerNameToClient playerName) {
         System.out.println("ho ricevuto il mio nome " + playerName.getPlayerName());
         namePlayer = playerName.getPlayerName();
         connectionToServer.setPlayerName(playerName.getPlayerName());
+        System.out.println("scrivi il tuo nome");
+        Scanner scanIn = new Scanner(System.in);
+        String line = scanIn.nextLine();
+        connectionToServer.sendNewPlayerName(line);
+        namePlayer = line;
+        connectionToServer.setPlayerName(line);
+
     }
 
     @Override
@@ -67,6 +74,8 @@ public class CLI implements EventToClientVisitor {
         System.out.println("mi è arrivato il deposito");
         System.out.println("nuove risorse: " + newResources.getMarketResources());
         System.out.println("stato attuale deposito" + newResources.getDepositResources());
+        // qui dovrebbe riorganizzare il nuovo deposito
+        // il metodo nel connectionToServer è il newDeposit state
     }
 
 
