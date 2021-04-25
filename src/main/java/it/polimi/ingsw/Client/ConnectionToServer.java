@@ -101,7 +101,7 @@ public class ConnectionToServer implements Runnable, EventToServerNotifier {
     }
 
     @Override
-    public void sendNewDepositState(ArrayList<Resource> newDepositState, ArrayList<Resource> discardResources) {
+    public void sendNewDepositState(ArrayList<Resource> newDepositState, int discardResources) {
         NewDepositStateToServer newDepositStateToServer = new NewDepositStateToServer(newDepositState, discardResources, this.playerName);
         new Thread(() -> asyncSendEvent(newDepositStateToServer)).start();
     }

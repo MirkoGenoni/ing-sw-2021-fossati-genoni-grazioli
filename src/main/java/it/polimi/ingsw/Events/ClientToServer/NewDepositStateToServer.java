@@ -6,10 +6,10 @@ import java.util.ArrayList;
 
 public class NewDepositStateToServer extends EventToServer{
     private final ArrayList<Resource> newDepositState;
-    private final ArrayList<Resource> discardResources;
+    private final int discardResources;
     private final String playerName;
 
-    public NewDepositStateToServer(ArrayList<Resource> newDepositState, ArrayList<Resource> discardResources, String playerName) {
+    public NewDepositStateToServer(ArrayList<Resource> newDepositState, int discardResources, String playerName) {
         this.newDepositState = newDepositState;
         this.discardResources = discardResources;
         this.playerName = playerName;
@@ -19,7 +19,7 @@ public class NewDepositStateToServer extends EventToServer{
         return newDepositState;
     }
 
-    public ArrayList<Resource> getDiscardResources() {
+    public int getDiscardResources() {
         return discardResources;
     }
 

@@ -43,7 +43,7 @@ public class ControllerConnection implements EventToServerVisitor, ObserveConnec
     @Override
     public void visit(NewDepositStateToServer newDepositState) {
         System.out.println("ho ricevuto il nuovo stato del deposito");
-        //controllerToModel.saveNewDepositState(newDepositState.getNewDepositState(), newDepositState.getDiscardResources());
+        controllerToModel.saveNewDepositState(newDepositState.getNewDepositState(), newDepositState.getDiscardResources());
     }
 
     @Override

@@ -1,8 +1,10 @@
 package it.polimi.ingsw.Client.CLI;
 
+import it.polimi.ingsw.Client.CLI.Views.NewDepositView;
 import it.polimi.ingsw.Client.ConnectionToServer;
 import it.polimi.ingsw.Events.ServerToClient.*;
 
+import java.io.IOException;
 import java.util.Scanner;
 
 public class CLI implements EventToClientVisitor {
@@ -24,7 +26,16 @@ public class CLI implements EventToClientVisitor {
         namePlayer = playerName.getPlayerName();
         connectionToServer.setPlayerName(playerName.getPlayerName());
         System.out.println("scrivi il tuo nome");
+
+        try {
+            System.in.read(new byte[System.in.available()]);
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+
         Scanner scanIn = new Scanner(System.in);
+
+
         String line = scanIn.nextLine();
         connectionToServer.sendNewPlayerName(line);
         namePlayer = line;
@@ -72,8 +83,16 @@ public class CLI implements EventToClientVisitor {
     @Override
     public void visit(SendReorganizeDepositToClient newResources) {
         System.out.println("mi è arrivato il deposito");
-        System.out.println("nuove risorse: " + newResources.getMarketResources());
-        System.out.println("stato attuale deposito" + newResources.getDepositResources());
+
+        NewDepositView view = new NewDepositView(newResources.getDepositResources(), newResources.getMarketResources());
+
+        try{
+            view.LaunchView();
+        } catch(IOException e){
+            System.out.println(e.getMessage());
+        }
+
+        connectionToServer.sendNewDepositState(view.getDepositState(), view.getMarketReceived());
         // qui dovrebbe riorganizzare il nuovo deposito
         // il metodo nel connectionToServer è il newDeposit state
     }

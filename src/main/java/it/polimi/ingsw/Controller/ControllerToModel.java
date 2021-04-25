@@ -28,6 +28,7 @@ public class ControllerToModel {
     private int turnNumber=1;
     private int currentPlayerIndex;
     private int numPlayer;
+    private ArrayList<Resource> tmpMarketReturn;
 
     public ControllerToModel() {
         this.connectionsToClient = new ArrayList<>();
@@ -166,17 +167,18 @@ public class ControllerToModel {
             tmpR.add(Resource.valueOf(m.toString()));
         }
 
+        this.tmpMarketReturn = new ArrayList<>(tmpR);
         connectionsToClient.get(currentPlayerIndex).sendReorganizeDeposit(tmpR, players[currentPlayerIndex].getPlayerBoard().getResourceHandler().getDepositState());
-        newTurn();
     }
 
-    public void saveNewDepositState(ArrayList<Resource> newDepositState, ArrayList<Resource> discardResources){
+    public void saveNewDepositState(ArrayList<Resource> newDepositState, int discardResources){
         // deve fare il check del nuovo stato del deposito se non va bene rimanda l'evento di riorganizzare il deposito
         try{
             players[currentPlayerIndex].getPlayerBoard().getResourceHandler().newDepositState(newDepositState);
+            newTurn();
         } catch (ResourceException e) {
             connectionsToClient.get(currentPlayerIndex).sendNotify(e.getMessage());
-            connectionsToClient.get(currentPlayerIndex).sendReorganizeDeposit(discardResources, newDepositState);
+            connectionsToClient.get(currentPlayerIndex).sendReorganizeDeposit(tmpMarketReturn, players[currentPlayerIndex].getPlayerBoard().getResourceHandler().getDepositState());
         }
 
     }

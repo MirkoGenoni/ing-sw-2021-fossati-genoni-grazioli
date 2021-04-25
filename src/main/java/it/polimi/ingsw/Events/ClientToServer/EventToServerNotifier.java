@@ -9,7 +9,7 @@ public interface EventToServerNotifier {
     void sendNumPlayer(int numPlayer);
     void sendNewPlayerName(String newPlayerName);
     void sendDiscardInitialLeaderCards(int leaderCard1, int leaderCard2);
-    void sendNewDepositState(ArrayList<Resource> newDepositState, ArrayList<Resource> discardResources);
+    void sendNewDepositState(ArrayList<Resource> newDepositState, int discardResources);
     void sendTurnPlayed(String turnType);
     void sendChooseLine(int numLine);
 }
