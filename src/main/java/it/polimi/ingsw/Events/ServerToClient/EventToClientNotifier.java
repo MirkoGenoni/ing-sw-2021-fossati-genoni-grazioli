@@ -1,5 +1,6 @@
 package it.polimi.ingsw.Events.ServerToClient;
 
+import it.polimi.ingsw.Model.DevelopmentCard.DevelopmentCard;
 import it.polimi.ingsw.Model.LeaderCard.LeaderCard;
 import it.polimi.ingsw.Model.Market.Marble;
 import it.polimi.ingsw.Model.Resource.Resource;
@@ -13,6 +14,8 @@ public interface EventToClientNotifier {
     void sendLeaderCard(LeaderCard leaderCard);
     void sendArrayLeaderCards(ArrayList<LeaderCard> leaderCards);
     void sendReorganizeDeposit(ArrayList<Resource> marketResources, ArrayList<Resource> depositState);
+    void sendDevelopmentCard(DevelopmentCard developmentCard);
+    void sendDevelopmentCards(SendDevelopmentCardToClient [][] availableDevelopmentCards);
     void sendNotify(String message);
     void sendNewTurn(int turnNumber);
     void sendMarket(ArrayList<Marble> grid, Marble outMarble);

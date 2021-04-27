@@ -1,6 +1,8 @@
 package it.polimi.ingsw.Controller;
 
 
+import it.polimi.ingsw.Events.ServerToClient.SendDevelopmentCardToClient;
+import it.polimi.ingsw.Model.DevelopmentCard.DevelopmentCard;
 import it.polimi.ingsw.Model.Exceptions.LeaderCardException;
 import it.polimi.ingsw.Model.Exceptions.ResourceException;
 import it.polimi.ingsw.Model.Exceptions.StartGameException;
@@ -182,6 +184,29 @@ public class ControllerToModel {
         }
 
     }
+
+
+    //metodi per il turno buy DevelopmentCard
+
+    public void developmentCardTurn(){
+        System.out.println("mando array delle carte disponibili");
+        DevelopmentCard[][] devCards = multiGame.getDevelopmentCardsAvailable();
+        SendDevelopmentCardToClient[][] availableToSend = new SendDevelopmentCardToClient[4][3];
+        DevelopmentCard cardToCopy;
+
+        for(int i=0; i<devCards.length; i++){
+            for(int j=0; j<devCards[i].length; j++){
+                cardToCopy = devCards[i][j];
+                availableToSend[i][j] = new SendDevelopmentCardToClient(cardToCopy.getColor().name(), cardToCopy.getLevel(),
+                        cardToCopy.getCost(), cardToCopy.getVictoryPoint(), cardToCopy.getMaterialRequired(), cardToCopy.getProductionResult());
+            }
+        }
+
+        connectionsToClient.get(currentPlayerIndex).sendDevelopmentCards(availableToSend);
+        newTurn();
+    }
+
+
 
 
     private Player nextPlayer(){

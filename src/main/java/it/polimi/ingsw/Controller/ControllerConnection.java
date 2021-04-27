@@ -53,6 +53,8 @@ public class ControllerConnection implements EventToServerVisitor, ObserveConnec
             controllerToModel.newTurn();
         }else if(turn.getTurnType().equals("market")){
             controllerToModel.marketTurn();
+        }else if(turn.getTurnType().equals("buydevelopment")){
+            controllerToModel.developmentCardTurn();
         }
     }
 

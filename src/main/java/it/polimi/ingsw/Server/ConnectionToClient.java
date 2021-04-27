@@ -3,6 +3,7 @@ package it.polimi.ingsw.Server;
 import it.polimi.ingsw.Events.ClientToServer.EventToServer;
 import it.polimi.ingsw.Events.ServerToClient.*;
 import it.polimi.ingsw.Controller.ObserveConnectionToClient;
+import it.polimi.ingsw.Model.DevelopmentCard.DevelopmentCard;
 import it.polimi.ingsw.Model.LeaderCard.LeaderCard;
 import it.polimi.ingsw.Model.Market.Marble;
 import it.polimi.ingsw.Model.Resource.Resource;
@@ -149,6 +150,19 @@ public class ConnectionToClient implements Runnable, EventToClientNotifier {
     public void sendReorganizeDeposit(ArrayList<Resource> marketResources, ArrayList<Resource> depositState) {
         SendReorganizeDepositToClient sendReorganizeDepositToClient = new SendReorganizeDepositToClient(marketResources, depositState);
         new Thread(() -> asyncSendEvent(sendReorganizeDepositToClient)).start();
+    }
+
+    @Override
+    public void sendDevelopmentCard(DevelopmentCard developmentCard) {
+        SendDevelopmentCardToClient sendDevelopmentCardToClient = new SendDevelopmentCardToClient(developmentCard.getColor().name(), developmentCard.getLevel(),
+                developmentCard.getCost(), developmentCard.getVictoryPoint(), developmentCard.getMaterialRequired(), developmentCard.getProductionResult());
+        new Thread(() -> asyncSendEvent(sendDevelopmentCardToClient)).start();
+    }
+
+    @Override
+    public void sendDevelopmentCards(SendDevelopmentCardToClient[][] availableDevelopmentCards) {
+        SendDevelopmentCardAvailableToClient sendDevelopmentCardAvailableToClient = new SendDevelopmentCardAvailableToClient(availableDevelopmentCards);
+        new Thread(() -> asyncSendEvent(sendDevelopmentCardAvailableToClient)).start();
     }
 
 

@@ -3,6 +3,7 @@ package it.polimi.ingsw.Client.CLI;
 import it.polimi.ingsw.Client.CLI.Views.NewDepositView;
 import it.polimi.ingsw.Client.ConnectionToServer;
 import it.polimi.ingsw.Events.ServerToClient.*;
+import it.polimi.ingsw.Model.DevelopmentCard.DevelopmentCard;
 
 import java.io.IOException;
 import java.util.Scanner;
@@ -95,6 +96,22 @@ public class CLI implements EventToClientVisitor {
         connectionToServer.sendNewDepositState(view.getDepositState(), view.getMarketReceived());
         // qui dovrebbe riorganizzare il nuovo deposito
         // il metodo nel connectionToServer è il newDeposit state
+    }
+
+    @Override
+    public void visit(SendDevelopmentCardToClient developmentCard) {
+        System.out.print("ho ricevuto: ");
+        System.out.println(developmentCard.getColor() + developmentCard.getLevel() + developmentCard.getCost().toString() + developmentCard.getMaterialRequired().toString());
+    }
+
+    @Override
+    public void visit(SendDevelopmentCardAvailableToClient availableDevelopmentCards) {
+        System.out.println("ho ricevuto Array Dev disponibili: ");
+        for (SendDevelopmentCardToClient[] cards : availableDevelopmentCards.getDevelopmentCardsAvailable()) {
+            for (SendDevelopmentCardToClient card : cards)
+                System.out.println("color: " + card.getColor() + " level: " + card.getLevel() + " cost: " + card.getCost() + " Req: " + card.getMaterialRequired() + " Grant: " + card.getProductionResult());
+        }
+
     }
 
 
