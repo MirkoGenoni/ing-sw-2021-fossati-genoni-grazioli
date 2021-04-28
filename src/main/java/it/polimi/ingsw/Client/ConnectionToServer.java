@@ -2,6 +2,11 @@ package it.polimi.ingsw.Client;
 
 import it.polimi.ingsw.Client.CLI.CLI;
 import it.polimi.ingsw.Events.ClientToServer.*;
+import it.polimi.ingsw.Events.ClientToServer.MarketTurnToServer.ChooseLineToServer;
+import it.polimi.ingsw.Events.ClientToServer.MarketTurnToServer.NewDepositStateToServer;
+import it.polimi.ingsw.Events.ClientToServer.StartConnectionToServer.NumPlayerToServer;
+import it.polimi.ingsw.Events.ClientToServer.StartConnectionToServer.PlayerNameToServer;
+import it.polimi.ingsw.Events.ClientToServer.StartGameToServer.DiscardInitialLeaderCards;
 import it.polimi.ingsw.Events.ServerToClient.EventToClient;
 import it.polimi.ingsw.Model.Resource.Resource;
 

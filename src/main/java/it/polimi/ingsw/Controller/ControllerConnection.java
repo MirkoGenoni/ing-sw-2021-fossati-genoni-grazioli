@@ -1,6 +1,11 @@
 package it.polimi.ingsw.Controller;
 
 import it.polimi.ingsw.Events.ClientToServer.*;
+import it.polimi.ingsw.Events.ClientToServer.MarketTurnToServer.ChooseLineToServer;
+import it.polimi.ingsw.Events.ClientToServer.MarketTurnToServer.NewDepositStateToServer;
+import it.polimi.ingsw.Events.ClientToServer.StartConnectionToServer.NumPlayerToServer;
+import it.polimi.ingsw.Events.ClientToServer.StartConnectionToServer.PlayerNameToServer;
+import it.polimi.ingsw.Events.ClientToServer.StartGameToServer.DiscardInitialLeaderCards;
 
 public class ControllerConnection implements EventToServerVisitor, ObserveConnectionToClient {
     private final ControllerToModel controllerToModel;

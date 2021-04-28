@@ -1,6 +1,9 @@
-package it.polimi.ingsw.Events.ClientToServer;
+package it.polimi.ingsw.Events.ClientToServer.StartConnectionToServer;
 
-public class NumPlayerToServer extends EventToServer{
+import it.polimi.ingsw.Events.ClientToServer.EventToServer;
+import it.polimi.ingsw.Events.ClientToServer.EventToServerVisitor;
+
+public class NumPlayerToServer extends EventToServer {
     private final int numPlayer;
     private final String PlayerName;
 

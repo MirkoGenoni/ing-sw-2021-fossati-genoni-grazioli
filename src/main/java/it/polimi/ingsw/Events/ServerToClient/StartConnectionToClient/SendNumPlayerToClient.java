@@ -1,6 +1,9 @@
-package it.polimi.ingsw.Events.ServerToClient;
+package it.polimi.ingsw.Events.ServerToClient.StartConnectionToClient;
 
-public class SendNumPlayerToClient extends EventToClient{
+import it.polimi.ingsw.Events.ServerToClient.EventToClient;
+import it.polimi.ingsw.Events.ServerToClient.EventToClientVisitor;
+
+public class SendNumPlayerToClient extends EventToClient {
     private final String message;
 
     public SendNumPlayerToClient(String message) {

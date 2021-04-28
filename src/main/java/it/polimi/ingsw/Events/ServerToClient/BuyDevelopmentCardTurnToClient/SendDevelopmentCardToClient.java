@@ -1,11 +1,13 @@
-package it.polimi.ingsw.Events.ServerToClient;
+package it.polimi.ingsw.Events.ServerToClient.BuyDevelopmentCardTurnToClient;
 
+import it.polimi.ingsw.Events.ServerToClient.EventToClient;
+import it.polimi.ingsw.Events.ServerToClient.EventToClientVisitor;
 import it.polimi.ingsw.Model.DevelopmentCard.ProductedMaterials;
 import it.polimi.ingsw.Model.Resource.Resource;
 
 import java.util.Map;
 
-public class SendDevelopmentCardToClient extends EventToClient{
+public class SendDevelopmentCardToClient extends EventToClient {
 
     private final String color;
     private final int level;

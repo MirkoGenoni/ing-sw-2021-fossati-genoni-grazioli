@@ -1,7 +1,7 @@
 package it.polimi.ingsw.Controller;
 
 
-import it.polimi.ingsw.Events.ServerToClient.SendDevelopmentCardToClient;
+import it.polimi.ingsw.Events.ServerToClient.BuyDevelopmentCardTurnToClient.SendDevelopmentCardToClient;
 import it.polimi.ingsw.Model.DevelopmentCard.DevelopmentCard;
 import it.polimi.ingsw.Model.Exceptions.LeaderCardException;
 import it.polimi.ingsw.Model.Exceptions.ResourceException;

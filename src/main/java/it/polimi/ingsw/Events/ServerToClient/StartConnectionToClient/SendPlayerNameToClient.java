@@ -1,7 +1,10 @@
-package it.polimi.ingsw.Events.ServerToClient;
+package it.polimi.ingsw.Events.ServerToClient.StartConnectionToClient;
+
+import it.polimi.ingsw.Events.ServerToClient.EventToClient;
+import it.polimi.ingsw.Events.ServerToClient.EventToClientVisitor;
 
 // this event send the name to the client
-public class SendPlayerNameToClient extends EventToClient{
+public class SendPlayerNameToClient extends EventToClient {
     private final String playerName;
 
     public SendPlayerNameToClient(String playerName) {

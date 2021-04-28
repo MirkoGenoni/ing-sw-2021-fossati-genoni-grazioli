@@ -1,6 +1,9 @@
-package it.polimi.ingsw.Events.ClientToServer;
+package it.polimi.ingsw.Events.ClientToServer.StartGameToServer;
 
-public class DiscardInitialLeaderCards extends EventToServer{
+import it.polimi.ingsw.Events.ClientToServer.EventToServer;
+import it.polimi.ingsw.Events.ClientToServer.EventToServerVisitor;
+
+public class DiscardInitialLeaderCards extends EventToServer {
     private final int leaderCard1;
     private final int leaderCard2;
     private final String playerName;

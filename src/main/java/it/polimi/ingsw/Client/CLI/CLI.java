@@ -3,7 +3,12 @@ package it.polimi.ingsw.Client.CLI;
 import it.polimi.ingsw.Client.CLI.Views.NewDepositView;
 import it.polimi.ingsw.Client.ConnectionToServer;
 import it.polimi.ingsw.Events.ServerToClient.*;
-import it.polimi.ingsw.Model.DevelopmentCard.DevelopmentCard;
+import it.polimi.ingsw.Events.ServerToClient.BuyDevelopmentCardTurnToClient.SendDevelopmentCardAvailableToClient;
+import it.polimi.ingsw.Events.ServerToClient.BuyDevelopmentCardTurnToClient.SendDevelopmentCardToClient;
+import it.polimi.ingsw.Events.ServerToClient.MarketTurnToClient.MarketTurnToClient;
+import it.polimi.ingsw.Events.ServerToClient.MarketTurnToClient.SendReorganizeDepositToClient;
+import it.polimi.ingsw.Events.ServerToClient.StartConnectionToClient.SendNumPlayerToClient;
+import it.polimi.ingsw.Events.ServerToClient.StartConnectionToClient.SendPlayerNameToClient;
 
 import java.io.IOException;
 import java.util.Scanner;

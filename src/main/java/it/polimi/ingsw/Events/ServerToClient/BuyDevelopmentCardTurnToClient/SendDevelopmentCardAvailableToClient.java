@@ -1,6 +1,9 @@
-package it.polimi.ingsw.Events.ServerToClient;
+package it.polimi.ingsw.Events.ServerToClient.BuyDevelopmentCardTurnToClient;
 
-public class SendDevelopmentCardAvailableToClient extends EventToClient{
+import it.polimi.ingsw.Events.ServerToClient.EventToClient;
+import it.polimi.ingsw.Events.ServerToClient.EventToClientVisitor;
+
+public class SendDevelopmentCardAvailableToClient extends EventToClient {
 
     private final SendDevelopmentCardToClient[][] developmentCardsAvailable;
 

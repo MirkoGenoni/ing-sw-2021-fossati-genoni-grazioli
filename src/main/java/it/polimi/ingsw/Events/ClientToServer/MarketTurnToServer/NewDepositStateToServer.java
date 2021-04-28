@@ -1,10 +1,12 @@
-package it.polimi.ingsw.Events.ClientToServer;
+package it.polimi.ingsw.Events.ClientToServer.MarketTurnToServer;
 
+import it.polimi.ingsw.Events.ClientToServer.EventToServer;
+import it.polimi.ingsw.Events.ClientToServer.EventToServerVisitor;
 import it.polimi.ingsw.Model.Resource.Resource;
 
 import java.util.ArrayList;
 
-public class NewDepositStateToServer extends EventToServer{
+public class NewDepositStateToServer extends EventToServer {
     private final ArrayList<Resource> newDepositState;
     private final int discardResources;
     private final String playerName;

@@ -1,11 +1,13 @@
-package it.polimi.ingsw.Events.ServerToClient;
+package it.polimi.ingsw.Events.ServerToClient.MarketTurnToClient;
 
+import it.polimi.ingsw.Events.ServerToClient.EventToClient;
+import it.polimi.ingsw.Events.ServerToClient.EventToClientVisitor;
 import it.polimi.ingsw.Model.Market.Marble;
 
 import java.util.ArrayList;
 
 // this event send the structure of the market to the client. the client could visualize it
-public class MarketTurnToClient extends EventToClient{
+public class MarketTurnToClient extends EventToClient {
     private final ArrayList<Marble> grid;
     private final Marble outMarble;
 

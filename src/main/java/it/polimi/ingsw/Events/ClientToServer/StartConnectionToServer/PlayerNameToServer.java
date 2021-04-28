@@ -1,6 +1,9 @@
-package it.polimi.ingsw.Events.ClientToServer;
+package it.polimi.ingsw.Events.ClientToServer.StartConnectionToServer;
 
-public class PlayerNameToServer extends EventToServer{
+import it.polimi.ingsw.Events.ClientToServer.EventToServer;
+import it.polimi.ingsw.Events.ClientToServer.EventToServerVisitor;
+
+public class PlayerNameToServer extends EventToServer {
     private final String newPlayerName;
     private final String oldPlayerName;
 
