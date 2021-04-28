@@ -10,6 +10,7 @@ public interface EventToServerNotifier {
     void sendNewPlayerName(String newPlayerName);
     void sendDiscardInitialLeaderCards(int leaderCard1, int leaderCard2);
     void sendNewDepositState(ArrayList<Resource> newDepositState, int discardResources);
+    void sendSelectedDevelopmentCard(int color, int level);
     void sendTurnPlayed(String turnType);
     void sendChooseLine(int numLine);
 }

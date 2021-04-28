@@ -1,5 +1,6 @@
 package it.polimi.ingsw.Events.ClientToServer;
 
+import it.polimi.ingsw.Events.ClientToServer.BuyDevelopmentCardToServer.SelectedDevelopmentCardToBuyToServer;
 import it.polimi.ingsw.Events.ClientToServer.MarketTurnToServer.ChooseLineToServer;
 import it.polimi.ingsw.Events.ClientToServer.MarketTurnToServer.NewDepositStateToServer;
 import it.polimi.ingsw.Events.ClientToServer.StartConnectionToServer.NumPlayerToServer;
@@ -12,6 +13,7 @@ public interface EventToServerVisitor {
     void visit(PlayerNameToServer newPlayerName);
     void visit(DiscardInitialLeaderCards leaderCards);
     void visit(NewDepositStateToServer newDepositState);
+    void visit(SelectedDevelopmentCardToBuyToServer selectedDevelopmentCard);
     void visit(TurnPlayedToServer turn);
     void visit(ChooseLineToServer numLine);
 }

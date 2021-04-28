@@ -116,7 +116,12 @@ public class CLI implements EventToClientVisitor {
             for (SendDevelopmentCardToClient card : cards)
                 System.out.println("color: " + card.getColor() + " level: " + card.getLevel() + " cost: " + card.getCost() + " Req: " + card.getMaterialRequired() + " Grant: " + card.getProductionResult());
         }
-
+        System.out.println("scegli il colore della carta : 0 = green, 1 = blue, 2 = yellow, 3 = purple");
+        Scanner scanIn = new Scanner(System.in);
+        int color = scanIn.nextInt();
+        System.out.println("scegli il livello della carta: 0,1,2");
+        int level = scanIn.nextInt();
+        connectionToServer.sendSelectedDevelopmentCard(color, level);
     }
 
 

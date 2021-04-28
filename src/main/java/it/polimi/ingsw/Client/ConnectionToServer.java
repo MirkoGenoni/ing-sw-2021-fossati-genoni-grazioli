@@ -2,6 +2,7 @@ package it.polimi.ingsw.Client;
 
 import it.polimi.ingsw.Client.CLI.CLI;
 import it.polimi.ingsw.Events.ClientToServer.*;
+import it.polimi.ingsw.Events.ClientToServer.BuyDevelopmentCardToServer.SelectedDevelopmentCardToBuyToServer;
 import it.polimi.ingsw.Events.ClientToServer.MarketTurnToServer.ChooseLineToServer;
 import it.polimi.ingsw.Events.ClientToServer.MarketTurnToServer.NewDepositStateToServer;
 import it.polimi.ingsw.Events.ClientToServer.StartConnectionToServer.NumPlayerToServer;
@@ -109,6 +110,12 @@ public class ConnectionToServer implements Runnable, EventToServerNotifier {
     public void sendNewDepositState(ArrayList<Resource> newDepositState, int discardResources) {
         NewDepositStateToServer newDepositStateToServer = new NewDepositStateToServer(newDepositState, discardResources, this.playerName);
         new Thread(() -> asyncSendEvent(newDepositStateToServer)).start();
+    }
+
+    @Override
+    public void sendSelectedDevelopmentCard(int color, int level) {
+        SelectedDevelopmentCardToBuyToServer selectedDevelopmentCardToBuyToServer = new SelectedDevelopmentCardToBuyToServer(color, level, this.playerName);
+        new Thread(() -> asyncSendEvent(selectedDevelopmentCardToBuyToServer)).start();
     }
 
     @Override

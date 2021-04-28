@@ -203,6 +203,25 @@ public class ControllerToModel {
         }
 
         connectionsToClient.get(currentPlayerIndex).sendDevelopmentCards(availableToSend);
+
+    }
+
+    public void buyDevelopmentCard(int color, int level){
+        String prova = "puoi mettere le carte in questi posti:";
+        System.out.println("faccio il check dei delle risorse");
+        DevelopmentCard buyDevelopmentCard = multiGame.getDevelopmentCardsAvailable()[color][level];
+        System.out.println(buyDevelopmentCard.getColor() + buyDevelopmentCard.getCost().toString());
+        if(players[currentPlayerIndex].getPlayerBoard().getResourceHandler().checkMaterials(buyDevelopmentCard.getCost())){
+            ArrayList<Boolean> tmp =  players[currentPlayerIndex].getPlayerBoard().getDevelopmentCardHandler().checkBoughtable(level+1);
+            for(int i=0; i<tmp.size(); i++){
+                if(tmp.get(i)){
+                    prova = prova + "->" + String.valueOf(i);
+                }
+            }
+            connectionsToClient.get(currentPlayerIndex).sendNotify(prova);
+        }else{
+            connectionsToClient.get(currentPlayerIndex).sendNotify("non puoi comprare questa carta, non hai abbastanza risorse");
+        }
         newTurn();
     }
 
