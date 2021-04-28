@@ -91,7 +91,7 @@ public class NewDepositView {
             formatInput[0] = formatInput[0].toUpperCase();
 
             //tolgo il materiale dalle risorse ottenute dal market da inserire in deposito
-            if(marketReceived.containsKey(formatInput[0]) && num>0)
+            if(marketReceived.containsKey(formatInput[0]) && num>0 && num<7)
                 if(marketReceived.get(formatInput[0])-1>-1) {
                     marketReceived.put(formatInput[0], marketReceived.get(formatInput[0]) - 1);
 
@@ -161,6 +161,6 @@ public class NewDepositView {
                 "                            Choose a material and a position to put into (material,position):\n" +
                 "                                                "+ "\u001B[92m"+"[type done when finished]                    \n" +
                 "\n"+
-                "                                                             ");
+                "                                                             " + "\u001B[097m");
     }
 }
