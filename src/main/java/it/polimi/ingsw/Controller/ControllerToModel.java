@@ -208,7 +208,6 @@ public class ControllerToModel {
                         cardToCopy.getCost(), cardToCopy.getVictoryPoint(), cardToCopy.getMaterialRequired(), cardToCopy.getProductionResult());
             }
         }
-
         connectionsToClient.get(currentPlayerIndex).sendDevelopmentCards(availableToSend);
 
     }
@@ -231,6 +230,7 @@ public class ControllerToModel {
         }
         newTurn();
     }
+
 
 
 

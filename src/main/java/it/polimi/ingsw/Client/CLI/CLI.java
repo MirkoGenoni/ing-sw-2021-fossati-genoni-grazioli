@@ -9,6 +9,7 @@ import it.polimi.ingsw.Events.ServerToClient.MarketTurnToClient.MarketTurnToClie
 import it.polimi.ingsw.Events.ServerToClient.MarketTurnToClient.SendReorganizeDepositToClient;
 import it.polimi.ingsw.Events.ServerToClient.StartConnectionToClient.SendNumPlayerToClient;
 import it.polimi.ingsw.Events.ServerToClient.StartConnectionToClient.SendPlayerNameToClient;
+import it.polimi.ingsw.Model.DevelopmentCard.CardColor;
 
 import java.io.IOException;
 import java.util.Scanner;
@@ -142,12 +143,62 @@ public class CLI implements EventToClientVisitor {
             for (SendDevelopmentCardToClient card : cards)
                 System.out.println("color: " + card.getColor() + " level: " + card.getLevel() + " cost: " + card.getCost() + " Req: " + card.getMaterialRequired() + " Grant: " + card.getProductionResult());
         }
-        System.out.println("scegli il colore della carta : 0 = green, 1 = blue, 2 = yellow, 3 = purple");
-        Scanner scanIn = new Scanner(System.in);
-        int color = scanIn.nextInt();
-        System.out.println("scegli il livello della carta: 0,1,2");
-        int level = scanIn.nextInt();
-        connectionToServer.sendSelectedDevelopmentCard(color, level);
+
+        boolean isValid;
+        Integer level = null;
+        CardColor color = null;
+        Scanner scan = new Scanner(System.in);
+
+        do {
+            System.out.println("\nSELECT WITH 'LEVEL,COLOR' WITCH CARD YOU WANT TO BUY");
+            String input;
+            input = scan.nextLine();
+            input = input.trim();
+            String delimits = ",";
+            String[] strArray = input.split(delimits);
+            strArray[1] = strArray[1].toUpperCase();
+            isValid = true;
+
+            try {
+                level = Integer.parseInt(strArray[0]);
+                color = CardColor.valueOf(strArray[1]);
+                //System.out.println("level:" + level + "color: " + color);
+                if (level < 1 || level > 3)
+                    throw new IllegalArgumentException();
+            } catch (IllegalArgumentException e) {
+                System.out.println("Non valid Argument");
+                isValid = false;
+            }
+        } while (!isValid);
+
+
+        int colorForCard;
+
+        switch (color) {
+            case GREEN:
+                colorForCard = 0;
+                break;
+            case BLUE:
+                colorForCard = 1;
+                break;
+            case YELLOW:
+                colorForCard = 2;
+                break;
+            case PURPLE:
+                colorForCard = 3;
+                break;
+            default:
+                throw new RuntimeException(); //attention Exception
+        }
+
+        //System.out.println("scegli il colore della carta : 0 = green, 1 = blue, 2 = yellow, 3 = purple");
+        //Scanner scanIn = new Scanner(System.in);
+        //int color = scanIn.nextInt();
+        //System.out.println("scegli il livello della carta: 0,1,2");
+        //int level = scanIn.nextInt();
+        System.out.println("Chose" + " " + color.name() + " " + level);
+        connectionToServer.sendSelectedDevelopmentCard(colorForCard, level-1); //livello da 0 a 2
+
     }
 
     // ----------------------------------
