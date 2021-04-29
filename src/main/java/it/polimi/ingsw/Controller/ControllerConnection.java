@@ -26,7 +26,9 @@ public class ControllerConnection implements EventToServerVisitor, ObserveConnec
     }
 
     // Events that arrive from the ConnectionToClient // Questi sono per il multiplayer...
-
+    // -------------------------------------------------------
+    // EVENTS FOR THE START OF THE CONNECTION WITH THE SERVER
+    // -------------------------------------------------------
     @Override
     public void visit(NumPlayerToServer numPlayer) {
         System.out.println("ho ricevuto il numero di giocatori " + numPlayer.getNumPlayer());
@@ -40,10 +42,22 @@ public class ControllerConnection implements EventToServerVisitor, ObserveConnec
         controllerToModel.SetPlayerName(newPlayerName.getNewPlayerName(), newPlayerName.getOldPlayerName());
     }
 
+    // -------------------------------------------
+    // EVENTS FOR THE LEADER CARD INTERACTION
+    // -------------------------------------------
     @Override
     public void visit(DiscardInitialLeaderCards leaderCards) {
         System.out.println("scarto le leaderCard di " + leaderCards.getPlayerName());
         controllerToModel.discardInitialLeaderCards(leaderCards.getPlayerName(), leaderCards.getLeaderCard1(), leaderCards.getLeaderCard2());
+    }
+
+    // -------------------------------------------
+    // EVENTS FOR THE MARKET TURN INTERACTION
+    // -------------------------------------------
+    @Override
+    public void visit(ChooseLineToServer numLine) {
+        System.out.println("mi è arrivato il turno chooseline");
+        controllerToModel.marketChooseLine(numLine.getPlayerName() ,numLine.getNumLine());
     }
 
     @Override
@@ -52,12 +66,18 @@ public class ControllerConnection implements EventToServerVisitor, ObserveConnec
         controllerToModel.saveNewDepositState(newDepositState.getNewDepositState(), newDepositState.getDiscardResources());
     }
 
+    // ------------------------------------------------------
+    // EVENTS FOR THE BUY DEVELOPMENT CARD TURN INTERACTION
+    // ------------------------------------------------------
     @Override
     public void visit(SelectedDevelopmentCardToBuyToServer selectedDevelopmentCard) {
         System.out.println("ho ricevuto la carta da acquistare");
         controllerToModel.buyDevelopmentCard(selectedDevelopmentCard.getColor(), selectedDevelopmentCard.getLevel());
     }
 
+    // ------------------------------------------------------
+    // EVENT FOR NEW TURN INTERACTION
+    // ------------------------------------------------------
     @Override
     public void visit(TurnPlayedToServer turn) {
         System.out.println("mi è arrivato il messaggio di turno giocato");
@@ -70,9 +90,4 @@ public class ControllerConnection implements EventToServerVisitor, ObserveConnec
         }
     }
 
-    @Override
-    public void visit(ChooseLineToServer numLine) {
-        System.out.println("mi è arrivato il turno chooseline");
-        controllerToModel.marketChooseLine(numLine.getPlayerName() ,numLine.getNumLine());
-    }
 }

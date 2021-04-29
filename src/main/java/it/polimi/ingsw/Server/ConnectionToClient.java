@@ -114,7 +114,9 @@ public class ConnectionToClient implements Runnable, EventToClientNotifier {
         this.observeConnectionToClient = observeConnectionToClient;
     }
 
-
+    // -------------------------------------------------------
+    // EVENTS FOR THE START OF THE CONNECTION WITH THE CLIENT
+    // -------------------------------------------------------
     @Override
     public void sendPlayerName(String playerName) {
         SendPlayerNameToClient sendPlayerNameToClient = new SendPlayerNameToClient(playerName);
@@ -127,6 +129,9 @@ public class ConnectionToClient implements Runnable, EventToClientNotifier {
         new Thread(() -> asyncSendEvent(sendNumPlayerToClient)).start();
     }
 
+    // ----------------------------------------
+    // EVENTS THAT SEND LEADER CARD INFORMATION
+    // ----------------------------------------
     @Override
     public void sendLeaderCard(LeaderCard leaderCard) {
         SendLeaderCardToClient sendLeaderCardToClient = new SendLeaderCardToClient(leaderCard.getName(),
@@ -152,12 +157,24 @@ public class ConnectionToClient implements Runnable, EventToClientNotifier {
         new Thread(() -> asyncSendEvent(sendArrayLeaderCardsToClient)).start();
     }
 
+    // ----------------------------------
+    // EVENTS FOR THE MARKET TURN
+    // ----------------------------------
+    @Override
+    public void sendMarket(ArrayList<Marble> grid, Marble outMarble) {
+        MarketTurnToClient marketTurnToClient = new MarketTurnToClient(grid, outMarble);
+        new Thread(() -> asyncSendEvent(marketTurnToClient)).start();
+    }
+
     @Override
     public void sendReorganizeDeposit(ArrayList<Resource> marketResources, ArrayList<Resource> depositState) {
         SendReorganizeDepositToClient sendReorganizeDepositToClient = new SendReorganizeDepositToClient(marketResources, depositState);
         new Thread(() -> asyncSendEvent(sendReorganizeDepositToClient)).start();
     }
 
+    // ----------------------------------------
+    // EVENTS FOR THE BUY DEVELOPMENT CARD TURN
+    // ----------------------------------------
     @Override
     public void sendDevelopmentCard(DevelopmentCard developmentCard) {
         SendDevelopmentCardToClient sendDevelopmentCardToClient = new SendDevelopmentCardToClient(developmentCard.getColor().name(), developmentCard.getLevel(),
@@ -171,7 +188,9 @@ public class ConnectionToClient implements Runnable, EventToClientNotifier {
         new Thread(() -> asyncSendEvent(sendDevelopmentCardAvailableToClient)).start();
     }
 
-
+    // ----------------------------------
+    // OTHER EVENTS
+    // ----------------------------------
     @Override
     public void sendNotify(String message) {
         NotifyToClient notifyToClient = new NotifyToClient(message);
@@ -184,9 +203,5 @@ public class ConnectionToClient implements Runnable, EventToClientNotifier {
         new Thread(() -> asyncSendEvent(newTurnToClient)).start();
     }
 
-    @Override
-    public void sendMarket(ArrayList<Marble> grid, Marble outMarble) {
-        MarketTurnToClient marketTurnToClient = new MarketTurnToClient(grid, outMarble);
-        new Thread(() -> asyncSendEvent(marketTurnToClient)).start();
-    }
+
 }

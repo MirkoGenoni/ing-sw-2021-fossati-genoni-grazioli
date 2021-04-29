@@ -37,11 +37,35 @@ public class ControllerToModel {
         numPlayer = 0;
     }
 
+    // -------------------------------------------------------
+    // METHODS FOR THE START OF THE CONNECTION WITH THE CLIENT
+    // -------------------------------------------------------
     public void addConnectionToClient(ConnectionToClient connectionToClient){
         connectionsToClient.add(connectionToClient);
     }
 
-    // il controller crea direttamente il model
+    public int getNumPlayer() {
+        return numPlayer;
+    }
+
+
+    public void setNumPlayer(int numPlayer) {
+        System.out.println("ho settato il numero di giocatori");
+        this.numPlayer = numPlayer;
+    }
+
+    public void SetPlayerName(String newPlayerName, String oldPlayerName){
+        for(int i=0; i< connectionsToClient.size(); i++){
+            if(connectionsToClient.get(i).getNamePlayer().equals(oldPlayerName)){
+                System.out.println("setto il nuovo nome");
+                connectionsToClient.get(i).setNamePlayer(newPlayerName);
+            }
+        }
+    }
+
+    // -------------------------------------------
+    // METHODS FOR THE START OF THE MATCH
+    // -------------------------------------------
     public void startMatch() throws StartGameException {
         System.out.println("hai invocato start multiGame");
         connectionsToClient.forEach(cc -> cc.sendNotify("il gioco è iniziato"));
@@ -83,28 +107,9 @@ public class ControllerToModel {
     }
 
 
-    //
-
-
-    public int getNumPlayer() {
-        return numPlayer;
-    }
-
-    public void setNumPlayer(int numPlayer) {
-        System.out.println("ho settato il numero di giocatori");
-        this.numPlayer = numPlayer;
-    }
-
     // questi metodi servono per il multiPlayer
 
-    public void SetPlayerName(String newPlayerName, String oldPlayerName){
-        for(int i=0; i< connectionsToClient.size(); i++){
-            if(connectionsToClient.get(i).getNamePlayer().equals(oldPlayerName)){
-                System.out.println("setto il nuovo nome");
-                connectionsToClient.get(i).setNamePlayer(newPlayerName);
-            }
-        }
-    }
+
 
     public void newTurn(){
         System.out.println("è iniziato un nuovo turno");
@@ -127,8 +132,9 @@ public class ControllerToModel {
         }
     }
 
-    // metodi per il turno del market
-
+    // -------------------------------------------
+    // METHODS FOR THE MARKET TURN
+    // -------------------------------------------
     public void marketTurn(){
         System.out.println("prendo il market");
         connectionsToClient.get(currentPlayerIndex).sendMarket(game.getMarketBoard().getGrid(), game.getMarketBoard().getOutMarble());
@@ -139,7 +145,7 @@ public class ControllerToModel {
         ArrayList<Marble> tmpM =  game.getMarketBoard().chooseLine(line);
         System.out.println(tmpM);
 
-        if(tmpM.contains(Marble.FAITH)){    // se ci sono marbel di tipo faith incrementa direttamente la pedina del giocatore sul tracciato fede
+        if(tmpM.contains(Marble.FAITH)){    // se ci sono marble di tipo faith incrementa direttamente la pedina del giocatore sul tracciato fede
             game.getPlayersFaithTrack().forwardPos(currentPlayerIndex);
             tmpM.remove(Marble.FAITH);
         }
@@ -185,8 +191,9 @@ public class ControllerToModel {
 
     }
 
-
-    //metodi per il turno buy DevelopmentCard
+    // -------------------------------------------
+    // METHODS FOR THE BUY DEVELOPMENT CARD TURN
+    // -------------------------------------------
 
     public void developmentCardTurn(){
         System.out.println("mando array delle carte disponibili");

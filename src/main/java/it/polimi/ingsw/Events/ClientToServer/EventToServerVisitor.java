@@ -9,11 +9,32 @@ import it.polimi.ingsw.Events.ClientToServer.StartGameToServer.DiscardInitialLea
 
 // list of the event that the server receive form client
 public interface EventToServerVisitor {
+
+    // -------------------------------------------------------
+    // EVENTS FOR THE START OF THE CONNECTION WITH THE SERVER
+    // -------------------------------------------------------
     void visit(NumPlayerToServer numPlayer);
     void visit(PlayerNameToServer newPlayerName);
+
+    // -------------------------------------------
+    // EVENTS FOR THE LEADER CARD INTERACTION
+    // -------------------------------------------
     void visit(DiscardInitialLeaderCards leaderCards);
-    void visit(NewDepositStateToServer newDepositState);
-    void visit(SelectedDevelopmentCardToBuyToServer selectedDevelopmentCard);
-    void visit(TurnPlayedToServer turn);
+
+    // -------------------------------------------
+    // EVENTS FOR THE MARKET TURN INTERACTION
+    // -------------------------------------------
     void visit(ChooseLineToServer numLine);
+    void visit(NewDepositStateToServer newDepositState);
+
+    // ------------------------------------------------------
+    // EVENTS FOR THE BUY DEVELOPMENT CARD TURN INTERACTION
+    // ------------------------------------------------------
+    void visit(SelectedDevelopmentCardToBuyToServer selectedDevelopmentCard);
+
+    // ------------------------------------------------------
+    // EVENT FOR NEW TURN INTERACTION
+    // ------------------------------------------------------
+    void visit(TurnPlayedToServer turn);
+
 }

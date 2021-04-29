@@ -88,6 +88,10 @@ public class ConnectionToServer implements Runnable, EventToServerNotifier {
     }
 
     // event that the cli/gui calls to send event to the server
+
+    // -------------------------------------------------------
+    // EVENTS FOR THE START OF THE CONNECTION WITH THE SERVER
+    // -------------------------------------------------------
     @Override
     public void sendNumPlayer(int numPlayer) {
         NumPlayerToServer numPlayerToServer = new NumPlayerToServer(numPlayer, this.playerName);
@@ -100,10 +104,22 @@ public class ConnectionToServer implements Runnable, EventToServerNotifier {
         new Thread(() -> asyncSendEvent(playerNameToServer)).start();
     }
 
+    // -------------------------------------------
+    // EVENTS FOR THE LEADER CARD INTERACTION
+    // -------------------------------------------
     @Override
     public void sendDiscardInitialLeaderCards(int leaderCard1, int leaderCard2) {
         DiscardInitialLeaderCards discardInitialLeaderCards = new DiscardInitialLeaderCards(leaderCard1, leaderCard2, this.playerName);
         new Thread(() -> asyncSendEvent(discardInitialLeaderCards)).start();
+    }
+
+    // -------------------------------------------
+    // EVENTS FOR THE MARKET TURN INTERACTION
+    // -------------------------------------------
+    @Override
+    public void sendChooseLine(int numLine) {
+        ChooseLineToServer chooseLineToServer = new ChooseLineToServer(numLine, this.playerName);
+        new Thread(() -> asyncSendEvent(chooseLineToServer)).start();
     }
 
     @Override
@@ -112,23 +128,25 @@ public class ConnectionToServer implements Runnable, EventToServerNotifier {
         new Thread(() -> asyncSendEvent(newDepositStateToServer)).start();
     }
 
+    // ------------------------------------------------------
+    // EVENTS FOR THE BUY DEVELOPMENT CARD TURN INTERACTION
+    // ------------------------------------------------------
     @Override
     public void sendSelectedDevelopmentCard(int color, int level) {
         SelectedDevelopmentCardToBuyToServer selectedDevelopmentCardToBuyToServer = new SelectedDevelopmentCardToBuyToServer(color, level, this.playerName);
         new Thread(() -> asyncSendEvent(selectedDevelopmentCardToBuyToServer)).start();
     }
 
+    // ------------------------------------------------------
+    // EVENT FOR NEW TURN INTERACTION
+    // ------------------------------------------------------
     @Override
     public void sendTurnPlayed(String turnType) {
         TurnPlayedToServer turnPlayedToServer = new TurnPlayedToServer(turnType, this.playerName);
         new Thread(()-> asyncSendEvent(turnPlayedToServer)).start();
     }
 
-    @Override
-    public void sendChooseLine(int numLine) {
-        ChooseLineToServer chooseLineToServer = new ChooseLineToServer(numLine, this.playerName);
-        new Thread(() -> asyncSendEvent(chooseLineToServer)).start();
-    }
+
 
 
 }

@@ -26,6 +26,9 @@ public class CLI implements EventToClientVisitor {
     }
 
     // Events that arrive from ConnectionToServer, so from the server
+    // -------------------------------------------------------
+    // EVENTS FOR THE START OF THE CONNECTION WITH THE CLIENT
+    // -------------------------------------------------------
     @Override
     public void visit(SendPlayerNameToClient playerName) {
         System.out.println("ho ricevuto il mio nome " + playerName.getPlayerName());
@@ -58,6 +61,9 @@ public class CLI implements EventToClientVisitor {
         connectionToServer.sendNumPlayer(num);
     }
 
+    // -------------------------------------------
+    // EVENTS THAT RECEIVE LEADER CARD INFORMATION
+    // -------------------------------------------
     @Override
     public void visit(SendLeaderCardToClient leaderCard) {
         System.out.println("mi è arrivata la leaderCArd");
@@ -86,6 +92,25 @@ public class CLI implements EventToClientVisitor {
         }
     }
 
+    // ----------------------------------
+    // EVENTS FOR THE MARKET TURN
+    // ----------------------------------
+    @Override
+    public void visit(MarketTurnToClient market) {
+        for(int i=0; i<market.getGrid().size(); i++){
+            System.out.print("  " + market.getGrid().get(i).toString());
+            if(i==3 || i==7 || i==11){
+                System.out.println("");
+            }
+        }
+        System.out.println(" ");
+        System.out.println("out marble :" + market.getOutMarble().toString());
+        System.out.println("dimmi una riga che scegli: ");
+        Scanner scanIn = new Scanner(System.in);
+        int line = scanIn.nextInt();
+        connectionToServer.sendChooseLine(line);
+    }
+
     @Override
     public void visit(SendReorganizeDepositToClient newResources) {
         System.out.println("mi è arrivato il deposito");
@@ -99,10 +124,11 @@ public class CLI implements EventToClientVisitor {
         }
 
         connectionToServer.sendNewDepositState(view.getDepositState(), view.getMarketReceived());
-        // qui dovrebbe riorganizzare il nuovo deposito
-        // il metodo nel connectionToServer è il newDeposit state
     }
 
+    // ----------------------------------------
+    // EVENTS FOR THE BUY DEVELOPMENT CARD TURN
+    // ----------------------------------------
     @Override
     public void visit(SendDevelopmentCardToClient developmentCard) {
         System.out.print("ho ricevuto: ");
@@ -124,7 +150,9 @@ public class CLI implements EventToClientVisitor {
         connectionToServer.sendSelectedDevelopmentCard(color, level);
     }
 
-
+    // ----------------------------------
+    // OTHER EVENTS
+    // ----------------------------------
     @Override
     public void visit(NotifyToClient message) {
         System.out.print("ho ricevuto: ");
@@ -134,26 +162,12 @@ public class CLI implements EventToClientVisitor {
     @Override
     public void visit(NewTurnToClient notify){
         System.out.println("è il mio turno: scrivo market, buydevelopment o usedevelopment (turn)");
-        Scanner scanIn = new Scanner(System.in); // da risolvere
+        Scanner scanIn = new Scanner(System.in);
         String line = scanIn.nextLine();
         connectionToServer.sendTurnPlayed(line);
     }
 
-    @Override
-    public void visit(MarketTurnToClient market) {
-        for(int i=0; i<market.getGrid().size(); i++){
-            System.out.print("  " + market.getGrid().get(i).toString());
-            if(i==3 || i==7 || i==11){
-                System.out.println("");
-            }
-        }
-        System.out.println(" ");
-        System.out.println("out marble :" + market.getOutMarble().toString());
-        System.out.println("dimmi una riga che scegli: ");
-        Scanner scanIn = new Scanner(System.in);
-        int line = scanIn.nextInt();
-        connectionToServer.sendChooseLine(line);
-    }
+
 
 
 }
