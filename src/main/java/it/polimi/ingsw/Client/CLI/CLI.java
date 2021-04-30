@@ -10,6 +10,7 @@ import it.polimi.ingsw.Events.ServerToClient.MarketTurnToClient.SendReorganizeDe
 import it.polimi.ingsw.Events.ServerToClient.StartConnectionToClient.SendNumPlayerToClient;
 import it.polimi.ingsw.Events.ServerToClient.StartConnectionToClient.SendPlayerNameToClient;
 import it.polimi.ingsw.Model.DevelopmentCard.CardColor;
+import it.polimi.ingsw.Model.FaithTrack.FaithTrack;
 
 import java.io.IOException;
 import java.util.Scanner;
@@ -152,19 +153,26 @@ public class CLI implements EventToClientVisitor {
             input = input.trim();
             String delimits = ",";
             String[] strArray = input.split(delimits);
-            strArray[1] = strArray[1].toUpperCase();
-            isValid = true;
+            if (strArray.length == 2) { //lenght!=0
+                strArray[1] = strArray[1].toUpperCase();
+                isValid = true;
 
-            try {
-                level = Integer.parseInt(strArray[0]);
-                color = CardColor.valueOf(strArray[1]);
-                //System.out.println("level:" + level + "color: " + color);
-                if (level < 1 || level > 3)
-                    throw new IllegalArgumentException();
-            } catch (IllegalArgumentException e) {
+                try {
+                    level = Integer.parseInt(strArray[0]);
+                    color = CardColor.valueOf(strArray[1]);
+                    //System.out.println("level:" + level + "color: " + color);
+                    if (level < 1 || level > 3)
+                        throw new IllegalArgumentException();
+                } catch (IllegalArgumentException e) {
+                    System.out.println("Non valid Argument");
+                    isValid = false;
+                }
+            }
+            else {
                 System.out.println("Non valid Argument");
                 isValid = false;
             }
+
         } while (!isValid);
 
 
