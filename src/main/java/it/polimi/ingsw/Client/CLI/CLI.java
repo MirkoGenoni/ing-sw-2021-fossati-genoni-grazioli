@@ -118,11 +118,7 @@ public class CLI implements EventToClientVisitor {
 
         NewDepositView view = new NewDepositView(newResources.getDepositResources(), newResources.getMarketResources());
 
-        try{
-            view.LaunchView();
-        } catch(IOException e){
-            System.out.println(e.getMessage());
-        }
+        view.LaunchView();
 
         connectionToServer.sendNewDepositState(view.getDepositState(), view.getMarketReceived());
     }

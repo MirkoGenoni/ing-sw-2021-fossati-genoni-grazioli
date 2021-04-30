@@ -61,7 +61,7 @@ public class NewDepositView {
         return num;
     }
 
-    public void LaunchView() throws IOException {
+    public void LaunchView(){
 
         PrintDepositChoise(this.depositState, marketReceived);
 
@@ -77,32 +77,39 @@ public class NewDepositView {
             String[] formatInput = input.split(lim);
 
             //elimino eventuali spazi iniziali dalle due stringhe
-            formatInput[0] = formatInput[0].trim();
-            if(formatInput[0].equals("done"))
-                break;
+            if(formatInput.length!=0) {
+                formatInput[0] = formatInput[0].trim();
+                if (formatInput[0].equals("done"))
+                    break;
 
-            int num = -1;
-            if(formatInput.length==2) {
-                formatInput[1] = formatInput[1].trim();
+                int num = -1;
+                if (formatInput.length == 2) {
+                    formatInput[1] = formatInput[1].trim();
 
-                //trasformo la seconda stringa in un numero
-                num = Integer.parseInt(formatInput[1]);
-            }
-            formatInput[0] = formatInput[0].toUpperCase();
-
-            //tolgo il materiale dalle risorse ottenute dal market da inserire in deposito
-            if(marketReceived.containsKey(formatInput[0]) && num>0 && num<7)
-                if(marketReceived.get(formatInput[0])-1>-1) {
-                    marketReceived.put(formatInput[0], marketReceived.get(formatInput[0]) - 1);
-
-                    //aggiungo il materiale tolto dal deposito ai materiali disponibili
-                    if (marketReceived.containsKey(formatInput[0]) && depositState.get(num - 1) != null)
-                        marketReceived.put(depositState.get(num - 1).toString(), marketReceived.get(depositState.get(num - 1).toString()) + 1);
-
-                    //aggiungo il materiale tolto dai materiali disponibili al deposito
-                    if (marketReceived.containsKey(formatInput[0]))
-                        depositState.set(num - 1, ResourceIcon.valueOf(formatInput[0]));
+                    //trasformo la seconda stringa in un numero
+                    try{
+                        num = Integer.parseInt(formatInput[1]);
+                    } catch(IllegalArgumentException e){
+                        System.out.println("Insert a number");
+                    }
                 }
+
+                formatInput[0] = formatInput[0].toUpperCase();
+
+                //tolgo il materiale dalle risorse ottenute dal market da inserire in deposito
+                if (marketReceived.containsKey(formatInput[0]) && num > 0 && num < 7)
+                    if (marketReceived.get(formatInput[0]) - 1 > -1) {
+                        marketReceived.put(formatInput[0], marketReceived.get(formatInput[0]) - 1);
+
+                        //aggiungo il materiale tolto dal deposito ai materiali disponibili
+                        if (marketReceived.containsKey(formatInput[0]) && depositState.get(num - 1) != null)
+                            marketReceived.put(depositState.get(num - 1).toString(), marketReceived.get(depositState.get(num - 1).toString()) + 1);
+
+                        //aggiungo il materiale tolto dai materiali disponibili al deposito
+                        if (marketReceived.containsKey(formatInput[0]))
+                            depositState.set(num - 1, ResourceIcon.valueOf(formatInput[0]));
+                    }
+            }
 
             PrintDepositChoise(this.depositState, this.marketReceived);
 
