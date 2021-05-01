@@ -96,13 +96,13 @@ public class ConnectionToServer implements Runnable, EventToServerNotifier {
     @Override
     public void sendNumPlayer(int numPlayer) {
         NumPlayerToServer numPlayerToServer = new NumPlayerToServer(numPlayer, this.playerName);
-        new Thread(() -> asyncSendEvent(numPlayerToServer)).start();
+        asyncSendEvent(numPlayerToServer);
     }
 
     @Override
     public void sendNewPlayerName(String newPlayerName) {
         PlayerNameToServer playerNameToServer = new PlayerNameToServer(newPlayerName, this.playerName);
-        new Thread(() -> asyncSendEvent(playerNameToServer)).start();
+        asyncSendEvent(playerNameToServer);
     }
 
     // -------------------------------------------
@@ -111,7 +111,7 @@ public class ConnectionToServer implements Runnable, EventToServerNotifier {
     @Override
     public void sendDiscardInitialLeaderCards(int leaderCard1, int leaderCard2) {
         DiscardInitialLeaderCards discardInitialLeaderCards = new DiscardInitialLeaderCards(leaderCard1, leaderCard2, this.playerName);
-        new Thread(() -> asyncSendEvent(discardInitialLeaderCards)).start();
+        asyncSendEvent(discardInitialLeaderCards);
     }
 
     // -------------------------------------------
@@ -120,13 +120,13 @@ public class ConnectionToServer implements Runnable, EventToServerNotifier {
     @Override
     public void sendChooseLine(int numLine) {
         ChooseLineToServer chooseLineToServer = new ChooseLineToServer(numLine, this.playerName);
-        new Thread(() -> asyncSendEvent(chooseLineToServer)).start();
+        asyncSendEvent(chooseLineToServer);
     }
 
     @Override
     public void sendNewDepositState(ArrayList<Resource> newDepositState, int discardResources) {
         NewDepositStateToServer newDepositStateToServer = new NewDepositStateToServer(newDepositState, discardResources, this.playerName);
-        new Thread(() -> asyncSendEvent(newDepositStateToServer)).start();
+        asyncSendEvent(newDepositStateToServer);
     }
 
     // ------------------------------------------------------
@@ -135,7 +135,7 @@ public class ConnectionToServer implements Runnable, EventToServerNotifier {
     @Override
     public void sendSelectedDevelopmentCard(int color, int level) {
         SelectedDevelopmentCardToBuyToServer selectedDevelopmentCardToBuyToServer = new SelectedDevelopmentCardToBuyToServer(color, level, this.playerName);
-        new Thread(() -> asyncSendEvent(selectedDevelopmentCardToBuyToServer)).start();
+        asyncSendEvent(selectedDevelopmentCardToBuyToServer);
     }
 
     @Override
@@ -150,7 +150,7 @@ public class ConnectionToServer implements Runnable, EventToServerNotifier {
     @Override
     public void sendTurnPlayed(String turnType) {
         TurnPlayedToServer turnPlayedToServer = new TurnPlayedToServer(turnType, this.playerName);
-        new Thread(()-> asyncSendEvent(turnPlayedToServer)).start();
+        asyncSendEvent(turnPlayedToServer);
     }
 
 

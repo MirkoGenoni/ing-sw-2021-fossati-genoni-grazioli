@@ -75,9 +75,7 @@ public class ConnectionToClient implements Runnable, EventToClientNotifier {
 
     // send the event with a thread to the client of this connection
     private synchronized void asyncSendEvent(EventToClient event){
-        new Thread(() ->{
-            sendEvent(event);
-        }).start();
+        new Thread(() -> sendEvent(event)).start();
     }
 
     // receive the event form the client of this connection
@@ -121,13 +119,13 @@ public class ConnectionToClient implements Runnable, EventToClientNotifier {
     @Override
     public void sendPlayerName(String playerName) {
         SendPlayerNameToClient sendPlayerNameToClient = new SendPlayerNameToClient(playerName);
-        new Thread(() -> asyncSendEvent(sendPlayerNameToClient)).start();
+        asyncSendEvent(sendPlayerNameToClient);
     }
 
     @Override
     public void sendNumPlayer(String message) {
         SendNumPlayerToClient sendNumPlayerToClient = new SendNumPlayerToClient(message);
-        new Thread(() -> asyncSendEvent(sendNumPlayerToClient)).start();
+        asyncSendEvent(sendNumPlayerToClient);
     }
 
     // ----------------------------------------
@@ -140,7 +138,7 @@ public class ConnectionToClient implements Runnable, EventToClientNotifier {
                 leaderCard.getSpecialAbility().getVictoryPoints(),
                 leaderCard.getSpecialAbility().getEffect(),
                 leaderCard.getSpecialAbility().getMaterialType().toString());
-        new Thread(() -> asyncSendEvent(sendLeaderCardToClient)).start();
+        asyncSendEvent(sendLeaderCardToClient);
     }
 
     @Override
@@ -155,7 +153,7 @@ public class ConnectionToClient implements Runnable, EventToClientNotifier {
             tmp.add(sendLeaderCardToClient);
         }
         SendArrayLeaderCardsToClient sendArrayLeaderCardsToClient = new SendArrayLeaderCardsToClient(tmp);
-        new Thread(() -> asyncSendEvent(sendArrayLeaderCardsToClient)).start();
+        asyncSendEvent(sendArrayLeaderCardsToClient);
     }
 
     // ----------------------------------
@@ -164,13 +162,13 @@ public class ConnectionToClient implements Runnable, EventToClientNotifier {
     @Override
     public void sendMarket(ArrayList<Marble> grid, Marble outMarble) {
         MarketTurnToClient marketTurnToClient = new MarketTurnToClient(grid, outMarble);
-        new Thread(() -> asyncSendEvent(marketTurnToClient)).start();
+        asyncSendEvent(marketTurnToClient);
     }
 
     @Override
     public void sendReorganizeDeposit(ArrayList<Resource> marketResources, ArrayList<Resource> depositState) {
         SendReorganizeDepositToClient sendReorganizeDepositToClient = new SendReorganizeDepositToClient(marketResources, depositState);
-        new Thread(() -> asyncSendEvent(sendReorganizeDepositToClient)).start();
+        asyncSendEvent(sendReorganizeDepositToClient);
     }
 
     // ----------------------------------------
@@ -180,13 +178,13 @@ public class ConnectionToClient implements Runnable, EventToClientNotifier {
     public void sendDevelopmentCard(DevelopmentCard developmentCard) {
         SendDevelopmentCardToClient sendDevelopmentCardToClient = new SendDevelopmentCardToClient(developmentCard.getColor().name(), developmentCard.getLevel(),
                 developmentCard.getCost(), developmentCard.getVictoryPoint(), developmentCard.getMaterialRequired(), developmentCard.getProductionResult());
-        new Thread(() -> asyncSendEvent(sendDevelopmentCardToClient)).start();
+        asyncSendEvent(sendDevelopmentCardToClient);
     }
 
     @Override
     public void sendDevelopmentCards(SendDevelopmentCardToClient[][] availableDevelopmentCards) {
         SendDevelopmentCardAvailableToClient sendDevelopmentCardAvailableToClient = new SendDevelopmentCardAvailableToClient(availableDevelopmentCards);
-        new Thread(() -> asyncSendEvent(sendDevelopmentCardAvailableToClient)).start();
+        asyncSendEvent(sendDevelopmentCardAvailableToClient);
     }
 
     @Override
@@ -201,13 +199,13 @@ public class ConnectionToClient implements Runnable, EventToClientNotifier {
     @Override
     public void sendNotify(String message) {
         NotifyToClient notifyToClient = new NotifyToClient(message);
-        new Thread(() -> asyncSendEvent(notifyToClient)).start();
+        asyncSendEvent(notifyToClient);
     }
 
     @Override
     public void sendNewTurn(int turnNumber) {
         NewTurnToClient newTurnToClient = new NewTurnToClient(turnNumber);
-        new Thread(() -> asyncSendEvent(newTurnToClient)).start();
+        asyncSendEvent(newTurnToClient);
     }
 
 

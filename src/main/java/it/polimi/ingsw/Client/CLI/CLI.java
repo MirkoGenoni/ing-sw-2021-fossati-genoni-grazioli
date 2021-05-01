@@ -118,7 +118,6 @@ public class CLI implements EventToClientVisitor {
         System.out.println("mi è arrivato il deposito");
 
         NewDepositView view = new NewDepositView(newResources.getDepositResources(), newResources.getMarketResources());
-
         view.LaunchView();
 
         connectionToServer.sendNewDepositState(view.getDepositState(), view.getMarketReceived());
