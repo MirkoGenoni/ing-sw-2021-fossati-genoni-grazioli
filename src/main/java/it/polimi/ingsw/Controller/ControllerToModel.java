@@ -1,23 +1,18 @@
 package it.polimi.ingsw.Controller;
 
 
-import it.polimi.ingsw.Events.ServerToClient.BuyDevelopmentCardTurnToClient.SendDevelopmentCardToClient;
-import it.polimi.ingsw.Model.DevelopmentCard.DevelopmentCard;
-import it.polimi.ingsw.Model.Exceptions.DevelopmentCardException;
+import it.polimi.ingsw.Controller.Turns.BuyDevelopmentCardTurn;
+import it.polimi.ingsw.Controller.Turns.MarketTurn;
 import it.polimi.ingsw.Model.Exceptions.LeaderCardException;
-import it.polimi.ingsw.Model.Exceptions.ResourceException;
 import it.polimi.ingsw.Model.Exceptions.StartGameException;
 import it.polimi.ingsw.Model.Game.Game;
 import it.polimi.ingsw.Model.Game.MultiPlayerGame;
 import it.polimi.ingsw.Model.Game.Player;
 import it.polimi.ingsw.Model.Game.SinglePlayerGame;
-import it.polimi.ingsw.Model.LeaderCard.LeaderCard;
-import it.polimi.ingsw.Model.Market.Marble;
 import it.polimi.ingsw.Model.Resource.Resource;
 import it.polimi.ingsw.Server.ConnectionToClient;
 
 import java.util.ArrayList;
-import java.util.Map;
 
 /*
    modifica direttamente il model
@@ -33,10 +28,9 @@ public class ControllerToModel {
     private int currentPlayerIndex;
     private int numPlayer;
 
-    // tmp attributes
-    private ArrayList<Resource> tmpMarketReturn;
-    private int color;
-    private int level;
+    // type of turn
+    private MarketTurn marketTurn;
+    private BuyDevelopmentCardTurn buyDevelopmentCardTurn;
 
     public ControllerToModel() {
         this.connectionsToClient = new ArrayList<>();
@@ -98,6 +92,10 @@ public class ControllerToModel {
             }
             this.activePlayer = players[0];
             turnNumber = 0;
+
+            // create classes of type of turn
+            this.marketTurn = new MarketTurn(players, connectionsToClient, multiGame);
+            this.buyDevelopmentCardTurn = new BuyDevelopmentCardTurn(players, connectionsToClient, multiGame);
             newTurn();
         }else if(numPlayer == 1){
             players = new Player[numPlayer];
@@ -142,57 +140,17 @@ public class ControllerToModel {
     // METHODS FOR THE MARKET TURN
     // -------------------------------------------
     public void marketTurn(){
-        System.out.println("prendo il market");
-        connectionsToClient.get(currentPlayerIndex).sendMarket(game.getMarketBoard().getGrid(), game.getMarketBoard().getOutMarble());
+        marketTurn.marketTurn(currentPlayerIndex);
     }
 
     public void marketChooseLine(String namePlayer, int line){
-        System.out.println("aggiungo al player");
-        ArrayList<Marble> tmpM =  game.getMarketBoard().chooseLine(line);
-        System.out.println(tmpM);
-
-        if(tmpM.contains(Marble.FAITH)){    // se ci sono marble di tipo faith incrementa direttamente la pedina del giocatore sul tracciato fede
-            game.getPlayersFaithTrack().forwardPos(currentPlayerIndex);
-            tmpM.remove(Marble.FAITH);
-        }
-
-        if(tmpM.contains(Marble.NOTHING)){   // le leader card da usare sarebbero da scegliere....
-            try{
-                ArrayList<LeaderCard> tmpL = players[currentPlayerIndex].getPlayerBoard().getLeaderCardHandler().getLeaderCardsActive();
-                if(!tmpL.isEmpty()){                                        // controlla se ci sono carte leader attive
-                    for(int i=0; i< tmpL.size() && tmpM.contains(Marble.NOTHING); i++){
-                        if(tmpL.get(i).getSpecialAbility().getEffect().equals("marketWhiteChange") && tmpM.contains(Marble.NOTHING)){  // se ci sono carte leader attive di tipo marketWhiteChenge converte la marble
-                            tmpM.remove(Marble.NOTHING);
-                            tmpM.add(Marble.valueOf(tmpL.get(i).getSpecialAbility().getMaterialType().toString()));
-                        }
-                    }
-                }
-            } catch (LeaderCardException e) {
-                System.out.println(players[currentPlayerIndex].getName() + e.getMessage());
-            }
-        }
-        System.out.println(tmpM);
-        while(tmpM.contains(Marble.NOTHING)){           // toglie le marble nothing in eccesso
-            tmpM.remove(Marble.NOTHING);
-        }
-
-        ArrayList<Resource> tmpR = new ArrayList<>();  // converte da marble a resource
-        for( Marble m : tmpM){
-            tmpR.add(Resource.valueOf(m.toString()));
-        }
-
-        this.tmpMarketReturn = new ArrayList<>(tmpR);
-        connectionsToClient.get(currentPlayerIndex).sendReorganizeDeposit(tmpR, players[currentPlayerIndex].getPlayerBoard().getResourceHandler().getDepositState());
+        marketTurn.marketChooseLine(namePlayer, line, currentPlayerIndex);
     }
 
     public void saveNewDepositState(ArrayList<Resource> newDepositState, int discardResources){
-        // deve fare il check del nuovo stato del deposito se non va bene rimanda l'evento di riorganizzare il deposito
-        try{
-            players[currentPlayerIndex].getPlayerBoard().getResourceHandler().newDepositState(newDepositState);
+        boolean tmp = marketTurn.saveNewDepositState(newDepositState, discardResources, currentPlayerIndex);
+        if(tmp){
             newTurn();
-        } catch (ResourceException e) {
-            connectionsToClient.get(currentPlayerIndex).sendNotify(e.getMessage());
-            connectionsToClient.get(currentPlayerIndex).sendReorganizeDeposit(tmpMarketReturn, players[currentPlayerIndex].getPlayerBoard().getResourceHandler().getDepositState());
         }
 
     }
@@ -202,76 +160,19 @@ public class ControllerToModel {
     // -------------------------------------------
 
     public void developmentCardTurn(){
-        System.out.println("mando array delle carte disponibili");
-        DevelopmentCard[][] devCards = game.getDevelopmentCardsAvailable();
-        SendDevelopmentCardToClient[][] availableToSend = new SendDevelopmentCardToClient[4][3];
-        DevelopmentCard cardToCopy;
-
-        for(int i=0; i<devCards.length; i++){
-            for(int j=0; j<devCards[i].length; j++){
-                cardToCopy = devCards[i][j];
-                availableToSend[i][j] = new SendDevelopmentCardToClient(cardToCopy.getColor().name(), cardToCopy.getLevel(),
-                        cardToCopy.getCost(), cardToCopy.getVictoryPoint(), cardToCopy.getMaterialRequired(), cardToCopy.getProductionResult());
-            }
-        }
-        connectionsToClient.get(currentPlayerIndex).sendDevelopmentCards(availableToSend);
-
+        buyDevelopmentCardTurn.developmentCardTurn(currentPlayerIndex);
     }
 
     public void buyDevelopmentCard(int color, int level){
-        DevelopmentCard buyDevelopmentCard = game.getDevelopmentCardsAvailable()[color][level];
-        System.out.println(buyDevelopmentCard.getColor() + buyDevelopmentCard.getCost().toString());
-        this.color = color;
-        this.level = level; // questo livello è la posizione delle development card nel doppio array del game
-
-        System.out.println("faccio il check delle risorse e degli spazi development card");
-        // qui ci sarebbe da rimettere ccomunque il controllo sulle leadercard cost less
-        if (players[currentPlayerIndex].getPlayerBoard().getResourceHandler().checkMaterials(buyDevelopmentCard.getCost())
-                && players[currentPlayerIndex].getPlayerBoard().getDevelopmentCardHandler().checkBoughtable(level+1).contains(true)) {
-            connectionsToClient.get(currentPlayerIndex).sendDevelopmentCardSpace(players[currentPlayerIndex].getPlayerBoard().getDevelopmentCardHandler().checkBoughtable(level+1));
-        } else {
-            connectionsToClient.get(currentPlayerIndex).sendNotify("You can't bought the selected card, please select an other card");
-            developmentCardTurn();
-        }
-
-
+        buyDevelopmentCardTurn.buyDevelopmentCard(color, level, currentPlayerIndex);
     }
 
     public void spaceDevelopmentCard(int space){
-        DevelopmentCard buyDevelopmentCard = game.getDevelopmentCardsAvailable()[color][level];
-        Map<Resource, Integer> requirements = buyDevelopmentCard.getCost();
-        ArrayList<LeaderCard> leaderCardActive;
-
-        try{
-            leaderCardActive = players[currentPlayerIndex].getPlayerBoard().getLeaderCardHandler().getLeaderCardsActive();
-        } catch (LeaderCardException e) {
-            leaderCardActive = null;
+        boolean tmp = buyDevelopmentCardTurn.spaceDevelopmentCard(space, currentPlayerIndex);
+        if(tmp){
+            newTurn();
         }
-
-        if(leaderCardActive!=null){
-            for (LeaderCard card : leaderCardActive){          //control if there's an active LeaderCard costless
-                if (card.getSpecialAbility().getEffect().equals("costLess")) {
-                    Resource discount = card.getSpecialAbility().getMaterialType();
-                    if(requirements.containsKey(discount)){
-                        requirements.put(discount, requirements.get(discount)-1);
-                    }
-                }
-            }
-        }
-
-        try{
-            players[currentPlayerIndex].getPlayerBoard().getResourceHandler().takeMaterials(requirements);
-            players[currentPlayerIndex].getPlayerBoard().getDevelopmentCardHandler().setActiveDevelopmentCard(game.buyDevelopmentCard(color, level), space);
-        } catch (ResourceException | StartGameException | DevelopmentCardException e) {
-            e.printStackTrace();
-        }
-        connectionsToClient.get(currentPlayerIndex).sendNotify("Card correctly Activated");
-        newTurn();
-
     }
-
-
-
 
 
     private Player nextPlayer(){
