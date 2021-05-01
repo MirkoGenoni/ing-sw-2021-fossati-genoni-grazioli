@@ -5,6 +5,7 @@ import it.polimi.ingsw.Events.ServerToClient.*;
 import it.polimi.ingsw.Controller.ObserveConnectionToClient;
 import it.polimi.ingsw.Events.ServerToClient.BuyDevelopmentCardTurnToClient.SendDevelopmentCardAvailableToClient;
 import it.polimi.ingsw.Events.ServerToClient.BuyDevelopmentCardTurnToClient.SendDevelopmentCardToClient;
+import it.polimi.ingsw.Events.ServerToClient.BuyDevelopmentCardTurnToClient.SendSpaceDevelopmentCardToClient;
 import it.polimi.ingsw.Events.ServerToClient.MarketTurnToClient.MarketTurnToClient;
 import it.polimi.ingsw.Events.ServerToClient.MarketTurnToClient.SendReorganizeDepositToClient;
 import it.polimi.ingsw.Events.ServerToClient.StartConnectionToClient.SendNumPlayerToClient;
@@ -186,6 +187,12 @@ public class ConnectionToClient implements Runnable, EventToClientNotifier {
     public void sendDevelopmentCards(SendDevelopmentCardToClient[][] availableDevelopmentCards) {
         SendDevelopmentCardAvailableToClient sendDevelopmentCardAvailableToClient = new SendDevelopmentCardAvailableToClient(availableDevelopmentCards);
         new Thread(() -> asyncSendEvent(sendDevelopmentCardAvailableToClient)).start();
+    }
+
+    @Override
+    public void sendDevelopmentCardSpace(ArrayList<Boolean> developmentCardSpace) {
+        SendSpaceDevelopmentCardToClient sendSpaceDevelopmentCardToClient = new SendSpaceDevelopmentCardToClient(developmentCardSpace);
+        asyncSendEvent(sendSpaceDevelopmentCardToClient);
     }
 
     // ----------------------------------

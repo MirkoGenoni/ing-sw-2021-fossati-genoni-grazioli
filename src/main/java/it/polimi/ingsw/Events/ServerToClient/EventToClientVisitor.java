@@ -2,6 +2,7 @@ package it.polimi.ingsw.Events.ServerToClient;
 
 import it.polimi.ingsw.Events.ServerToClient.BuyDevelopmentCardTurnToClient.SendDevelopmentCardAvailableToClient;
 import it.polimi.ingsw.Events.ServerToClient.BuyDevelopmentCardTurnToClient.SendDevelopmentCardToClient;
+import it.polimi.ingsw.Events.ServerToClient.BuyDevelopmentCardTurnToClient.SendSpaceDevelopmentCardToClient;
 import it.polimi.ingsw.Events.ServerToClient.MarketTurnToClient.MarketTurnToClient;
 import it.polimi.ingsw.Events.ServerToClient.MarketTurnToClient.SendReorganizeDepositToClient;
 import it.polimi.ingsw.Events.ServerToClient.StartConnectionToClient.SendNumPlayerToClient;
@@ -33,6 +34,7 @@ public interface EventToClientVisitor {
     // ----------------------------------------
     void visit(SendDevelopmentCardToClient developmentCard);
     void visit(SendDevelopmentCardAvailableToClient availableDevelopmentCards);
+    void visit(SendSpaceDevelopmentCardToClient developmentCardSpace);
 
     // ----------------------------------
     // OTHER EVENTS

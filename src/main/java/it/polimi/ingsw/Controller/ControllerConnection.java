@@ -1,6 +1,7 @@
 package it.polimi.ingsw.Controller;
 
 import it.polimi.ingsw.Events.ClientToServer.*;
+import it.polimi.ingsw.Events.ClientToServer.BuyDevelopmentCardToServer.SelectedDevelopmentCardSpaceToServer;
 import it.polimi.ingsw.Events.ClientToServer.BuyDevelopmentCardToServer.SelectedDevelopmentCardToBuyToServer;
 import it.polimi.ingsw.Events.ClientToServer.MarketTurnToServer.ChooseLineToServer;
 import it.polimi.ingsw.Events.ClientToServer.MarketTurnToServer.NewDepositStateToServer;
@@ -73,6 +74,12 @@ public class ControllerConnection implements EventToServerVisitor, ObserveConnec
     public void visit(SelectedDevelopmentCardToBuyToServer selectedDevelopmentCard) {
         System.out.println("ho ricevuto la carta da acquistare");
         controllerToModel.buyDevelopmentCard(selectedDevelopmentCard.getColor(), selectedDevelopmentCard.getLevel());
+    }
+
+    @Override
+    public void visit(SelectedDevelopmentCardSpaceToServer selectedDevelopmentCardSpace) {
+        System.out.println("ho ricevuto lo spazio development card");
+        controllerToModel.spaceDevelopmentCard(selectedDevelopmentCardSpace.getSpace());
     }
 
     // ------------------------------------------------------

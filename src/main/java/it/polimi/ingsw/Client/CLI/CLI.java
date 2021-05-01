@@ -5,12 +5,12 @@ import it.polimi.ingsw.Client.ConnectionToServer;
 import it.polimi.ingsw.Events.ServerToClient.*;
 import it.polimi.ingsw.Events.ServerToClient.BuyDevelopmentCardTurnToClient.SendDevelopmentCardAvailableToClient;
 import it.polimi.ingsw.Events.ServerToClient.BuyDevelopmentCardTurnToClient.SendDevelopmentCardToClient;
+import it.polimi.ingsw.Events.ServerToClient.BuyDevelopmentCardTurnToClient.SendSpaceDevelopmentCardToClient;
 import it.polimi.ingsw.Events.ServerToClient.MarketTurnToClient.MarketTurnToClient;
 import it.polimi.ingsw.Events.ServerToClient.MarketTurnToClient.SendReorganizeDepositToClient;
 import it.polimi.ingsw.Events.ServerToClient.StartConnectionToClient.SendNumPlayerToClient;
 import it.polimi.ingsw.Events.ServerToClient.StartConnectionToClient.SendPlayerNameToClient;
 import it.polimi.ingsw.Model.DevelopmentCard.CardColor;
-import it.polimi.ingsw.Model.FaithTrack.FaithTrack;
 
 import java.io.IOException;
 import java.util.Scanner;
@@ -203,6 +203,29 @@ public class CLI implements EventToClientVisitor {
         System.out.println("Chose" + " " + color.name() + " " + level);
         connectionToServer.sendSelectedDevelopmentCard(colorForCard, level-1); //livello da 0 a 2
 
+    }
+
+    @Override
+    public void visit(SendSpaceDevelopmentCardToClient developmentCardSpace) {
+        boolean bought = true;
+        System.out.println("You can put the bought card in these positions:");
+        for (int i=0; i<developmentCardSpace.getDevelopmentCardSpace().size(); i++) {
+            if (developmentCardSpace.getDevelopmentCardSpace().get(i).equals(true))
+                System.out.println(" " + i);
+        }
+
+        int selectedPosition;
+        do {
+            bought=true;
+            System.out.println("Select one of the valid positions:");
+            Scanner scanIn = new Scanner(System.in);
+            selectedPosition = scanIn.nextInt();
+            if (selectedPosition>2 || selectedPosition<0 || !developmentCardSpace.getDevelopmentCardSpace().get(selectedPosition)) {
+                System.out.println("You can't put the card in this position");
+                bought = false;
+            }
+        }while (!bought);
+        connectionToServer.sendSelectedDevelopmentCardSpace(selectedPosition);
     }
 
     // ----------------------------------

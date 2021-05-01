@@ -28,6 +28,7 @@ public interface EventToServerNotifier {
     // EVENTS FOR THE BUY DEVELOPMENT CARD TURN INTERACTION
     // ------------------------------------------------------
     void sendSelectedDevelopmentCard(int color, int level);
+    void sendSelectedDevelopmentCardSpace(int space);
 
     // ------------------------------------------------------
     // EVENT FOR NEW TURN INTERACTION

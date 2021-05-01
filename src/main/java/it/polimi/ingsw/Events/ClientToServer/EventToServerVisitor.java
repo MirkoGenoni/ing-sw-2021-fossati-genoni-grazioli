@@ -1,5 +1,6 @@
 package it.polimi.ingsw.Events.ClientToServer;
 
+import it.polimi.ingsw.Events.ClientToServer.BuyDevelopmentCardToServer.SelectedDevelopmentCardSpaceToServer;
 import it.polimi.ingsw.Events.ClientToServer.BuyDevelopmentCardToServer.SelectedDevelopmentCardToBuyToServer;
 import it.polimi.ingsw.Events.ClientToServer.MarketTurnToServer.ChooseLineToServer;
 import it.polimi.ingsw.Events.ClientToServer.MarketTurnToServer.NewDepositStateToServer;
@@ -31,6 +32,7 @@ public interface EventToServerVisitor {
     // EVENTS FOR THE BUY DEVELOPMENT CARD TURN INTERACTION
     // ------------------------------------------------------
     void visit(SelectedDevelopmentCardToBuyToServer selectedDevelopmentCard);
+    void visit(SelectedDevelopmentCardSpaceToServer selectedDevelopmentCardSpace);
 
     // ------------------------------------------------------
     // EVENT FOR NEW TURN INTERACTION

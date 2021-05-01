@@ -3,6 +3,7 @@ package it.polimi.ingsw.Controller;
 
 import it.polimi.ingsw.Events.ServerToClient.BuyDevelopmentCardTurnToClient.SendDevelopmentCardToClient;
 import it.polimi.ingsw.Model.DevelopmentCard.DevelopmentCard;
+import it.polimi.ingsw.Model.Exceptions.DevelopmentCardException;
 import it.polimi.ingsw.Model.Exceptions.LeaderCardException;
 import it.polimi.ingsw.Model.Exceptions.ResourceException;
 import it.polimi.ingsw.Model.Exceptions.StartGameException;
@@ -16,6 +17,7 @@ import it.polimi.ingsw.Model.Resource.Resource;
 import it.polimi.ingsw.Server.ConnectionToClient;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 /*
    modifica direttamente il model
@@ -30,7 +32,11 @@ public class ControllerToModel {
     private int turnNumber=1;
     private int currentPlayerIndex;
     private int numPlayer;
+
+    // tmp attributes
     private ArrayList<Resource> tmpMarketReturn;
+    private int color;
+    private int level;
 
     public ControllerToModel() {
         this.connectionsToClient = new ArrayList<>();
@@ -197,7 +203,7 @@ public class ControllerToModel {
 
     public void developmentCardTurn(){
         System.out.println("mando array delle carte disponibili");
-        DevelopmentCard[][] devCards = multiGame.getDevelopmentCardsAvailable();
+        DevelopmentCard[][] devCards = game.getDevelopmentCardsAvailable();
         SendDevelopmentCardToClient[][] availableToSend = new SendDevelopmentCardToClient[4][3];
         DevelopmentCard cardToCopy;
 
@@ -213,22 +219,55 @@ public class ControllerToModel {
     }
 
     public void buyDevelopmentCard(int color, int level){
-        String prova = "puoi mettere le carte in questi posti:";
-        System.out.println("faccio il check dei delle risorse");
-        DevelopmentCard buyDevelopmentCard = multiGame.getDevelopmentCardsAvailable()[color][level];
+        DevelopmentCard buyDevelopmentCard = game.getDevelopmentCardsAvailable()[color][level];
         System.out.println(buyDevelopmentCard.getColor() + buyDevelopmentCard.getCost().toString());
-        if(players[currentPlayerIndex].getPlayerBoard().getResourceHandler().checkMaterials(buyDevelopmentCard.getCost())){
-            ArrayList<Boolean> tmp =  players[currentPlayerIndex].getPlayerBoard().getDevelopmentCardHandler().checkBoughtable(level+1);
-            for(int i=0; i<tmp.size(); i++){
-                if(tmp.get(i)){
-                    prova = prova + "->" + String.valueOf(i);
+        this.color = color;
+        this.level = level; // questo livello è la posizione delle development card nel doppio array del game
+
+        System.out.println("faccio il check delle risorse e degli spazi development card");
+        // qui ci sarebbe da rimettere ccomunque il controllo sulle leadercard cost less
+        if (players[currentPlayerIndex].getPlayerBoard().getResourceHandler().checkMaterials(buyDevelopmentCard.getCost())
+                && players[currentPlayerIndex].getPlayerBoard().getDevelopmentCardHandler().checkBoughtable(level+1).contains(true)) {
+            connectionsToClient.get(currentPlayerIndex).sendDevelopmentCardSpace(players[currentPlayerIndex].getPlayerBoard().getDevelopmentCardHandler().checkBoughtable(level+1));
+        } else {
+            connectionsToClient.get(currentPlayerIndex).sendNotify("You can't bought the selected card, please select an other card");
+            developmentCardTurn();
+        }
+
+
+    }
+
+    public void spaceDevelopmentCard(int space){
+        DevelopmentCard buyDevelopmentCard = game.getDevelopmentCardsAvailable()[color][level];
+        Map<Resource, Integer> requirements = buyDevelopmentCard.getCost();
+        ArrayList<LeaderCard> leaderCardActive;
+
+        try{
+            leaderCardActive = players[currentPlayerIndex].getPlayerBoard().getLeaderCardHandler().getLeaderCardsActive();
+        } catch (LeaderCardException e) {
+            leaderCardActive = null;
+        }
+
+        if(leaderCardActive!=null){
+            for (LeaderCard card : leaderCardActive){          //control if there's an active LeaderCard costless
+                if (card.getSpecialAbility().getEffect().equals("costLess")) {
+                    Resource discount = card.getSpecialAbility().getMaterialType();
+                    if(requirements.containsKey(discount)){
+                        requirements.put(discount, requirements.get(discount)-1);
+                    }
                 }
             }
-            connectionsToClient.get(currentPlayerIndex).sendNotify(prova);
-        }else{
-            connectionsToClient.get(currentPlayerIndex).sendNotify("non puoi comprare questa carta, non hai abbastanza risorse");
         }
+
+        try{
+            players[currentPlayerIndex].getPlayerBoard().getResourceHandler().takeMaterials(requirements);
+            players[currentPlayerIndex].getPlayerBoard().getDevelopmentCardHandler().setActiveDevelopmentCard(game.buyDevelopmentCard(color, level), space);
+        } catch (ResourceException | StartGameException | DevelopmentCardException e) {
+            e.printStackTrace();
+        }
+        connectionsToClient.get(currentPlayerIndex).sendNotify("Card correctly Activated");
         newTurn();
+
     }
 
 

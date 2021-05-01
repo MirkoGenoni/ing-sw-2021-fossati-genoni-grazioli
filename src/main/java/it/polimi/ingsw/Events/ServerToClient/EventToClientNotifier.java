@@ -34,6 +34,7 @@ public interface EventToClientNotifier {
     // ----------------------------------------
     void sendDevelopmentCard(DevelopmentCard developmentCard);
     void sendDevelopmentCards(SendDevelopmentCardToClient[][] availableDevelopmentCards);
+    void sendDevelopmentCardSpace(ArrayList<Boolean> developmentCardSpace);
 
     // ----------------------------------
     // OTHER EVENTS
