@@ -137,6 +137,23 @@ public class DevelopmentCardHandler {
         }
     }
 
+    /**
+     * Count the number of the Development card of a specified color a Player has
+     * @param color specifies the color of a DevelopmentCard which you want to know the count
+     * @return how many DevelopmentCards of a specified color a player has
+     */
+    public int checkCountDevelopmentCard (CardColor color){
+         int count = 0;
+
+         for (DevelopmentCard card : developmentCardColl){
+             if (card.getColor().name().equals(color.name()))
+                 count++;
+         }
+
+         return count;
+    }
+
+
 }
 
 

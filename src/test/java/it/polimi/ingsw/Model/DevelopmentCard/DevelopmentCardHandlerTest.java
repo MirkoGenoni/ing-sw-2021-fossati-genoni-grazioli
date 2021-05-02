@@ -137,4 +137,26 @@ public class DevelopmentCardHandlerTest {
         assertFalse(handler.checkDevelopmentCard(colors,levels)); //duplicates doesn't count
 
     }
+
+    @Test
+    public void checkCountDevelopmentCard() {
+        try {
+            //1 green & 1 purple already activated in SetUp
+            handler.setActiveDevelopmentCard(cardCollection.get(4), 2);//green
+            handler.setActiveDevelopmentCard(cardCollection.get(5),1);//blue
+            handler.setActiveDevelopmentCard(cardCollection.get(2), 1); //blue
+            handler.setActiveDevelopmentCard(cardCollection.get(3),0); //yellow
+
+            assertEquals(2, handler.checkCountDevelopmentCard(CardColor.GREEN));
+            assertEquals(2,handler.checkCountDevelopmentCard(CardColor.BLUE));
+            assertEquals(1,handler.checkCountDevelopmentCard(CardColor.PURPLE));
+            assertEquals(1,handler.checkCountDevelopmentCard(CardColor.YELLOW));
+
+
+        } catch (DevelopmentCardException e) {
+            e.printStackTrace();
+            fail();
+        }
+
+    }
 }
