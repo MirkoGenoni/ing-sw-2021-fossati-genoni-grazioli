@@ -42,13 +42,14 @@ public class MarketTurn {
         connectionsToClient.get(currentPlayerIndex).sendMarket(game.getMarketBoard().getGrid(), game.getMarketBoard().getOutMarble());
     }
 
+
     public void marketChooseLine(String namePlayer, int line, int currentPlayerIndex){
         System.out.println("aggiungo al player");
         ArrayList<Marble> tmpM =  game.getMarketBoard().chooseLine(line);
         System.out.println(tmpM);
 
         if(tmpM.contains(Marble.FAITH)){    // se ci sono marble di tipo faith incrementa direttamente la pedina del giocatore sul tracciato fede
-            game.getPlayersFaithTrack().forwardPos(currentPlayerIndex);
+            game.getPlayersFaithTrack().forwardPos(currentPlayerIndex); //TODO fare check della posizione
             tmpM.remove(Marble.FAITH);
         }
 
@@ -85,6 +86,7 @@ public class MarketTurn {
         // deve fare il check del nuovo stato del deposito se non va bene rimanda l'evento di riorganizzare il deposito
         try{
             players[currentPlayerIndex].getPlayerBoard().getResourceHandler().newDepositState(newDepositState);
+            //TODO fare forward agli altri per il numero di resource
             return true;
         } catch (ResourceException e) {
             connectionsToClient.get(currentPlayerIndex).sendNotify(e.getMessage());

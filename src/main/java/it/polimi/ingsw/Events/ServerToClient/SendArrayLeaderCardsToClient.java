@@ -4,9 +4,15 @@ import java.util.ArrayList;
 
 public class SendArrayLeaderCardsToClient extends EventToClient{
     private final ArrayList<SendLeaderCardToClient> leaderCardArray;
+    private final boolean initialLeaderCards;
 
-    public SendArrayLeaderCardsToClient(ArrayList<SendLeaderCardToClient> leaderCardArray) {
+    public SendArrayLeaderCardsToClient(ArrayList<SendLeaderCardToClient> leaderCardArray, boolean initialLeaderCards) {
         this.leaderCardArray = leaderCardArray;
+        this.initialLeaderCards = initialLeaderCards;
+    }
+
+    public boolean isInitialLeaderCards() {
+        return initialLeaderCards;
     }
 
     public ArrayList<SendLeaderCardToClient> getLeaderCardArray() {

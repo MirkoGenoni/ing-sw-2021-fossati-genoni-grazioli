@@ -83,7 +83,7 @@ public class ControllerToModel {
             // Send initial leadercard to client
             for(int i=0; i<connectionsToClient.size(); i++){
                 try{
-                    connectionsToClient.get(i).sendArrayLeaderCards(multiGame.getPlayers()[i].getPlayerBoard().getLeaderCardHandler().getLeaderCardsAvailable());
+                    connectionsToClient.get(i).sendArrayLeaderCards(multiGame.getPlayers()[i].getPlayerBoard().getLeaderCardHandler().getLeaderCardsAvailable(), true);
                 } catch (LeaderCardException e) {
                     e.printStackTrace();
                 }

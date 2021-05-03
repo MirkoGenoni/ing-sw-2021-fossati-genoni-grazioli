@@ -21,7 +21,7 @@ public interface EventToClientNotifier {
     // EVENTS THAT SEND LEADER CARD INFORMATION
     // ----------------------------------------
     void sendLeaderCard(LeaderCard leaderCard);
-    void sendArrayLeaderCards(ArrayList<LeaderCard> leaderCards);
+    void sendArrayLeaderCards(ArrayList<LeaderCard> leaderCards, boolean initialLeaderCards);
 
     // ----------------------------------
     // EVENTS FOR THE MARKET TURN

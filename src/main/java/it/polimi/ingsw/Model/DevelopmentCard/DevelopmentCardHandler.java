@@ -153,6 +153,23 @@ public class DevelopmentCardHandler {
          return count;
     }
 
+    /**
+     * TODO SCRIVERE
+     * @param color
+     * @param quantity
+     * @return
+     */
+    public boolean checkCountDevelopmentCard (CardColor color, int quantity){
+        int count = 0;
+
+        for (DevelopmentCard card : developmentCardColl){
+            if (card.getColor().name().equals(color.name()))
+                count++;
+        }
+
+        return count==quantity;
+    }
+
 
 }
 

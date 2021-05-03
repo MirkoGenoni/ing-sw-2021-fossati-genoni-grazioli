@@ -77,23 +77,28 @@ public class CLI implements EventToClientVisitor {
 
     @Override
     public void visit(SendArrayLeaderCardsToClient leaderCardArray) {
-        System.out.println("mi è arrivato un array forse");
-        for(int i=0; i<leaderCardArray.getLeaderCardArray().size(); i++){
-            System.out.println(leaderCardArray.getLeaderCardArray().get(i).getEffect());
-            System.out.println(leaderCardArray.getLeaderCardArray().get(i).getVictoryPoint());
-            System.out.println(leaderCardArray.getLeaderCardArray().get(i).getRequirement());
-            System.out.println(leaderCardArray.getLeaderCardArray().get(i).getResourceType());
-        }
-        if(leaderCardArray.getLeaderCardArray().size()==4){
-            System.out.println("dammi le due carte da scartare: num 1");
-            Scanner scanIn = new Scanner(System.in);
-            int num1 = scanIn.nextInt();
-            System.out.println("num 2:");
-            int num2 = scanIn.nextInt();
-            connectionToServer.sendDiscardInitialLeaderCards(num1, num2);
-        }
-    }
 
+        if (leaderCardArray.isInitialLeaderCards()) {
+            System.out.println("mi è arrivato un array forse");
+            for (int i = 0; i < leaderCardArray.getLeaderCardArray().size(); i++) {
+                System.out.println(leaderCardArray.getLeaderCardArray().get(i).getEffect());
+                System.out.println(leaderCardArray.getLeaderCardArray().get(i).getVictoryPoint());
+                System.out.println(leaderCardArray.getLeaderCardArray().get(i).getRequirement());
+                System.out.println(leaderCardArray.getLeaderCardArray().get(i).getResourceType());
+            }
+            if (leaderCardArray.getLeaderCardArray().size() == 4) {
+                System.out.println("dammi le due carte da scartare: num 1");
+                Scanner scanIn = new Scanner(System.in);
+                int num1 = scanIn.nextInt();
+                System.out.println("num 2:");
+                int num2 = scanIn.nextInt();
+                connectionToServer.sendDiscardInitialLeaderCards(num1, num2);
+            }
+        }else{
+            System.out.println("Mi sono arrivati leader, non sono a inizio gioco");
+        }
+
+    }
     // ----------------------------------
     // EVENTS FOR THE MARKET TURN
     // ----------------------------------

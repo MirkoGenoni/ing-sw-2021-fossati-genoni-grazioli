@@ -153,10 +153,34 @@ public class DevelopmentCardHandlerTest {
             assertEquals(1,handler.checkCountDevelopmentCard(CardColor.YELLOW));
 
 
+
         } catch (DevelopmentCardException e) {
             e.printStackTrace();
             fail();
         }
 
+    }
+
+    @Test
+    public void checkCountDevelopmentCard1() {
+        try {
+            //1 green & 1 purple already activated in SetUp
+            handler.setActiveDevelopmentCard(cardCollection.get(4), 2);//green
+            handler.setActiveDevelopmentCard(cardCollection.get(5),1);//blue
+            handler.setActiveDevelopmentCard(cardCollection.get(2), 1); //blue
+            handler.setActiveDevelopmentCard(cardCollection.get(3),0); //yellow
+
+            assertTrue(handler.checkCountDevelopmentCard(CardColor.GREEN,2));
+            assertTrue(handler.checkCountDevelopmentCard(CardColor.BLUE,2));
+            assertTrue(handler.checkCountDevelopmentCard(CardColor.PURPLE,1));
+            assertTrue(handler.checkCountDevelopmentCard(CardColor.YELLOW,1));
+            assertFalse(handler.checkCountDevelopmentCard(CardColor.YELLOW,2));
+            assertFalse(handler.checkCountDevelopmentCard(CardColor.GREEN,3));
+            assertFalse(handler.checkCountDevelopmentCard(CardColor.BLUE,1));
+
+        } catch (DevelopmentCardException e) {
+            e.printStackTrace();
+            fail();
+        }
     }
 }

@@ -142,7 +142,7 @@ public class ConnectionToClient implements Runnable, EventToClientNotifier {
     }
 
     @Override
-    public void sendArrayLeaderCards(ArrayList<LeaderCard> leaderCards) {
+    public void sendArrayLeaderCards(ArrayList<LeaderCard> leaderCards, boolean initialLeaderCards) {
         ArrayList<SendLeaderCardToClient> tmp = new ArrayList<>();
         for(int i =0; i<leaderCards.size(); i++){
             SendLeaderCardToClient sendLeaderCardToClient = new SendLeaderCardToClient(leaderCards.get(i).getName(),
@@ -152,7 +152,7 @@ public class ConnectionToClient implements Runnable, EventToClientNotifier {
                     leaderCards.get(i).getSpecialAbility().getMaterialType().toString());
             tmp.add(sendLeaderCardToClient);
         }
-        SendArrayLeaderCardsToClient sendArrayLeaderCardsToClient = new SendArrayLeaderCardsToClient(tmp);
+        SendArrayLeaderCardsToClient sendArrayLeaderCardsToClient = new SendArrayLeaderCardsToClient(tmp, initialLeaderCards);
         asyncSendEvent(sendArrayLeaderCardsToClient);
     }
 
