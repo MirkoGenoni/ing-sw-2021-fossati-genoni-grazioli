@@ -17,6 +17,7 @@ public interface EventToServerNotifier {
     // EVENTS FOR THE LEADER CARD INTERACTION
     // -------------------------------------------
     void sendDiscardInitialLeaderCards(int leaderCard1, int leaderCard2);
+    void sendLeaderCardTurn(ArrayList<Integer> positions);
 
     // -------------------------------------------
     // EVENTS FOR THE MARKET TURN INTERACTION

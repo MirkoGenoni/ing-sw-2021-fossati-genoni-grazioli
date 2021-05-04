@@ -13,6 +13,7 @@ import it.polimi.ingsw.Events.ServerToClient.StartConnectionToClient.SendPlayerN
 import it.polimi.ingsw.Model.DevelopmentCard.CardColor;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class CLI implements EventToClientVisitor {
@@ -94,8 +95,25 @@ public class CLI implements EventToClientVisitor {
                 int num2 = scanIn.nextInt();
                 connectionToServer.sendDiscardInitialLeaderCards(num1, num2);
             }
-        }else{
+        }else{ //false
             System.out.println("Mi sono arrivati leader, non sono a inizio gioco");
+            for (int i = 0; i < leaderCardArray.getLeaderCardArray().size(); i++) {
+                System.out.println(leaderCardArray.getLeaderCardArray().get(i).getEffect());
+                System.out.println(leaderCardArray.getLeaderCardArray().get(i).getVictoryPoint());
+                System.out.println(leaderCardArray.getLeaderCardArray().get(i).getRequirement());
+                System.out.println(leaderCardArray.getLeaderCardArray().get(i).getResourceType());
+            }
+
+            System.out.println("Do you want to play or discard any leader? 0-To do nothing/ 1-To play / 2-To discard ");
+            ArrayList<Integer> arrayToSend = new ArrayList<>();
+            for (int i = 0; i < leaderCardArray.getLeaderCardArray().size(); i++){
+                System.out.println("The number " + i + " card:");
+                Scanner scanIn = new Scanner(System.in);
+                int input = scanIn.nextInt();                   //ATTENTO ALL'INPUT NO DIVERSO 0-1-2 (Forse meglio un while)
+                arrayToSend.add(input);
+            }
+
+            connectionToServer.sendLeaderCardTurn(arrayToSend);
         }
 
     }

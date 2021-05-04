@@ -114,6 +114,12 @@ public class ConnectionToServer implements Runnable, EventToServerNotifier {
         asyncSendEvent(discardInitialLeaderCards);
     }
 
+    @Override
+    public void sendLeaderCardTurn(ArrayList<Integer> positions) {
+        SendLeaderCardTurnToServer sendLeaderCardTurnToServer = new SendLeaderCardTurnToServer(positions, this.playerName);
+        asyncSendEvent(sendLeaderCardTurnToServer);
+    }
+
     // -------------------------------------------
     // EVENTS FOR THE MARKET TURN INTERACTION
     // -------------------------------------------

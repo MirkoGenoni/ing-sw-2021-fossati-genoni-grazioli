@@ -21,6 +21,7 @@ public interface EventToServerVisitor {
     // EVENTS FOR THE LEADER CARD INTERACTION
     // -------------------------------------------
     void visit(DiscardInitialLeaderCards leaderCards);
+    void visit(SendLeaderCardTurnToServer leaderCardTurn);
 
     // -------------------------------------------
     // EVENTS FOR THE MARKET TURN INTERACTION

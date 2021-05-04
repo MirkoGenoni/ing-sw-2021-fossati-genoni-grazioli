@@ -52,6 +52,13 @@ public class ControllerConnection implements EventToServerVisitor, ObserveConnec
         controllerToModel.discardInitialLeaderCards(leaderCards.getPlayerName(), leaderCards.getLeaderCard1(), leaderCards.getLeaderCard2());
     }
 
+    @Override
+    public void visit(SendLeaderCardTurnToServer leaderCardTurn) {
+        System.out.println("mi è arrivato il turno gioca-leader");
+        controllerToModel.leaderCardTurn(leaderCardTurn.getPlayerName(), leaderCardTurn.getActions());
+
+    }
+
     // -------------------------------------------
     // EVENTS FOR THE MARKET TURN INTERACTION
     // -------------------------------------------

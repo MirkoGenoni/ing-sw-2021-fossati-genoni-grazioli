@@ -53,7 +53,7 @@ public class MarketTurn {
             tmpM.remove(Marble.FAITH);
         }
 
-        if(tmpM.contains(Marble.NOTHING)){   // le leader card da usare sarebbero da scegliere....
+        if(tmpM.contains(Marble.NOTHING)){   // TODO le leader card da usare sarebbero da scegliere....
             try{
                 ArrayList<LeaderCard> tmpL = players[currentPlayerIndex].getPlayerBoard().getLeaderCardHandler().getLeaderCardsActive();
                 if(!tmpL.isEmpty()){                                        // controlla se ci sono carte leader attive
@@ -92,6 +92,30 @@ public class MarketTurn {
             connectionsToClient.get(currentPlayerIndex).sendNotify(e.getMessage());
             connectionsToClient.get(currentPlayerIndex).sendReorganizeDeposit(tmpMarketReturn, players[currentPlayerIndex].getPlayerBoard().getResourceHandler().getDepositState());
             return false;
+        }
+
+    }
+
+    /**
+     * TODO SCRIVI, MANDA AVANTI UNO PER VOLTA, SE UNO PASSA ALLORA METTO PARAMETRO A VERO, SALVANDO PLAYER E
+     * SEZIONE. QUINDI FACCIO CHECK SU TUTTI I PLAYER PER QUELLA SEZIONE CHE NON SIA MINORE ALTRIMENTI TOLGO TESSERA
+     *
+     * @param numPlayer player who call the PopeSpace
+     *
+     */
+    private void controlPlayerPath (int numPlayer){
+
+        int section = game.getPlayersFaithTrack().getSection(numPlayer);
+        int sectionToCheck;
+
+        for(int i=0; i<players.length; i++){
+            if(i!=numPlayer){ //it is an other Player
+                sectionToCheck = game.getPlayersFaithTrack().getSection(i); //control players' path
+                if (sectionToCheck!=section){ //devo rimuovergli il tagliando
+                   players[i].getPlayerBoard().removePopeFavorTiles(section);
+                }
+
+            }
         }
 
     }
