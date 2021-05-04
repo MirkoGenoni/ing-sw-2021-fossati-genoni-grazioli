@@ -1,6 +1,5 @@
 package it.polimi.ingsw.Controller.Turns;
 
-import it.polimi.ingsw.Events.ServerToClient.BuyDevelopmentCardTurnToClient.SendDevelopmentCardToClient;
 import it.polimi.ingsw.Model.DevelopmentCard.DevelopmentCard;
 import it.polimi.ingsw.Model.Exceptions.DevelopmentCardException;
 import it.polimi.ingsw.Model.Exceptions.LeaderCardException;
@@ -44,18 +43,8 @@ public class BuyDevelopmentCardTurn {
 
     public void developmentCardTurn(int currentPlayerIndex){
         System.out.println("mando array delle carte disponibili");
-        DevelopmentCard[][] devCards = game.getDevelopmentCardsAvailable();
-        SendDevelopmentCardToClient[][] availableToSend = new SendDevelopmentCardToClient[4][3];
-        DevelopmentCard cardToCopy;
 
-        for(int i=0; i<devCards.length; i++){
-            for(int j=0; j<devCards[i].length; j++){
-                cardToCopy = devCards[i][j];
-                availableToSend[i][j] = new SendDevelopmentCardToClient(cardToCopy.getColor().name(), cardToCopy.getLevel(),
-                        cardToCopy.getCost(), cardToCopy.getVictoryPoint(), cardToCopy.getMaterialRequired(), cardToCopy.getProductionResult());
-            }
-        }
-        connectionsToClient.get(currentPlayerIndex).sendDevelopmentCards(availableToSend);
+        //connectionsToClient.get(currentPlayerIndex).sendDevelopmentCards(availableToSend);
 
     }
 
@@ -71,8 +60,8 @@ public class BuyDevelopmentCardTurn {
                 && players[currentPlayerIndex].getPlayerBoard().getDevelopmentCardHandler().checkBoughtable(level+1).contains(true)) {
             connectionsToClient.get(currentPlayerIndex).sendDevelopmentCardSpace(players[currentPlayerIndex].getPlayerBoard().getDevelopmentCardHandler().checkBoughtable(level+1));
         } else {
-            connectionsToClient.get(currentPlayerIndex).sendNotify("You can't bought the selected card, please select an other card");
-            developmentCardTurn(currentPlayerIndex);
+            connectionsToClient.get(currentPlayerIndex).sendReselectedDevelopmentCards("You can't bought the selected card, please select an other card");
+
         }
 
 

@@ -1,6 +1,7 @@
 package it.polimi.ingsw.Events.ServerToClient;
 
-import it.polimi.ingsw.Events.ServerToClient.BuyDevelopmentCardTurnToClient.SendDevelopmentCardToClient;
+import it.polimi.ingsw.Events.ServerToClient.SupportClass.DevelopmentCardToClient;
+import it.polimi.ingsw.Events.ServerToClient.SupportClass.MarketToClient;
 import it.polimi.ingsw.Model.DevelopmentCard.DevelopmentCard;
 import it.polimi.ingsw.Model.LeaderCard.LeaderCard;
 import it.polimi.ingsw.Model.Market.Marble;
@@ -26,20 +27,18 @@ public interface EventToClientNotifier {
     // ----------------------------------
     // EVENTS FOR THE MARKET TURN
     // ----------------------------------
-    void sendMarket(ArrayList<Marble> grid, Marble outMarble);
     void sendReorganizeDeposit(ArrayList<Resource> marketResources, ArrayList<Resource> depositState);
 
     // ----------------------------------------
     // EVENTS FOR THE BUY DEVELOPMENT CARD TURN
     // ----------------------------------------
-    void sendDevelopmentCard(DevelopmentCard developmentCard);
-    void sendDevelopmentCards(SendDevelopmentCardToClient[][] availableDevelopmentCards);
+    void sendReselectedDevelopmentCards(String message);
     void sendDevelopmentCardSpace(ArrayList<Boolean> developmentCardSpace);
 
     // ----------------------------------
     // OTHER EVENTS
     // ----------------------------------
     void sendNotify(String message);
-    void sendNewTurn(int turnNumber);
+    void sendNewTurn(int turnNumber, MarketToClient market, DevelopmentCardToClient[][] developmentCards);
 
 }

@@ -3,10 +3,10 @@ package it.polimi.ingsw.Client.CLI;
 import it.polimi.ingsw.Client.CLI.Views.NewDepositView;
 import it.polimi.ingsw.Client.ConnectionToServer;
 import it.polimi.ingsw.Events.ServerToClient.*;
-import it.polimi.ingsw.Events.ServerToClient.BuyDevelopmentCardTurnToClient.SendDevelopmentCardAvailableToClient;
-import it.polimi.ingsw.Events.ServerToClient.BuyDevelopmentCardTurnToClient.SendDevelopmentCardToClient;
+import it.polimi.ingsw.Events.ServerToClient.BuyDevelopmentCardTurnToClient.SendReselectedDevelopmentCardAvailableToClient;
+import it.polimi.ingsw.Events.ServerToClient.SupportClass.DevelopmentCardToClient;
 import it.polimi.ingsw.Events.ServerToClient.BuyDevelopmentCardTurnToClient.SendSpaceDevelopmentCardToClient;
-import it.polimi.ingsw.Events.ServerToClient.MarketTurnToClient.MarketTurnToClient;
+import it.polimi.ingsw.Events.ServerToClient.SupportClass.MarketToClient;
 import it.polimi.ingsw.Events.ServerToClient.MarketTurnToClient.SendReorganizeDepositToClient;
 import it.polimi.ingsw.Events.ServerToClient.StartConnectionToClient.SendNumPlayerToClient;
 import it.polimi.ingsw.Events.ServerToClient.StartConnectionToClient.SendPlayerNameToClient;
@@ -120,21 +120,6 @@ public class CLI implements EventToClientVisitor {
     // ----------------------------------
     // EVENTS FOR THE MARKET TURN
     // ----------------------------------
-    @Override
-    public void visit(MarketTurnToClient market) {
-        for(int i=0; i<market.getGrid().size(); i++){
-            System.out.print("  " + market.getGrid().get(i).toString());
-            if(i==3 || i==7 || i==11){
-                System.out.println("");
-            }
-        }
-        System.out.println(" ");
-        System.out.println("out marble :" + market.getOutMarble().toString());
-        System.out.println("dimmi una riga che scegli: ");
-        Scanner scanIn = new Scanner(System.in);
-        int line = scanIn.nextInt();
-        connectionToServer.sendChooseLine(line);
-    }
 
     @Override
     public void visit(SendReorganizeDepositToClient newResources) {
@@ -149,20 +134,80 @@ public class CLI implements EventToClientVisitor {
     // ----------------------------------------
     // EVENTS FOR THE BUY DEVELOPMENT CARD TURN
     // ----------------------------------------
+
     @Override
-    public void visit(SendDevelopmentCardToClient developmentCard) {
-        System.out.print("ho ricevuto: ");
-        System.out.println(developmentCard.getColor() + developmentCard.getLevel() + developmentCard.getCost().toString() + developmentCard.getMaterialRequired().toString());
+    public void visit(SendReselectedDevelopmentCardAvailableToClient message) {
+        System.out.println(message.getMessage());
+        selectedDevelopmentCard();
     }
 
     @Override
-    public void visit(SendDevelopmentCardAvailableToClient availableDevelopmentCards) {
+    public void visit(SendSpaceDevelopmentCardToClient developmentCardSpace) {
+        boolean bought = true;
+        System.out.println("You can put the bought card in these positions:");
+        for (int i=0; i<developmentCardSpace.getDevelopmentCardSpace().size(); i++) {
+            if (developmentCardSpace.getDevelopmentCardSpace().get(i).equals(true))
+                System.out.println(" " + i);
+        }
+
+        int selectedPosition;
+        do {
+            bought=true;
+            System.out.println("Select one of the valid positions:");
+            Scanner scanIn = new Scanner(System.in);
+            selectedPosition = scanIn.nextInt();
+            if (selectedPosition>2 || selectedPosition<0 || !developmentCardSpace.getDevelopmentCardSpace().get(selectedPosition)) {
+                System.out.println("You can't put the card in this position");
+                bought = false;
+            }
+        }while (!bought);
+        connectionToServer.sendSelectedDevelopmentCardSpace(selectedPosition);
+    }
+
+    // ----------------------------------
+    // OTHER EVENTS
+    // ----------------------------------
+    @Override
+    public void visit(NotifyToClient message) {
+        System.out.print("ho ricevuto: ");
+        System.out.println(message.getMessage());
+    }
+
+    @Override
+    public void visit(NewTurnToClient newTurn){
+        for(int i=0; i<newTurn.getMarket().getGrid().size(); i++){
+            System.out.print("  " + newTurn.getMarket().getGrid().get(i).toString());
+            if(i==3 || i==7 || i==11){
+                System.out.println("");
+            }
+        }
+        System.out.println(" ");
+        System.out.println("out marble :" + newTurn.getMarket().getOutMarble().toString());
+
         System.out.println("ho ricevuto Array Dev disponibili: ");
-        for (SendDevelopmentCardToClient[] cards : availableDevelopmentCards.getDevelopmentCardsAvailable()) {
-            for (SendDevelopmentCardToClient card : cards)
+        for (DevelopmentCardToClient[] cards : newTurn.getDevelopmentCards()) {
+            for (DevelopmentCardToClient card : cards)
                 System.out.println("color: " + card.getColor() + " level: " + card.getLevel() + " cost: " + card.getCost() + " Req: " + card.getMaterialRequired() + " Grant: " + card.getProductionResult());
         }
 
+        System.out.println("è il mio turno: scrivo market, buydevelopment o usedevelopment (turn)");
+        Scanner scanIn = new Scanner(System.in);
+        String line = scanIn.nextLine();
+        if(line.equals("market")){
+            System.out.println("dimmi una riga che scegli: ");
+            Scanner scanIn1 = new Scanner(System.in);
+            int line1 = scanIn1.nextInt();
+            connectionToServer.sendChooseLine(line1);
+        }else if(line.equals("buydevelopment")){
+            selectedDevelopmentCard();
+        }
+        else if(line.equals("turn")){
+            connectionToServer.sendTurnPlayed(line);
+        }
+
+    }
+
+    private void selectedDevelopmentCard(){
         boolean isValid;
         Integer level = null;
         CardColor color = null;
@@ -216,57 +261,9 @@ public class CLI implements EventToClientVisitor {
             default:
                 throw new RuntimeException(); //attention Exception
         }
-
-        //System.out.println("scegli il colore della carta : 0 = green, 1 = blue, 2 = yellow, 3 = purple");
-        //Scanner scanIn = new Scanner(System.in);
-        //int color = scanIn.nextInt();
-        //System.out.println("scegli il livello della carta: 0,1,2");
-        //int level = scanIn.nextInt();
         System.out.println("Chose" + " " + color.name() + " " + level);
         connectionToServer.sendSelectedDevelopmentCard(colorForCard, level-1); //livello da 0 a 2
-
     }
-
-    @Override
-    public void visit(SendSpaceDevelopmentCardToClient developmentCardSpace) {
-        boolean bought = true;
-        System.out.println("You can put the bought card in these positions:");
-        for (int i=0; i<developmentCardSpace.getDevelopmentCardSpace().size(); i++) {
-            if (developmentCardSpace.getDevelopmentCardSpace().get(i).equals(true))
-                System.out.println(" " + i);
-        }
-
-        int selectedPosition;
-        do {
-            bought=true;
-            System.out.println("Select one of the valid positions:");
-            Scanner scanIn = new Scanner(System.in);
-            selectedPosition = scanIn.nextInt();
-            if (selectedPosition>2 || selectedPosition<0 || !developmentCardSpace.getDevelopmentCardSpace().get(selectedPosition)) {
-                System.out.println("You can't put the card in this position");
-                bought = false;
-            }
-        }while (!bought);
-        connectionToServer.sendSelectedDevelopmentCardSpace(selectedPosition);
-    }
-
-    // ----------------------------------
-    // OTHER EVENTS
-    // ----------------------------------
-    @Override
-    public void visit(NotifyToClient message) {
-        System.out.print("ho ricevuto: ");
-        System.out.println(message.getMessage());
-    }
-
-    @Override
-    public void visit(NewTurnToClient notify){
-        System.out.println("è il mio turno: scrivo market, buydevelopment o usedevelopment (turn)");
-        Scanner scanIn = new Scanner(System.in);
-        String line = scanIn.nextLine();
-        connectionToServer.sendTurnPlayed(line);
-    }
-
 
 
 

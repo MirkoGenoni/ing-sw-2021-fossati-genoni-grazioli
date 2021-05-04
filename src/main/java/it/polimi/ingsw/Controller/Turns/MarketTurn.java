@@ -37,12 +37,6 @@ public class MarketTurn {
         this.game = singleGame;
     }
 
-    public void marketTurn(int currentPlayerIndex){
-        System.out.println("prendo il market");
-        connectionsToClient.get(currentPlayerIndex).sendMarket(game.getMarketBoard().getGrid(), game.getMarketBoard().getOutMarble());
-    }
-
-
     public void marketChooseLine(String namePlayer, int line, int currentPlayerIndex){
         System.out.println("aggiungo al player");
         ArrayList<Marble> tmpM =  game.getMarketBoard().chooseLine(line);

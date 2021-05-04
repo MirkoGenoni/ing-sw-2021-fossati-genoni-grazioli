@@ -1,13 +1,14 @@
-package it.polimi.ingsw.Events.ServerToClient.BuyDevelopmentCardTurnToClient;
+package it.polimi.ingsw.Events.ServerToClient.SupportClass;
 
 import it.polimi.ingsw.Events.ServerToClient.EventToClient;
 import it.polimi.ingsw.Events.ServerToClient.EventToClientVisitor;
 import it.polimi.ingsw.Model.DevelopmentCard.ProductedMaterials;
 import it.polimi.ingsw.Model.Resource.Resource;
 
+import java.io.Serializable;
 import java.util.Map;
 
-public class SendDevelopmentCardToClient extends EventToClient {
+public class DevelopmentCardToClient implements Serializable {
 
     private final String color;
     private final int level;
@@ -16,8 +17,8 @@ public class SendDevelopmentCardToClient extends EventToClient {
     private final Map<Resource, Integer> materialRequired;
     private final Map<ProductedMaterials, Integer> productionResult;
 
-    public SendDevelopmentCardToClient(String color, int level, Map<Resource, Integer> cost,
-                                         int victoryPoint, Map<Resource, Integer> materialRequired, Map<ProductedMaterials, Integer> productionResult) {
+    public DevelopmentCardToClient(String color, int level, Map<Resource, Integer> cost,
+                                   int victoryPoint, Map<Resource, Integer> materialRequired, Map<ProductedMaterials, Integer> productionResult) {
         this.color = color;
         this.level = level;
         this.cost = cost;
@@ -48,10 +49,5 @@ public class SendDevelopmentCardToClient extends EventToClient {
 
     public Map<ProductedMaterials, Integer> getProductionResult() {
         return productionResult;
-    }
-
-    @Override
-    public void acceptVisitor(EventToClientVisitor visitor) {
-        visitor.visit(this);
     }
 }

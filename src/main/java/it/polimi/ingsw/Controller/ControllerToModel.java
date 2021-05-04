@@ -3,7 +3,10 @@ package it.polimi.ingsw.Controller;
 
 import it.polimi.ingsw.Controller.Turns.BuyDevelopmentCardTurn;
 import it.polimi.ingsw.Controller.Turns.MarketTurn;
+import it.polimi.ingsw.Events.ServerToClient.SupportClass.DevelopmentCardToClient;
+import it.polimi.ingsw.Events.ServerToClient.SupportClass.MarketToClient;
 import it.polimi.ingsw.Model.DevelopmentCard.CardColor;
+import it.polimi.ingsw.Model.DevelopmentCard.DevelopmentCard;
 import it.polimi.ingsw.Model.Exceptions.DevelopmentCardException;
 import it.polimi.ingsw.Model.Exceptions.LeaderCardException;
 import it.polimi.ingsw.Model.Exceptions.ResourceException;
@@ -125,11 +128,19 @@ public class ControllerToModel {
     public void newTurn(){
         System.out.println("è iniziato un nuovo turno");
         activePlayer = nextPlayer();
+        while(true) {
+            try {
+                if ((players[currentPlayerIndex].getPlayerBoard().getLeaderCardHandler().getLeaderCardsAvailable().size()<=2))
+                    break;
+            } catch (LeaderCardException e) {
+                break;
+            }
+        }
         connectionsToClient.forEach(cc -> cc.sendNotify("è il turno di " + activePlayer.getName()));
         try {
             connectionsToClient.get(currentPlayerIndex).sendArrayLeaderCards(players[currentPlayerIndex].getPlayerBoard().getLeaderCardHandler().getLeaderCardsAvailable(),false);
         } catch (LeaderCardException e) {
-            connectionsToClient.get(currentPlayerIndex).sendNewTurn(turnNumber);
+            connectionsToClient.get(currentPlayerIndex).sendNewTurn(turnNumber, marketToSend(), developmentCardAvailableToSend());
         }
         turnNumber++;
     }
@@ -248,15 +259,12 @@ public class ControllerToModel {
             }
         }
 
-        connectionsToClient.get(currentPlayerIndex).sendNewTurn(turnNumber);
+        connectionsToClient.get(currentPlayerIndex).sendNewTurn(turnNumber, marketToSend(), developmentCardAvailableToSend());
     }
 
     // -------------------------------------------
     // METHODS FOR THE MARKET TURN
     // -------------------------------------------
-    public void marketTurn(){
-        marketTurn.marketTurn(currentPlayerIndex);
-    }
 
     public void marketChooseLine(String namePlayer, int line){
         marketTurn.marketChooseLine(namePlayer, line, currentPlayerIndex);
@@ -298,6 +306,26 @@ public class ControllerToModel {
             currentPlayerIndex = 0;
             return players[0];
         }
+    }
+
+    private DevelopmentCardToClient[][] developmentCardAvailableToSend(){
+        DevelopmentCard[][] devCards = game.getDevelopmentCardsAvailable();
+        DevelopmentCardToClient[][] availableToSend = new DevelopmentCardToClient[4][3];
+        DevelopmentCard cardToCopy;
+
+        for(int i=0; i<devCards.length; i++){
+            for(int j=0; j<devCards[i].length; j++){
+                cardToCopy = devCards[i][j];
+                availableToSend[i][j] = new DevelopmentCardToClient(cardToCopy.getColor().name(), cardToCopy.getLevel(),
+                        cardToCopy.getCost(), cardToCopy.getVictoryPoint(), cardToCopy.getMaterialRequired(), cardToCopy.getProductionResult());
+            }
+        }
+        return availableToSend;
+    }
+
+    private MarketToClient marketToSend(){
+        MarketToClient marketToClient = new MarketToClient(game.getMarketBoard().getGrid(), game.getMarketBoard().getOutMarble());
+        return marketToClient;
     }
 
 

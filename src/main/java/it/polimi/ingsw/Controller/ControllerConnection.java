@@ -97,10 +97,6 @@ public class ControllerConnection implements EventToServerVisitor, ObserveConnec
         System.out.println("mi è arrivato il messaggio di turno giocato");
         if(turn.getTurnType().equals("turn")){
             controllerToModel.newTurn();
-        }else if(turn.getTurnType().equals("market")){
-            controllerToModel.marketTurn();
-        }else if(turn.getTurnType().equals("buydevelopment")){
-            controllerToModel.developmentCardTurn();
         }
     }
 

@@ -3,10 +3,10 @@ package it.polimi.ingsw.Server;
 import it.polimi.ingsw.Events.ClientToServer.EventToServer;
 import it.polimi.ingsw.Events.ServerToClient.*;
 import it.polimi.ingsw.Controller.ObserveConnectionToClient;
-import it.polimi.ingsw.Events.ServerToClient.BuyDevelopmentCardTurnToClient.SendDevelopmentCardAvailableToClient;
-import it.polimi.ingsw.Events.ServerToClient.BuyDevelopmentCardTurnToClient.SendDevelopmentCardToClient;
+import it.polimi.ingsw.Events.ServerToClient.BuyDevelopmentCardTurnToClient.SendReselectedDevelopmentCardAvailableToClient;
+import it.polimi.ingsw.Events.ServerToClient.SupportClass.DevelopmentCardToClient;
 import it.polimi.ingsw.Events.ServerToClient.BuyDevelopmentCardTurnToClient.SendSpaceDevelopmentCardToClient;
-import it.polimi.ingsw.Events.ServerToClient.MarketTurnToClient.MarketTurnToClient;
+import it.polimi.ingsw.Events.ServerToClient.SupportClass.MarketToClient;
 import it.polimi.ingsw.Events.ServerToClient.MarketTurnToClient.SendReorganizeDepositToClient;
 import it.polimi.ingsw.Events.ServerToClient.StartConnectionToClient.SendNumPlayerToClient;
 import it.polimi.ingsw.Events.ServerToClient.StartConnectionToClient.SendPlayerNameToClient;
@@ -159,11 +159,6 @@ public class ConnectionToClient implements Runnable, EventToClientNotifier {
     // ----------------------------------
     // EVENTS FOR THE MARKET TURN
     // ----------------------------------
-    @Override
-    public void sendMarket(ArrayList<Marble> grid, Marble outMarble) {
-        MarketTurnToClient marketTurnToClient = new MarketTurnToClient(grid, outMarble);
-        asyncSendEvent(marketTurnToClient);
-    }
 
     @Override
     public void sendReorganizeDeposit(ArrayList<Resource> marketResources, ArrayList<Resource> depositState) {
@@ -174,17 +169,11 @@ public class ConnectionToClient implements Runnable, EventToClientNotifier {
     // ----------------------------------------
     // EVENTS FOR THE BUY DEVELOPMENT CARD TURN
     // ----------------------------------------
-    @Override
-    public void sendDevelopmentCard(DevelopmentCard developmentCard) {
-        SendDevelopmentCardToClient sendDevelopmentCardToClient = new SendDevelopmentCardToClient(developmentCard.getColor().name(), developmentCard.getLevel(),
-                developmentCard.getCost(), developmentCard.getVictoryPoint(), developmentCard.getMaterialRequired(), developmentCard.getProductionResult());
-        asyncSendEvent(sendDevelopmentCardToClient);
-    }
 
     @Override
-    public void sendDevelopmentCards(SendDevelopmentCardToClient[][] availableDevelopmentCards) {
-        SendDevelopmentCardAvailableToClient sendDevelopmentCardAvailableToClient = new SendDevelopmentCardAvailableToClient(availableDevelopmentCards);
-        asyncSendEvent(sendDevelopmentCardAvailableToClient);
+    public void sendReselectedDevelopmentCards(String message) {
+        SendReselectedDevelopmentCardAvailableToClient sendReselectedDevelopmentCardAvailableToClient = new SendReselectedDevelopmentCardAvailableToClient(message);
+        asyncSendEvent(sendReselectedDevelopmentCardAvailableToClient);
     }
 
     @Override
@@ -203,10 +192,11 @@ public class ConnectionToClient implements Runnable, EventToClientNotifier {
     }
 
     @Override
-    public void sendNewTurn(int turnNumber) {
-        NewTurnToClient newTurnToClient = new NewTurnToClient(turnNumber);
+    public void sendNewTurn(int turnNumber, MarketToClient market, DevelopmentCardToClient[][] developmentCards) {
+        NewTurnToClient newTurnToClient = new NewTurnToClient(turnNumber, market, developmentCards);
         asyncSendEvent(newTurnToClient);
     }
+
 
 
 }
