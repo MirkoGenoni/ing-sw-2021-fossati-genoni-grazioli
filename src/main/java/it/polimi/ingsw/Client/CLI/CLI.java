@@ -6,7 +6,6 @@ import it.polimi.ingsw.Events.ServerToClient.*;
 import it.polimi.ingsw.Events.ServerToClient.BuyDevelopmentCardTurnToClient.SendReselectedDevelopmentCardAvailableToClient;
 import it.polimi.ingsw.Events.ServerToClient.SupportClass.DevelopmentCardToClient;
 import it.polimi.ingsw.Events.ServerToClient.BuyDevelopmentCardTurnToClient.SendSpaceDevelopmentCardToClient;
-import it.polimi.ingsw.Events.ServerToClient.SupportClass.MarketToClient;
 import it.polimi.ingsw.Events.ServerToClient.MarketTurnToClient.SendReorganizeDepositToClient;
 import it.polimi.ingsw.Events.ServerToClient.StartConnectionToClient.SendNumPlayerToClient;
 import it.polimi.ingsw.Events.ServerToClient.StartConnectionToClient.SendPlayerNameToClient;
@@ -189,6 +188,18 @@ public class CLI implements EventToClientVisitor {
             for (DevelopmentCardToClient card : cards)
                 System.out.println("color: " + card.getColor() + " level: " + card.getLevel() + " cost: " + card.getCost() + " Req: " + card.getMaterialRequired() + " Grant: " + card.getProductionResult());
         }
+
+        System.out.println("il mio deposito");
+        System.out.println(newTurn.getDepositState());
+
+        System.out.println("la mia strongbox");
+        System.out.println(newTurn.getStrongbox().toString());
+
+        System.out.println("le leadercard attive");
+        System.out.println(newTurn.getLeaderCarsActive().toString());
+
+        System.out.println("le mie development");
+        System.out.println(newTurn.getDevelopmentCard().toString());
 
         System.out.println("è il mio turno: scrivo market, buydevelopment o usedevelopment (turn)");
         Scanner scanIn = new Scanner(System.in);

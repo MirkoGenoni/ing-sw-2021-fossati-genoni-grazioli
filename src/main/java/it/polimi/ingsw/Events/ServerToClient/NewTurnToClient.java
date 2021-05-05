@@ -2,17 +2,31 @@ package it.polimi.ingsw.Events.ServerToClient;
 
 import it.polimi.ingsw.Events.ServerToClient.SupportClass.DevelopmentCardToClient;
 import it.polimi.ingsw.Events.ServerToClient.SupportClass.MarketToClient;
+import it.polimi.ingsw.Model.FaithTrack.FaithTrack;
+import it.polimi.ingsw.Model.Resource.Resource;
+
+import java.util.ArrayList;
+import java.util.Map;
 
 // this event ask at the client what type of turn want to do
 public class NewTurnToClient extends EventToClient{
     private final int turnNumber;
     private final MarketToClient market;
     private final DevelopmentCardToClient[][] developmentCards;
+    private final ArrayList<Resource> depositState;
+    private final Map<Resource, Integer> strongbox;
+    private final ArrayList<SendLeaderCardToClient> leaderCarsActive;
+    private final ArrayList<DevelopmentCardToClient> developmentCard;
 
-    public NewTurnToClient(int turnNumber, MarketToClient market, DevelopmentCardToClient[][] developmentCards) {
+    public NewTurnToClient(int turnNumber, MarketToClient market, DevelopmentCardToClient[][] developmentCards,
+                           ArrayList<Resource> depositState, Map<Resource, Integer> strongbox, ArrayList<SendLeaderCardToClient> leaderCarsActive, ArrayList<DevelopmentCardToClient> developmentCard) {
         this.turnNumber = turnNumber;
         this.market = market;
         this.developmentCards = developmentCards;
+        this.depositState = depositState;
+        this.strongbox = strongbox;
+        this.leaderCarsActive = leaderCarsActive;
+        this.developmentCard = developmentCard;
     }
 
     public int getTurnNumber() {
@@ -25,6 +39,22 @@ public class NewTurnToClient extends EventToClient{
 
     public DevelopmentCardToClient[][] getDevelopmentCards() {
         return developmentCards;
+    }
+
+    public ArrayList<Resource> getDepositState() {
+        return depositState;
+    }
+
+    public Map<Resource, Integer> getStrongbox() {
+        return strongbox;
+    }
+
+    public ArrayList<SendLeaderCardToClient> getLeaderCarsActive() {
+        return leaderCarsActive;
+    }
+
+    public ArrayList<DevelopmentCardToClient> getDevelopmentCard() {
+        return developmentCard;
     }
 
     @Override

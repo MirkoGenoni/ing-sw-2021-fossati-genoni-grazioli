@@ -3,10 +3,7 @@ package it.polimi.ingsw.Controller;
 
 import it.polimi.ingsw.Controller.Turns.BuyDevelopmentCardTurn;
 import it.polimi.ingsw.Controller.Turns.MarketTurn;
-import it.polimi.ingsw.Events.ServerToClient.SupportClass.DevelopmentCardToClient;
-import it.polimi.ingsw.Events.ServerToClient.SupportClass.MarketToClient;
 import it.polimi.ingsw.Model.DevelopmentCard.CardColor;
-import it.polimi.ingsw.Model.DevelopmentCard.DevelopmentCard;
 import it.polimi.ingsw.Model.Exceptions.DevelopmentCardException;
 import it.polimi.ingsw.Model.Exceptions.LeaderCardException;
 import it.polimi.ingsw.Model.Exceptions.ResourceException;
@@ -140,7 +137,7 @@ public class ControllerToModel {
         try {
             connectionsToClient.get(currentPlayerIndex).sendArrayLeaderCards(players[currentPlayerIndex].getPlayerBoard().getLeaderCardHandler().getLeaderCardsAvailable(),false);
         } catch (LeaderCardException e) {
-            connectionsToClient.get(currentPlayerIndex).sendNewTurn(turnNumber, marketToSend(), developmentCardAvailableToSend());
+            turnToView();
         }
         turnNumber++;
     }
@@ -259,7 +256,7 @@ public class ControllerToModel {
             }
         }
 
-        connectionsToClient.get(currentPlayerIndex).sendNewTurn(turnNumber, marketToSend(), developmentCardAvailableToSend());
+        turnToView();
     }
 
     // -------------------------------------------
@@ -308,25 +305,24 @@ public class ControllerToModel {
         }
     }
 
-    private DevelopmentCardToClient[][] developmentCardAvailableToSend(){
-        DevelopmentCard[][] devCards = game.getDevelopmentCardsAvailable();
-        DevelopmentCardToClient[][] availableToSend = new DevelopmentCardToClient[4][3];
-        DevelopmentCard cardToCopy;
-
-        for(int i=0; i<devCards.length; i++){
-            for(int j=0; j<devCards[i].length; j++){
-                cardToCopy = devCards[i][j];
-                availableToSend[i][j] = new DevelopmentCardToClient(cardToCopy.getColor().name(), cardToCopy.getLevel(),
-                        cardToCopy.getCost(), cardToCopy.getVictoryPoint(), cardToCopy.getMaterialRequired(), cardToCopy.getProductionResult());
-            }
+    private void turnToView(){
+        try{
+            connectionsToClient.get(currentPlayerIndex).sendNewTurn(turnNumber, game.getMarketBoard(), game.getDevelopmentCardsAvailable(),
+                    players[currentPlayerIndex].getPlayerBoard().getResourceHandler().getDepositState(),
+                    players[currentPlayerIndex].getPlayerBoard().getResourceHandler().getStrongboxState(),
+                    players[currentPlayerIndex].getPlayerBoard().getLeaderCardHandler().getLeaderCardsActive(),
+                    players[currentPlayerIndex].getPlayerBoard().getDevelopmentCardHandler().getActiveDevelopmentCard()
+            );
+        } catch (LeaderCardException er) {
+            connectionsToClient.get(currentPlayerIndex).sendNewTurn(turnNumber, game.getMarketBoard(), game.getDevelopmentCardsAvailable(),
+                    players[currentPlayerIndex].getPlayerBoard().getResourceHandler().getDepositState(),
+                    players[currentPlayerIndex].getPlayerBoard().getResourceHandler().getStrongboxState(),
+                    null,
+                    players[currentPlayerIndex].getPlayerBoard().getDevelopmentCardHandler().getActiveDevelopmentCard()
+            );
         }
-        return availableToSend;
     }
 
-    private MarketToClient marketToSend(){
-        MarketToClient marketToClient = new MarketToClient(game.getMarketBoard().getGrid(), game.getMarketBoard().getOutMarble());
-        return marketToClient;
-    }
 
 
 }

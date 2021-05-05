@@ -12,7 +12,7 @@ import it.polimi.ingsw.Events.ServerToClient.StartConnectionToClient.SendNumPlay
 import it.polimi.ingsw.Events.ServerToClient.StartConnectionToClient.SendPlayerNameToClient;
 import it.polimi.ingsw.Model.DevelopmentCard.DevelopmentCard;
 import it.polimi.ingsw.Model.LeaderCard.LeaderCard;
-import it.polimi.ingsw.Model.Market.Marble;
+import it.polimi.ingsw.Model.Market.Market;
 import it.polimi.ingsw.Model.Resource.Resource;
 
 import java.io.IOException;
@@ -20,6 +20,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Map;
 
 public class ConnectionToClient implements Runnable, EventToClientNotifier {
     private Socket clientSocket;
@@ -143,16 +144,7 @@ public class ConnectionToClient implements Runnable, EventToClientNotifier {
 
     @Override
     public void sendArrayLeaderCards(ArrayList<LeaderCard> leaderCards, boolean initialLeaderCards) {
-        ArrayList<SendLeaderCardToClient> tmp = new ArrayList<>();
-        for(int i =0; i<leaderCards.size(); i++){
-            SendLeaderCardToClient sendLeaderCardToClient = new SendLeaderCardToClient(leaderCards.get(i).getName(),
-                    leaderCards.get(i).getSpecialAbility().getRequirements(),
-                    leaderCards.get(i).getSpecialAbility().getVictoryPoints(),
-                    leaderCards.get(i).getSpecialAbility().getEffect(),
-                    leaderCards.get(i).getSpecialAbility().getMaterialType().toString());
-            tmp.add(sendLeaderCardToClient);
-        }
-        SendArrayLeaderCardsToClient sendArrayLeaderCardsToClient = new SendArrayLeaderCardsToClient(tmp, initialLeaderCards);
+        SendArrayLeaderCardsToClient sendArrayLeaderCardsToClient = new SendArrayLeaderCardsToClient(leaderCardToSend(leaderCards), initialLeaderCards);
         asyncSendEvent(sendArrayLeaderCardsToClient);
     }
 
@@ -192,11 +184,64 @@ public class ConnectionToClient implements Runnable, EventToClientNotifier {
     }
 
     @Override
-    public void sendNewTurn(int turnNumber, MarketToClient market, DevelopmentCardToClient[][] developmentCards) {
-        NewTurnToClient newTurnToClient = new NewTurnToClient(turnNumber, market, developmentCards);
+    public void sendNewTurn(int turnNumber, Market market, DevelopmentCard[][] developmentCards,
+                            ArrayList<Resource> depositState, Map<Resource, Integer> strongbox,
+                            ArrayList<LeaderCard> leaderCardsActive, ArrayList<DevelopmentCard> developmentCardActive) {
+        NewTurnToClient newTurnToClient = new NewTurnToClient(turnNumber, marketToSend(market),
+                developmentCardAvailableToSend(developmentCards), depositState, strongbox,
+                leaderCardToSend(leaderCardsActive), developmentCardActiveToSend(developmentCardActive) );
         asyncSendEvent(newTurnToClient);
     }
 
+
+    private ArrayList<SendLeaderCardToClient> leaderCardToSend(ArrayList<LeaderCard> leaderCards){
+        ArrayList<SendLeaderCardToClient> tmp = new ArrayList<>();
+        if(leaderCards!=null) {
+            for (int i = 0; i < leaderCards.size(); i++) {
+                SendLeaderCardToClient sendLeaderCardToClient = new SendLeaderCardToClient(leaderCards.get(i).getName(),
+                        leaderCards.get(i).getSpecialAbility().getRequirements(),
+                        leaderCards.get(i).getSpecialAbility().getVictoryPoints(),
+                        leaderCards.get(i).getSpecialAbility().getEffect(),
+                        leaderCards.get(i).getSpecialAbility().getMaterialType().toString());
+                tmp.add(sendLeaderCardToClient);
+            }
+        }
+        return tmp;
+    }
+
+    private ArrayList<DevelopmentCardToClient> developmentCardActiveToSend( ArrayList<DevelopmentCard> developmentCardActive){
+        ArrayList<DevelopmentCardToClient> tmp = new ArrayList<>();
+        for(int i=0; i<developmentCardActive.size(); i++){
+            DevelopmentCard tmpD = developmentCardActive.get(i);
+            if(tmpD!=null){
+                tmp.add(new DevelopmentCardToClient(tmpD.getColor().name(), tmpD.getLevel(),
+                        tmpD.getCost(), tmpD.getVictoryPoint(), tmpD.getMaterialRequired(), tmpD.getProductionResult()));
+            }else{
+                tmp.add(null);
+            }
+
+        }
+        return tmp;
+    }
+
+    private DevelopmentCardToClient[][] developmentCardAvailableToSend(DevelopmentCard[][] devCards){
+        DevelopmentCardToClient[][] availableToSend = new DevelopmentCardToClient[4][3];
+        DevelopmentCard cardToCopy;
+
+        for(int i=0; i<devCards.length; i++){
+            for(int j=0; j<devCards[i].length; j++){
+                cardToCopy = devCards[i][j];
+                availableToSend[i][j] = new DevelopmentCardToClient(cardToCopy.getColor().name(), cardToCopy.getLevel(),
+                        cardToCopy.getCost(), cardToCopy.getVictoryPoint(), cardToCopy.getMaterialRequired(), cardToCopy.getProductionResult());
+            }
+        }
+        return availableToSend;
+    }
+
+    private MarketToClient marketToSend(Market market){
+        MarketToClient marketToClient = new MarketToClient(market.getGrid(), market.getOutMarble());
+        return marketToClient;
+    }
 
 
 }
