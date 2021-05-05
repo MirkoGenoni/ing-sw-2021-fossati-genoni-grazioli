@@ -10,6 +10,7 @@ import it.polimi.ingsw.Events.ClientToServer.StartConnectionToServer.NumPlayerTo
 import it.polimi.ingsw.Events.ClientToServer.StartConnectionToServer.PlayerNameToServer;
 import it.polimi.ingsw.Events.ClientToServer.StartGameToServer.DiscardInitialLeaderCards;
 import it.polimi.ingsw.Events.ServerToClient.EventToClient;
+import it.polimi.ingsw.Model.DevelopmentCard.ProductedMaterials;
 import it.polimi.ingsw.Model.Resource.Resource;
 
 import java.io.IOException;
@@ -148,6 +149,15 @@ public class ConnectionToServer implements Runnable, EventToServerNotifier {
     public void sendSelectedDevelopmentCardSpace(int space) {
         SelectedDevelopmentCardSpaceToServer selectedDevelopmentCardSpaceToServer = new SelectedDevelopmentCardSpaceToServer(space, this.playerName);
         asyncSendEvent(selectedDevelopmentCardSpaceToServer);
+    }
+
+    // ------------------------------------------------------
+    // EVENTS FOR THE USE DEVELOPMENT CARD
+    // ------------------------------------------------------
+    @Override
+    public void sendSelectedProductionDevelopmentCard(boolean useBaseProduction, Resource resourceRequested1, Resource resourceRequested2, ProductedMaterials resourceGranted, ArrayList<Boolean> useLeaders, ArrayList<Resource> materialLeaders, ArrayList<Boolean> useDevelop) {
+        SelectedProductionDevelopmentCardToServer selectedProductionDevelopmentCardToServer = new SelectedProductionDevelopmentCardToServer(useBaseProduction, resourceRequested1, resourceRequested2, resourceGranted, useLeaders, materialLeaders, useDevelop, this.playerName);
+        asyncSendEvent(selectedProductionDevelopmentCardToServer);
     }
 
     // ------------------------------------------------------

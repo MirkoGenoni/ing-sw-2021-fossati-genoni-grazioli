@@ -36,6 +36,11 @@ public interface EventToServerVisitor {
     void visit(SelectedDevelopmentCardSpaceToServer selectedDevelopmentCardSpace);
 
     // ------------------------------------------------------
+    // EVENTS FOR THE USE DEVELOPMENT CARD
+    // ------------------------------------------------------
+    void visit(SelectedProductionDevelopmentCardToServer sendProductionDevelopmentCard);
+
+    // ------------------------------------------------------
     // EVENT FOR NEW TURN INTERACTION
     // ------------------------------------------------------
     void visit(TurnPlayedToServer turn);

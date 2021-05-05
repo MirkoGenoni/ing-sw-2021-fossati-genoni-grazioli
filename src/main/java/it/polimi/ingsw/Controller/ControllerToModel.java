@@ -4,6 +4,8 @@ package it.polimi.ingsw.Controller;
 import it.polimi.ingsw.Controller.Turns.BuyDevelopmentCardTurn;
 import it.polimi.ingsw.Controller.Turns.MarketTurn;
 import it.polimi.ingsw.Model.DevelopmentCard.CardColor;
+import it.polimi.ingsw.Model.DevelopmentCard.DevelopmentCard;
+import it.polimi.ingsw.Model.DevelopmentCard.ProductedMaterials;
 import it.polimi.ingsw.Model.Exceptions.DevelopmentCardException;
 import it.polimi.ingsw.Model.Exceptions.LeaderCardException;
 import it.polimi.ingsw.Model.Exceptions.ResourceException;
@@ -293,6 +295,119 @@ public class ControllerToModel {
             newTurn();
         }
     }
+
+
+    // -------------------------------------------
+    // METHODS FOR THE BUY DEVELOPMENT CARD TURN
+    // -------------------------------------------
+    public void activateProduction(boolean useBaseProduction, Resource resourceRequested1, Resource resourceRequested2,
+                                   ProductedMaterials resourceGranted, ArrayList<Boolean> useLeaders, ArrayList<Resource> materialLeaders,
+                                   ArrayList<Boolean> useDevelop, String playerName){
+
+
+        Map<Resource,Integer> materialRequested = new HashMap<>();
+        for(Resource r : Resource.values())
+            materialRequested.put(r,0);
+
+        Map<ProductedMaterials, Integer> materialGranted = new HashMap<>();
+        for(ProductedMaterials p : ProductedMaterials.values())
+            materialGranted.put(p,0);
+
+        Gameboard actualPlayerBoard = players[currentPlayerIndex].getPlayerBoard();
+
+        if(useBaseProduction){
+            materialRequested.put(resourceRequested1,materialRequested.get(resourceRequested1)+1);
+            materialRequested.put(resourceRequested2,materialRequested.get(resourceRequested2)+1);
+            materialGranted.put(resourceGranted, materialGranted.get(resourceGranted)+1);
+        }
+
+
+
+
+        if(useLeaders.contains(true)) {
+            ArrayList<ProductedMaterials> productedAdapter = new ArrayList<>();
+            for (Resource r : materialLeaders) {
+                    productedAdapter.add(ProductedMaterials.valueOf(r.name()));
+            }
+            try {
+                ArrayList<LeaderCard> activeLeaders = actualPlayerBoard.getLeaderCardHandler().getLeaderCardsActive();
+
+                for (int i = 0; i < activeLeaders.size(); i++) {
+                    if (useLeaders.get(i) && materialLeaders.get(i)!=null) {
+                        if(activeLeaders.get(i).getSpecialAbility().getEffect().equals("additionalProduction")) {
+                            Resource request = activeLeaders.get(i).getSpecialAbility().getMaterialType();
+                            materialRequested.put(request, materialRequested.get(request) + 1);
+                            materialGranted.put(productedAdapter.get(i),materialGranted.get(productedAdapter.get(i))+1);
+                            materialGranted.put(ProductedMaterials.FAITHPOINT, materialGranted.get(ProductedMaterials.FAITHPOINT)+1);
+                        }
+                        else{
+                            System.out.println("leader "+i+" not additionalProduction");
+                        }
+                    }
+                }
+
+            }catch (LeaderCardException e){
+                System.out.println(e.getMessage());
+                e.printStackTrace();
+            }
+
+        }
+
+
+        if(useDevelop.contains(true)) {
+
+            ArrayList<DevelopmentCard> activeDevelopment = actualPlayerBoard.getDevelopmentCardHandler().getActiveDevelopmentCard();
+
+            for(int i=0; i < activeDevelopment.size(); i++){
+                if (activeDevelopment.get(i)!=null && useDevelop.get(i)){
+                    System.out.println("Active prod number "+ i +" ?");
+
+                    Map<Resource,Integer> mapRequest = activeDevelopment.get(i).getMaterialRequired();
+                    for(Resource r : mapRequest.keySet())
+                        materialRequested.put(r,materialRequested.get(r) + mapRequest.get(r));
+
+                    Map<ProductedMaterials,Integer> mapProd = activeDevelopment.get(i).getProductionResult();
+                    for(ProductedMaterials prod : mapProd.keySet())
+                        materialGranted.put(prod, materialGranted.get(prod) + mapProd.get(prod));
+                }
+                else {
+                    System.out.println("Have not active DevelopmentCard in space " + i);
+                }
+            }
+        }
+
+
+        if(actualPlayerBoard.getResourceHandler().checkMaterials(materialRequested)){
+            try {
+                actualPlayerBoard.getResourceHandler().takeMaterials(materialRequested);
+            } catch (ResourceException e) {
+                e.printStackTrace();
+            }
+            Map<Resource, Integer> materialForStrongBox = new HashMap<>();
+            for(Resource r : Resource.values())
+                materialForStrongBox.put(r, materialGranted.get(ProductedMaterials.valueOf(r.name())));
+            actualPlayerBoard.getResourceHandler().addMaterialStrongbox(materialForStrongBox);
+            int faithPoints = materialGranted.get(ProductedMaterials.FAITHPOINT); //TODO AGGIORNARE FAITHTRACK
+            System.out.println("Risorse aggiunte correttamente alla strongbox");
+            connectionsToClient.get(currentPlayerIndex).sendNotify("Risorse aggiunte correttamente alla strongbox");
+        }
+        else{
+            System.out.println("non ci sono abbastanza risorse");
+            connectionsToClient.get(currentPlayerIndex).sendNotify("NON HAI ABBASTANZA RISORSE!!!");
+        }
+
+        newTurn();
+
+    }
+
+
+
+
+
+
+
+
+
 
 
     private Player nextPlayer(){

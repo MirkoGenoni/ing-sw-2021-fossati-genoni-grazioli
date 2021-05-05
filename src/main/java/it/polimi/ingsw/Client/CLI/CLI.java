@@ -10,6 +10,10 @@ import it.polimi.ingsw.Events.ServerToClient.MarketTurnToClient.SendReorganizeDe
 import it.polimi.ingsw.Events.ServerToClient.StartConnectionToClient.SendNumPlayerToClient;
 import it.polimi.ingsw.Events.ServerToClient.StartConnectionToClient.SendPlayerNameToClient;
 import it.polimi.ingsw.Model.DevelopmentCard.CardColor;
+import it.polimi.ingsw.Model.DevelopmentCard.DevelopmentCard;
+import it.polimi.ingsw.Model.DevelopmentCard.ProductedMaterials;
+import it.polimi.ingsw.Model.LeaderCard.LeaderCard;
+import it.polimi.ingsw.Model.Resource.Resource;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -211,12 +215,16 @@ public class CLI implements EventToClientVisitor {
             connectionToServer.sendChooseLine(line1);
         }else if(line.equals("buydevelopment")){
             selectedDevelopmentCard();
+        }else if(line.equals("usedevelopment")){
+            choseDevelopment(newTurn.getDevelopmentCard(), newTurn.getLeaderCarsActive());
         }
         else if(line.equals("turn")){
             connectionToServer.sendTurnPlayed(line);
         }
 
     }
+
+
 
     private void selectedDevelopmentCard(){
         boolean isValid;
@@ -275,6 +283,152 @@ public class CLI implements EventToClientVisitor {
         System.out.println("Chose" + " " + color.name() + " " + level);
         connectionToServer.sendSelectedDevelopmentCard(colorForCard, level-1); //livello da 0 a 2
     }
+
+
+
+
+    private void choseDevelopment(ArrayList<DevelopmentCardToClient> activeDevCards, ArrayList<SendLeaderCardToClient> activeLeaderCards){
+
+        System.out.println("Do you want to Activate the BASE Production? Y/N?");
+        char answer = selectActivation();
+        boolean useBaseProduction = false;
+        Resource resourceRequested1 = null;
+        Resource resourceRequested2 = null;
+        Resource resourceGranted = null;
+
+        if (answer == 'Y') {
+            useBaseProduction = true;
+            resourceRequested1 = selectResource("Select the first MATERIAL for the base production");
+            resourceRequested2 = selectResource("Select the second MATERIAL for the base production");
+            resourceGranted = selectResource("Select which resource you want to obtain from the base production");
+
+            System.out.println("selected "+ resourceRequested1 + " "+ resourceRequested2+"--> "+resourceGranted);
+        }
+
+
+        System.out.println("Do you want to Activate one of the LEADER Production? Y/N?");
+        answer = selectActivation();
+        ArrayList<Boolean> useLeaders = new ArrayList<>();
+        for (int i=0; i<2; i++)
+            useLeaders.add(false);
+        ArrayList<Resource> materialLeader = new ArrayList<>();
+        for (int i=0; i<2; i++)
+            materialLeader.add(null);
+
+        if(answer == 'Y'){
+                for (int i=0; i<activeLeaderCards.size(); i++){          //control if there's an active LeaderCard additionalProd
+                    if(activeLeaderCards.get(i).getEffect().equals("additionalProduction")) {
+                        System.out.println("Do you want to use production of ACTIVE LEADER number " + i + " ?" + " Y/N?");
+                        answer = selectActivation();
+                        if (answer == 'Y') {
+                            useLeaders.set(i, true);
+                            Resource resource = selectResource("Select RESOURCE you want from the Leader");
+                            materialLeader.set(i, resource);
+                        }
+                    }
+                }
+        }
+
+
+        System.out.println("Do you want to use any of yours DEVELOPMENT CARDS? Y/N?");
+        answer = selectActivation();
+        ArrayList<Boolean> useDevelop = new ArrayList<>();
+        for (int i=0; i<3; i++)
+            useDevelop.add(false);
+
+        if(answer == 'Y'){
+            for(int i=0; i<3; i++) {
+                if (activeDevCards.get(i) != null) {
+                    System.out.println("Do you want to use the ACTIVE PRODUCTION number: " + i + " ?" + " Y/N?");
+                    answer = selectActivation();
+                    if (answer == 'Y')
+                        useDevelop.set(i, true);
+                }
+            }
+        }
+
+        //DEBUG
+        System.out.println("invio questi dati:");
+        System.out.println("use_baseprod: " + useBaseProduction);
+        System.out.println("selected for base prod: "+ resourceRequested1 + " "+ resourceRequested2+"--> "+resourceGranted);
+        System.out.println("use leaders --> "+ useLeaders.toString());
+        System.out.println("material leaders --> "+ materialLeader.toString());
+        System.out.println("use develop --> "+ useDevelop.toString());
+
+        ProductedMaterials prodottoBaseProd = null;
+        if (resourceGranted!=null) {
+            prodottoBaseProd = ProductedMaterials.valueOf(resourceGranted.name());
+        }
+
+        //VANNO MANDATE TUTTE COME PRODUCTION RESULT
+
+        //MANDA EVENTO CON:  BOOL_USA_GAMEPROD,PROD1,PROD2,PRODCHOOSE//ARRAY_LEADERS-> MATERIAL 1ST LEADER/MATERIAL 2ND LEADER//ARRAY_DEVELOP
+
+        connectionToServer.sendSelectedProductionDevelopmentCard(useBaseProduction, resourceRequested1, resourceRequested2, prodottoBaseProd,
+                                                                    useLeaders, materialLeader, useDevelop);
+
+        }
+
+
+
+
+        /*
+     --------------------------------------------------------------
+      METODI PER PARSE DELLA SCELTA --> Y/N E UNA RESOURCE
+     --------------------------------------------------------------
+    */
+
+    // PARSA LA SCELTA Y/N
+    private char selectActivation () {
+        Scanner scan = new Scanner(System.in);
+        char choose;
+        boolean isValid;
+        do {
+            String input;
+            input = scan.nextLine();
+            isValid = false;   //CONTROL
+            input = input.trim();
+            input = input.toUpperCase();
+            choose = input.charAt(0);
+            if (input.length() == 1 && (choose == 'Y' || choose == 'N')) {
+                System.out.println("selected: " + choose);
+                isValid = true;
+            }
+            if (!isValid) {
+                System.out.println("Non valid Argument");
+                isValid = false;
+            }
+        } while (!isValid);
+
+        return choose;
+    }
+
+
+    //PARSA LA SCELTA DI UNA RISORSA
+    private Resource selectResource(String message){
+        Scanner scan = new Scanner(System.in);
+        boolean validMaterial;
+        Resource resource = null;
+        do {
+            validMaterial = true;
+            System.out.println(message);
+            String materialInput1 = scan.nextLine();
+            materialInput1 = materialInput1.trim();
+            materialInput1 = materialInput1.toUpperCase();
+            try {
+                resource = Resource.valueOf(materialInput1);
+            } catch (IllegalArgumentException e) {
+                System.out.println("Selected a non valid material, please rewrite it");
+                validMaterial = false;
+            }
+        } while (!validMaterial);
+
+        return resource;
+    }
+
+
+
+
 
 
 

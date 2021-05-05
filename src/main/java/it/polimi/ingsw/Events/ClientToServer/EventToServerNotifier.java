@@ -1,5 +1,6 @@
 package it.polimi.ingsw.Events.ClientToServer;
 
+import it.polimi.ingsw.Model.DevelopmentCard.ProductedMaterials;
 import it.polimi.ingsw.Model.Resource.Resource;
 
 import java.util.ArrayList;
@@ -30,6 +31,13 @@ public interface EventToServerNotifier {
     // ------------------------------------------------------
     void sendSelectedDevelopmentCard(int color, int level);
     void sendSelectedDevelopmentCardSpace(int space);
+
+    // ------------------------------------------------------
+    // EVENTS FOR THE USE DEVELOPMENT CARD
+    // ------------------------------------------------------
+    void sendSelectedProductionDevelopmentCard(boolean useBaseProduction, Resource resourceRequested1, Resource resourceRequested2,
+                                               ProductedMaterials resourceGranted, ArrayList<Boolean> useLeaders,
+                                               ArrayList<Resource> materialLeaders, ArrayList<Boolean> useDevelop);
 
     // ------------------------------------------------------
     // EVENT FOR NEW TURN INTERACTION

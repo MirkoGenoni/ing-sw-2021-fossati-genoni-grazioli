@@ -90,6 +90,18 @@ public class ControllerConnection implements EventToServerVisitor, ObserveConnec
     }
 
     // ------------------------------------------------------
+    // EVENTS FOR THE USE DEVELOPMENT CARD
+    // ------------------------------------------------------
+    @Override
+    public void visit(SelectedProductionDevelopmentCardToServer sendProductionDevelopmentCard) {
+        System.out.println("ho ricevuto il turno di usare produzioni");
+        controllerToModel.activateProduction(sendProductionDevelopmentCard.isUseBaseProduction(), sendProductionDevelopmentCard.getResourceRequested1(),
+                                                sendProductionDevelopmentCard.getResourceRequested2(), sendProductionDevelopmentCard.getResourceGranted(),
+                                                sendProductionDevelopmentCard.getUseLeaders(), sendProductionDevelopmentCard.getMaterialLeaders(),
+                                                sendProductionDevelopmentCard.getUseDevelop(), sendProductionDevelopmentCard.getPlayerName());
+    }
+
+    // ------------------------------------------------------
     // EVENT FOR NEW TURN INTERACTION
     // ------------------------------------------------------
     @Override
