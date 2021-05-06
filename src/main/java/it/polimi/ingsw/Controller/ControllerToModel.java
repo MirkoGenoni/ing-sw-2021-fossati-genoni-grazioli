@@ -325,19 +325,26 @@ public class ControllerToModel {
 
 
         if(useLeaders.contains(true)) {
-            ArrayList<ProductedMaterials> productedAdapter = new ArrayList<>();
-            for (Resource r : materialLeaders) {
-                    productedAdapter.add(ProductedMaterials.valueOf(r.name()));
+            ArrayList<ProductedMaterials> productedByLeader = new ArrayList<>();
+
+            for (Resource r : materialLeaders) { //TRASFORM MATERIAL LEADER --> RESOURCE IN PRODUCTEDMATERIALS
+                if (r != null) {
+                    productedByLeader.add(ProductedMaterials.valueOf(r.name()));
+                }
+                else{
+                    productedByLeader.add(null);
+                }
             }
+
             try {
                 ArrayList<LeaderCard> activeLeaders = actualPlayerBoard.getLeaderCardHandler().getLeaderCardsActive();
 
                 for (int i = 0; i < activeLeaders.size(); i++) {
-                    if (useLeaders.get(i) && materialLeaders.get(i)!=null) {
+                    if (useLeaders.get(i) && productedByLeader.get(i)!=null) {
                         if(activeLeaders.get(i).getSpecialAbility().getEffect().equals("additionalProduction")) {
-                            Resource request = activeLeaders.get(i).getSpecialAbility().getMaterialType();
-                            materialRequested.put(request, materialRequested.get(request) + 1);
-                            materialGranted.put(productedAdapter.get(i),materialGranted.get(productedAdapter.get(i))+1);
+                            Resource requestFromLeader = activeLeaders.get(i).getSpecialAbility().getMaterialType();
+                            materialRequested.put(requestFromLeader, materialRequested.get(requestFromLeader) + 1);
+                            materialGranted.put(productedByLeader.get(i),materialGranted.get(productedByLeader.get(i))+1);
                             materialGranted.put(ProductedMaterials.FAITHPOINT, materialGranted.get(ProductedMaterials.FAITHPOINT)+1);
                         }
                         else{
@@ -352,6 +359,7 @@ public class ControllerToModel {
             }
 
         }
+
 
 
         if(useDevelop.contains(true)) {
@@ -377,19 +385,24 @@ public class ControllerToModel {
         }
 
 
+        //ADD ALL TO STRONGBOX TODO SE LA MOSSA E' NULLA (0 RISORSE DI OGNI COSA COMUNICARLO)
         if(actualPlayerBoard.getResourceHandler().checkMaterials(materialRequested)){
             try {
                 actualPlayerBoard.getResourceHandler().takeMaterials(materialRequested);
             } catch (ResourceException e) {
                 e.printStackTrace();
             }
+
             Map<Resource, Integer> materialForStrongBox = new HashMap<>();
+
             for(Resource r : Resource.values())
                 materialForStrongBox.put(r, materialGranted.get(ProductedMaterials.valueOf(r.name())));
+
             actualPlayerBoard.getResourceHandler().addMaterialStrongbox(materialForStrongBox);
             int faithPoints = materialGranted.get(ProductedMaterials.FAITHPOINT); //TODO AGGIORNARE FAITHTRACK
             System.out.println("Risorse aggiunte correttamente alla strongbox");
             connectionsToClient.get(currentPlayerIndex).sendNotify("Risorse aggiunte correttamente alla strongbox");
+            connectionsToClient.get(currentPlayerIndex).sendNotify("Avanzi di "+ faithPoints + " punti fede");
         }
         else{
             System.out.println("non ci sono abbastanza risorse");
@@ -399,14 +412,6 @@ public class ControllerToModel {
         newTurn();
 
     }
-
-
-
-
-
-
-
-
 
 
 
