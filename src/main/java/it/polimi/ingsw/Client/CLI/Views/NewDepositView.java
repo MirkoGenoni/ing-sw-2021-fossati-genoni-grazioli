@@ -67,31 +67,31 @@ public class NewDepositView {
 
         String input = "";
 
-        while(!input.equals("done")){
+        while(true){
 
             Scanner in = new Scanner(System.in);
             input = in.nextLine();
 
-            //separo le due stringhe usando la virgola come separatore  coin, 2
-            String lim = "[,]";
-            String[] formatInput = input.split(lim);
+            //separo le due stringhe usando la virgola come separatore
+            String[] formatInput = input.split(",", 2);
 
-            //elimino eventuali spazi iniziali dalle due stringhe
-            if(formatInput.length!=0) {
-                formatInput[0] = formatInput[0].trim();
-                if (formatInput[0].equals("done"))
+            //verifico che il giocatore non abbia inserito done
+            if(formatInput.length!=0)
+                if(formatInput[0].equals("done"))
                     break;
 
-                int num = -1;
-                if (formatInput.length == 2) {
-                    formatInput[1] = formatInput[1].trim();
+            if(formatInput.length==2) {
+                //elimino eventuali spazi iniziali dalle due stringhe
+                formatInput[0] = formatInput[0].trim();
 
-                    //trasformo la seconda stringa in un numero
-                    try{
-                        num = Integer.parseInt(formatInput[1]);
-                    } catch(IllegalArgumentException e){
-                        System.out.println("Insert a number");
-                    }
+                int num = -1;
+                formatInput[1] = formatInput[1].trim();
+
+                //trasformo la seconda stringa in un numero
+                try{
+                    num = Integer.parseInt(formatInput[1]);
+                } catch(IllegalArgumentException e){
+                    System.out.println("Insert a number");
                 }
 
                 formatInput[0] = formatInput[0].toUpperCase();
@@ -119,6 +119,7 @@ public class NewDepositView {
 
     public void PrintDepositChoise(ArrayList<ResourceIcon> incoming, Map<String, Integer> acquired){
 
+        System.out.printf("\u001B[2J\u001B[3J\u001B[H");
         System.out.println("\u001B[097m" + "                                                 ╔═══════════════════════╗\n" +
                                            "                                                 ║ NEW DEPOSIT SELECTION ║\n" +
                                            "                                                 ╚═══════════════════════╝\n" +

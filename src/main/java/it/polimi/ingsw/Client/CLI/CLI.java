@@ -18,10 +18,41 @@ import it.polimi.ingsw.Model.Resource.Resource;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.concurrent.TimeUnit;
 
 public class CLI implements EventToClientVisitor {
     private final ConnectionToServer connectionToServer;
     private String namePlayer;
+    private final Thread asyncPrint = new Thread(()->{
+        System.out.printf("                                                                                                                          \n" +
+                          "                                                                                                                          \n" +
+                          "                                                                                                                          \n");
+        System.out.print("                                   WAITING FOR OTHER PLAYERS");
+
+        while(true) {
+            try {
+                TimeUnit.SECONDS.sleep(1);
+                System.out.print(". ");
+                TimeUnit.SECONDS.sleep(1);
+                System.out.print(". ");
+                TimeUnit.SECONDS.sleep(1);
+                System.out.print(".");
+                TimeUnit.SECONDS.sleep(1);
+            } catch (InterruptedException e) {
+                System.out.printf("\u001B[2J\u001B[3J\u001B[H");
+                break;
+            }
+
+            for (int i = 0; i < 5; i++)
+                System.out.printf("\b");
+
+            System.out.printf("     ");
+
+            for (int i = 0; i < 5; i++)
+                System.out.printf("\b");
+
+        }});
+
 
     public CLI(ConnectionToServer connectionToServer) {
         this.connectionToServer = connectionToServer;
@@ -37,10 +68,12 @@ public class CLI implements EventToClientVisitor {
     // -------------------------------------------------------
     @Override
     public void visit(SendPlayerNameToClient playerName) {
-        System.out.println("ho ricevuto il mio nome " + playerName.getPlayerName());
         namePlayer = playerName.getPlayerName();
         connectionToServer.setPlayerName(playerName.getPlayerName());
-        System.out.println("scrivi il tuo nome");
+
+        System.out.printf("                                                                                                                          \n");
+
+        System.out.print("                                   INSERT NAME: ");
 
         try {
             System.in.read(new byte[System.in.available()]);
@@ -60,8 +93,24 @@ public class CLI implements EventToClientVisitor {
 
     @Override
     public void visit(SendNumPlayerToClient numPlayer) {
-        System.out.println("ho ricevuto la richiesta di numero di giocatori");
-        System.out.println(numPlayer.getMessage());
+        //System.out.println("ho ricevuto la richiesta di numero di giocatori");
+        //System.out.println(numPlayer.getMessage());
+
+        System.out.printf("                                                                                                                          \n");
+
+        System.out.print("                                   YOU'RE THE FIRST PLAYER! ");
+
+        try {
+            TimeUnit.SECONDS.sleep(1);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        for(int i=0; i<60; i++)
+            System.out.printf("\b");
+
+        System.out.print("                                   INSERT NUMBER OF PLAYERS: ");
+
         Scanner scanIn = new Scanner(System.in);
         int num = scanIn.nextInt();
         connectionToServer.sendNumPlayer(num);
@@ -172,8 +221,28 @@ public class CLI implements EventToClientVisitor {
     // ----------------------------------
     @Override
     public void visit(NotifyToClient message) {
-        System.out.print("ho ricevuto: ");
-        System.out.println(message.getMessage());
+
+        switch(message.getMessage()){
+
+            case "WaitForOtherPlayers":
+                asyncPrint.start();
+                break;
+
+            case "AllPlayersConnected":
+                asyncPrint.interrupt();
+                try {
+                    TimeUnit.SECONDS.sleep(1);
+                } catch (InterruptedException e) {
+                    System.out.println("Error in sleep");
+                }
+
+                break;
+        }
+
+        if(!message.getMessage().equals("WaitForOtherPlayers") && !message.getMessage().equals("AllPlayersConnected")){
+            System.out.print("ho ricevuto: ");
+            System.out.println(message.getMessage());
+        }
     }
 
     @Override

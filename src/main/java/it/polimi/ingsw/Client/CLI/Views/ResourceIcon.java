@@ -21,7 +21,7 @@ public enum ResourceIcon {
                 case "servant":
                     this.color[0]="\u001B[35m";
                     this.color[1]="\u001B[38;5;94m";
-                    this.color[2]="\u001B[0;37m";
+                    this.color[2]="\u001B[37m";
 
                     this.icon_line[0] = color[0] + "  ▓▓▓▓▓▓▓▓▓  ";
                     this.icon_line[1] = color[0] + " ▓▓▓"   + this.color[2] + "▒▒▒▒▒" + color[0] + "▓▓▓ ";
@@ -31,8 +31,8 @@ public enum ResourceIcon {
                     this.icon_line[5] = color[0] + "  ▓▓▓▓▓▓▓▓▓  ";
                     break;
                 case "shield":
-                    this.color[0]="\u001B[94m";
-                    this.color[1]="\u001B[0;97m";
+                    this.color[0]="\u001B[36m";
+                    this.color[1]="\u001B[97m";
                     this.icon_line[0] = color[0] + "  ▓▓▓▓▓▓▓▓▓  ";
                     this.icon_line[1] = color[0] + " ▓▓"   + color[1] + "▒▒▒▒▒▒▒" + color[0] + "▓▓ ";
                     this.icon_line[2] = color[0] + "▓▓▓"   + color[1] + "▒▒▒▒▒▒▒" + color[0] + "▓▓▓";
@@ -73,11 +73,6 @@ public enum ResourceIcon {
 
             }
         }
-
-    /*@Override
-    public String toString() {
-        return icon_line[0] + "\n" + icon_line[1] + "\n" + icon_line[2] + "\n" + icon_line[3] + "\n" + icon_line[4] + "\n" + icon_line[5] + "\n";
-    }*/
 
         public String returnLine(int line){
             return icon_line[line];

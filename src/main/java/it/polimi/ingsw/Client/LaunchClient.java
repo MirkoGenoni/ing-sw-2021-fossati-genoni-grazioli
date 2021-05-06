@@ -1,8 +1,6 @@
 package it.polimi.ingsw.Client;
 
 import java.io.IOException;
-import java.net.ConnectException;
-import java.util.Scanner;
 
 public class LaunchClient {
     public static void main(String[] args) {
@@ -21,8 +19,8 @@ public class LaunchClient {
         }
         */
         try{
-            Client client = new Client("localhost", 12345);
-            client.startClient();
+            ClientCLI clientCLI = new ClientCLI("localhost", 12345);
+            clientCLI.startClient();
         } catch (IOException e) {
             e.printStackTrace();
         }

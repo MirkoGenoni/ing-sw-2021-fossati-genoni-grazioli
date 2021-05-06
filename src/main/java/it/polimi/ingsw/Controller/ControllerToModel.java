@@ -77,7 +77,7 @@ public class ControllerToModel {
     // -------------------------------------------
     public void startMatch() throws StartGameException {
         System.out.println("hai invocato start multiGame");
-        connectionsToClient.forEach(cc -> cc.sendNotify("il gioco è iniziato"));
+        connectionsToClient.forEach(cc -> cc.sendNotify("AllPlayersConnected"));
         currentPlayerIndex = connectionsToClient.size();
         if(numPlayer > 1){
             multiGame = new MultiPlayerGame(numPlayer);
