@@ -70,6 +70,7 @@ public class Server implements Runnable{
 
                 // se il numPlayer è ancora a zero significa che è il primo client connesso
                 if(numPlayer == 0){
+                    connectionToClient.sendNumPlayer("");
                     System.out.println("aspetto il numero giocatori");
 
                     // aspetta che il primo client connesso mandi il numero di giocatori al controller per poter creare la partita
