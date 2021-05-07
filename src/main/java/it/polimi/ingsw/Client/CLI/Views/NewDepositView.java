@@ -56,7 +56,8 @@ public class NewDepositView {
         int num = 0;
 
         for(ResourceIcon r: ResourceIcon.values())
-            num = num + marketReceived.get(r.toString());
+            if(!r.equals(ResourceIcon.NOTHING))
+                num = num + marketReceived.get(r.toString());
 
         return num;
     }
