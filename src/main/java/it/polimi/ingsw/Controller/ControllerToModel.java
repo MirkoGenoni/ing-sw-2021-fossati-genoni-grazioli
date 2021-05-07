@@ -164,6 +164,9 @@ public class ControllerToModel {
                 case 2:
                     try {
                         players[currentPlayerIndex].getPlayerBoard().getLeaderCardHandler().discardLeaderCard(i);
+                        if(game.getPlayersFaithTrack().forwardPos(currentPlayerIndex)){
+                            marketTurn.controlPlayerPath(currentPlayerIndex);
+                        }
                     } catch (LeaderCardException e) {
                         e.printStackTrace();
                     }
@@ -399,7 +402,12 @@ public class ControllerToModel {
                 materialForStrongBox.put(r, materialGranted.get(ProductedMaterials.valueOf(r.name())));
 
             actualPlayerBoard.getResourceHandler().addMaterialStrongbox(materialForStrongBox);
-            int faithPoints = materialGranted.get(ProductedMaterials.FAITHPOINT); //TODO AGGIORNARE FAITHTRACK
+            int faithPoints = materialGranted.get(ProductedMaterials.FAITHPOINT);
+            for(int i=0; i<faithPoints; i++){
+                if(game.getPlayersFaithTrack().forwardPos(currentPlayerIndex)){
+                    marketTurn.controlPlayerPath(currentPlayerIndex);
+                }
+            }
             System.out.println("Risorse aggiunte correttamente alla strongbox");
             connectionsToClient.get(currentPlayerIndex).sendNotify("Risorse aggiunte correttamente alla strongbox");
             connectionsToClient.get(currentPlayerIndex).sendNotify("Avanzi di "+ faithPoints + " punti fede");
@@ -431,14 +439,18 @@ public class ControllerToModel {
                     players[currentPlayerIndex].getPlayerBoard().getResourceHandler().getDepositState(),
                     players[currentPlayerIndex].getPlayerBoard().getResourceHandler().getStrongboxState(),
                     players[currentPlayerIndex].getPlayerBoard().getLeaderCardHandler().getLeaderCardsActive(),
-                    players[currentPlayerIndex].getPlayerBoard().getDevelopmentCardHandler().getActiveDevelopmentCard()
+                    players[currentPlayerIndex].getPlayerBoard().getDevelopmentCardHandler().getActiveDevelopmentCard(),
+                    players[currentPlayerIndex].getPlayerBoard().getPopeFavorTilesState(),
+                    game.getPlayersFaithTrack().getPosition(currentPlayerIndex)
             );
         } catch (LeaderCardException er) {
             connectionsToClient.get(currentPlayerIndex).sendNewTurn(turnNumber, game.getMarketBoard(), game.getDevelopmentCardsAvailable(),
                     players[currentPlayerIndex].getPlayerBoard().getResourceHandler().getDepositState(),
                     players[currentPlayerIndex].getPlayerBoard().getResourceHandler().getStrongboxState(),
                     null,
-                    players[currentPlayerIndex].getPlayerBoard().getDevelopmentCardHandler().getActiveDevelopmentCard()
+                    players[currentPlayerIndex].getPlayerBoard().getDevelopmentCardHandler().getActiveDevelopmentCard(),
+                    players[currentPlayerIndex].getPlayerBoard().getPopeFavorTilesState(),
+                    game.getPlayersFaithTrack().getPosition(currentPlayerIndex)
             );
         }
     }

@@ -18,8 +18,12 @@ public class NewTurnToClient extends EventToClient{
     private final ArrayList<SendLeaderCardToClient> leaderCarsActive;
     private final ArrayList<DevelopmentCardToClient> developmentCard;
 
+    private final  ArrayList<Integer> popeFavorTiles;
+    private final int faithMarkerPosition;
+
     public NewTurnToClient(int turnNumber, MarketToClient market, DevelopmentCardToClient[][] developmentCards,
-                           ArrayList<Resource> depositState, Map<Resource, Integer> strongbox, ArrayList<SendLeaderCardToClient> leaderCarsActive, ArrayList<DevelopmentCardToClient> developmentCard) {
+                           ArrayList<Resource> depositState, Map<Resource, Integer> strongbox, ArrayList<SendLeaderCardToClient> leaderCarsActive,
+                           ArrayList<DevelopmentCardToClient> developmentCard, ArrayList<Integer> popeFavorTiles, int faithMarkerPosition) {
         this.turnNumber = turnNumber;
         this.market = market;
         this.developmentCards = developmentCards;
@@ -27,6 +31,8 @@ public class NewTurnToClient extends EventToClient{
         this.strongbox = strongbox;
         this.leaderCarsActive = leaderCarsActive;
         this.developmentCard = developmentCard;
+        this.popeFavorTiles = popeFavorTiles;
+        this.faithMarkerPosition = faithMarkerPosition;
     }
 
     public int getTurnNumber() {
@@ -55,6 +61,14 @@ public class NewTurnToClient extends EventToClient{
 
     public ArrayList<DevelopmentCardToClient> getDevelopmentCard() {
         return developmentCard;
+    }
+
+    public ArrayList<Integer> getPopeFavorTiles() {
+        return popeFavorTiles;
+    }
+
+    public int getFaithMarkerPosition() {
+        return faithMarkerPosition;
     }
 
     @Override

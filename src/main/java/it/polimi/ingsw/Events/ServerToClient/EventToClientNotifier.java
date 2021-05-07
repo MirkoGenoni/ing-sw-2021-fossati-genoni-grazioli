@@ -40,6 +40,7 @@ public interface EventToClientNotifier {
     void sendNotify(String message);
     void sendNewTurn(int turnNumber, Market market, DevelopmentCard[][] developmentCards,
                      ArrayList<Resource> depositState, Map<Resource, Integer> strongbox,
-                     ArrayList<LeaderCard> leaderCardsActive, ArrayList<DevelopmentCard> developmentCardActive);
+                     ArrayList<LeaderCard> leaderCardsActive, ArrayList<DevelopmentCard> developmentCardActive,
+                        ArrayList<Integer> popeFavorTiles, int faithMarkerPosition );
 
 }

@@ -184,12 +184,12 @@ public class ConnectionToClient implements Runnable, EventToClientNotifier {
     }
 
     @Override
-    public void sendNewTurn(int turnNumber, Market market, DevelopmentCard[][] developmentCards,
-                            ArrayList<Resource> depositState, Map<Resource, Integer> strongbox,
-                            ArrayList<LeaderCard> leaderCardsActive, ArrayList<DevelopmentCard> developmentCardActive) {
+    public void sendNewTurn(int turnNumber, Market market, DevelopmentCard[][] developmentCards, ArrayList<Resource> depositState,
+                            Map<Resource, Integer> strongbox, ArrayList<LeaderCard> leaderCardsActive,
+                            ArrayList<DevelopmentCard> developmentCardActive, ArrayList<Integer> popeFavorTiles, int faithMarkerPosition) {
         NewTurnToClient newTurnToClient = new NewTurnToClient(turnNumber, marketToSend(market),
                 developmentCardAvailableToSend(developmentCards), depositState, strongbox,
-                leaderCardToSend(leaderCardsActive), developmentCardActiveToSend(developmentCardActive) );
+                leaderCardToSend(leaderCardsActive), developmentCardActiveToSend(developmentCardActive), popeFavorTiles, faithMarkerPosition);
         asyncSendEvent(newTurnToClient);
     }
 

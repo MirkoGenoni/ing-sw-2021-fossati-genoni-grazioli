@@ -43,7 +43,9 @@ public class MarketTurn {
         System.out.println(tmpM);
 
         if(tmpM.contains(Marble.FAITH)){    // se ci sono marble di tipo faith incrementa direttamente la pedina del giocatore sul tracciato fede
-            game.getPlayersFaithTrack().forwardPos(currentPlayerIndex); //TODO fare check della posizione
+            if(game.getPlayersFaithTrack().forwardPos(currentPlayerIndex)){
+                controlPlayerPath(currentPlayerIndex);
+            }
             tmpM.remove(Marble.FAITH);
         }
 
@@ -77,10 +79,26 @@ public class MarketTurn {
     }
 
     public boolean saveNewDepositState(ArrayList<Resource> newDepositState, int discardResources, int currentPlayerIndex){
+        System.out.println(" riscorse scartate " +discardResources);
+        boolean tmp = false;
+        int savePlayer = -1;
         // deve fare il check del nuovo stato del deposito se non va bene rimanda l'evento di riorganizzare il deposito
         try{
             players[currentPlayerIndex].getPlayerBoard().getResourceHandler().newDepositState(newDepositState);
-            //TODO fare forward agli altri per il numero di resource
+            for(int i=0; i<discardResources; i++){
+                for( int j=0; j<players.length; j++){
+                    if(j!=currentPlayerIndex){
+                        if(game.getPlayersFaithTrack().forwardPos(j)){
+                            tmp = true;
+                            savePlayer = j;
+                        }
+                    }
+                }
+                if(tmp && savePlayer != -1){
+                    controlPlayerPath(savePlayer);
+                }
+
+            }
             return true;
         } catch (ResourceException e) {
             connectionsToClient.get(currentPlayerIndex).sendNotify(e.getMessage());
@@ -91,13 +109,11 @@ public class MarketTurn {
     }
 
     /**
-     * TODO SCRIVI, MANDA AVANTI UNO PER VOLTA, SE UNO PASSA ALLORA METTO PARAMETRO A VERO, SALVANDO PLAYER E
-     * SEZIONE. QUINDI FACCIO CHECK SU TUTTI I PLAYER PER QUELLA SEZIONE CHE NON SIA MINORE ALTRIMENTI TOLGO TESSERA
      *
      * @param numPlayer player who call the PopeSpace
      *
      */
-    private void controlPlayerPath (int numPlayer){
+    public void controlPlayerPath (int numPlayer){
 
         int section = game.getPlayersFaithTrack().getSection(numPlayer);
         int sectionToCheck;

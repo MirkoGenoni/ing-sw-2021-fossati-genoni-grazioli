@@ -272,7 +272,19 @@ public class CLI implements EventToClientVisitor {
         System.out.println(newTurn.getLeaderCarsActive().toString());
 
         System.out.println("le mie development");
-        System.out.println(newTurn.getDevelopmentCard().toString());
+        for(DevelopmentCardToClient card : newTurn.getDevelopmentCard()) {
+            if(card!=null){
+                System.out.println("color: " + card.getColor() + " level: " + card.getLevel() + " cost: " + card.getCost() + " Req: " + card.getMaterialRequired() + " Grant: " + card.getProductionResult());
+            }else{
+                System.out.println("null");
+            }
+        }
+
+        System.out.println("la mia posizione");
+        System.out.println(newTurn.getFaithMarkerPosition() + "/24");
+
+        System.out.println("i miei pope");
+        System.out.println(newTurn.getPopeFavorTiles().toString());
 
         System.out.println("è il mio turno: scrivo market, buydevelopment o usedevelopment (turn)");
         Scanner scanIn = new Scanner(System.in);
