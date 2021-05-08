@@ -53,6 +53,14 @@ public class FaithTrack {
     }
 
     /**
+     * Getter of the box of the faith track
+     * @return the box of the faith track
+     */
+    public Box[] getTrack() {
+        return track;
+    }
+
+    /**
      * @param numPlayer number of the player who move himself forward
      * @return true if the player go on a popeSpace section
      */
