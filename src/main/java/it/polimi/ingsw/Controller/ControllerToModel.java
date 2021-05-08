@@ -1,9 +1,6 @@
 package it.polimi.ingsw.Controller;
 
-import it.polimi.ingsw.Controller.Turns.ActivateProductionTurn;
-import it.polimi.ingsw.Controller.Turns.BuyDevelopmentCardTurn;
-import it.polimi.ingsw.Controller.Turns.LeaderCardTurn;
-import it.polimi.ingsw.Controller.Turns.MarketTurn;
+import it.polimi.ingsw.Controller.Turns.*;
 import it.polimi.ingsw.Model.DevelopmentCard.ProductedMaterials;
 import it.polimi.ingsw.Model.Exceptions.LeaderCardException;
 import it.polimi.ingsw.Model.Exceptions.StartGameException;
@@ -35,6 +32,7 @@ public class ControllerToModel {
     private BuyDevelopmentCardTurn buyDevelopmentCardTurn;
     private LeaderCardTurn leaderCardTurn;
     private ActivateProductionTurn activateProductionTurn;
+    private EndGame endGame;
 
     public ControllerToModel() {
         this.connectionsToClient = new ArrayList<>();
@@ -74,10 +72,22 @@ public class ControllerToModel {
     }
 
     public void SetPlayerName(String newPlayerName, String oldPlayerName){
+        boolean tmp = false;
+        for(int j=0; j< connectionsToClient.size(); j++){
+            if(connectionsToClient.get(j).getNamePlayer().equals(newPlayerName)){
+                tmp=true;
+            }
+        }
         for(int i=0; i< connectionsToClient.size(); i++){
             if(connectionsToClient.get(i).getNamePlayer().equals(oldPlayerName)){
-                System.out.println("setto il nuovo nome");
-                connectionsToClient.get(i).setNamePlayer(newPlayerName);
+                if(tmp){
+                    System.out.println("due nomi uguali");
+                    connectionsToClient.get(i).sendPlayerName(oldPlayerName);
+                }else{
+                    System.out.println("setto il nuovo nome");
+                    connectionsToClient.get(i).setNamePlayer(newPlayerName);
+                }
+
             }
         }
     }
@@ -117,6 +127,7 @@ public class ControllerToModel {
             buyDevelopmentCardTurn = new BuyDevelopmentCardTurn(this);
             leaderCardTurn = new LeaderCardTurn(this);
             activateProductionTurn = new ActivateProductionTurn(this);
+            endGame = new EndGame(this);
 
             newTurn();
         }else if(numPlayer == 1){
@@ -140,21 +151,44 @@ public class ControllerToModel {
     public void newTurn(){
         System.out.println("è iniziato un nuovo turno");
         activePlayer = nextPlayer();
-        while(true) {
-            try {
-                if ((players[currentPlayerIndex].getPlayerBoard().getLeaderCardHandler().getLeaderCardsAvailable().size()<=2))
-                    break;
-            } catch (LeaderCardException e) {
-                break;
+
+        if(currentPlayerIndex == numPlayer-1 && endGame.endGameNotify()){
+            int winnerPoint=0;
+            String winnerName = " ";
+            connectionsToClient.forEach(c -> c.sendNotify(" IL GIOCO E' FINITOO!!!"));
+            for(int i=0; i<connectionsToClient.size(); i++ ){
+                String name = connectionsToClient.get(i).getNamePlayer();
+                int playerPoints = endGame.calculatePoints(i);
+                connectionsToClient.forEach(c -> c.sendNotify(name + "ha " + playerPoints + " punti"));
+                if(playerPoints>winnerPoint){
+                    winnerPoint = playerPoints;
+                    winnerName = name;
+                }
             }
+            String finalWinnerName = winnerName;
+            int finalWinnerPoint = winnerPoint;
+            connectionsToClient.forEach(c -> c.sendEndGame(finalWinnerName + " ha vinto con " + finalWinnerPoint + " punti"));
+            connectionsToClient.forEach(c -> c.setActive(false));
+            System.out.println("il gioco è finito");
+        }else{
+            while(true) {
+                try {
+                    if ((players[currentPlayerIndex].getPlayerBoard().getLeaderCardHandler().getLeaderCardsAvailable().size()<=2))
+                        break;
+                } catch (LeaderCardException e) {
+                    break;
+                }
+            }
+            connectionsToClient.forEach(cc -> cc.sendNotify("è il turno di " + activePlayer.getName()));
+            try {
+                connectionsToClient.get(currentPlayerIndex).sendArrayLeaderCards(players[currentPlayerIndex].getPlayerBoard().getLeaderCardHandler().getLeaderCardsAvailable(),false);
+            } catch (LeaderCardException e) {
+                turnToView();
+            }
+            turnNumber++;
         }
-        connectionsToClient.forEach(cc -> cc.sendNotify("è il turno di " + activePlayer.getName()));
-        try {
-            connectionsToClient.get(currentPlayerIndex).sendArrayLeaderCards(players[currentPlayerIndex].getPlayerBoard().getLeaderCardHandler().getLeaderCardsAvailable(),false);
-        } catch (LeaderCardException e) {
-            turnToView();
-        }
-        turnNumber++;
+
+
     }
 
     public void discardInitialLeaderCards(String playerName, int leaderCard1, int leaderCard2){

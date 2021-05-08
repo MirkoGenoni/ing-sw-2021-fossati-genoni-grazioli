@@ -1,7 +1,5 @@
 package it.polimi.ingsw.Events.ServerToClient;
 
-import it.polimi.ingsw.Events.ServerToClient.EventToClient;
-
 public class EndGameToClient extends EventToClient {
     private final String message;
 
