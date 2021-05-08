@@ -23,22 +23,21 @@ public class BuyDevelopmentCardTurn {
         this.controllerToModel = controllerToModel;
     }
 
-    public void developmentCardTurn(int currentPlayerIndex){
-        System.out.println("mando array delle carte disponibili");
-
-        //connectionsToClient.get(currentPlayerIndex).sendDevelopmentCards(availableToSend);
-
-    }
-
     public void buyDevelopmentCard(int color, int level, int currentPlayerIndex){
         DevelopmentCard buyDevelopmentCard = controllerToModel.getGame().getDevelopmentCardsAvailable()[color][level];
         System.out.println(buyDevelopmentCard.getColor() + buyDevelopmentCard.getCost().toString());
+        Map<Resource, Integer> requirements = buyDevelopmentCard.getCost();
         this.color = color;
         this.level = level; // questo livello è la posizione delle development card nel doppio array del game
 
         System.out.println("faccio il check delle risorse e degli spazi development card");
-        // qui ci sarebbe da rimettere ccomunque il controllo sulle leadercard cost less
-        if (controllerToModel.getPlayers()[currentPlayerIndex].getPlayerBoard().getResourceHandler().checkMaterials(buyDevelopmentCard.getCost())
+        try {
+            checkCostlessLeaderCard(requirements, controllerToModel.getPlayers()[currentPlayerIndex].getPlayerBoard().getLeaderCardHandler().getLeaderCardsActive());
+        } catch (LeaderCardException e) {
+            System.out.println(e.getMessage());
+        }
+
+        if (controllerToModel.getPlayers()[currentPlayerIndex].getPlayerBoard().getResourceHandler().checkMaterials(requirements)
                 && controllerToModel.getPlayers()[currentPlayerIndex].getPlayerBoard().getDevelopmentCardHandler().checkBoughtable(level+1).contains(true)) {
             controllerToModel.getConnectionsToClient().get(currentPlayerIndex).sendDevelopmentCardSpace(controllerToModel.getPlayers()[currentPlayerIndex].getPlayerBoard().getDevelopmentCardHandler().checkBoughtable(level+1));
         } else {
@@ -46,29 +45,16 @@ public class BuyDevelopmentCardTurn {
 
         }
 
-
     }
 
     public boolean spaceDevelopmentCard(int space, int currentPlayerIndex){
         DevelopmentCard buyDevelopmentCard = controllerToModel.getGame().getDevelopmentCardsAvailable()[color][level];
         Map<Resource, Integer> requirements = buyDevelopmentCard.getCost();
-        ArrayList<LeaderCard> leaderCardActive;
 
-        try{
-            leaderCardActive = controllerToModel.getPlayers()[currentPlayerIndex].getPlayerBoard().getLeaderCardHandler().getLeaderCardsActive();
+        try {
+            checkCostlessLeaderCard(requirements, controllerToModel.getPlayers()[currentPlayerIndex].getPlayerBoard().getLeaderCardHandler().getLeaderCardsActive());
         } catch (LeaderCardException e) {
-            leaderCardActive = null;
-        }
-
-        if(leaderCardActive!=null){
-            for (LeaderCard card : leaderCardActive){          //control if there's an active LeaderCard costless
-                if (card.getSpecialAbility().getEffect().equals("costLess")) {
-                    Resource discount = card.getSpecialAbility().getMaterialType();
-                    if(requirements.containsKey(discount)){
-                        requirements.put(discount, requirements.get(discount)-1);
-                    }
-                }
-            }
+            System.out.println(e.getMessage());
         }
 
         try{
@@ -80,5 +66,16 @@ public class BuyDevelopmentCardTurn {
         controllerToModel.getConnectionsToClient().get(currentPlayerIndex).sendNotify("Card correctly Activated");
         return true;
 
+    }
+
+    private void checkCostlessLeaderCard(Map<Resource, Integer> requirements, ArrayList<LeaderCard> leaderCardActive){
+        for (LeaderCard card : leaderCardActive){          //control if there's an active LeaderCard costless
+            if (card.getSpecialAbility().getEffect().equals("costLess")) {
+                Resource discount = card.getSpecialAbility().getMaterialType();
+                if(requirements.containsKey(discount)){
+                    requirements.put(discount, requirements.get(discount)-1);
+                }
+            }
+        }
     }
 }
