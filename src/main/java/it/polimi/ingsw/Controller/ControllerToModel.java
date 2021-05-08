@@ -1,27 +1,20 @@
 package it.polimi.ingsw.Controller;
 
-
+import it.polimi.ingsw.Controller.Turns.ActivateProductionTurn;
 import it.polimi.ingsw.Controller.Turns.BuyDevelopmentCardTurn;
+import it.polimi.ingsw.Controller.Turns.LeaderCardTurn;
 import it.polimi.ingsw.Controller.Turns.MarketTurn;
-import it.polimi.ingsw.Model.DevelopmentCard.CardColor;
-import it.polimi.ingsw.Model.DevelopmentCard.DevelopmentCard;
 import it.polimi.ingsw.Model.DevelopmentCard.ProductedMaterials;
-import it.polimi.ingsw.Model.Exceptions.DevelopmentCardException;
 import it.polimi.ingsw.Model.Exceptions.LeaderCardException;
-import it.polimi.ingsw.Model.Exceptions.ResourceException;
 import it.polimi.ingsw.Model.Exceptions.StartGameException;
 import it.polimi.ingsw.Model.Game.Game;
 import it.polimi.ingsw.Model.Game.MultiPlayerGame;
 import it.polimi.ingsw.Model.Game.Player;
 import it.polimi.ingsw.Model.Game.SinglePlayerGame;
-import it.polimi.ingsw.Model.Gameboard.Gameboard;
-import it.polimi.ingsw.Model.LeaderCard.LeaderCard;
 import it.polimi.ingsw.Model.Resource.Resource;
 import it.polimi.ingsw.Server.ConnectionToClient;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 /*
    modifica direttamente il model
@@ -40,10 +33,32 @@ public class ControllerToModel {
     // type of turn
     private MarketTurn marketTurn;
     private BuyDevelopmentCardTurn buyDevelopmentCardTurn;
+    private LeaderCardTurn leaderCardTurn;
+    private ActivateProductionTurn activateProductionTurn;
 
     public ControllerToModel() {
         this.connectionsToClient = new ArrayList<>();
         numPlayer = 0;
+    }
+
+    public int getNumPlayer() {
+        return numPlayer;
+    }
+
+    public Player[] getPlayers() {
+        return players;
+    }
+
+    public int getCurrentPlayerIndex() {
+        return currentPlayerIndex;
+    }
+
+    public Game getGame() {
+        return game;
+    }
+
+    public ArrayList<ConnectionToClient> getConnectionsToClient() {
+        return connectionsToClient;
     }
 
     // -------------------------------------------------------
@@ -52,11 +67,6 @@ public class ControllerToModel {
     public void addConnectionToClient(ConnectionToClient connectionToClient){
         connectionsToClient.add(connectionToClient);
     }
-
-    public int getNumPlayer() {
-        return numPlayer;
-    }
-
 
     public void setNumPlayer(int numPlayer) {
         System.out.println("ho settato il numero di giocatori");
@@ -103,8 +113,11 @@ public class ControllerToModel {
             turnNumber = 0;
 
             // create classes of type of turn
-            this.marketTurn = new MarketTurn(players, connectionsToClient, multiGame);
-            this.buyDevelopmentCardTurn = new BuyDevelopmentCardTurn(players, connectionsToClient, multiGame);
+            marketTurn = new MarketTurn(this);
+            buyDevelopmentCardTurn = new BuyDevelopmentCardTurn(this);
+            leaderCardTurn = new LeaderCardTurn(this);
+            activateProductionTurn = new ActivateProductionTurn(this);
+
             newTurn();
         }else if(numPlayer == 1){
             players = new Player[numPlayer];
@@ -157,117 +170,14 @@ public class ControllerToModel {
         }
     }
 
-
-    public void leaderCardTurn(String playerName, ArrayList<Integer> positions) {
-        for(int i=positions.size()-1; i>=0; i--){
-            switch (positions.get(i)){
-                case 2:
-                    try {
-                        players[currentPlayerIndex].getPlayerBoard().getLeaderCardHandler().discardLeaderCard(i);
-                        if(game.getPlayersFaithTrack().forwardPos(currentPlayerIndex)){
-                            marketTurn.controlPlayerPath(currentPlayerIndex);
-                        }
-                    } catch (LeaderCardException e) {
-                        e.printStackTrace();
-                    }
-                    break;
-                case 1:
-                    try {
-
-                        LeaderCard LeaderToActivate = players[currentPlayerIndex].getPlayerBoard().getLeaderCardHandler().getLeaderCardsAvailable().get(i);
-                        ArrayList<String> requirements;
-                        Gameboard actualPlayerBoard = players[currentPlayerIndex].getPlayerBoard();
-
-
-                        switch (LeaderToActivate.getSpecialAbility().getEffect()) {
-                            case "additionalProduction":
-                                System.out.println("additionalProduction");
-                                requirements = LeaderToActivate.getSpecialAbility().getRequirements();
-                                CardColor color = CardColor.valueOf(requirements.get(0));
-                                ArrayList<CardColor> colorRequired = new ArrayList<>();
-                                ArrayList<Integer> level = new ArrayList<>();
-                                colorRequired.add(color); //add color in ArrayList
-                                level.add(2); //deve essere di livello 2 (forzatura)
-                                if (actualPlayerBoard.getDevelopmentCardHandler().checkDevelopmentCard(colorRequired, level)) {
-                                    actualPlayerBoard.getLeaderCardHandler().activateLeaderCard(i);
-                                    System.out.println("Activated!");
-                                    connectionsToClient.get(currentPlayerIndex).sendNotify("Activate the "+ i + " leader");
-                                } else {
-                                    connectionsToClient.get(currentPlayerIndex).sendNotify("Cannot Activate the "+ i + " leader");
-                                    System.out.println("Cannot Activate the selected leader");
-                                }
-                                break;
-                            case "biggerDeposit":
-                                System.out.println("biggerDeposit");
-                                requirements = LeaderToActivate.getSpecialAbility().getRequirements();
-                                Resource resource = Resource.valueOf(requirements.get(0));
-                                Map<Resource, Integer> requires = new HashMap<>();
-                                requires.put(resource, 5); // PER FORZA 5 (FORZATURA!!)
-                                if (actualPlayerBoard.getResourceHandler().checkMaterials(requires)) {
-                                    actualPlayerBoard.getLeaderCardHandler().activateLeaderCard(i);
-                                    try {
-                                        actualPlayerBoard.getResourceHandler().addAdditionalDeposit(LeaderToActivate.getSpecialAbility().getMaterialType());
-                                    } catch (ResourceException e) {
-                                        System.out.println(e.getMessage());
-                                        e.printStackTrace();
-                                    }
-                                    System.out.println("Activated!");
-                                    connectionsToClient.get(currentPlayerIndex).sendNotify("Activate the "+ i + " leader");
-                                } else {
-                                    connectionsToClient.get(currentPlayerIndex).sendNotify("Cannot Activate the "+ i + " leader");
-                                }
-                                break;
-                            case "costLess":
-                                System.out.println("costLess");
-                                requirements = LeaderToActivate.getSpecialAbility().getRequirements();
-                                ArrayList<CardColor> colorsRequired = new ArrayList<>();
-                                for (String s : requirements) {
-                                    colorsRequired.add(CardColor.valueOf(s));
-                                }
-                                if (actualPlayerBoard.getDevelopmentCardHandler().checkCountDevelopmentCard(colorsRequired.get(0), 1) &&
-                                        actualPlayerBoard.getDevelopmentCardHandler().checkCountDevelopmentCard(colorsRequired.get(1), 1)) {
-                                    actualPlayerBoard.getLeaderCardHandler().activateLeaderCard(i);
-                                    System.out.println("Card Activated!");
-                                    connectionsToClient.get(currentPlayerIndex).sendNotify("Activate the "+ i + " leader");
-                                } else {
-                                    connectionsToClient.get(currentPlayerIndex).sendNotify("Cannot Activate the "+ i + " leader");
-                                }
-                                break;
-                            case "marketWhiteChange":
-                                System.out.println("marketWhiteChange");
-                                requirements = LeaderToActivate.getSpecialAbility().getRequirements();
-                                colorsRequired = new ArrayList<>();
-                                colorsRequired.add(CardColor.valueOf(requirements.get(0))); //TWICE
-                                colorsRequired.add(CardColor.valueOf(requirements.get(2))); //ONCE
-                                if (actualPlayerBoard.getDevelopmentCardHandler().checkCountDevelopmentCard(colorsRequired.get(0), 2) &&
-                                        actualPlayerBoard.getDevelopmentCardHandler().checkCountDevelopmentCard(colorsRequired.get(1), 1)) {
-                                    actualPlayerBoard.getLeaderCardHandler().activateLeaderCard(i);
-                                    System.out.println("Card Activated!");
-                                    connectionsToClient.get(currentPlayerIndex).sendNotify("Activate the "+ i + " leader");
-                                } else {
-                                    connectionsToClient.get(currentPlayerIndex).sendNotify("Cannot Activate the "+ i + " leader");
-                                }
-                                break;
-                        }
-
-
-                    }
-                    catch (LeaderCardException | DevelopmentCardException e){
-                        System.out.println("eccezione tirata" + e.getMessage());
-                        e.printStackTrace();
-                    }
-
-
-            }
-        }
-
-        turnToView();
+    public void leaderCardTurn(String playerName, ArrayList<Integer> actions){
+        leaderCardTurn.leaderTurns(playerName, actions, currentPlayerIndex);
     }
+
 
     // -------------------------------------------
     // METHODS FOR THE MARKET TURN
     // -------------------------------------------
-
     public void marketChooseLine(String namePlayer, int line){
         marketTurn.marketChooseLine(namePlayer, line, currentPlayerIndex);
     }
@@ -283,11 +193,6 @@ public class ControllerToModel {
     // -------------------------------------------
     // METHODS FOR THE BUY DEVELOPMENT CARD TURN
     // -------------------------------------------
-
-    public void developmentCardTurn(){
-        buyDevelopmentCardTurn.developmentCardTurn(currentPlayerIndex);
-    }
-
     public void buyDevelopmentCard(int color, int level){
         buyDevelopmentCardTurn.buyDevelopmentCard(color, level, currentPlayerIndex);
     }
@@ -307,121 +212,31 @@ public class ControllerToModel {
                                    ProductedMaterials resourceGranted, ArrayList<Boolean> useLeaders, ArrayList<Resource> materialLeaders,
                                    ArrayList<Boolean> useDevelop, String playerName){
 
-
-        Map<Resource,Integer> materialRequested = new HashMap<>();
-        for(Resource r : Resource.values())
-            materialRequested.put(r,0);
-
-        Map<ProductedMaterials, Integer> materialGranted = new HashMap<>();
-        for(ProductedMaterials p : ProductedMaterials.values())
-            materialGranted.put(p,0);
-
-        Gameboard actualPlayerBoard = players[currentPlayerIndex].getPlayerBoard();
-
-        if(useBaseProduction){
-            materialRequested.put(resourceRequested1,materialRequested.get(resourceRequested1)+1);
-            materialRequested.put(resourceRequested2,materialRequested.get(resourceRequested2)+1);
-            materialGranted.put(resourceGranted, materialGranted.get(resourceGranted)+1);
-        }
-
-
-
-
-        if(useLeaders.contains(true)) {
-            ArrayList<ProductedMaterials> productedByLeader = new ArrayList<>();
-
-            for (Resource r : materialLeaders) { //TRASFORM MATERIAL LEADER --> RESOURCE IN PRODUCTEDMATERIALS
-                if (r != null) {
-                    productedByLeader.add(ProductedMaterials.valueOf(r.name()));
-                }
-                else{
-                    productedByLeader.add(null);
-                }
-            }
-
-            try {
-                ArrayList<LeaderCard> activeLeaders = actualPlayerBoard.getLeaderCardHandler().getLeaderCardsActive();
-
-                for (int i = 0; i < activeLeaders.size(); i++) {
-                    if (useLeaders.get(i) && productedByLeader.get(i)!=null) {
-                        if(activeLeaders.get(i).getSpecialAbility().getEffect().equals("additionalProduction")) {
-                            Resource requestFromLeader = activeLeaders.get(i).getSpecialAbility().getMaterialType();
-                            materialRequested.put(requestFromLeader, materialRequested.get(requestFromLeader) + 1);
-                            materialGranted.put(productedByLeader.get(i),materialGranted.get(productedByLeader.get(i))+1);
-                            materialGranted.put(ProductedMaterials.FAITHPOINT, materialGranted.get(ProductedMaterials.FAITHPOINT)+1);
-                        }
-                        else{
-                            System.out.println("leader "+i+" not additionalProduction");
-                        }
-                    }
-                }
-
-            }catch (LeaderCardException e){
-                System.out.println(e.getMessage());
-                e.printStackTrace();
-            }
-
-        }
-
-
-
-        if(useDevelop.contains(true)) {
-
-            ArrayList<DevelopmentCard> activeDevelopment = actualPlayerBoard.getDevelopmentCardHandler().getActiveDevelopmentCard();
-
-            for(int i=0; i < activeDevelopment.size(); i++){
-                if (activeDevelopment.get(i)!=null && useDevelop.get(i)){
-                    System.out.println("Active prod number "+ i +" ?");
-
-                    Map<Resource,Integer> mapRequest = activeDevelopment.get(i).getMaterialRequired();
-                    for(Resource r : mapRequest.keySet())
-                        materialRequested.put(r,materialRequested.get(r) + mapRequest.get(r));
-
-                    Map<ProductedMaterials,Integer> mapProd = activeDevelopment.get(i).getProductionResult();
-                    for(ProductedMaterials prod : mapProd.keySet())
-                        materialGranted.put(prod, materialGranted.get(prod) + mapProd.get(prod));
-                }
-                else {
-                    System.out.println("Have not active DevelopmentCard in space " + i);
-                }
-            }
-        }
-
-
-        //ADD ALL TO STRONGBOX TODO SE LA MOSSA E' NULLA (0 RISORSE DI OGNI COSA COMUNICARLO)
-        if(actualPlayerBoard.getResourceHandler().checkMaterials(materialRequested)){
-            try {
-                actualPlayerBoard.getResourceHandler().takeMaterials(materialRequested);
-            } catch (ResourceException e) {
-                e.printStackTrace();
-            }
-
-            Map<Resource, Integer> materialForStrongBox = new HashMap<>();
-
-            for(Resource r : Resource.values())
-                materialForStrongBox.put(r, materialGranted.get(ProductedMaterials.valueOf(r.name())));
-
-            actualPlayerBoard.getResourceHandler().addMaterialStrongbox(materialForStrongBox);
-            int faithPoints = materialGranted.get(ProductedMaterials.FAITHPOINT);
-            for(int i=0; i<faithPoints; i++){
-                if(game.getPlayersFaithTrack().forwardPos(currentPlayerIndex)){
-                    marketTurn.controlPlayerPath(currentPlayerIndex);
-                }
-            }
-            System.out.println("Risorse aggiunte correttamente alla strongbox");
-            connectionsToClient.get(currentPlayerIndex).sendNotify("Risorse aggiunte correttamente alla strongbox");
-            connectionsToClient.get(currentPlayerIndex).sendNotify("Avanzi di "+ faithPoints + " punti fede");
-        }
-        else{
-            System.out.println("non ci sono abbastanza risorse");
-            connectionsToClient.get(currentPlayerIndex).sendNotify("NON HAI ABBASTANZA RISORSE!!!");
-        }
-
+        activateProductionTurn.productionsActivation(useBaseProduction, resourceRequested1, resourceRequested2, resourceGranted,
+                                    useLeaders, materialLeaders, useDevelop, playerName);
         newTurn();
 
     }
 
+    // -------------------------------------------
+    // METHODS FOR THE MANAGE OF THE FAITH TRACK
+    // -------------------------------------------
 
+    public void controlPlayerPath (int numPlayer){
+
+        int section = game.getPlayersFaithTrack().getSection(numPlayer);
+        int sectionToCheck;
+
+        for(int i=0; i<players.length; i++){
+            if(i!=numPlayer){ //it is an other Player
+                sectionToCheck = game.getPlayersFaithTrack().getSection(i); //control players' path
+                if (sectionToCheck!=section){ //devo rimuovergli il tagliando
+                    players[i].getPlayerBoard().removePopeFavorTiles(section);
+                }
+
+            }
+        }
+    }
 
     private Player nextPlayer(){
         if(currentPlayerIndex < players.length-1) {
@@ -433,7 +248,7 @@ public class ControllerToModel {
         }
     }
 
-    private void turnToView(){
+    public void turnToView(){
         try{
             connectionsToClient.get(currentPlayerIndex).sendNewTurn(turnNumber, game.getMarketBoard(), game.getDevelopmentCardsAvailable(),
                     players[currentPlayerIndex].getPlayerBoard().getResourceHandler().getDepositState(),
@@ -443,7 +258,7 @@ public class ControllerToModel {
                     players[currentPlayerIndex].getPlayerBoard().getPopeFavorTilesState(),
                     game.getPlayersFaithTrack().getPosition(currentPlayerIndex)
             );
-        } catch (LeaderCardException er) {
+        } catch (LeaderCardException err) {
             connectionsToClient.get(currentPlayerIndex).sendNewTurn(turnNumber, game.getMarketBoard(), game.getDevelopmentCardsAvailable(),
                     players[currentPlayerIndex].getPlayerBoard().getResourceHandler().getDepositState(),
                     players[currentPlayerIndex].getPlayerBoard().getResourceHandler().getStrongboxState(),
