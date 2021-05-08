@@ -42,5 +42,5 @@ public interface EventToClientNotifier {
                      ArrayList<Resource> depositState, Map<Resource, Integer> strongbox,
                      ArrayList<LeaderCard> leaderCardsActive, ArrayList<DevelopmentCard> developmentCardActive,
                         ArrayList<Integer> popeFavorTiles, int faithMarkerPosition );
-
+    void sendEndGame(String message);
 }

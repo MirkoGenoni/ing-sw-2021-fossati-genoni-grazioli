@@ -10,9 +10,7 @@ import it.polimi.ingsw.Events.ServerToClient.MarketTurnToClient.SendReorganizeDe
 import it.polimi.ingsw.Events.ServerToClient.StartConnectionToClient.SendNumPlayerToClient;
 import it.polimi.ingsw.Events.ServerToClient.StartConnectionToClient.SendPlayerNameToClient;
 import it.polimi.ingsw.Model.DevelopmentCard.CardColor;
-import it.polimi.ingsw.Model.DevelopmentCard.DevelopmentCard;
 import it.polimi.ingsw.Model.DevelopmentCard.ProductedMaterials;
-import it.polimi.ingsw.Model.LeaderCard.LeaderCard;
 import it.polimi.ingsw.Model.Resource.Resource;
 
 import java.io.IOException;
@@ -305,6 +303,11 @@ public class CLI implements EventToClientVisitor {
 
     }
 
+    @Override
+    public void visit(EndGameToClient message) {
+        System.out.println("ho ricevuto " + message.getMessage());
+        connectionToServer.setActive(false);
+    }
 
 
     private void selectedDevelopmentCard(){

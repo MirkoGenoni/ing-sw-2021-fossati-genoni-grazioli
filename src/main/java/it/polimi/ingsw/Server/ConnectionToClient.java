@@ -193,6 +193,12 @@ public class ConnectionToClient implements Runnable, EventToClientNotifier {
         asyncSendEvent(newTurnToClient);
     }
 
+    @Override
+    public void sendEndGame(String message) {
+        EndGameToClient endGameToClient = new EndGameToClient(message);
+        asyncSendEvent(endGameToClient);
+    }
+
 
     private ArrayList<SendLeaderCardToClient> leaderCardToSend(ArrayList<LeaderCard> leaderCards){
         ArrayList<SendLeaderCardToClient> tmp = new ArrayList<>();
