@@ -35,72 +35,18 @@ public class ActivateProductionTurn {
         for(ProductedMaterials p : ProductedMaterials.values())
             materialGranted.put(p,0);
 
-
         if(useBaseProduction){
             materialRequested.put(resourceRequested1,materialRequested.get(resourceRequested1)+1);
             materialRequested.put(resourceRequested2,materialRequested.get(resourceRequested2)+1);
             materialGranted.put(resourceGranted, materialGranted.get(resourceGranted)+1);
         }
 
-
         if(useLeaders.contains(true)) {
-            ArrayList<ProductedMaterials> productedByLeader = new ArrayList<>();
-
-            for (Resource r : materialLeaders) { //TRASFORM MATERIAL LEADER --> RESOURCE IN PRODUCTEDMATERIALS
-                if (r != null) {
-                    productedByLeader.add(ProductedMaterials.valueOf(r.name()));
-                }
-                else{
-                    productedByLeader.add(null);
-                }
-            }
-
-            try {
-                ArrayList<LeaderCard> activeLeaders = actualPlayerBoard.getLeaderCardHandler().getLeaderCardsActive();
-
-                for (int i = 0; i < activeLeaders.size(); i++) {
-                    if (useLeaders.get(i) && productedByLeader.get(i)!=null) {
-                        if(activeLeaders.get(i).getSpecialAbility().getEffect().equals("additionalProduction")) {
-                            Resource requestFromLeader = activeLeaders.get(i).getSpecialAbility().getMaterialType();
-                            materialRequested.put(requestFromLeader, materialRequested.get(requestFromLeader) + 1);
-                            materialGranted.put(productedByLeader.get(i),materialGranted.get(productedByLeader.get(i))+1);
-                            materialGranted.put(ProductedMaterials.FAITHPOINT, materialGranted.get(ProductedMaterials.FAITHPOINT)+1);
-                        }
-                        else{
-                            System.out.println("leader "+i+" not additionalProduction");
-                        }
-                    }
-                }
-
-            }catch (LeaderCardException e){
-                System.out.println(e.getMessage());
-                e.printStackTrace();
-            }
-
+            leaderCardProduction(useLeaders, materialLeaders, materialRequested, materialGranted);
         }
 
-
-
         if(useDevelop.contains(true)) {
-
-            ArrayList<DevelopmentCard> activeDevelopment = actualPlayerBoard.getDevelopmentCardHandler().getActiveDevelopmentCard();
-
-            for(int i=0; i < activeDevelopment.size(); i++){
-                if (activeDevelopment.get(i)!=null && useDevelop.get(i)){
-                    System.out.println("Active prod number "+ i +" ?");
-
-                    Map<Resource,Integer> mapRequest = activeDevelopment.get(i).getMaterialRequired();
-                    for(Resource r : mapRequest.keySet())
-                        materialRequested.put(r,materialRequested.get(r) + mapRequest.get(r));
-
-                    Map<ProductedMaterials,Integer> mapProd = activeDevelopment.get(i).getProductionResult();
-                    for(ProductedMaterials prod : mapProd.keySet())
-                        materialGranted.put(prod, materialGranted.get(prod) + mapProd.get(prod));
-                }
-                else {
-                    System.out.println("Have not active DevelopmentCard in space " + i);
-                }
-            }
+            developmentCardProduction(useDevelop, materialRequested, materialGranted);
         }
 
 
@@ -133,4 +79,64 @@ public class ActivateProductionTurn {
             controllerToModel.getConnectionsToClient().get(currentPlayerIndex).sendNotify("NON HAI ABBASTANZA RISORSE!!!");
         }
     }
+
+    private void leaderCardProduction(ArrayList<Boolean> useLeaders, ArrayList<Resource> materialLeaders,
+                                                               Map<Resource,Integer> materialRequested, Map<ProductedMaterials, Integer> materialGranted){
+
+        ArrayList<ProductedMaterials> productedByLeader = new ArrayList<>();
+
+        for (Resource r : materialLeaders) { //TRANSFORM MATERIAL LEADER --> RESOURCE IN PRODUCTEDMATERIALS
+            if (r != null) {
+                productedByLeader.add(ProductedMaterials.valueOf(r.name()));
+            }
+            else{
+                productedByLeader.add(null);
+            }
+        }
+
+        try {
+            ArrayList<LeaderCard> activeLeaders = controllerToModel.getPlayers()[controllerToModel.getCurrentPlayerIndex()].getPlayerBoard().getLeaderCardHandler().getLeaderCardsActive();
+
+            for (int i = 0; i < activeLeaders.size(); i++) {
+                if (useLeaders.get(i) && productedByLeader.get(i)!=null) {
+                    if(activeLeaders.get(i).getSpecialAbility().getEffect().equals("additionalProduction")) {
+                        Resource requestFromLeader = activeLeaders.get(i).getSpecialAbility().getMaterialType();
+                        materialRequested.put(requestFromLeader, materialRequested.get(requestFromLeader) + 1);
+                        materialGranted.put(productedByLeader.get(i),materialGranted.get(productedByLeader.get(i))+1);
+                        materialGranted.put(ProductedMaterials.FAITHPOINT, materialGranted.get(ProductedMaterials.FAITHPOINT)+1);
+                    }
+                    else{
+                        System.out.println("leader "+i+" not additionalProduction");
+                    }
+                }
+            }
+
+        }catch (LeaderCardException e){
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+        }
+
+    }
+
+    private void developmentCardProduction(ArrayList<Boolean> useDevelop, Map<Resource,Integer> materialRequested, Map<ProductedMaterials, Integer> materialGranted){
+        ArrayList<DevelopmentCard> activeDevelopment = controllerToModel.getPlayers()[controllerToModel.getCurrentPlayerIndex()].getPlayerBoard().getDevelopmentCardHandler().getActiveDevelopmentCard();
+
+        for(int i=0; i < activeDevelopment.size(); i++){
+            if (activeDevelopment.get(i)!=null && useDevelop.get(i)){
+                System.out.println("Active prod number "+ i +" ?");
+
+                Map<Resource,Integer> mapRequest = activeDevelopment.get(i).getMaterialRequired();
+                for(Resource r : mapRequest.keySet())
+                    materialRequested.put(r,materialRequested.get(r) + mapRequest.get(r));
+
+                Map<ProductedMaterials,Integer> mapProd = activeDevelopment.get(i).getProductionResult();
+                for(ProductedMaterials prod : mapProd.keySet())
+                    materialGranted.put(prod, materialGranted.get(prod) + mapProd.get(prod));
+            }
+            else {
+                System.out.println("Have not active DevelopmentCard in space " + i);
+            }
+        }
+    }
+
 }

@@ -90,10 +90,4 @@ public class MarketTurn {
 
     }
 
-    /**
-     *
-     * @param numPlayer player who call the PopeSpace
-     *
-     */
-
 }
