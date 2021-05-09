@@ -3,6 +3,10 @@ package it.polimi.ingsw.Model.Lorenzo;
 import java.util.ArrayList;
 import java.util.Collections;
 
+/**
+ * Class Lorenzo il Magnifico to manage Lorenzo Player
+ * @author davide
+ */
 public class LorenzoIlMagnifico {
 
      ArrayList<SoloAction> soloActionToken;
@@ -16,12 +20,19 @@ public class LorenzoIlMagnifico {
     }
 
 
+    /**
+     * Getter of SoloAction Collection
+     * @return the Array of SoloActionToken
+     */
     public ArrayList<SoloAction> getSoloActionToken() {
         return new ArrayList<>(soloActionToken);
     }
 
 
-
+    /**
+     * Method to draw a token for the Lorenzo action
+     * @return the drew token from the collection
+     */
     public SoloAction getToken(){
 
         SoloAction tookToken = soloActionToken.get(0);

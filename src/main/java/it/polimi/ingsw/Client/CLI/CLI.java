@@ -138,11 +138,16 @@ public class CLI implements EventToClientVisitor {
                 System.out.println(leaderCardArray.getLeaderCardArray().get(i).getResourceType());
             }
             if (leaderCardArray.getLeaderCardArray().size() == 4) {
-                System.out.println("dammi le due carte da scartare: num 1");
-                Scanner scanIn = new Scanner(System.in);
-                int num1 = scanIn.nextInt();
-                System.out.println("num 2:");
-                int num2 = scanIn.nextInt();
+                int num1;
+                int num2;
+                do {
+                    System.out.println("dammi le due carte da scartare: num 1");
+                    Scanner scanIn = new Scanner(System.in);
+                    num1 = scanIn.nextInt();
+                    System.out.println("num 2:");
+                    num2 = scanIn.nextInt();
+                }while((num1==num2) || num1>4 || num2>4 || num1<0 || num2<0);
+
                 connectionToServer.sendDiscardInitialLeaderCards(num1, num2);
             }
         }else{ //false
@@ -328,8 +333,7 @@ public class CLI implements EventToClientVisitor {
         ArrayList<Boolean> leaderCardWhiteChange = new ArrayList<>();
         for(int i=0; i< leaderCardActive.size(); i++){
             if(leaderCardActive.get(i).getEffect().equals("marketWhiteChange")){
-                System.out.println("vuoi usare la carta attiva marketWhiteChange" + leaderCardActive.get(i) + "?");
-                char answer = selectActivation();
+                char answer = selectActivation("vuoi usare la carta attiva marketWhiteChange" + leaderCardActive.get(i) + "?");
                 if(answer == 'Y'){
                     leaderCardWhiteChange.add(true);
                 }else{
@@ -406,8 +410,7 @@ public class CLI implements EventToClientVisitor {
 
     private void choseDevelopment(ArrayList<DevelopmentCardToClient> activeDevCards, ArrayList<SendLeaderCardToClient> activeLeaderCards){
 
-        System.out.println("Do you want to Activate the BASE Production? Y/N?");
-        char answer = selectActivation();
+        char answer = selectActivation("Do you want to Activate the BASE Production? Y/N?");
         boolean useBaseProduction = false;
         Resource resourceRequested1 = null;
         Resource resourceRequested2 = null;
@@ -423,8 +426,7 @@ public class CLI implements EventToClientVisitor {
         }
 
 
-        System.out.println("Do you want to Activate one of the LEADER Production? Y/N?");
-        answer = selectActivation();
+        answer = selectActivation("Do you want to Activate one of the LEADER Production? Y/N?");
         ArrayList<Boolean> useLeaders = new ArrayList<>();
         for (int i=0; i<2; i++)
             useLeaders.add(false);
@@ -435,8 +437,7 @@ public class CLI implements EventToClientVisitor {
         if(answer == 'Y'){
                 for (int i=0; i<activeLeaderCards.size(); i++){          //control if there's an active LeaderCard additionalProd
                     if(activeLeaderCards.get(i).getEffect().equals("additionalProduction")) {
-                        System.out.println("Do you want to use production of ACTIVE LEADER number " + i + " ?" + " Y/N?");
-                        answer = selectActivation();
+                        answer = selectActivation("Do you want to use production of ACTIVE LEADER number " + i + " ?" + " Y/N?");
                         if (answer == 'Y') {
                             useLeaders.set(i, true);
                             Resource resource = selectResource("Select RESOURCE you want from the Leader");
@@ -447,8 +448,7 @@ public class CLI implements EventToClientVisitor {
         }
 
 
-        System.out.println("Do you want to use any of yours DEVELOPMENT CARDS? Y/N?");
-        answer = selectActivation();
+        answer = selectActivation("Do you want to use any of yours DEVELOPMENT CARDS? Y/N?");
         ArrayList<Boolean> useDevelop = new ArrayList<>();
         for (int i=0; i<3; i++)
             useDevelop.add(false);
@@ -456,8 +456,7 @@ public class CLI implements EventToClientVisitor {
         if(answer == 'Y'){
             for(int i=0; i<3; i++) {
                 if (activeDevCards.get(i) != null) {
-                    System.out.println("Do you want to use the ACTIVE PRODUCTION number: " + i + " ?" + " Y/N?");
-                    answer = selectActivation();
+                    answer = selectActivation("Do you want to use the ACTIVE PRODUCTION number: " + i + " ?" + " Y/N?");
                     if (answer == 'Y')
                         useDevelop.set(i, true);
                 }
@@ -496,11 +495,12 @@ public class CLI implements EventToClientVisitor {
     */
 
     // PARSA LA SCELTA Y/N
-    private char selectActivation () {
+    private char selectActivation (String message) {
         Scanner scan = new Scanner(System.in);
         char choose;
         boolean isValid;
         do {
+            System.out.println(message);
             String input;
             input = scan.nextLine();
             isValid = false;   //CONTROL
