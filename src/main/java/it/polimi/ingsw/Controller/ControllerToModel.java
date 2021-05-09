@@ -27,6 +27,7 @@ public class ControllerToModel {
     private int turnNumber=1;
     private int currentPlayerIndex;
     private int numPlayer;
+    private int firstPlayer;
 
     // type of turn
     private MarketTurn marketTurn;
@@ -112,6 +113,7 @@ public class ControllerToModel {
             multiGame.startGame();
             // per barare
             currentPlayerIndex = (int) (Math.random()*4);
+            firstPlayer=currentPlayerIndex;
             System.out.println("il primo giocatre ha indirizzo: " + currentPlayerIndex);
             initialResources(currentPlayerIndex);
             for(int i=0; i<connectionsToClient.size(); i++){
@@ -155,7 +157,7 @@ public class ControllerToModel {
         System.out.println("è iniziato un nuovo turno");
         activePlayer = nextPlayer();
 
-        if(currentPlayerIndex == numPlayer-1 && endGame.endGameNotify()){
+        if(currentPlayerIndex == firstPlayer && endGame.endGameNotify()){
             int winnerPoint=0;
             String winnerName = " ";
             connectionsToClient.forEach(c -> c.sendNotify(" IL GIOCO E' FINITOO!!!"));
