@@ -146,7 +146,7 @@ public class CLI implements EventToClientVisitor {
                     num1 = scanIn.nextInt();
                     System.out.println("num 2:");
                     num2 = scanIn.nextInt();
-                }while((num1==num2) || num1>4 || num2>4 || num1<0 || num2<0);
+                }while((num1==num2) || num1>3 || num2>3 || num1<0 || num2<0);
 
                 connectionToServer.sendDiscardInitialLeaderCards(num1, num2);
             }
