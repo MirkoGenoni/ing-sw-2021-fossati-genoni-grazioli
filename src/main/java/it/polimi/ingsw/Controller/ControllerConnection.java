@@ -8,6 +8,7 @@ import it.polimi.ingsw.Events.ClientToServer.MarketTurnToServer.NewDepositStateT
 import it.polimi.ingsw.Events.ClientToServer.StartConnectionToServer.NumPlayerToServer;
 import it.polimi.ingsw.Events.ClientToServer.StartConnectionToServer.PlayerNameToServer;
 import it.polimi.ingsw.Events.ClientToServer.StartGameToServer.DiscardInitialLeaderCards;
+import it.polimi.ingsw.Events.ClientToServer.StartGameToServer.InitialResourcesChoose;
 
 public class ControllerConnection implements EventToServerVisitor, ObserveConnectionToClient {
     private final ControllerToModel controllerToModel;
@@ -65,7 +66,7 @@ public class ControllerConnection implements EventToServerVisitor, ObserveConnec
     @Override
     public void visit(ChooseLineToServer numLine) {
         System.out.println("mi è arrivato il turno chooseline");
-        controllerToModel.marketChooseLine(numLine.getPlayerName() ,numLine.getNumLine());
+        controllerToModel.marketChooseLine(numLine.getPlayerName() ,numLine.getNumLine(), numLine.getMarketWhiteChangeActivation());
     }
 
     @Override
@@ -110,6 +111,12 @@ public class ControllerConnection implements EventToServerVisitor, ObserveConnec
         if(turn.getTurnType().equals("turn")){
             controllerToModel.newTurn();
         }
+    }
+
+    @Override
+    public void visit(InitialResourcesChoose newInitialDepositState) {
+        System.out.println("mi è arrivat il deposito iniziale");
+        controllerToModel.initialResourcesChoose(newInitialDepositState.getInitialResourcesChoose(), newInitialDepositState.getPlayerName());
     }
 
 }

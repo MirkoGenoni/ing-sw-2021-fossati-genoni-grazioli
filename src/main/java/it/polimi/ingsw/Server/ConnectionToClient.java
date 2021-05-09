@@ -199,6 +199,12 @@ public class ConnectionToClient implements Runnable, EventToClientNotifier {
         asyncSendEvent(endGameToClient);
     }
 
+    @Override
+    public void sendInitialResources(int numResources, ArrayList<Resource> depositState) {
+        SendInitialResourcesToClient sendInitialResourcesToClient = new SendInitialResourcesToClient(numResources, depositState);
+        asyncSendEvent(sendInitialResourcesToClient);
+    }
+
 
     private ArrayList<SendLeaderCardToClient> leaderCardToSend(ArrayList<LeaderCard> leaderCards){
         ArrayList<SendLeaderCardToClient> tmp = new ArrayList<>();

@@ -3,6 +3,7 @@ package it.polimi.ingsw.Controller;
 import it.polimi.ingsw.Controller.Turns.*;
 import it.polimi.ingsw.Model.DevelopmentCard.ProductedMaterials;
 import it.polimi.ingsw.Model.Exceptions.LeaderCardException;
+import it.polimi.ingsw.Model.Exceptions.ResourceException;
 import it.polimi.ingsw.Model.Exceptions.StartGameException;
 import it.polimi.ingsw.Model.Game.Game;
 import it.polimi.ingsw.Model.Game.MultiPlayerGame;
@@ -109,19 +110,20 @@ public class ControllerToModel {
             }
             game = multiGame; // riguardo
             multiGame.startGame();
-            // Send initial leadercard to client
+            // per barare
+            currentPlayerIndex = (int) (Math.random()*4);
+            System.out.println("il primo giocatre ha indirizzo: " + currentPlayerIndex);
+            initialResources(currentPlayerIndex);
             for(int i=0; i<connectionsToClient.size(); i++){
                 try{
                     connectionsToClient.get(i).sendArrayLeaderCards(multiGame.getPlayers()[i].getPlayerBoard().getLeaderCardHandler().getLeaderCardsAvailable(), true);
                 } catch (LeaderCardException e) {
                     e.printStackTrace();
                 }
-            // manca la distribuzione di risorse e dei punti fede all'inizio della partite
-            // metodo private initialResources
             }
             this.activePlayer = players[0];
             turnNumber = 0;
-
+            currentPlayerIndex --; // serve perchè il nextTurn incrementa il numero di giocatori
             // create classes of type of turn
             marketTurn = new MarketTurn(this);
             buyDevelopmentCardTurn = new BuyDevelopmentCardTurn(this);
@@ -134,6 +136,7 @@ public class ControllerToModel {
             players = new Player[numPlayer];
             Player tmpP = new Player(connectionsToClient.get(0).getNamePlayer());
             players[0] = tmpP;
+            currentPlayerIndex=0;
             singleGame = new SinglePlayerGame(tmpP);
             game = singleGame;
             singleGame.startGame();
@@ -191,6 +194,18 @@ public class ControllerToModel {
 
     }
 
+    public void initialResourcesChoose(ArrayList<Resource> initialDepositState, String playerName){
+        for(int i=0; i<players.length; i++){
+            if(players[i].getName().equals(playerName)){
+                try {
+                    players[i].getPlayerBoard().getResourceHandler().newDepositState(initialDepositState);
+                } catch (ResourceException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
     public void discardInitialLeaderCards(String playerName, int leaderCard1, int leaderCard2){
         for(int i =0; i< players.length; i++){
             if(playerName.equals(players[i].getName())){
@@ -212,8 +227,8 @@ public class ControllerToModel {
     // -------------------------------------------
     // METHODS FOR THE MARKET TURN
     // -------------------------------------------
-    public void marketChooseLine(String namePlayer, int line){
-        marketTurn.marketChooseLine(namePlayer, line, currentPlayerIndex);
+    public void marketChooseLine(String namePlayer, int line, ArrayList<Boolean> leaderMarketWhiteChange){
+        marketTurn.marketChooseLine(namePlayer, line, currentPlayerIndex, leaderMarketWhiteChange);
     }
 
     public void saveNewDepositState(ArrayList<Resource> newDepositState, int discardResources){
@@ -272,16 +287,6 @@ public class ControllerToModel {
         }
     }
 
-    private Player nextPlayer(){
-        if(currentPlayerIndex < players.length-1) {
-            currentPlayerIndex++;
-            return players[currentPlayerIndex];
-        }else{
-            currentPlayerIndex = 0;
-            return players[0];
-        }
-    }
-
     public void turnToView(){
         try{
             connectionsToClient.get(currentPlayerIndex).sendNewTurn(turnNumber, game.getMarketBoard(), game.getDevelopmentCardsAvailable(),
@@ -303,6 +308,43 @@ public class ControllerToModel {
             );
         }
     }
+
+    private void initialResources(int firstPlayer){
+        int current = firstPlayer;
+        for(int i=0; i<numPlayer; i++) {
+            if(i == 1){
+                connectionsToClient.get(current).sendInitialResources(1, players[current].getPlayerBoard().getResourceHandler().getDepositState());
+            }else if(i == 2){
+                if(game.getPlayersFaithTrack().forwardPos(current)){
+                    controlPlayerPath(current);
+                }
+                connectionsToClient.get(current).sendInitialResources(1, players[current].getPlayerBoard().getResourceHandler().getDepositState());
+            }else if(i == 3){
+                if(game.getPlayersFaithTrack().forwardPos(current)){
+                    controlPlayerPath(current);
+                }
+                connectionsToClient.get(current).sendInitialResources(2, players[current].getPlayerBoard().getResourceHandler().getDepositState());
+            }
+            if(current < players.length-1){
+                current ++;
+            }else{
+                current =0;
+            }
+        }
+
+    }
+
+    private Player nextPlayer(){
+        if(currentPlayerIndex < players.length-1) {
+            currentPlayerIndex++;
+            return players[currentPlayerIndex];
+        }else{
+            currentPlayerIndex = 0;
+            return players[0];
+        }
+    }
+
+
 
 
 

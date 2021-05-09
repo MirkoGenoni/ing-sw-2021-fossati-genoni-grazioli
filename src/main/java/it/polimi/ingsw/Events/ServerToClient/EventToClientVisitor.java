@@ -38,6 +38,7 @@ public interface EventToClientVisitor {
     void visit(NotifyToClient message);
     void visit(NewTurnToClient newTurn);
     void visit(EndGameToClient message);
+    void visit(SendInitialResourcesToClient numResources);
 
 
 }

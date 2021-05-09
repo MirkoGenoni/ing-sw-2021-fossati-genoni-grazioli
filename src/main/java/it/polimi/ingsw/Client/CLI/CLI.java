@@ -291,7 +291,8 @@ public class CLI implements EventToClientVisitor {
             System.out.println("dimmi una riga che scegli: ");
             Scanner scanIn1 = new Scanner(System.in);
             int line1 = scanIn1.nextInt();
-            connectionToServer.sendChooseLine(line1);
+            ArrayList<Boolean> tmp = marketWhiteChangeActive(newTurn.getLeaderCarsActive());
+            connectionToServer.sendChooseLine(line1, tmp);
         }else if(line.equals("buydevelopment")){
             selectedDevelopmentCard();
         }else if(line.equals("usedevelopment")){
@@ -307,6 +308,38 @@ public class CLI implements EventToClientVisitor {
     public void visit(EndGameToClient message) {
         System.out.println("ho ricevuto " + message.getMessage());
         connectionToServer.setActive(false);
+    }
+
+    @Override
+    public void visit(SendInitialResourcesToClient numResources) {
+        System.out.println("scelta delle risorse iniziali");
+        ArrayList<Resource> initialResources = new ArrayList<>();
+        for(int i=0; i< numResources.getNumResources(); i++){
+            initialResources.add(selectResource("scegli la risorsa num " + i + " tra: coin, shield, servant, stone"));
+        }
+        NewDepositView newDepositView = new NewDepositView(numResources.getDepositState(), initialResources);
+        newDepositView.LaunchView();
+
+        connectionToServer.sendInitialDepositState(newDepositView.getDepositState());
+
+    }
+
+    private ArrayList<Boolean> marketWhiteChangeActive(ArrayList<SendLeaderCardToClient> leaderCardActive){
+        ArrayList<Boolean> leaderCardWhiteChange = new ArrayList<>();
+        for(int i=0; i< leaderCardActive.size(); i++){
+            if(leaderCardActive.get(i).getEffect().equals("marketWhiteChange")){
+                System.out.println("vuoi usare la carta attiva marketWhiteChange" + leaderCardActive.get(i) + "?");
+                char answer = selectActivation();
+                if(answer == 'Y'){
+                    leaderCardWhiteChange.add(true);
+                }else{
+                    leaderCardWhiteChange.add(false);
+                }
+            }else{
+                leaderCardWhiteChange.add(false);
+            }
+        }
+        return leaderCardWhiteChange;
     }
 
 

@@ -9,6 +9,7 @@ import it.polimi.ingsw.Events.ClientToServer.MarketTurnToServer.NewDepositStateT
 import it.polimi.ingsw.Events.ClientToServer.StartConnectionToServer.NumPlayerToServer;
 import it.polimi.ingsw.Events.ClientToServer.StartConnectionToServer.PlayerNameToServer;
 import it.polimi.ingsw.Events.ClientToServer.StartGameToServer.DiscardInitialLeaderCards;
+import it.polimi.ingsw.Events.ClientToServer.StartGameToServer.InitialResourcesChoose;
 import it.polimi.ingsw.Events.ServerToClient.EventToClient;
 import it.polimi.ingsw.Model.DevelopmentCard.ProductedMaterials;
 import it.polimi.ingsw.Model.Resource.Resource;
@@ -125,8 +126,8 @@ public class ConnectionToServer implements Runnable, EventToServerNotifier {
     // EVENTS FOR THE MARKET TURN INTERACTION
     // -------------------------------------------
     @Override
-    public void sendChooseLine(int numLine) {
-        ChooseLineToServer chooseLineToServer = new ChooseLineToServer(numLine, this.playerName);
+    public void sendChooseLine(int numLine, ArrayList<Boolean> leaderMarketWhiteChange) {
+        ChooseLineToServer chooseLineToServer = new ChooseLineToServer(numLine, leaderMarketWhiteChange, this.playerName);
         asyncSendEvent(chooseLineToServer);
     }
 
@@ -169,7 +170,11 @@ public class ConnectionToServer implements Runnable, EventToServerNotifier {
         asyncSendEvent(turnPlayedToServer);
     }
 
-
+    @Override
+    public void sendInitialDepositState(ArrayList<Resource> newInitialDepositState) {
+        InitialResourcesChoose initialResourcesChoose = new InitialResourcesChoose(newInitialDepositState, this.playerName);
+        asyncSendEvent(initialResourcesChoose);
+    }
 
 
 }

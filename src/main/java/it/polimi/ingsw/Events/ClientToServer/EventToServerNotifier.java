@@ -23,7 +23,7 @@ public interface EventToServerNotifier {
     // -------------------------------------------
     // EVENTS FOR THE MARKET TURN INTERACTION
     // -------------------------------------------
-    void sendChooseLine(int numLine);
+    void sendChooseLine(int numLine, ArrayList<Boolean> leaderMarketWhiteChange);
     void sendNewDepositState(ArrayList<Resource> newDepositState, int discardResources);
 
     // ------------------------------------------------------
@@ -43,5 +43,6 @@ public interface EventToServerNotifier {
     // EVENT FOR NEW TURN INTERACTION
     // ------------------------------------------------------
     void sendTurnPlayed(String turnType);
+    void sendInitialDepositState(ArrayList<Resource> newInitialDepositState);
 
 }

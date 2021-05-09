@@ -3,18 +3,26 @@ package it.polimi.ingsw.Events.ClientToServer.MarketTurnToServer;
 import it.polimi.ingsw.Events.ClientToServer.EventToServer;
 import it.polimi.ingsw.Events.ClientToServer.EventToServerVisitor;
 
+import java.util.ArrayList;
+
 // this event send to the server the line choose by the client
 public class ChooseLineToServer extends EventToServer {
     private final int numLine;
+    private final ArrayList<Boolean> marketWhiteChangeActivation;
     private final String playerName;
 
-    public ChooseLineToServer(int numLine, String playerName) {
+    public ChooseLineToServer(int numLine, ArrayList<Boolean> marketWhiteChangeActivation, String playerName) {
         this.numLine = numLine;
+        this.marketWhiteChangeActivation = marketWhiteChangeActivation;
         this.playerName = playerName;
     }
 
     public int getNumLine() {
         return numLine;
+    }
+
+    public ArrayList<Boolean> getMarketWhiteChangeActivation() {
+        return marketWhiteChangeActivation;
     }
 
     public String getPlayerName() {

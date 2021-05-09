@@ -19,7 +19,7 @@ public class MarketTurn {
         this.controllerToModel = controllerToModel;
     }
 
-    public void marketChooseLine(String namePlayer, int line, int currentPlayerIndex){
+    public void marketChooseLine(String namePlayer, int line, int currentPlayerIndex, ArrayList<Boolean> leaderMarketWhiteChange){
         System.out.println("aggiungo al player");
         ArrayList<Marble> tmpM =  controllerToModel.getGame().getMarketBoard().chooseLine(line);
         System.out.println(tmpM);
@@ -31,12 +31,12 @@ public class MarketTurn {
             tmpM.remove(Marble.FAITH);
         }
 
-        if(tmpM.contains(Marble.NOTHING)){   // TODO le leader card da usare sarebbero da scegliere....
+        if(tmpM.contains(Marble.NOTHING)){
             try{
                 ArrayList<LeaderCard> tmpL = controllerToModel.getPlayers()[currentPlayerIndex].getPlayerBoard().getLeaderCardHandler().getLeaderCardsActive();
                 if(!tmpL.isEmpty()){                                        // controlla se ci sono carte leader attive
                     for(int i=0; i< tmpL.size() && tmpM.contains(Marble.NOTHING); i++){
-                        if(tmpL.get(i).getSpecialAbility().getEffect().equals("marketWhiteChange") && tmpM.contains(Marble.NOTHING)){  // se ci sono carte leader attive di tipo marketWhiteChenge converte la marble
+                        if(leaderMarketWhiteChange.get(i) && tmpM.contains(Marble.NOTHING)){  // se ci sono carte leader attive di tipo marketWhiteChenge converte la marble
                             tmpM.remove(Marble.NOTHING);
                             tmpM.add(Marble.valueOf(tmpL.get(i).getSpecialAbility().getMaterialType().toString()));
                         }

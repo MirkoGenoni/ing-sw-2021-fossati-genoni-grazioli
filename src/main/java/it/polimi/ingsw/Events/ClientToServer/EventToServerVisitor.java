@@ -7,6 +7,7 @@ import it.polimi.ingsw.Events.ClientToServer.MarketTurnToServer.NewDepositStateT
 import it.polimi.ingsw.Events.ClientToServer.StartConnectionToServer.NumPlayerToServer;
 import it.polimi.ingsw.Events.ClientToServer.StartConnectionToServer.PlayerNameToServer;
 import it.polimi.ingsw.Events.ClientToServer.StartGameToServer.DiscardInitialLeaderCards;
+import it.polimi.ingsw.Events.ClientToServer.StartGameToServer.InitialResourcesChoose;
 
 // list of the event that the server receive form client
 public interface EventToServerVisitor {
@@ -44,5 +45,6 @@ public interface EventToServerVisitor {
     // EVENT FOR NEW TURN INTERACTION
     // ------------------------------------------------------
     void visit(TurnPlayedToServer turn);
+    void visit(InitialResourcesChoose newInitialDepositState);
 
 }
