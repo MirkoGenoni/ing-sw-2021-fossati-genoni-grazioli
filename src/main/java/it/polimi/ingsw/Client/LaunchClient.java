@@ -18,11 +18,8 @@ public class LaunchClient {
             e.printStackTrace();
         }
         */
-        try{
             ClientCLI clientCLI = new ClientCLI("localhost", 12345);
             clientCLI.startClient();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
     }
 }

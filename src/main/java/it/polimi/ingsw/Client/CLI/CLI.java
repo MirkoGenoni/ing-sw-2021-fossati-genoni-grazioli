@@ -1,5 +1,6 @@
 package it.polimi.ingsw.Client.CLI;
 
+import it.polimi.ingsw.Client.CLI.Views.LeaderCardView.LeaderCardView;
 import it.polimi.ingsw.Client.CLI.Views.NewDepositView;
 import it.polimi.ingsw.Client.ConnectionToServer;
 import it.polimi.ingsw.Events.ServerToClient.*;
@@ -22,7 +23,7 @@ public class CLI implements EventToClientVisitor {
     private final ConnectionToServer connectionToServer;
     private String namePlayer;
     private final Thread asyncPrint = new Thread(()->{
-        System.out.printf("                                                                                                                          \n" +
+        System.out.print("                                                                                                                          \n" +
                           "                                                                                                                          \n" +
                           "                                                                                                                          \n");
         System.out.print("                                   WAITING FOR OTHER PLAYERS");
@@ -37,17 +38,17 @@ public class CLI implements EventToClientVisitor {
                 System.out.print(".");
                 TimeUnit.SECONDS.sleep(1);
             } catch (InterruptedException e) {
-                System.out.printf("\u001B[2J\u001B[3J\u001B[H");
+                System.out.print("\u001B[2J\u001B[3J\u001B[H");
                 break;
             }
 
             for (int i = 0; i < 5; i++)
-                System.out.printf("\b");
+                System.out.print("\b");
 
-            System.out.printf("     ");
+            System.out.print("     ");
 
             for (int i = 0; i < 5; i++)
-                System.out.printf("\b");
+                System.out.print("\b");
 
         }});
 
@@ -69,9 +70,9 @@ public class CLI implements EventToClientVisitor {
         namePlayer = playerName.getPlayerName();
         connectionToServer.setPlayerName(playerName.getPlayerName());
 
-        System.out.printf("                                                                                                                          \n");
+        System.out.print("                                                                                                                          \n");
 
-        System.out.print("                                   INSERT NAME: ");
+        System.out.print("                                    INSERT NAME: ");
 
         try {
             System.in.read(new byte[System.in.available()]);
@@ -94,9 +95,9 @@ public class CLI implements EventToClientVisitor {
         //System.out.println("ho ricevuto la richiesta di numero di giocatori");
         //System.out.println(numPlayer.getMessage());
 
-        System.out.printf("                                                                                                                          \n");
+        System.out.print("                                                                                                                           \n");
 
-        System.out.print("                                   YOU'RE THE FIRST PLAYER! ");
+        System.out.print("                                    YOU'RE THE FIRST PLAYER! ");
 
         try {
             TimeUnit.SECONDS.sleep(1);
@@ -105,9 +106,15 @@ public class CLI implements EventToClientVisitor {
         }
 
         for(int i=0; i<60; i++)
-            System.out.printf("\b");
+            System.out.print("\b");
 
         System.out.print("                                   INSERT NUMBER OF PLAYERS: ");
+
+        try {
+            System.in.read(new byte[System.in.available()]);
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
 
         Scanner scanIn = new Scanner(System.in);
         int num = scanIn.nextInt();
@@ -130,7 +137,7 @@ public class CLI implements EventToClientVisitor {
     public void visit(SendArrayLeaderCardsToClient leaderCardArray) {
 
         if (leaderCardArray.isInitialLeaderCards()) {
-            System.out.println("mi è arrivato un array forse");
+            /*System.out.println("mi è arrivato un array forse");
             for (int i = 0; i < leaderCardArray.getLeaderCardArray().size(); i++) {
                 System.out.println(leaderCardArray.getLeaderCardArray().get(i).getEffect());
                 System.out.println(leaderCardArray.getLeaderCardArray().get(i).getVictoryPoint());
@@ -149,9 +156,14 @@ public class CLI implements EventToClientVisitor {
                 }while((num1==num2) || num1>3 || num2>3 || num1<0 || num2<0);
 
                 connectionToServer.sendDiscardInitialLeaderCards(num1, num2);
+            }*/
+            if (leaderCardArray.getLeaderCardArray().size() == 4) {
+                LeaderCardView leaderCardView = new LeaderCardView(leaderCardArray.getLeaderCardArray());
+                int[] received = leaderCardView.StartInitialLeaderCardView();
+                connectionToServer.sendDiscardInitialLeaderCards(received[0], received[1]);
             }
         }else{ //false
-            System.out.println("Mi sono arrivati leader, non sono a inizio gioco");
+            /*System.out.println("Mi sono arrivati leader, non sono a inizio gioco");
             for (int i = 0; i < leaderCardArray.getLeaderCardArray().size(); i++) {
                 System.out.println(leaderCardArray.getLeaderCardArray().get(i).getEffect());
                 System.out.println(leaderCardArray.getLeaderCardArray().get(i).getVictoryPoint());
@@ -168,9 +180,11 @@ public class CLI implements EventToClientVisitor {
                 arrayToSend.add(input);
             }
 
-            connectionToServer.sendLeaderCardTurn(arrayToSend);
+            connectionToServer.sendLeaderCardTurn(arrayToSend);*/
+                LeaderCardView leaderCardView = new LeaderCardView(leaderCardArray.getLeaderCardArray());
+                ArrayList<Integer> received = leaderCardView.StartCardView();
+                connectionToServer.sendLeaderCardTurn(received);
         }
-
     }
     // ----------------------------------
     // EVENTS FOR THE MARKET TURN

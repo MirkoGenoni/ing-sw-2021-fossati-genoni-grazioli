@@ -121,55 +121,55 @@ public class NewDepositView {
     public void PrintDepositChoise(ArrayList<ResourceIcon> incoming, Map<String, Integer> acquired){
 
         System.out.printf("\u001B[2J\u001B[3J\u001B[H");
-        System.out.println("\u001B[097m" + "                                                 ╔═══════════════════════╗\n" +
-                                           "                                                 ║ NEW DEPOSIT SELECTION ║\n" +
-                                           "                                                 ╚═══════════════════════╝\n" +
-                                           "┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓");
+        System.out.println("\u001B[0;00m" + "                                                  ╔═══════════════════════╗ \n" +
+                                           "                                                  ║ NEW DEPOSIT SELECTION ║ \n" +
+                                           "                                                  ╚═══════════════════════╝ \n" +
+                                           " ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓ ");
 
-        System.out.println("\u001B[097m" + "┃                                                      " + depositState.get(0).returnLine(0) + "                                                    " + "\u001B[097m" + "┃\n" +
-                "\u001B[097m" + "┃                                                      " + depositState.get(0).returnLine(1) + "                                                    " + "\u001B[097m" + "┃\n" +
-                "\u001B[097m" + "┃                                                      " + depositState.get(0).returnLine(2) + "                                                    " + "\u001B[097m" + "┃\n" +
-                "\u001B[097m" + "┃                                                      " + depositState.get(0).returnLine(3) + "                                                    " + "\u001B[097m" + "┃\n" +
-                "\u001B[097m" + "┃                                                      " + depositState.get(0).returnLine(4) + "                                                    " + "\u001B[097m" + "┃\n" +
-                "\u001B[097m" + "┃                                                      " + depositState.get(0).returnLine(5) + "                                                    " + "\u001B[097m" + "┃\n" +
-                "\u001B[097m" + "┃                                                           (1)                                                         " + "\u001B[097m" + "┃\n" +
-                "\u001B[097m" + "┃                                                                                                                       " + "\u001B[097m" + "┃");
+        System.out.println("\u001B[0;00m" + " ┃                                                      " + depositState.get(0).returnLine(0) + "                                                    " + "\u001B[0;00m" + "┃ \n" +
+                "\u001B[0;00m" + " ┃                                                      " + depositState.get(0).returnLine(1) + "                                                    " + "\u001B[0;00m" + "┃ \n" +
+                "\u001B[0;00m" + " ┃                                                      " + depositState.get(0).returnLine(2) + "                                                    " + "\u001B[0;00m" + "┃ \n" +
+                "\u001B[0;00m" + " ┃                                                      " + depositState.get(0).returnLine(3) + "                                                    " + "\u001B[0;00m" + "┃ \n" +
+                "\u001B[0;00m" + " ┃                                                      " + depositState.get(0).returnLine(4) + "                                                    " + "\u001B[0;00m" + "┃ \n" +
+                "\u001B[0;00m" + " ┃                                                      " + depositState.get(0).returnLine(5) + "                                                    " + "\u001B[0;00m" + "┃ \n" +
+                "\u001B[0;00m" + " ┃                                                           (1)                                                         " + "\u001B[0;00m" + "┃ \n" +
+                "\u001B[0;00m" + " ┃                                                                                                                       " + "\u001B[0;00m" + "┃ ");
 
-        System.out.println("\u001B[097m" + "┃                                         " + depositState.get(1).returnLine(0) + "             " + depositState.get(2).returnLine(0) + "                                       "+"\u001B[097m" +"┃\n" +
-                "\u001B[097m" + "┃                                         " + depositState.get(1).returnLine(1) + "             " + depositState.get(2).returnLine(1) + "                                       "+"\u001B[097m" +"┃\n" +
-                "\u001B[097m" + "┃                                         " + depositState.get(1).returnLine(2) + "             " + depositState.get(2).returnLine(2) + "                                       "+"\u001B[097m" +"┃\n" +
-                "\u001B[097m" + "┃                                         " + depositState.get(1).returnLine(3) + "             " + depositState.get(2).returnLine(3) + "                                       "+"\u001B[097m" +"┃\n" +
-                "\u001B[097m" + "┃                                         " + depositState.get(1).returnLine(4) + "             " + depositState.get(2).returnLine(4) + "                                       "+"\u001B[097m" +"┃\n" +
-                "\u001B[097m" + "┃                                         " + depositState.get(1).returnLine(5) + "             " + depositState.get(2).returnLine(5) + "                                       "+"\u001B[097m" +"┃\n" +
-                "\u001B[097m" + "┃                                              (2)                       (3)                                            ┃\n" +
-                "\u001B[097m" + "┃                                                                                                                       ┃");
+        System.out.println("\u001B[0;00m" + " ┃                                         " + depositState.get(1).returnLine(0) + "             " + depositState.get(2).returnLine(0) + "                                       "+"\u001B[0;00m" +"┃ \n" +
+                "\u001B[0;00m" + " ┃                                         " + depositState.get(1).returnLine(1) + "             " + depositState.get(2).returnLine(1) + "                                       "+"\u001B[0;00m" +"┃ \n" +
+                "\u001B[0;00m" + " ┃                                         " + depositState.get(1).returnLine(2) + "             " + depositState.get(2).returnLine(2) + "                                       "+"\u001B[0;00m" +"┃ \n" +
+                "\u001B[0;00m" + " ┃                                         " + depositState.get(1).returnLine(3) + "             " + depositState.get(2).returnLine(3) + "                                       "+"\u001B[0;00m" +"┃ \n" +
+                "\u001B[0;00m" + " ┃                                         " + depositState.get(1).returnLine(4) + "             " + depositState.get(2).returnLine(4) + "                                       "+"\u001B[0;00m" +"┃ \n" +
+                "\u001B[0;00m" + " ┃                                         " + depositState.get(1).returnLine(5) + "             " + depositState.get(2).returnLine(5) + "                                       "+"\u001B[0;00m" +"┃ \n" +
+                "\u001B[0;00m" + " ┃                                              (2)                       (3)                                            ┃ \n" +
+                "\u001B[0;00m" + " ┃                                                                                                                       ┃ ");
 
-        System.out.println("\u001B[097m" + "┃                            " + depositState.get(3).returnLine(0) + "             " + depositState.get(4).returnLine(0) + "             " + depositState.get(5).returnLine(0) + "                          "+"\u001B[097m" +"┃\n" +
-                "\u001B[097m" + "┃                            " + depositState.get(3).returnLine(1) + "             " + depositState.get(4).returnLine(1) + "             " + depositState.get(5).returnLine(1) + "                          "+"\u001B[097m" +"┃\n" +
-                "\u001B[097m" + "┃                            " + depositState.get(3).returnLine(2) + "             " + depositState.get(4).returnLine(2) + "             " + depositState.get(5).returnLine(2) + "                          "+"\u001B[097m" +"┃\n" +
-                "\u001B[097m" + "┃                            " + depositState.get(3).returnLine(3) + "             " + depositState.get(4).returnLine(3) + "             " + depositState.get(5).returnLine(3) + "                          "+"\u001B[097m" +"┃\n" +
-                "\u001B[097m" + "┃                            " + depositState.get(3).returnLine(4) + "             " + depositState.get(4).returnLine(4) + "             " + depositState.get(5).returnLine(4) + "                          "+"\u001B[097m" +"┃\n" +
-                "\u001B[097m" + "┃                            " + depositState.get(3).returnLine(5) + "             " + depositState.get(4).returnLine(5) + "             " + depositState.get(5).returnLine(5) + "                          "+"\u001B[097m" +"┃\n" +
-                "\u001B[097m" + "┃                                 (4)                       (5)                       (6)                               ┃\n" +
-                "\u001B[097m" + "┃                                                                                                                       ┃\n" +
-                "\u001B[097m" + "┃                                                                                                                       ┃\n" +
-                "\u001B[097m" + "┃                                                                                                                       ┃");
+        System.out.println("\u001B[0;00m" + " ┃                            " + depositState.get(3).returnLine(0) + "             " + depositState.get(4).returnLine(0) + "             " + depositState.get(5).returnLine(0) + "                          "+"\u001B[0;00m" +"┃ \n" +
+                "\u001B[0;00m" + " ┃                            " + depositState.get(3).returnLine(1) + "             " + depositState.get(4).returnLine(1) + "             " + depositState.get(5).returnLine(1) + "                          "+"\u001B[0;00m" +"┃ \n" +
+                "\u001B[0;00m" + " ┃                            " + depositState.get(3).returnLine(2) + "             " + depositState.get(4).returnLine(2) + "             " + depositState.get(5).returnLine(2) + "                          "+"\u001B[0;00m" +"┃ \n" +
+                "\u001B[0;00m" + " ┃                            " + depositState.get(3).returnLine(3) + "             " + depositState.get(4).returnLine(3) + "             " + depositState.get(5).returnLine(3) + "                          "+"\u001B[0;00m" +"┃ \n" +
+                "\u001B[0;00m" + " ┃                            " + depositState.get(3).returnLine(4) + "             " + depositState.get(4).returnLine(4) + "             " + depositState.get(5).returnLine(4) + "                          "+"\u001B[0;00m" +"┃ \n" +
+                "\u001B[0;00m" + " ┃                            " + depositState.get(3).returnLine(5) + "             " + depositState.get(4).returnLine(5) + "             " + depositState.get(5).returnLine(5) + "                          "+"\u001B[0;00m" +"┃ \n" +
+                "\u001B[0;00m" + " ┃                                 (4)                       (5)                       (6)                               ┃ \n" +
+                "\u001B[0;00m" + " ┃                                                                                                                       ┃ \n" +
+                "\u001B[0;00m" + " ┃                                                                                                                       ┃ \n" +
+                "\u001B[0;00m" + " ┃                                                                                                                       ┃ ");
 
-        System.out.print("\u001B[097m" + "┃                                                      ______________                                                   ┃\n" +
-                "┃                                                                                                                       ┃\n" +
-                "┃                                                       TO ORGANIZE                                                     ┃\n" +
-                "┃                                                                                                                       ┃\n" +
-                "┃                                                       Coin:     " + acquired.get(ResourceIcon.COIN.toString()) + "                                                     ┃\n" +
-                "┃                                                       Servant:  " + acquired.get(ResourceIcon.SERVANT.toString()) + "                                                     ┃\n" +
-                "┃                                                       Shield:   " + acquired.get(ResourceIcon.SHIELD.toString()) + "                                                     ┃\n" +
-                "┃                                                       Stone:    " + acquired.get(ResourceIcon.STONE.toString()) + "                                                     ┃\n" +
-                "┃                                                      ______________                                                   ┃\n" +
-                "┃                                                                                                                       ┃\n" +
-                "┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛\n" +
+        System.out.print("\u001B[0;00m" + " ┃                                                      ______________                                                   ┃ \n" +
+                " ┃                                                                                                                       ┃ \n" +
+                " ┃                                                       TO ORGANIZE                                                     ┃ \n" +
+                " ┃                                                                                                                       ┃ \n" +
+                " ┃                                                       Coin:     " + acquired.get(ResourceIcon.COIN.toString()) + "                                                     ┃ \n" +
+                " ┃                                                       Servant:  " + acquired.get(ResourceIcon.SERVANT.toString()) + "                                                     ┃ \n" +
+                " ┃                                                       Shield:   " + acquired.get(ResourceIcon.SHIELD.toString()) + "                                                     ┃ \n" +
+                " ┃                                                       Stone:    " + acquired.get(ResourceIcon.STONE.toString()) + "                                                     ┃ \n" +
+                " ┃                                                      ______________                                                   ┃ \n" +
+                " ┃                                                                                                                       ┃ \n" +
+                " ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛ \n" +
                 "\n" +
-                "                            Choose a material and a position to put into (material,position):\n" +
-                "                                                "+ "\u001B[92m"+"[type done when finished]                    \n" +
+                "                             Choose a material and a position to put into (material,position):\n" +
+                "                                                 "+ "\u001B[92m"+"[type done when finished]                    \n" +
                 "\n"+
-                "                                                             " + "\u001B[097m");
+                "                                                              " + "\u001B[0;00m");
     }
 }
