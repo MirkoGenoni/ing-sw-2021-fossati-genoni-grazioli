@@ -153,6 +153,8 @@ public class ResourceHandler {
         for (Resource r : Resource.values()) {
             if(requirements.containsKey(r)) {
                 int quantity_available = strongbox.getQuantity(r) + deposit_available.get(r);
+                if(additional_deposit.size()>0 && additional_deposit.containsKey(r))
+                    quantity_available += additional_deposit.get(r);
                 if (requirements.get(r) > quantity_available)
                     return false;
             }
