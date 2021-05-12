@@ -36,6 +36,10 @@ public class ControllerToModel {
     private ActivateProductionTurn activateProductionTurn;
     private EndGame endGame;
 
+    //Single Player turn
+    private LorenzoTurn lorenzoTurn;
+
+
     public ControllerToModel() {
         this.connectionsToClient = new ArrayList<>();
         numPlayer = 0;
@@ -98,7 +102,6 @@ public class ControllerToModel {
     // METHODS FOR THE START OF THE MATCH
     // -------------------------------------------
     public void startMatch() throws StartGameException {
-        System.out.println("hai invocato start multiGame");
         connectionsToClient.forEach(cc -> cc.sendNotify("AllPlayersConnected"));
         currentPlayerIndex = connectionsToClient.size();
         if(numPlayer > 1){
@@ -127,13 +130,9 @@ public class ControllerToModel {
             turnNumber = 0;
             currentPlayerIndex --; // serve perchè il nextTurn incrementa il numero di giocatori
             // create classes of type of turn
-            marketTurn = new MarketTurn(this);
-            buyDevelopmentCardTurn = new BuyDevelopmentCardTurn(this);
-            leaderCardTurn = new LeaderCardTurn(this);
-            activateProductionTurn = new ActivateProductionTurn(this);
-            endGame = new EndGame(this);
-
+            createTurns();
             newTurn();
+
         }else if(numPlayer == 1){
             players = new Player[numPlayer];
             Player tmpP = new Player(connectionsToClient.get(0).getNamePlayer());
@@ -142,10 +141,28 @@ public class ControllerToModel {
             singleGame = new SinglePlayerGame(tmpP);
             game = singleGame;
             singleGame.startGame();
+            try{
+                connectionsToClient.get(currentPlayerIndex).sendArrayLeaderCards(singleGame.getPlayer().getPlayerBoard().getLeaderCardHandler().getLeaderCardsAvailable(), true);
+            } catch (LeaderCardException e) {
+                e.printStackTrace();
+            }
             this.activePlayer = players[0];
             turnNumber = 0;
+            createTurns();
+            System.out.println("creo lorenzo");
+            lorenzoTurn = new LorenzoTurn(this, singleGame, 1);
             // nuovo turno da rivedere
+            newTurn();
         }
+    }
+
+
+    private void createTurns(){
+        marketTurn = new MarketTurn(this);
+        buyDevelopmentCardTurn = new BuyDevelopmentCardTurn(this);
+        leaderCardTurn = new LeaderCardTurn(this);
+        activateProductionTurn = new ActivateProductionTurn(this);
+        endGame = new EndGame(this);
     }
 
 
@@ -156,6 +173,13 @@ public class ControllerToModel {
     public void newTurn(){
         System.out.println("è iniziato un nuovo turno");
         activePlayer = nextPlayer();
+
+        if(turnNumber != 0 && players.length == 1){
+           if(lorenzoTurn.playLorenzo()){
+               connectionsToClient.get(currentPlayerIndex).sendEndGame("HAI PERSO, HA VINTO LORENZO!!");
+           }
+        }
+
 
         if(currentPlayerIndex == firstPlayer && endGame.endGameNotify()){
             int winnerPoint=0;
