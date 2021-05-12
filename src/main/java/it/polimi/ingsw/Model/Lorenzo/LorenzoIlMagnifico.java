@@ -9,13 +9,13 @@ import java.util.Collections;
  */
 public class LorenzoIlMagnifico {
 
-     ArrayList<SoloAction> soloActionToken;
+     ArrayList<SoloAction> soloActionTokens;
 
     public LorenzoIlMagnifico() {
-        soloActionToken = new ArrayList<>();
+        soloActionTokens = new ArrayList<>();
 
-        Collections.addAll(soloActionToken, SoloAction.values());
-        Collections.shuffle(soloActionToken);
+        Collections.addAll(soloActionTokens, SoloAction.values());
+        Collections.shuffle(soloActionTokens);
 
     }
 
@@ -24,8 +24,8 @@ public class LorenzoIlMagnifico {
      * Getter of SoloAction Collection
      * @return the Array of SoloActionToken
      */
-    public ArrayList<SoloAction> getSoloActionToken() {
-        return new ArrayList<>(soloActionToken);
+    public ArrayList<SoloAction> getSoloActionTokens() {
+        return new ArrayList<>(soloActionTokens);
     }
 
 
@@ -35,14 +35,14 @@ public class LorenzoIlMagnifico {
      */
     public SoloAction getToken(){
 
-        SoloAction tookToken = soloActionToken.get(0);
+        SoloAction tookToken = soloActionTokens.get(0);
 
-        if (tookToken.name() == SoloAction.MOVESHUFFLE.name())
-            Collections.shuffle(soloActionToken);
+        if (tookToken.name().equals(SoloAction.MOVESHUFFLE.name()))
+            Collections.shuffle(soloActionTokens);
 
         else {
-            soloActionToken.remove(0); //remove from head
-            soloActionToken.add(tookToken); //add on tail
+            soloActionTokens.remove(0); //remove from head
+            soloActionTokens.add(tookToken); //add on tail
         }
 
         return tookToken;

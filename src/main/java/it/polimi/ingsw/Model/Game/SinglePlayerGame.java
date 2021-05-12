@@ -2,6 +2,7 @@ package it.polimi.ingsw.Model.Game;
 
 import it.polimi.ingsw.Model.DevelopmentCard.DevelopmentCard;
 import it.polimi.ingsw.Model.Exceptions.StartGameException;
+import it.polimi.ingsw.Model.LeaderCard.LeaderCard;
 import it.polimi.ingsw.Model.Lorenzo.LorenzoIlMagnifico;
 
 import java.util.ArrayList;
@@ -11,7 +12,7 @@ public class SinglePlayerGame extends Game{
     LorenzoIlMagnifico lorenzoIlMagnifico;
 
     public SinglePlayerGame(Player player) {
-        super(1);
+        super(2); //provide 2 faithTracks
         this.lorenzoIlMagnifico = new LorenzoIlMagnifico();
         this.player = player;
     }
@@ -42,5 +43,12 @@ public class SinglePlayerGame extends Game{
     @Override
     public void startGame() throws StartGameException {
         super.startGame();
+
+        ArrayList<LeaderCard> tmp = new ArrayList<>();
+        for(int j=0; j<4; j++){
+            tmp.add(allLeaderCards.remove(0));
+        }
+        player.createGameBoard(tmp);
+
     }
 }

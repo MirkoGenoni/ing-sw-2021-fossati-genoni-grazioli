@@ -55,7 +55,13 @@ public abstract class Game {
         DevelopmentCard[][] developmentCardsAvailable = new DevelopmentCard[4][3];
         for(int i=0; i<developmentCardsAvailable.length; i++){
             for(int j=0; j<developmentCardsAvailable[i].length; j++){
-                developmentCardsAvailable[i][j]  = (DevelopmentCard) developmentCards[i][j].get(0);
+
+                if (developmentCards[i][j]!=null && developmentCards[i][j].size()!=0) {
+                    developmentCardsAvailable[i][j] = (DevelopmentCard) developmentCards[i][j].get(0);
+                }else{
+                    developmentCardsAvailable[i][j] = null;
+                }
+
             }
         }
         return developmentCardsAvailable;
