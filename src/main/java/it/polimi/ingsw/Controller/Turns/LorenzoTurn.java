@@ -24,6 +24,10 @@ public class LorenzoTurn {
     }
 
 
+    /**
+     * Metod who permit Lorenzo to Play his turn
+     * @return if Lorenzo has win
+     */
     public boolean playLorenzo(){
 
         SoloAction action;
