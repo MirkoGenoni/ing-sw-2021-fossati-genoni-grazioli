@@ -1,6 +1,5 @@
 package it.polimi.ingsw.Events.ServerToClient.SupportClass;
 
-import it.polimi.ingsw.Events.ServerToClient.SendLeaderCardToClient;
 import it.polimi.ingsw.Model.Resource.Resource;
 
 import java.io.Serializable;
@@ -11,13 +10,13 @@ public class PlayerInformationToClient implements Serializable {
     private final String playerNameSend;
     private final ArrayList<Resource> deposit;
     private final Map<Resource, Integer> strongBox;
-    private final ArrayList<SendLeaderCardToClient> leaderCardActive;
+    private final ArrayList<LeaderCardToClient> leaderCardActive;
     private final ArrayList<DevelopmentCardToClient> developmentCardPlayer;
     private final ArrayList<Integer> popeFavorTiles;
     private final int faithMarkerPosition;
 
     public PlayerInformationToClient(String playerNameSend, ArrayList<Resource> deposit, Map<Resource, Integer> strongBox,
-                                     ArrayList<SendLeaderCardToClient> leaderCardActive, ArrayList<DevelopmentCardToClient> developmentCardPlayer,
+                                     ArrayList<LeaderCardToClient> leaderCardActive, ArrayList<DevelopmentCardToClient> developmentCardPlayer,
                                      ArrayList<Integer> popeFavorTiles, int faithMarkerPosition) {
         this.playerNameSend = playerNameSend;
         this.deposit = deposit;
@@ -40,7 +39,7 @@ public class PlayerInformationToClient implements Serializable {
         return strongBox;
     }
 
-    public ArrayList<SendLeaderCardToClient> getLeaderCardActive() {
+    public ArrayList<LeaderCardToClient> getLeaderCardActive() {
         return leaderCardActive;
     }
 

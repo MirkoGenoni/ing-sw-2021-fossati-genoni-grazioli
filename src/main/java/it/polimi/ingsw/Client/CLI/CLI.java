@@ -10,6 +10,7 @@ import it.polimi.ingsw.Events.ServerToClient.BuyDevelopmentCardTurnToClient.Send
 import it.polimi.ingsw.Events.ServerToClient.MarketTurnToClient.SendReorganizeDepositToClient;
 import it.polimi.ingsw.Events.ServerToClient.StartConnectionToClient.SendNumPlayerToClient;
 import it.polimi.ingsw.Events.ServerToClient.StartConnectionToClient.SendPlayerNameToClient;
+import it.polimi.ingsw.Events.ServerToClient.SupportClass.LeaderCardToClient;
 import it.polimi.ingsw.Events.ServerToClient.SupportClass.PlayerInformationToClient;
 import it.polimi.ingsw.Model.DevelopmentCard.CardColor;
 import it.polimi.ingsw.Model.DevelopmentCard.ProductedMaterials;
@@ -126,15 +127,6 @@ public class CLI implements EventToClientVisitor {
     // -------------------------------------------
     // EVENTS THAT RECEIVE LEADER CARD INFORMATION
     // -------------------------------------------
-    @Override
-    public void visit(SendLeaderCardToClient leaderCard) {
-        System.out.println("mi è arrivata la leaderCArd");
-        System.out.println(leaderCard.getEffect());
-        System.out.println(leaderCard.getVictoryPoint());
-        System.out.println(leaderCard.getRequirement());
-        System.out.println(leaderCard.getResourceType());
-    }
-
     @Override
     public void visit(SendArrayLeaderCardsToClient leaderCardArray) {
         if(leaderCardArray.isInitialLeaderCards()) {
@@ -311,7 +303,7 @@ public class CLI implements EventToClientVisitor {
 
     }
 
-    private ArrayList<Boolean> marketWhiteChangeActive(ArrayList<SendLeaderCardToClient> leaderCardActive){
+    private ArrayList<Boolean> marketWhiteChangeActive(ArrayList<LeaderCardToClient> leaderCardActive){
         ArrayList<Boolean> leaderCardWhiteChange = new ArrayList<>();
         for(int i=0; i< leaderCardActive.size(); i++){
             if(leaderCardActive.get(i).getEffect().equals("marketWhiteChange")){
@@ -390,7 +382,7 @@ public class CLI implements EventToClientVisitor {
 
 
 
-    private void choseDevelopment(ArrayList<DevelopmentCardToClient> activeDevCards, ArrayList<SendLeaderCardToClient> activeLeaderCards){
+    private void choseDevelopment(ArrayList<DevelopmentCardToClient> activeDevCards, ArrayList<LeaderCardToClient> activeLeaderCards){
 
         char answer = selectActivation("Do you want to Activate the BASE Production? Y/N?");
         boolean useBaseProduction = false;

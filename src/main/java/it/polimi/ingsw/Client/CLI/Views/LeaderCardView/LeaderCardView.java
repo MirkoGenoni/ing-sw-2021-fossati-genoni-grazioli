@@ -3,12 +3,12 @@ package it.polimi.ingsw.Client.CLI.Views.LeaderCardView;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-import it.polimi.ingsw.Events.ServerToClient.SendLeaderCardToClient;
+import it.polimi.ingsw.Events.ServerToClient.SupportClass.LeaderCardToClient;
 
 public class LeaderCardView {
     ArrayList<LeaderCardVisualization> cards;
 
-    public LeaderCardView(ArrayList<SendLeaderCardToClient> leaderCardArray){
+    public LeaderCardView(ArrayList<LeaderCardToClient> leaderCardArray){
 
         cards = new ArrayList<>();
 

@@ -1,15 +1,16 @@
-package it.polimi.ingsw.Events.ServerToClient;
+package it.polimi.ingsw.Events.ServerToClient.SupportClass;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class SendLeaderCardToClient extends EventToClient{
+public class LeaderCardToClient implements Serializable {
     private final String nameCard;
     private final ArrayList<String> requirement;
     private final int victoryPoint;
     private final String effect;
     private final String resourceType;
 
-    public SendLeaderCardToClient(String nameCard, ArrayList<String> requirement, int victoryPoint, String effect, String resourceType) {
+    public LeaderCardToClient(String nameCard, ArrayList<String> requirement, int victoryPoint, String effect, String resourceType) {
         this.nameCard = nameCard;
         this.requirement = requirement;
         this.victoryPoint = victoryPoint;
@@ -35,10 +36,5 @@ public class SendLeaderCardToClient extends EventToClient{
 
     public String getResourceType() {
         return resourceType;
-    }
-
-    @Override
-    public void acceptVisitor(EventToClientVisitor visitor) {
-        visitor.visit(this);
     }
 }

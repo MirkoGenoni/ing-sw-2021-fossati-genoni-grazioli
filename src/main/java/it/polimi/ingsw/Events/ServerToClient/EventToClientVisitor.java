@@ -18,7 +18,6 @@ public interface EventToClientVisitor {
     // -------------------------------------------
     // EVENTS THAT RECEIVE LEADER CARD INFORMATION
     // -------------------------------------------
-    void visit(SendLeaderCardToClient leaderCard);
     void visit(SendArrayLeaderCardsToClient leaderCardArray);
 
     // ----------------------------------

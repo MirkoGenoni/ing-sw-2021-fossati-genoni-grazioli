@@ -6,6 +6,7 @@ import it.polimi.ingsw.Controller.ObserveConnectionToClient;
 import it.polimi.ingsw.Events.ServerToClient.BuyDevelopmentCardTurnToClient.SendReselectedDevelopmentCardAvailableToClient;
 import it.polimi.ingsw.Events.ServerToClient.SupportClass.DevelopmentCardToClient;
 import it.polimi.ingsw.Events.ServerToClient.BuyDevelopmentCardTurnToClient.SendSpaceDevelopmentCardToClient;
+import it.polimi.ingsw.Events.ServerToClient.SupportClass.LeaderCardToClient;
 import it.polimi.ingsw.Events.ServerToClient.SupportClass.MarketToClient;
 import it.polimi.ingsw.Events.ServerToClient.MarketTurnToClient.SendReorganizeDepositToClient;
 import it.polimi.ingsw.Events.ServerToClient.StartConnectionToClient.SendNumPlayerToClient;
@@ -137,16 +138,6 @@ public class ConnectionToClient implements Runnable, EventToClientNotifier {
     // EVENTS THAT SEND LEADER CARD INFORMATION
     // ----------------------------------------
     @Override
-    public void sendLeaderCard(LeaderCard leaderCard) {
-        SendLeaderCardToClient sendLeaderCardToClient = new SendLeaderCardToClient(leaderCard.getName(),
-                leaderCard.getSpecialAbility().getRequirements(),
-                leaderCard.getSpecialAbility().getVictoryPoints(),
-                leaderCard.getSpecialAbility().getEffect(),
-                leaderCard.getSpecialAbility().getMaterialType().toString());
-        asyncSendEvent(sendLeaderCardToClient);
-    }
-
-    @Override
     public void sendArrayLeaderCards(ArrayList<LeaderCard> leaderCards, boolean initialLeaderCards) {
         SendArrayLeaderCardsToClient sendArrayLeaderCardsToClient = new SendArrayLeaderCardsToClient(leaderCardToSend(leaderCards), initialLeaderCards);
         asyncSendEvent(sendArrayLeaderCardsToClient);
@@ -208,16 +199,16 @@ public class ConnectionToClient implements Runnable, EventToClientNotifier {
     }
 
 
-    private ArrayList<SendLeaderCardToClient> leaderCardToSend(ArrayList<LeaderCard> leaderCards){
-        ArrayList<SendLeaderCardToClient> tmp = new ArrayList<>();
+    private ArrayList<LeaderCardToClient> leaderCardToSend(ArrayList<LeaderCard> leaderCards){
+        ArrayList<LeaderCardToClient> tmp = new ArrayList<>();
         if(leaderCards!=null) {
             for (int i = 0; i < leaderCards.size(); i++) {
-                SendLeaderCardToClient sendLeaderCardToClient = new SendLeaderCardToClient(leaderCards.get(i).getName(),
+                LeaderCardToClient leaderCardToClient = new LeaderCardToClient(leaderCards.get(i).getName(),
                         leaderCards.get(i).getSpecialAbility().getRequirements(),
                         leaderCards.get(i).getSpecialAbility().getVictoryPoints(),
                         leaderCards.get(i).getSpecialAbility().getEffect(),
                         leaderCards.get(i).getSpecialAbility().getMaterialType().toString());
-                tmp.add(sendLeaderCardToClient);
+                tmp.add(leaderCardToClient);
             }
         }
         return tmp;
