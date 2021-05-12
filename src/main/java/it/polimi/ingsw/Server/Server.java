@@ -95,6 +95,7 @@ public class Server implements Runnable{
             System.out.println("notificati tutti i client");
 
         } catch (IOException | StartGameException e) {
+            System.out.println("CLIENT DISCONNESSO");
             e.printStackTrace();
         }
     }

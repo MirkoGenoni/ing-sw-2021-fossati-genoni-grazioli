@@ -229,7 +229,11 @@ public class CLI implements EventToClientVisitor {
         System.out.println("ho ricevuto Array Dev disponibili: ");
         for (DevelopmentCardToClient[] cards : newTurn.getDevelopmentCards()) {
             for (DevelopmentCardToClient card : cards)
-                System.out.println("color: " + card.getColor() + " level: " + card.getLevel() + " cost: " + card.getCost() + " Req: " + card.getMaterialRequired() + " Grant: " + card.getProductionResult());
+                if(card!=null) {
+                    System.out.println("color: " + card.getColor() + " level: " + card.getLevel() + " cost: " + card.getCost() + " Req: " + card.getMaterialRequired() + " Grant: " + card.getProductionResult());
+                }else{
+                    System.out.println("NO CARDS");
+                }
         }
 
         for(int i=0; i<newTurn.getPlayers().size(); i++){

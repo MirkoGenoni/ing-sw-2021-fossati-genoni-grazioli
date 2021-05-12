@@ -236,8 +236,13 @@ public class ConnectionToClient implements Runnable, EventToClientNotifier {
         for(int i=0; i<devCards.length; i++){
             for(int j=0; j<devCards[i].length; j++){
                 cardToCopy = devCards[i][j];
-                availableToSend[i][j] = new DevelopmentCardToClient(cardToCopy.getColor().name(), cardToCopy.getLevel(),
-                        cardToCopy.getCost(), cardToCopy.getVictoryPoint(), cardToCopy.getMaterialRequired(), cardToCopy.getProductionResult());
+                if(cardToCopy!=null) {
+                    availableToSend[i][j] = new DevelopmentCardToClient(cardToCopy.getColor().name(), cardToCopy.getLevel(),
+                            cardToCopy.getCost(), cardToCopy.getVictoryPoint(), cardToCopy.getMaterialRequired(), cardToCopy.getProductionResult());
+                }
+                else{
+                    availableToSend[i][j] = null;
+                }
             }
         }
         return availableToSend;
