@@ -290,25 +290,7 @@ public class ControllerToModel {
     }
 
     public void turnToView(){
-        try{
-            connectionsToClient.get(currentPlayerIndex).sendNewTurn(turnNumber, game.getMarketBoard(), game.getDevelopmentCardsAvailable(),
-                    players[currentPlayerIndex].getPlayerBoard().getResourceHandler().getDepositState(),
-                    players[currentPlayerIndex].getPlayerBoard().getResourceHandler().getStrongboxState(),
-                    players[currentPlayerIndex].getPlayerBoard().getLeaderCardHandler().getLeaderCardsActive(),
-                    players[currentPlayerIndex].getPlayerBoard().getDevelopmentCardHandler().getActiveDevelopmentCard(),
-                    players[currentPlayerIndex].getPlayerBoard().getPopeFavorTilesState(),
-                    game.getPlayersFaithTrack().getPosition(currentPlayerIndex)
-            );
-        } catch (LeaderCardException err) {
-            connectionsToClient.get(currentPlayerIndex).sendNewTurn(turnNumber, game.getMarketBoard(), game.getDevelopmentCardsAvailable(),
-                    players[currentPlayerIndex].getPlayerBoard().getResourceHandler().getDepositState(),
-                    players[currentPlayerIndex].getPlayerBoard().getResourceHandler().getStrongboxState(),
-                    null,
-                    players[currentPlayerIndex].getPlayerBoard().getDevelopmentCardHandler().getActiveDevelopmentCard(),
-                    players[currentPlayerIndex].getPlayerBoard().getPopeFavorTilesState(),
-                    game.getPlayersFaithTrack().getPosition(currentPlayerIndex)
-            );
-        }
+        connectionsToClient.get(currentPlayerIndex).sendNewTurn(turnNumber, game.getMarketBoard(), game.getDevelopmentCardsAvailable(), players, game.getPlayersFaithTrack());
     }
 
     private void initialResources(int firstPlayer){

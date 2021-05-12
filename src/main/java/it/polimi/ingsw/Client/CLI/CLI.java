@@ -10,6 +10,7 @@ import it.polimi.ingsw.Events.ServerToClient.BuyDevelopmentCardTurnToClient.Send
 import it.polimi.ingsw.Events.ServerToClient.MarketTurnToClient.SendReorganizeDepositToClient;
 import it.polimi.ingsw.Events.ServerToClient.StartConnectionToClient.SendNumPlayerToClient;
 import it.polimi.ingsw.Events.ServerToClient.StartConnectionToClient.SendPlayerNameToClient;
+import it.polimi.ingsw.Events.ServerToClient.SupportClass.PlayerInformationToClient;
 import it.polimi.ingsw.Model.DevelopmentCard.CardColor;
 import it.polimi.ingsw.Model.DevelopmentCard.ProductedMaterials;
 import it.polimi.ingsw.Model.Resource.Resource;
@@ -22,6 +23,7 @@ import java.util.concurrent.TimeUnit;
 public class CLI implements EventToClientVisitor {
     private final ConnectionToServer connectionToServer;
     private String namePlayer;
+    private int index = -1;
     private final Thread asyncPrint = new Thread(()->{
         System.out.print("                                                                                                                          \n" +
                           "                                                                                                                          \n" +
@@ -135,55 +137,14 @@ public class CLI implements EventToClientVisitor {
 
     @Override
     public void visit(SendArrayLeaderCardsToClient leaderCardArray) {
-
-        if (leaderCardArray.isInitialLeaderCards()) {
-            /*System.out.println("mi è arrivato un array forse");
-            for (int i = 0; i < leaderCardArray.getLeaderCardArray().size(); i++) {
-                System.out.println(leaderCardArray.getLeaderCardArray().get(i).getEffect());
-                System.out.println(leaderCardArray.getLeaderCardArray().get(i).getVictoryPoint());
-                System.out.println(leaderCardArray.getLeaderCardArray().get(i).getRequirement());
-                System.out.println(leaderCardArray.getLeaderCardArray().get(i).getResourceType());
-            }
-            if (leaderCardArray.getLeaderCardArray().size() == 4) {
-                int num1;
-                int num2;
-                do {
-                    System.out.println("dammi le due carte da scartare: num 1");
-                    Scanner scanIn = new Scanner(System.in);
-                    num1 = scanIn.nextInt();
-                    System.out.println("num 2:");
-                    num2 = scanIn.nextInt();
-                }while((num1==num2) || num1>3 || num2>3 || num1<0 || num2<0);
-
-                connectionToServer.sendDiscardInitialLeaderCards(num1, num2);
-            }*/
-            if (leaderCardArray.getLeaderCardArray().size() == 4) {
-                LeaderCardView leaderCardView = new LeaderCardView(leaderCardArray.getLeaderCardArray());
-                int[] received = leaderCardView.StartInitialLeaderCardView();
-                connectionToServer.sendDiscardInitialLeaderCards(received[0], received[1]);
-            }
-        }else{ //false
-            /*System.out.println("Mi sono arrivati leader, non sono a inizio gioco");
-            for (int i = 0; i < leaderCardArray.getLeaderCardArray().size(); i++) {
-                System.out.println(leaderCardArray.getLeaderCardArray().get(i).getEffect());
-                System.out.println(leaderCardArray.getLeaderCardArray().get(i).getVictoryPoint());
-                System.out.println(leaderCardArray.getLeaderCardArray().get(i).getRequirement());
-                System.out.println(leaderCardArray.getLeaderCardArray().get(i).getResourceType());
-            }
-
-            System.out.println("Do you want to play or discard any leader? 0-To do nothing/ 1-To play / 2-To discard ");
-            ArrayList<Integer> arrayToSend = new ArrayList<>();
-            for (int i = 0; i < leaderCardArray.getLeaderCardArray().size(); i++){
-                System.out.println("The number " + i + " card:");
-                Scanner scanIn = new Scanner(System.in);
-                int input = scanIn.nextInt();                   //ATTENTO ALL'INPUT NO DIVERSO 0-1-2 (Forse meglio un while)
-                arrayToSend.add(input);
-            }
-
-            connectionToServer.sendLeaderCardTurn(arrayToSend);*/
-                LeaderCardView leaderCardView = new LeaderCardView(leaderCardArray.getLeaderCardArray());
-                ArrayList<Integer> received = leaderCardView.StartCardView();
-                connectionToServer.sendLeaderCardTurn(received);
+        if(leaderCardArray.isInitialLeaderCards()) {
+            LeaderCardView leaderCardView = new LeaderCardView(leaderCardArray.getLeaderCardArray());
+            int[] received = leaderCardView.StartInitialLeaderCardView();
+            connectionToServer.sendDiscardInitialLeaderCards(received[0], received[1]);
+        }else{
+            LeaderCardView leaderCardView = new LeaderCardView(leaderCardArray.getLeaderCardArray());
+            ArrayList<Integer> received = leaderCardView.StartCardView();
+            connectionToServer.sendLeaderCardTurn(received);
         }
     }
     // ----------------------------------
@@ -279,17 +240,24 @@ public class CLI implements EventToClientVisitor {
                 System.out.println("color: " + card.getColor() + " level: " + card.getLevel() + " cost: " + card.getCost() + " Req: " + card.getMaterialRequired() + " Grant: " + card.getProductionResult());
         }
 
+        for(int i=0; i<newTurn.getPlayers().size(); i++){
+            if(newTurn.getPlayers().get(i).getPlayerNameSend().equals(namePlayer)){
+                index = i;
+            }
+        }
+        PlayerInformationToClient player = newTurn.getPlayers().get(index);
+
         System.out.println("il mio deposito");
-        System.out.println(newTurn.getDepositState());
+        System.out.println(player.getDeposit());
 
         System.out.println("la mia strongbox");
-        System.out.println(newTurn.getStrongbox().toString());
+        System.out.println(player.getStrongBox().toString());
 
         System.out.println("le leadercard attive");
-        System.out.println(newTurn.getLeaderCarsActive().toString());
+        System.out.println(player.getLeaderCardActive().toString());
 
         System.out.println("le mie development");
-        for(DevelopmentCardToClient card : newTurn.getDevelopmentCard()) {
+        for(DevelopmentCardToClient card : player.getDevelopmentCardPlayer()) {
             if(card!=null){
                 System.out.println("color: " + card.getColor() + " level: " + card.getLevel() + " cost: " + card.getCost() + " Req: " + card.getMaterialRequired() + " Grant: " + card.getProductionResult());
             }else{
@@ -298,10 +266,10 @@ public class CLI implements EventToClientVisitor {
         }
 
         System.out.println("la mia posizione");
-        System.out.println(newTurn.getFaithMarkerPosition() + "/24");
+        System.out.println(player.getFaithMarkerPosition() + "/24");
 
         System.out.println("i miei pope");
-        System.out.println(newTurn.getPopeFavorTiles().toString());
+        System.out.println(player.getPopeFavorTiles().toString());
 
         System.out.println("è il mio turno: scrivo market, buydevelopment o usedevelopment (turn)");
         Scanner scanIn = new Scanner(System.in);
@@ -310,12 +278,12 @@ public class CLI implements EventToClientVisitor {
             System.out.println("dimmi una riga che scegli: ");
             Scanner scanIn1 = new Scanner(System.in);
             int line1 = scanIn1.nextInt();
-            ArrayList<Boolean> tmp = marketWhiteChangeActive(newTurn.getLeaderCarsActive());
+            ArrayList<Boolean> tmp = marketWhiteChangeActive(player.getLeaderCardActive());
             connectionToServer.sendChooseLine(line1, tmp);
         }else if(line.equals("buydevelopment")){
             selectedDevelopmentCard();
         }else if(line.equals("usedevelopment")){
-            choseDevelopment(newTurn.getDevelopmentCard(), newTurn.getLeaderCarsActive());
+            choseDevelopment(player.getDevelopmentCardPlayer(), player.getLeaderCardActive());
         }
         else if(line.equals("turn")){
             connectionToServer.sendTurnPlayed(line);

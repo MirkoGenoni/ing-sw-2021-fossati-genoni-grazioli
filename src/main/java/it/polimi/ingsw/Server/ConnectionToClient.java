@@ -10,7 +10,12 @@ import it.polimi.ingsw.Events.ServerToClient.SupportClass.MarketToClient;
 import it.polimi.ingsw.Events.ServerToClient.MarketTurnToClient.SendReorganizeDepositToClient;
 import it.polimi.ingsw.Events.ServerToClient.StartConnectionToClient.SendNumPlayerToClient;
 import it.polimi.ingsw.Events.ServerToClient.StartConnectionToClient.SendPlayerNameToClient;
+import it.polimi.ingsw.Events.ServerToClient.SupportClass.PlayerInformationToClient;
 import it.polimi.ingsw.Model.DevelopmentCard.DevelopmentCard;
+import it.polimi.ingsw.Model.Exceptions.LeaderCardException;
+import it.polimi.ingsw.Model.FaithTrack.FaithTrack;
+import it.polimi.ingsw.Model.Game.Player;
+import it.polimi.ingsw.Model.Gameboard.Gameboard;
 import it.polimi.ingsw.Model.LeaderCard.LeaderCard;
 import it.polimi.ingsw.Model.Market.Market;
 import it.polimi.ingsw.Model.Resource.Resource;
@@ -20,7 +25,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.Map;
 
 public class ConnectionToClient implements Runnable, EventToClientNotifier {
     private Socket clientSocket;
@@ -184,14 +188,12 @@ public class ConnectionToClient implements Runnable, EventToClientNotifier {
     }
 
     @Override
-    public void sendNewTurn(int turnNumber, Market market, DevelopmentCard[][] developmentCards, ArrayList<Resource> depositState,
-                            Map<Resource, Integer> strongbox, ArrayList<LeaderCard> leaderCardsActive,
-                            ArrayList<DevelopmentCard> developmentCardActive, ArrayList<Integer> popeFavorTiles, int faithMarkerPosition) {
+    public void sendNewTurn(int turnNumber, Market market, DevelopmentCard[][] developmentCards, Player[] players, FaithTrack faithTrack) {
         NewTurnToClient newTurnToClient = new NewTurnToClient(turnNumber, marketToSend(market),
-                developmentCardAvailableToSend(developmentCards), depositState, strongbox,
-                leaderCardToSend(leaderCardsActive), developmentCardActiveToSend(developmentCardActive), popeFavorTiles, faithMarkerPosition);
+                developmentCardAvailableToSend(developmentCards), playerInformationToSend(players, faithTrack));
         asyncSendEvent(newTurnToClient);
     }
+
 
     @Override
     public void sendEndGame(String message) {
@@ -253,6 +255,28 @@ public class ConnectionToClient implements Runnable, EventToClientNotifier {
     private MarketToClient marketToSend(Market market){
         MarketToClient marketToClient = new MarketToClient(market.getGrid(), market.getOutMarble());
         return marketToClient;
+    }
+
+    private  ArrayList<PlayerInformationToClient> playerInformationToSend(Player[] players, FaithTrack faithTrack){
+        ArrayList<PlayerInformationToClient> playerInformation = new ArrayList<>();
+        for(int i=0; i<players.length; i++){
+            Gameboard tmpGameBoard = players[i].getPlayerBoard();
+            try {
+                PlayerInformationToClient tmp = new PlayerInformationToClient(players[i].getName(), tmpGameBoard.getResourceHandler().getDepositState(),
+                        tmpGameBoard.getResourceHandler().getStrongboxState(), leaderCardToSend(tmpGameBoard.getLeaderCardHandler().getLeaderCardsActive()),
+                        developmentCardActiveToSend(tmpGameBoard.getDevelopmentCardHandler().getActiveDevelopmentCard()),
+                        tmpGameBoard.getPopeFavorTilesState(), faithTrack.getPosition(i));
+                playerInformation.add(tmp);
+            } catch (LeaderCardException e) {
+                PlayerInformationToClient tmp = new PlayerInformationToClient(players[i].getName(), tmpGameBoard.getResourceHandler().getDepositState(),
+                        tmpGameBoard.getResourceHandler().getStrongboxState(), leaderCardToSend(null),
+                        developmentCardActiveToSend(tmpGameBoard.getDevelopmentCardHandler().getActiveDevelopmentCard()),
+                        tmpGameBoard.getPopeFavorTilesState(), faithTrack.getPosition(i));
+                playerInformation.add(tmp);
+            }
+
+        }
+        return playerInformation;
     }
 
 

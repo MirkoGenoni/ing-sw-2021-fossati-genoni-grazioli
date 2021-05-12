@@ -1,12 +1,13 @@
 package it.polimi.ingsw.Events.ServerToClient;
 
 import it.polimi.ingsw.Model.DevelopmentCard.DevelopmentCard;
+import it.polimi.ingsw.Model.FaithTrack.FaithTrack;
+import it.polimi.ingsw.Model.Game.Player;
 import it.polimi.ingsw.Model.LeaderCard.LeaderCard;
 import it.polimi.ingsw.Model.Market.Market;
 import it.polimi.ingsw.Model.Resource.Resource;
 
 import java.util.ArrayList;
-import java.util.Map;
 
 // list of the event that the server could sent to the client
 public interface EventToClientNotifier {
@@ -38,10 +39,7 @@ public interface EventToClientNotifier {
     // OTHER EVENTS
     // ----------------------------------
     void sendNotify(String message);
-    void sendNewTurn(int turnNumber, Market market, DevelopmentCard[][] developmentCards,
-                     ArrayList<Resource> depositState, Map<Resource, Integer> strongbox,
-                     ArrayList<LeaderCard> leaderCardsActive, ArrayList<DevelopmentCard> developmentCardActive,
-                        ArrayList<Integer> popeFavorTiles, int faithMarkerPosition );
+    void sendNewTurn(int turnNumber, Market market, DevelopmentCard[][] developmentCards, Player[] players, FaithTrack faithTrack);
     void sendEndGame(String message);
     void sendInitialResources(int numResources, ArrayList<Resource> depositState);
 }
