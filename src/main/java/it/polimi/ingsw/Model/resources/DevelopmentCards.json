@@ -1,4 +1,5 @@
 {
+  "cardID": "DevG_11",
   "color": "GREEN",
   "level": 1,
   "cost": {
@@ -13,6 +14,7 @@
   }
 }
 {
+  "cardID": "DevP_11",
   "color": "PURPLE",
   "level": 1,
   "cost": {
@@ -27,6 +29,7 @@
   }
 }
 {
+  "cardID": "DevB_11",
   "color": "BLUE",
   "level": 1,
   "cost": {
@@ -41,6 +44,7 @@
   }
 }
 {
+  "cardID": "DevY_11",
   "color": "YELLOW",
   "level": 1,
   "cost": {
@@ -55,6 +59,7 @@
   }
 }
 {
+  "cardID": "DevG_12",
   "color": "GREEN",
   "level": 1,
   "cost": {
@@ -71,6 +76,7 @@
   }
 }
 {
+  "cardID": "DevP_12",
   "color": "PURPLE",
   "level": 1,
   "cost": {
@@ -87,6 +93,7 @@
   }
 }
 {
+  "cardID": "DevB_12",
   "color": "BLUE",
   "level": 1,
   "cost": {
@@ -103,6 +110,7 @@
   }
 }
 {
+  "cardID": "DevY_12",
   "color": "YELLOW",
   "level": 1,
   "cost": {
@@ -119,6 +127,7 @@
   }
 }
 {
+  "cardID": "DevG_13",
   "color": "GREEN",
   "level": 1,
   "cost": {
@@ -135,6 +144,7 @@
   }
 }
 {
+  "cardID": "DevP_13",
   "color": "PURPLE",
   "level": 1,
   "cost": {
@@ -151,6 +161,7 @@
   }
 }
 {
+  "cardID": "DevB_13",
   "color": "BLUE",
   "level": 1,
   "cost": {
@@ -167,6 +178,7 @@
   }
 }
 {
+  "cardID": "DevY_13",
   "color": "YELLOW",
   "level": 1,
   "cost": {
@@ -183,6 +195,7 @@
   }
 }
 {
+  "cardID": "DevG_14",
   "color": "GREEN",
   "level": 1,
   "cost": {
@@ -200,6 +213,7 @@
   }
 }
 {
+  "cardID": "DevP_14",
   "color": "PURPLE",
   "level": 1,
   "cost": {
@@ -217,6 +231,7 @@
   }
 }
 {
+  "cardID": "DevB_14",
   "color": "BLUE",
   "level": 1,
   "cost": {
@@ -234,6 +249,7 @@
   }
 }
 {
+  "cardID": "DevY_14",
   "color": "YELLOW",
   "level": 1,
   "cost": {
@@ -251,6 +267,7 @@
   }
 }
 {
+  "cardID": "DevG_21",
   "color": "GREEN",
   "level": 2,
   "cost": {
@@ -265,6 +282,7 @@
   }
 }
 {
+  "cardID": "DevP_21",
   "color": "PURPLE",
   "level": 2,
   "cost": {
@@ -279,6 +297,7 @@
   }
 }
 {
+  "cardID": "DevB_21",
   "color": "BLUE",
   "level": 2,
   "cost": {
@@ -293,6 +312,7 @@
   }
 }
 {
+  "cardID": "DevY_21",
   "color": "YELLOW",
   "level": 2,
   "cost": {
@@ -307,6 +327,7 @@
   }
 }
 {
+  "cardID": "DevG_22",
   "color": "GREEN",
   "level": 2,
   "cost": {
@@ -323,6 +344,7 @@
   }
 }
 {
+  "cardID": "DevP_22",
   "color": "PURPLE",
   "level": 2,
   "cost": {
@@ -339,6 +361,7 @@
   }
 }
 {
+  "cardID": "DevB_22",
   "color": "BLUE",
   "level": 2,
   "cost": {
@@ -355,6 +378,7 @@
   }
 }
 {
+  "cardID": "DevY_22",
   "color": "YELLOW",
   "level": 2,
   "cost": {
@@ -371,6 +395,7 @@
   }
 }
 {
+  "cardID": "DevG_23",
   "color": "GREEN",
   "level": 2,
   "cost": {
@@ -386,6 +411,7 @@
   }
 }
 {
+  "cardID": "DevP_23",
   "color": "PURPLE",
   "level": 2,
   "cost": {
@@ -401,6 +427,7 @@
   }
 }
 {
+  "cardID": "DevB_23",
   "color": "BLUE",
   "level": 2,
   "cost": {
@@ -416,6 +443,7 @@
   }
 }
 {
+  "cardID": "DevY_23",
   "color": "YELLOW",
   "level": 2,
   "cost": {
@@ -431,6 +459,7 @@
   }
 }
 {
+  "cardID": "DevG_24",
   "color": "GREEN",
   "level": 2,
   "cost": {
@@ -447,6 +476,7 @@
   }
 }
 {
+  "cardID": "DevP_24",
   "color": "PURPLE",
   "level": 2,
   "cost": {
@@ -463,6 +493,7 @@
   }
 }
 {
+  "cardID": "DevB_24",
   "color": "BLUE",
   "level": 2,
   "cost": {
@@ -479,6 +510,7 @@
   }
 }
 {
+  "cardID": "DevY_24",
   "color": "YELLOW",
   "level": 2,
   "cost": {
@@ -495,6 +527,7 @@
   }
 }
 {
+  "cardID": "DevG_31",
   "color": "GREEN",
   "level": 3,
   "cost": {
@@ -510,6 +543,7 @@
   }
 }
 {
+  "cardID": "DevP_31",
   "color": "PURPLE",
   "level": 3,
   "cost": {
@@ -525,6 +559,7 @@
   }
 }
 {
+  "cardID": "DevB_31",
   "color": "BLUE",
   "level": 3,
   "cost": {
@@ -540,6 +575,7 @@
   }
 }
 {
+  "cardID": "DevY_31",
   "color": "YELLOW",
   "level": 3,
   "cost": {
@@ -555,6 +591,7 @@
   }
 }
 {
+  "cardID": "DevG_32",
   "color": "GREEN",
   "level": 3,
   "cost": {
@@ -573,6 +610,7 @@
   }
 }
 {
+  "cardID": "DevP_32",
   "color": "PURPLE",
   "level": 3,
   "cost": {
@@ -591,6 +629,7 @@
   }
 }
 {
+  "cardID": "DevB_32",
   "color": "BLUE",
   "level": 3,
   "cost": {
@@ -609,6 +648,7 @@
   }
 }
 {
+  "cardID": "DevY_32",
   "color": "YELLOW",
   "level": 3,
   "cost": {
@@ -627,6 +667,7 @@
   }
 }
 {
+  "cardID": "DevG_33",
   "color": "GREEN",
   "level": 3,
   "cost": {
@@ -642,6 +683,7 @@
   }
 }
 {
+  "cardID": "DevP_33",
   "color": "PURPLE",
   "level": 3,
   "cost": {
@@ -657,6 +699,7 @@
   }
 }
 {
+  "cardID": "DevB_33",
   "color": "BLUE",
   "level": 3,
   "cost": {
@@ -672,6 +715,7 @@
   }
 }
 {
+  "cardID": "DevY_33",
   "color": "YELLOW",
   "level": 3,
   "cost": {
@@ -687,6 +731,7 @@
   }
 }
 {
+  "cardID": "DevG_34",
   "color": "GREEN",
   "level": 3,
   "cost": {
@@ -703,6 +748,7 @@
   }
 }
 {
+  "cardID": "DevP_34",
   "color": "PURPLE",
   "level": 3,
   "cost": {
@@ -719,6 +765,7 @@
   }
 }
 {
+  "cardID": "DevB_34",
   "color": "BLUE",
   "level": 3,
   "cost": {
@@ -735,6 +782,7 @@
   }
 }
 {
+  "cardID": "DevY_34",
   "color": "YELLOW",
   "level": 3,
   "cost": {

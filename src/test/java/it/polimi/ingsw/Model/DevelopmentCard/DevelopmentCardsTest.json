@@ -1,4 +1,5 @@
 {
+  "cardID": "DevG_11",
   "color": "GREEN",
   "level": 1,
   "cost": {
@@ -13,6 +14,7 @@
   }
 }
 {
+  "cardID": "DevP_11",
   "color": "PURPLE",
   "level": 1,
   "cost": {
@@ -27,6 +29,7 @@
   }
 }
 {
+  "cardID": "DevB_11",
   "color": "BLUE",
   "level": 1,
   "cost": {
@@ -41,6 +44,7 @@
   }
 }
 {
+  "cardID": "DevY_11",
   "color": "YELLOW",
   "level": 1,
   "cost": {
@@ -55,22 +59,22 @@
   }
 }
 {
+  "cardID": "DevG_21",
   "color": "GREEN",
   "level": 2,
   "cost": {
-    "SHIELD": 1,
-    "SERVANT": 1,
-    "STONE": 1
+    "SHIELD": 4
   },
-  "victoryPoint": 1,
+  "victoryPoint": 5,
   "materialRequired": {
     "STONE": 1
   },
   "productionResult": {
-    "SERVANT": 1
+    "FAITHPOINT": 2
   }
 }
 {
+  "cardID": "DevB_31",
   "color": "BLUE",
   "level": 3,
   "cost": {

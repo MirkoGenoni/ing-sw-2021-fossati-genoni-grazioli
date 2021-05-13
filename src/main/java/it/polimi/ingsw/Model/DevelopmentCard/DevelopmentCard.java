@@ -11,6 +11,7 @@ import java.util.Map;
  */
 
 public class DevelopmentCard {
+    private String cardID;
     private CardColor color;
     private int level;
     private Map<Resource, Integer> cost;
@@ -18,6 +19,14 @@ public class DevelopmentCard {
     private Map<Resource, Integer> materialRequired;
     private Map<ProductedMaterials, Integer> productionResult;
 
+
+    /**
+     *
+     * @return the identifier of the card
+     */
+    public String getCardID() {
+        return cardID;
+    }
 
     /**
      *

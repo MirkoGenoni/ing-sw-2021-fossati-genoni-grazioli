@@ -48,6 +48,10 @@ DevelopmentCard testCard = null;
     }
 
     @Test
+    public void getCardID() {assertEquals("DevG_11", testCard.getCardID());
+    }
+
+    @Test
     public void getColor() {
         assertEquals(testCard.getColor(), CardColor.GREEN);
     }

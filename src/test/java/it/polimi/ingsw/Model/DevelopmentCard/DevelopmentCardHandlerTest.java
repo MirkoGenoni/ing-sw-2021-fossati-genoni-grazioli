@@ -60,6 +60,7 @@ public class DevelopmentCardHandlerTest {
         assertNull(actives.get(1)); //if i don't have an active card it returns null in that position
         assertEquals(actives.get(2), cardCollection.get(1));
         assertEquals(actives.size(),3);
+
     }
 
     @Test
@@ -162,7 +163,7 @@ public class DevelopmentCardHandlerTest {
     }
 
     @Test
-    public void checkCountDevelopmentCard1() {
+    public void checkCountDevelopmentCard1() { //check with also quantity in input, return boolean
         try {
             //1 green & 1 purple already activated in SetUp
             handler.setActiveDevelopmentCard(cardCollection.get(4), 2);//green
