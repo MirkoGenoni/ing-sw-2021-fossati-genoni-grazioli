@@ -115,7 +115,7 @@ public class ControllerToModel {
             game = multiGame; // riguardo
             multiGame.startGame();
             // per barare
-            currentPlayerIndex = (int) (Math.random()*4);
+            currentPlayerIndex = (int) (Math.random()*numPlayer);
             firstPlayer=currentPlayerIndex;
             System.out.println("il primo giocatre ha indirizzo: " + currentPlayerIndex);
             initialResources(currentPlayerIndex);

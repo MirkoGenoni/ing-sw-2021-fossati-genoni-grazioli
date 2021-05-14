@@ -458,7 +458,7 @@ public class CLI implements EventToClientVisitor {
         System.out.println("use develop --> "+ useDevelop.toString());
 
         ProductedMaterials prodottoBaseProd = null;
-        if (resourceGranted!=null) {
+        if (resourceGranted!=null) { //deve essere un producted materials
             prodottoBaseProd = ProductedMaterials.valueOf(resourceGranted.name());
         }
 
