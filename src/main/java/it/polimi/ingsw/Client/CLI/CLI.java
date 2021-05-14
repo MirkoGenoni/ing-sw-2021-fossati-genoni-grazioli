@@ -267,24 +267,32 @@ public class CLI implements EventToClientVisitor {
         System.out.println("i miei pope");
         System.out.println(player.getPopeFavorTiles().toString());
 
-        System.out.println("è il mio turno: scrivo market, buydevelopment o usedevelopment (turn)");
-        Scanner scanIn = new Scanner(System.in);
-        String line = scanIn.nextLine();
-        if(line.equals("market")){
-            System.out.println("dimmi una riga che scegli: ");
-            Scanner scanIn1 = new Scanner(System.in);
-            int line1 = scanIn1.nextInt();
-            ArrayList<Boolean> tmp = marketWhiteChangeActive(player.getLeaderCardActive());
-            connectionToServer.sendChooseLine(line1, tmp);
-        }else if(line.equals("buydevelopment")){
-            selectedDevelopmentCard();
-        }else if(line.equals("usedevelopment")){
-            choseDevelopment(player.getDevelopmentCardPlayer(), player.getLeaderCardActive());
-        }
-        else if(line.equals("turn")){
-            connectionToServer.sendTurnPlayed(line);
-        }
 
+        boolean valid = false;
+        do {
+            System.out.println("è il mio turno: scrivo market, buydevelopment o usedevelopment (turn)");
+            Scanner scanIn = new Scanner(System.in);
+            String line = scanIn.nextLine();
+            if (line.equals("market")) {
+                System.out.println("dimmi una riga che scegli: ");
+                Scanner scanIn1 = new Scanner(System.in);
+                int line1 = scanIn1.nextInt();
+                ArrayList<Boolean> tmp = marketWhiteChangeActive(player.getLeaderCardActive());
+                connectionToServer.sendChooseLine(line1, tmp);
+                valid = true;
+            } else if (line.equals("buydevelopment")) {
+                selectedDevelopmentCard();
+                valid = true;
+            } else if (line.equals("usedevelopment")) {
+                choseDevelopment(player.getDevelopmentCardPlayer(), player.getLeaderCardActive());
+                valid = true;
+            } else if (line.equals("turn")) {
+                connectionToServer.sendTurnPlayed(line);
+                valid = true;
+            } else {
+                System.out.println("please retry");
+            }
+        }while(!valid);
     }
 
     @Override
