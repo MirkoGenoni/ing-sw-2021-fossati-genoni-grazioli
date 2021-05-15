@@ -230,7 +230,7 @@ public class CLI implements EventToClientVisitor {
         for (DevelopmentCardToClient[] cards : newTurn.getDevelopmentCards()) {
             for (DevelopmentCardToClient card : cards)
                 if(card!=null) {
-                    System.out.println("color: " + card.getColor() + " level: " + card.getLevel() + " cost: " + card.getCost() + " Req: " + card.getMaterialRequired() + " Grant: " + card.getProductionResult());
+                    System.out.println("id: " + card.getCardID() +  " color: " + card.getColor() + " level: " + card.getLevel() + " cost: " + card.getCost() + " Req: " + card.getMaterialRequired() + " Grant: " + card.getProductionResult());
                 }else{
                     System.out.println("NO CARDS");
                 }
@@ -255,7 +255,7 @@ public class CLI implements EventToClientVisitor {
         System.out.println("le mie development");
         for(DevelopmentCardToClient card : player.getDevelopmentCardPlayer()) {
             if(card!=null){
-                System.out.println("color: " + card.getColor() + " level: " + card.getLevel() + " cost: " + card.getCost() + " Req: " + card.getMaterialRequired() + " Grant: " + card.getProductionResult());
+                System.out.println("id: " + card.getCardID() +  " color: " + card.getColor() + " level: " + card.getLevel() + " cost: " + card.getCost() + " Req: " + card.getMaterialRequired() + " Grant: " + card.getProductionResult());
             }else{
                 System.out.println("null");
             }

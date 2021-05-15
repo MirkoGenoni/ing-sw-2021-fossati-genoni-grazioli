@@ -219,7 +219,7 @@ public class ConnectionToClient implements Runnable, EventToClientNotifier {
         for(int i=0; i<developmentCardActive.size(); i++){
             DevelopmentCard tmpD = developmentCardActive.get(i);
             if(tmpD!=null){
-                tmp.add(new DevelopmentCardToClient(tmpD.getColor().name(), tmpD.getLevel(),
+                tmp.add(new DevelopmentCardToClient(tmpD.getCardID(), tmpD.getColor().name(), tmpD.getLevel(),
                         tmpD.getCost(), tmpD.getVictoryPoint(), tmpD.getMaterialRequired(), tmpD.getProductionResult()));
             }else{
                 tmp.add(null);
@@ -237,7 +237,7 @@ public class ConnectionToClient implements Runnable, EventToClientNotifier {
             for(int j=0; j<devCards[i].length; j++){
                 cardToCopy = devCards[i][j];
                 if(cardToCopy!=null) {
-                    availableToSend[i][j] = new DevelopmentCardToClient(cardToCopy.getColor().name(), cardToCopy.getLevel(),
+                    availableToSend[i][j] = new DevelopmentCardToClient(cardToCopy.getCardID() ,cardToCopy.getColor().name(), cardToCopy.getLevel(),
                             cardToCopy.getCost(), cardToCopy.getVictoryPoint(), cardToCopy.getMaterialRequired(), cardToCopy.getProductionResult());
                 }
                 else{
