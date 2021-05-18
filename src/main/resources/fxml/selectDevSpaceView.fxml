@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="590.0" prefWidth="920.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.Client.GUI.ControllerGUI.SelectDevelopmentSpaceView">
+   <children>
+      <ImageView fitHeight="590.0" fitWidth="920.0" layoutX="-1.0">
+         <image>
+            <Image url="@../graphics/background/productionSpace.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="space0" fitHeight="300.0" fitWidth="200.0" layoutX="186.0" layoutY="176.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="space1" fitHeight="300.0" fitWidth="200.0" layoutX="416.0" layoutY="176.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="space2" fitHeight="300.0" fitWidth="200.0" layoutX="657.0" layoutY="176.0" pickOnBounds="true" preserveRatio="true" />
+      <Button fx:id="done" layoutX="824.0" layoutY="538.0" mnemonicParsing="false" onAction="#sendSpaceDevelopment" text="Ok" />
+      <Label fx:id="error" layoutX="505.0" layoutY="542.0" prefHeight="17.0" prefWidth="304.0" textFill="WHITE" />
+      <ImageView fx:id="selection2" fitHeight="17.0" fitWidth="200.0" layoutX="657.0" layoutY="476.0" opacity="0.0" pickOnBounds="true">
+         <image>
+            <Image url="@../graphics/icons/empty.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="selection1" fitHeight="17.0" fitWidth="200.0" layoutX="416.0" layoutY="476.0" opacity="0.0" pickOnBounds="true">
+         <image>
+            <Image url="@../graphics/icons/empty.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="selection0" fitHeight="17.0" fitWidth="200.0" layoutX="186.0" layoutY="476.0" opacity="0.0" pickOnBounds="true">
+         <image>
+            <Image url="@../graphics/icons/empty.png" />
+         </image>
+      </ImageView>
+   </children>
+</AnchorPane>
