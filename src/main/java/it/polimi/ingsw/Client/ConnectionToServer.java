@@ -1,6 +1,7 @@
 package it.polimi.ingsw.Client;
 
 import it.polimi.ingsw.Client.CLI.CLI;
+import it.polimi.ingsw.Client.GUI.GUI;
 import it.polimi.ingsw.Events.ClientToServer.*;
 import it.polimi.ingsw.Events.ClientToServer.BuyDevelopmentCardToServer.SelectedDevelopmentCardSpaceToServer;
 import it.polimi.ingsw.Events.ClientToServer.BuyDevelopmentCardToServer.SelectedDevelopmentCardToBuyToServer;
@@ -24,7 +25,9 @@ public class ConnectionToServer implements Runnable, EventToServerNotifier {
     private final Socket socket;
     private boolean active;
     private String playerName;
+    private boolean activeGui = false;
     private CLI cli;
+    private GUI gui;
 
     // Input and Output steams
     private ObjectInputStream input;
@@ -34,6 +37,11 @@ public class ConnectionToServer implements Runnable, EventToServerNotifier {
         this.socket = socket;
         this.active = true;
         cli = new CLI(this);
+    }
+
+    public void setGui(GUI gui) {
+        this.gui = gui;
+        activeGui = true;
     }
 
     @Override
@@ -48,8 +56,11 @@ public class ConnectionToServer implements Runnable, EventToServerNotifier {
         while(isActive()){
             try{
                 EventToClient event = receiveEvent();
-                cli.receiveEvent(event);
-
+                if (activeGui){
+                    gui.getVisit().receiveEvent(event);
+                }else{
+                    cli.receiveEvent(event);
+                }
             } catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
             }
