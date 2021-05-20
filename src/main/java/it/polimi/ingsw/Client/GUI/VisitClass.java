@@ -150,6 +150,11 @@ public class VisitClass implements EventToClientVisitor {
         }
         connectionToServer.sendInitialDepositState(res);
     }
+
+    @Override
+    public void visit(LorenzoActionToClient lorenzoAction) {
+
+    }
     //TODO non implementato
 
 }
