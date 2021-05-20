@@ -42,9 +42,14 @@ public interface EventToServerVisitor {
     void visit(SelectedProductionDevelopmentCardToServer sendProductionDevelopmentCard);
 
     // ------------------------------------------------------
-    // EVENT FOR NEW TURN INTERACTION
+    // EVENTS FOR NEW TURN INTERACTION
     // ------------------------------------------------------
     void visit(TurnPlayedToServer turn);
     void visit(InitialResourcesChoose newInitialDepositState);
+
+    // ------------------------------------------------------
+    // EVENT FOR LORENZO TURN
+    // ------------------------------------------------------
+    void visit(ReplayLorenzoActionToServer replayLorenzoAction);
 
 }

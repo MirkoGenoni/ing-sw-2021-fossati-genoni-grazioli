@@ -187,5 +187,11 @@ public class ConnectionToServer implements Runnable, EventToServerNotifier {
         asyncSendEvent(initialResourcesChoose);
     }
 
+    @Override
+    public void sendReplayLorenzoAction() {
+        ReplayLorenzoActionToServer replayLorenzoActionToServer = new ReplayLorenzoActionToServer(this.playerName);
+        asyncSendEvent(replayLorenzoActionToServer);
+    }
+
 
 }

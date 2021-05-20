@@ -24,7 +24,7 @@ public class ControllerToModel {
     private SinglePlayerGame singleGame;
     private Game game;
     private Player activePlayer;
-    private int turnNumber=1;
+    private int turnNumber;
     private int currentPlayerIndex;
     private int numPlayer;
     private int firstPlayer;
@@ -174,13 +174,6 @@ public class ControllerToModel {
         System.out.println("è iniziato un nuovo turno");
         activePlayer = nextPlayer();
 
-        if(turnNumber != 0 && players.length == 1){
-           if(lorenzoTurn.playLorenzo()){
-               connectionsToClient.get(currentPlayerIndex).sendEndGame("HAI PERSO, HA VINTO LORENZO!!");
-           }
-        }
-
-
         if(currentPlayerIndex == firstPlayer && endGame.endGameNotify()){
             int winnerPoint=0;
             String winnerName = " ";
@@ -258,8 +251,7 @@ public class ControllerToModel {
     }
 
     public void saveNewDepositState(ArrayList<Resource> newDepositState, int discardResources){
-        boolean tmp = marketTurn.saveNewDepositState(newDepositState, discardResources, currentPlayerIndex);
-        if(tmp){
+        if(marketTurn.saveNewDepositState(newDepositState, discardResources, currentPlayerIndex) && checkPlayLorenzo()){
             newTurn();
         }
 
@@ -273,8 +265,7 @@ public class ControllerToModel {
     }
 
     public void spaceDevelopmentCard(int space){
-        boolean tmp = buyDevelopmentCardTurn.spaceDevelopmentCard(space, currentPlayerIndex);
-        if(tmp){
+        if(buyDevelopmentCardTurn.spaceDevelopmentCard(space, currentPlayerIndex) && checkPlayLorenzo()){
             newTurn();
         }
     }
@@ -289,7 +280,10 @@ public class ControllerToModel {
 
         activateProductionTurn.productionsActivation(useBaseProduction, resourceRequested1, resourceRequested2, resourceGranted,
                                     useLeaders, materialLeaders, useDevelop, playerName);
-        newTurn();
+        if(checkPlayLorenzo()){  // vedi checklorenzo
+            newTurn();
+        }
+
 
     }
 
@@ -315,6 +309,18 @@ public class ControllerToModel {
 
     public void turnToView(){
         connectionsToClient.get(currentPlayerIndex).sendNewTurn(turnNumber, game.getMarketBoard(), game.getDevelopmentCardsAvailable(), players, game.getPlayersFaithTrack());
+    }
+
+    public boolean checkPlayLorenzo(){
+        // metodo da mettere private dopo aver tolto il turn dalle opzioni di scelta!!!!!!
+        if(turnNumber != 0 && players.length == 1){
+            if(lorenzoTurn.playLorenzo()){
+                connectionsToClient.get(currentPlayerIndex).sendEndGame("HAI PERSO, HA VINTO LORENZO!!");
+            }
+            return false; // se è single game
+        }else{
+            return true; // se è multiplayer
+        }
     }
 
     private void initialResources(int firstPlayer){

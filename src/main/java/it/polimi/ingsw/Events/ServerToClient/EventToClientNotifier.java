@@ -41,4 +41,5 @@ public interface EventToClientNotifier {
     void sendNewTurn(int turnNumber, Market market, DevelopmentCard[][] developmentCards, Player[] players, FaithTrack faithTrack);
     void sendEndGame(String message);
     void sendInitialResources(int numResources, ArrayList<Resource> depositState);
+    void sendLorenzoTurn(SoloAction lorenzoAction);
 }

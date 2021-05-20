@@ -315,6 +315,17 @@ public class CLI implements EventToClientVisitor {
 
     }
 
+    @Override
+    public void visit(LorenzoActionToClient lorenzoAction) {
+        System.out.println("lorenzo ha pescato -> " + lorenzoAction.getLorenzoAction().toString());
+        try {
+            TimeUnit.SECONDS.sleep(3);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        connectionToServer.sendReplayLorenzoAction();
+    }
+
     private ArrayList<Boolean> marketWhiteChangeActive(ArrayList<LeaderCardToClient> leaderCardActive){
         ArrayList<Boolean> leaderCardWhiteChange = new ArrayList<>();
         for(int i=0; i< leaderCardActive.size(); i++){

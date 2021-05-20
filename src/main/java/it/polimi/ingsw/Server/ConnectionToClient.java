@@ -18,6 +18,7 @@ import it.polimi.ingsw.Model.FaithTrack.FaithTrack;
 import it.polimi.ingsw.Model.Game.Player;
 import it.polimi.ingsw.Model.Gameboard.Gameboard;
 import it.polimi.ingsw.Model.LeaderCard.LeaderCard;
+import it.polimi.ingsw.Model.Lorenzo.SoloAction;
 import it.polimi.ingsw.Model.Market.Market;
 import it.polimi.ingsw.Model.Resource.Resource;
 
@@ -196,6 +197,12 @@ public class ConnectionToClient implements Runnable, EventToClientNotifier {
     public void sendInitialResources(int numResources, ArrayList<Resource> depositState) {
         SendInitialResourcesToClient sendInitialResourcesToClient = new SendInitialResourcesToClient(numResources, depositState);
         asyncSendEvent(sendInitialResourcesToClient);
+    }
+
+    @Override
+    public void sendLorenzoTurn(SoloAction lorenzoAction) {
+        LorenzoActionToClient lorenzoActionToClient = new LorenzoActionToClient(lorenzoAction);
+        asyncSendEvent(lorenzoActionToClient);
     }
 
 

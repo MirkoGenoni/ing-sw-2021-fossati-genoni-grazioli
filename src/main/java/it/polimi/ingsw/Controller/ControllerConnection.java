@@ -108,7 +108,7 @@ public class ControllerConnection implements EventToServerVisitor, ObserveConnec
     @Override
     public void visit(TurnPlayedToServer turn) {
         System.out.println("mi è arrivato il messaggio di turno giocato");
-        if(turn.getTurnType().equals("turn")){
+        if(turn.getTurnType().equals("turn") && controllerToModel.checkPlayLorenzo()){
             controllerToModel.newTurn();
         }
     }
@@ -117,6 +117,11 @@ public class ControllerConnection implements EventToServerVisitor, ObserveConnec
     public void visit(InitialResourcesChoose newInitialDepositState) {
         System.out.println("mi è arrivat il deposito iniziale");
         controllerToModel.initialResourcesChoose(newInitialDepositState.getInitialResourcesChoose(), newInitialDepositState.getPlayerName());
+    }
+
+    @Override
+    public void visit(ReplayLorenzoActionToServer replayLorenzoAction) {
+        controllerToModel.newTurn();
     }
 
 }

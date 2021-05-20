@@ -38,6 +38,7 @@ public interface EventToClientVisitor {
     void visit(NewTurnToClient newTurn);
     void visit(EndGameToClient message);
     void visit(SendInitialResourcesToClient numResources);
+    void visit(LorenzoActionToClient lorenzoAction);
 
 
 }

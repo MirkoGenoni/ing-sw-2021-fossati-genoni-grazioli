@@ -45,4 +45,9 @@ public interface EventToServerNotifier {
     void sendTurnPlayed(String turnType);
     void sendInitialDepositState(ArrayList<Resource> newInitialDepositState);
 
+    // ------------------------------------------------------
+    // EVENT FOR LORENZO TURN
+    // ------------------------------------------------------
+    void sendReplayLorenzoAction();
+
 }
