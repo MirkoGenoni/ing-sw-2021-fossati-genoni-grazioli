@@ -1,8 +1,7 @@
-package it.polimi.ingsw.Client.CLI.Views;
+package it.polimi.ingsw.Client.CLI.Views.MarketView;
 
 import it.polimi.ingsw.Model.Resource.Resource;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -122,9 +121,9 @@ public class NewDepositView {
 
         System.out.printf("\u001B[2J\u001B[3J\u001B[H");
         System.out.println("\u001B[0;00m" + "                                                  ╔═══════════════════════╗ \n" +
-                                           "                                                  ║ NEW DEPOSIT SELECTION ║ \n" +
-                                           "                                                  ╚═══════════════════════╝ \n" +
-                                           " ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓ ");
+                                            "                                                  ║ NEW DEPOSIT SELECTION ║ \n" +
+                                            "                                                  ╚═══════════════════════╝ \n" +
+                                            " ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓ ");
 
         System.out.println("\u001B[0;00m" + " ┃                                                      " + depositState.get(0).returnLine(0) + "                                                    " + "\u001B[0;00m" + "┃ \n" +
                 "\u001B[0;00m" + " ┃                                                      " + depositState.get(0).returnLine(1) + "                                                    " + "\u001B[0;00m" + "┃ \n" +

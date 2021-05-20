@@ -1,6 +1,5 @@
 package it.polimi.ingsw.Events.ServerToClient;
 
-import it.polimi.ingsw.Events.ServerToClient.BuyDevelopmentCardTurnToClient.SendReselectedDevelopmentCardAvailableToClient;
 import it.polimi.ingsw.Events.ServerToClient.BuyDevelopmentCardTurnToClient.SendSpaceDevelopmentCardToClient;
 import it.polimi.ingsw.Events.ServerToClient.MarketTurnToClient.SendReorganizeDepositToClient;
 import it.polimi.ingsw.Events.ServerToClient.StartConnectionToClient.SendNumPlayerToClient;
@@ -28,7 +27,7 @@ public interface EventToClientVisitor {
     // ----------------------------------------
     // EVENTS FOR THE BUY DEVELOPMENT CARD TURN
     // ----------------------------------------
-    void visit(SendReselectedDevelopmentCardAvailableToClient message);
+    void visit(TurnReselection message);
     void visit(SendSpaceDevelopmentCardToClient developmentCardSpace);
 
     // ----------------------------------

@@ -6,7 +6,7 @@ import it.polimi.ingsw.Client.GUI.ControllerGUI.NewDepositViewController;
 import it.polimi.ingsw.Client.GUI.ControllerGUI.PlayerViewController;
 import it.polimi.ingsw.Client.GUI.ControllerGUI.SelectDevelopmentSpaceView;
 import it.polimi.ingsw.Events.ServerToClient.*;
-import it.polimi.ingsw.Events.ServerToClient.BuyDevelopmentCardTurnToClient.SendReselectedDevelopmentCardAvailableToClient;
+import it.polimi.ingsw.Events.ServerToClient.TurnReselection;
 import it.polimi.ingsw.Events.ServerToClient.BuyDevelopmentCardTurnToClient.SendSpaceDevelopmentCardToClient;
 import it.polimi.ingsw.Events.ServerToClient.MarketTurnToClient.SendReorganizeDepositToClient;
 import it.polimi.ingsw.Events.ServerToClient.StartConnectionToClient.SendNumPlayerToClient;
@@ -15,7 +15,6 @@ import it.polimi.ingsw.Model.Resource.Resource;
 import javafx.application.Platform;
 
 import java.util.ArrayList;
-import java.util.Scanner;
 import java.util.concurrent.CountDownLatch;
 
 public class VisitClass implements EventToClientVisitor {
@@ -88,7 +87,7 @@ public class VisitClass implements EventToClientVisitor {
     }
 
     @Override
-    public void visit(SendReselectedDevelopmentCardAvailableToClient message) {
+    public void visit(TurnReselection message) {
 
     }
 

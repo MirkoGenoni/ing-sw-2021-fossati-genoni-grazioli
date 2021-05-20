@@ -41,7 +41,7 @@ public class BuyDevelopmentCardTurn {
                 && controllerToModel.getPlayers()[currentPlayerIndex].getPlayerBoard().getDevelopmentCardHandler().checkBoughtable(level+1).contains(true)) {
             controllerToModel.getConnectionsToClient().get(currentPlayerIndex).sendDevelopmentCardSpace(controllerToModel.getPlayers()[currentPlayerIndex].getPlayerBoard().getDevelopmentCardHandler().checkBoughtable(level+1));
         } else {
-            controllerToModel.getConnectionsToClient().get(currentPlayerIndex).sendReselectedDevelopmentCards("You can't bought the selected card, please select an other card");
+            controllerToModel.getConnectionsToClient().get(currentPlayerIndex).sendTurnReselection("You can't bought the selected card, please select an other card");
 
         }
 

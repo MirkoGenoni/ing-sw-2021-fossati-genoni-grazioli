@@ -20,7 +20,7 @@ public class LeaderCardView {
         }
 
         if (leaderCardArray.size() < 2) {
-            cards.add(new LeaderCardVisualization("nothing", 0, new ArrayList<>(), ""));
+            cards.add(new LeaderCardVisualization("nothing"));
         }
     }
 
@@ -135,7 +135,7 @@ public class LeaderCardView {
                 int num1 = -1;
 
                 try {
-                    num1 = Integer.parseInt(formatInput[0]);
+                    num1 = Integer.parseInt(formatInput[1]);
                 } catch (IllegalArgumentException e) {
                     continue;
                 }
@@ -144,7 +144,7 @@ public class LeaderCardView {
                     continue;
                 }
 
-                switch (formatInput[1]) {
+                switch (formatInput[0]) {
                     case "discard":
                         for (int k = 0; k < 3; k++)
                             state[num1 - 1][k] = discarded[k];
@@ -187,12 +187,12 @@ public class LeaderCardView {
                 "┃                              " + state[0][2] + "                                       " + state[1][2] + "                              ┃\n" +
                 "┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛\n" +
                 "                                                                                                                           \n" +
-                "                               SELECT THE CARDS YOU WANT TO ACTIVATE OR DISCARD                                            \n" +
+                "                                     SELECT THE CARDS YOU WANT TO ACTIVATE OR DISCARD                                      \n" +
                 "                                                                                                                           \n" +
-                "                         |        Type the number of card you want to act on        |                                      \n" +
-                "                         |   followed by comma and the action you want to perform   |                                      \n" +
-                "                         |     -discard-          -activate-          -nothing-     |                                      \n" +
-                "                                                                                                                           \n" +
+                "                               |       Type the action you want to perform followed       |                                \n" +
+                "                               |    by comma and the number of card you want to act on    |                                \n" +
+                "                               |      -discard-         -activate-         -nothing-      |                                \n" +
+                "                                                                                                                     \n" +
                 "                                                 ");
     }
 }

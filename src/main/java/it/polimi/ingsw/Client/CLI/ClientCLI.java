@@ -1,4 +1,6 @@
-package it.polimi.ingsw.Client;
+package it.polimi.ingsw.Client.CLI;
+
+import it.polimi.ingsw.Client.ConnectionToServer;
 
 import java.io.IOException;
 import java.net.Socket;
@@ -10,6 +12,11 @@ public class ClientCLI {
     private final int serverPort;
     private Socket socket;
 
+    public static void main(String[] args) {
+        ClientCLI clientCLI = new ClientCLI("localhost", 12345);
+        clientCLI.startClient();
+    }
+
     public ClientCLI(String serverAddress, int serverPort) {
         this.serverAddress ="";
         this.serverAddress = serverAddress;
@@ -18,7 +25,8 @@ public class ClientCLI {
 
     public void startClient(){
         try{
-            System.out.printf("\u001B[2J\u001B[3J\u001B[H");
+            System.out.print("\u001B[8;46;123t");
+            System.out.print("\u001B[2J\u001B[3J\u001B[H");
             System.out.println("\u001B[48;5;234m");
             System.out.println("\n" +
                     "                   ┌───────────────────────────────────────────────────────────────────────────────────┐                   \n" +
@@ -68,8 +76,8 @@ public class ClientCLI {
             for(int i=0; i<18; i++)
                 System.out.println();
 
-            System.out.printf("\u001B[2J\u001B[3J\u001B[H");
-            System.out.printf("\n" +
+            System.out.print("\u001B[2J\u001B[3J\u001B[H");
+            System.out.print("\n" +
                     "                   ┌───────────────────────────────────────────────────────────────────────────────────┐                   \n" +
                     "                   │      ╔═══╦═══╗ ╔═════╗ ╔═════╗ ╔═════╗ ╔═════╗ ╔═════╗       ╔═════╗ ╔═════╗      │                   \n" +
                     "                   │      ║ ╔╗ ╔╗ ║ ║ ╔═╗ ║ ║ ╔═══╝ ╚═╗ ╔═╝ ║ ╔═══╝ ║  ══ ║       ║ ╔═╗ ║ ║  ══╦╝      │                   \n" +
@@ -84,7 +92,7 @@ public class ClientCLI {
                     "                   │╚═╝  ╚╝ ╚═════╝ ╚═╝╚══╝ ╚═╝ ╚═╝ ╚═╝ ╚═════╝ ╚═════╝ ╚═╝ ╚═╝ ╚═╝╚══╝ ╚═════╝ ╚═════╝│                   \n" +
                     "                   └───────────────────────────────────────────────────────────────────────────────────┘                   \n");
 
-            System.out.printf("                                                                                                                          \n"+
+            System.out.print("                                                                                                                          \n"+
                     "                                                                                                                          \n" +
                     "                                                                                                                          \n" +
                     "                                                                                                                          \n");

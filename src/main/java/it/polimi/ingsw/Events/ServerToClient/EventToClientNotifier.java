@@ -32,7 +32,7 @@ public interface EventToClientNotifier {
     // ----------------------------------------
     // EVENTS FOR THE BUY DEVELOPMENT CARD TURN
     // ----------------------------------------
-    void sendReselectedDevelopmentCards(String message);
+    void sendTurnReselection(String message);
     void sendDevelopmentCardSpace(ArrayList<Boolean> developmentCardSpace);
 
     // ----------------------------------

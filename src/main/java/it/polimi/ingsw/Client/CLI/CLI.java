@@ -1,10 +1,12 @@
 package it.polimi.ingsw.Client.CLI;
 
+import it.polimi.ingsw.Client.CLI.Views.ProductionView.AdditionalProductionView;
+import it.polimi.ingsw.Client.CLI.Views.ProductionView.DevelopmentCardView;
 import it.polimi.ingsw.Client.CLI.Views.LeaderCardView.LeaderCardView;
-import it.polimi.ingsw.Client.CLI.Views.NewDepositView;
+import it.polimi.ingsw.Client.CLI.Views.MarketView.MarketView;
+import it.polimi.ingsw.Client.CLI.Views.MarketView.NewDepositView;
 import it.polimi.ingsw.Client.ConnectionToServer;
 import it.polimi.ingsw.Events.ServerToClient.*;
-import it.polimi.ingsw.Events.ServerToClient.BuyDevelopmentCardTurnToClient.SendReselectedDevelopmentCardAvailableToClient;
 import it.polimi.ingsw.Events.ServerToClient.SupportClass.DevelopmentCardToClient;
 import it.polimi.ingsw.Events.ServerToClient.BuyDevelopmentCardTurnToClient.SendSpaceDevelopmentCardToClient;
 import it.polimi.ingsw.Events.ServerToClient.MarketTurnToClient.SendReorganizeDepositToClient;
@@ -12,7 +14,7 @@ import it.polimi.ingsw.Events.ServerToClient.StartConnectionToClient.SendNumPlay
 import it.polimi.ingsw.Events.ServerToClient.StartConnectionToClient.SendPlayerNameToClient;
 import it.polimi.ingsw.Events.ServerToClient.SupportClass.LeaderCardToClient;
 import it.polimi.ingsw.Events.ServerToClient.SupportClass.PlayerInformationToClient;
-import it.polimi.ingsw.Model.DevelopmentCard.CardColor;
+import it.polimi.ingsw.Events.ServerToClient.TurnReselection;
 import it.polimi.ingsw.Model.DevelopmentCard.ProductedMaterials;
 import it.polimi.ingsw.Model.Resource.Resource;
 
@@ -29,7 +31,7 @@ public class CLI implements EventToClientVisitor {
         System.out.print("                                                                                                                          \n" +
                           "                                                                                                                          \n" +
                           "                                                                                                                          \n");
-        System.out.print("                                   WAITING FOR OTHER PLAYERS");
+        System.out.print("                                    WAITING FOR OTHER PLAYERS");
 
         while(true) {
             try {
@@ -158,9 +160,8 @@ public class CLI implements EventToClientVisitor {
     // ----------------------------------------
 
     @Override
-    public void visit(SendReselectedDevelopmentCardAvailableToClient message) {
+    public void visit(TurnReselection message) {
         System.out.println(message.getMessage());
-        selectedDevelopmentCard();
     }
 
     @Override
@@ -217,6 +218,9 @@ public class CLI implements EventToClientVisitor {
 
     @Override
     public void visit(NewTurnToClient newTurn){
+
+        MarketView market = new MarketView(newTurn.getMarket());
+
         for(int i=0; i<newTurn.getMarket().getGrid().size(); i++){
             System.out.print("  " + newTurn.getMarket().getGrid().get(i).toString());
             if(i==3 || i==7 || i==11){
@@ -225,6 +229,8 @@ public class CLI implements EventToClientVisitor {
         }
         System.out.println(" ");
         System.out.println("out marble :" + newTurn.getMarket().getOutMarble().toString());
+
+        DevelopmentCardView developmentSaleView = new DevelopmentCardView(newTurn.getDevelopmentCards());
 
         System.out.println("ho ricevuto Array Dev disponibili: ");
         for (DevelopmentCardToClient[] cards : newTurn.getDevelopmentCards()) {
@@ -235,6 +241,7 @@ public class CLI implements EventToClientVisitor {
                     System.out.println("NO CARDS");
                 }
         }
+
 
         for(int i=0; i<newTurn.getPlayers().size(); i++){
             if(newTurn.getPlayers().get(i).getPlayerNameSend().equals(namePlayer)){
@@ -260,6 +267,7 @@ public class CLI implements EventToClientVisitor {
                 System.out.println("null");
             }
         }
+        DevelopmentCardView BoardCard = new DevelopmentCardView(player.getDevelopmentCardPlayer());
 
         System.out.println("la mia posizione");
         System.out.println(player.getFaithMarkerPosition() + "/24");
@@ -274,14 +282,12 @@ public class CLI implements EventToClientVisitor {
             Scanner scanIn = new Scanner(System.in);
             String line = scanIn.nextLine();
             if (line.equals("market")) {
-                System.out.println("dimmi una riga che scegli: ");
-                Scanner scanIn1 = new Scanner(System.in);
-                int line1 = scanIn1.nextInt();
+                int line1 = market.launchChoiseView();
                 ArrayList<Boolean> tmp = marketWhiteChangeActive(player.getLeaderCardActive());
                 connectionToServer.sendChooseLine(line1, tmp);
                 valid = true;
             } else if (line.equals("buydevelopment")) {
-                selectedDevelopmentCard();
+                selectedDevelopmentCard(developmentSaleView);
                 valid = true;
             } else if (line.equals("usedevelopment")) {
                 choseDevelopment(player.getDevelopmentCardPlayer(), player.getLeaderCardActive());
@@ -344,62 +350,31 @@ public class CLI implements EventToClientVisitor {
     }
 
 
-    private void selectedDevelopmentCard(){
-        boolean isValid;
-        Integer level = null;
-        CardColor color = null;
-        Scanner scan = new Scanner(System.in);
-
-        do {
-            System.out.println("\nSELECT WITH 'LEVEL,COLOR' WITCH CARD YOU WANT TO BUY");
-            String input;
-            input = scan.nextLine();
-            input = input.trim();
-            String delimits = ",";
-            String[] strArray = input.split(delimits);
-            if (strArray.length == 2) { //lenght!=0
-                strArray[1] = strArray[1].toUpperCase();
-                isValid = true;
-
-                try {
-                    level = Integer.parseInt(strArray[0]);
-                    color = CardColor.valueOf(strArray[1]);
-                    //System.out.println("level:" + level + "color: " + color);
-                    if (level < 1 || level > 3)
-                        throw new IllegalArgumentException();
-                } catch (IllegalArgumentException e) {
-                    System.out.println("Non valid Argument");
-                    isValid = false;
-                }
-            }
-            else {
-                System.out.println("Non valid Argument");
-                isValid = false;
-            }
-
-        } while (!isValid);
-
-
+    private void selectedDevelopmentCard(DevelopmentCardView in){
+        in.startCardForSaleSelection();
+        int num;
+        String color;
+        num = in.getNum();
+        color = in.getColor();
         int colorForCard;
 
-        switch (color) {
-            case GREEN:
-                colorForCard = 0;
-                break;
-            case BLUE:
-                colorForCard = 1;
-                break;
-            case YELLOW:
-                colorForCard = 2;
-                break;
-            case PURPLE:
-                colorForCard = 3;
-                break;
-            default:
-                throw new RuntimeException(); //attention Exception
-        }
-        System.out.println("Chose" + " " + color.name() + " " + level);
-        connectionToServer.sendSelectedDevelopmentCard(colorForCard, level-1); //livello da 0 a 2
+            switch (color) {
+                case "green":
+                    colorForCard = 0;
+                    break;
+                case "blue":
+                    colorForCard = 1;
+                    break;
+                case "yellow":
+                    colorForCard = 2;
+                    break;
+                case "purple":
+                    colorForCard = 3;
+                    break;
+                default:
+                    throw new RuntimeException(); //attention Exception
+            }
+            connectionToServer.sendSelectedDevelopmentCard(colorForCard, num-1); //livello da 0 a 2
     }
 
 
@@ -424,24 +399,22 @@ public class CLI implements EventToClientVisitor {
 
 
         answer = selectActivation("Do you want to Activate one of the LEADER Production? Y/N?");
-        ArrayList<Boolean> useLeaders = new ArrayList<>();
-        for (int i=0; i<2; i++)
-            useLeaders.add(false);
+
+        ArrayList<String> leaderCardPower = new ArrayList<>();
+        ArrayList<Boolean> activation = new ArrayList<>();
         ArrayList<Resource> materialLeader = new ArrayList<>();
-        for (int i=0; i<2; i++)
-            materialLeader.add(null);
 
         if(answer == 'Y'){
                 for (int i=0; i<activeLeaderCards.size(); i++){          //control if there's an active LeaderCard additionalProd
                     if(activeLeaderCards.get(i).getEffect().equals("additionalProduction")) {
-                        answer = selectActivation("Do you want to use production of ACTIVE LEADER number " + i + " ?" + " Y/N?");
-                        if (answer == 'Y') {
-                            useLeaders.set(i, true);
-                            Resource resource = selectResource("Select RESOURCE you want from the Leader");
-                            materialLeader.set(i, resource);
-                        }
+                        leaderCardPower.add(activeLeaderCards.get(i).getResourceType());
                     }
                 }
+
+                AdditionalProductionView prova = new AdditionalProductionView(leaderCardPower);
+                prova.startAdditionalProductionView();
+                activation = prova.getActivation();
+                materialLeader = prova.getRequested();
         }
 
 
@@ -464,7 +437,7 @@ public class CLI implements EventToClientVisitor {
         System.out.println("invio questi dati:");
         System.out.println("use_baseprod: " + useBaseProduction);
         System.out.println("selected for base prod: "+ resourceRequested1 + " "+ resourceRequested2+"--> "+resourceGranted);
-        System.out.println("use leaders --> "+ useLeaders.toString());
+        System.out.println("use leaders --> "+ activation.toString());
         System.out.println("material leaders --> "+ materialLeader.toString());
         System.out.println("use develop --> "+ useDevelop.toString());
 
@@ -478,7 +451,7 @@ public class CLI implements EventToClientVisitor {
         //MANDA EVENTO CON:  BOOL_USA_GAMEPROD,PROD1,PROD2,PRODCHOOSE//ARRAY_LEADERS-> MATERIAL 1ST LEADER/MATERIAL 2ND LEADER//ARRAY_DEVELOP
 
         connectionToServer.sendSelectedProductionDevelopmentCard(useBaseProduction, resourceRequested1, resourceRequested2, prodottoBaseProd,
-                                                                    useLeaders, materialLeader, useDevelop);
+                                                                    activation, materialLeader, useDevelop);
 
         }
 

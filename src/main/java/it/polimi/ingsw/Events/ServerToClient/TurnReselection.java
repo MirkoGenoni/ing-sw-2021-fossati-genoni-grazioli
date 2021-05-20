@@ -1,12 +1,12 @@
-package it.polimi.ingsw.Events.ServerToClient.BuyDevelopmentCardTurnToClient;
+package it.polimi.ingsw.Events.ServerToClient;
 
 import it.polimi.ingsw.Events.ServerToClient.EventToClient;
 import it.polimi.ingsw.Events.ServerToClient.EventToClientVisitor;
 
-public class SendReselectedDevelopmentCardAvailableToClient extends EventToClient {
+public class TurnReselection extends EventToClient {
     private final String message;
 
-    public SendReselectedDevelopmentCardAvailableToClient(String message) {
+    public TurnReselection(String message) {
         this.message = message;
     }
 

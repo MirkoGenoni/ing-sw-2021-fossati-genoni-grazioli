@@ -17,9 +17,9 @@ public enum LeaderCardSymbols {
         switch(type){
             case "servant":
                 this.rapresentation[0] = "\u001B[35m" + " ▒▒▒▒▒▒▒ " + "\u001B[0;00m";
-                this.rapresentation[1] = "\u001B[35m" + "▒▒" + "\u001B[38;5;94m" +"▓▓▓▓▓" + "\u001B[35m" + "▒▒" + "\u001B[0;00m";
-                this.rapresentation[2] = "\u001B[35m" + "▒▒▒▒" + "\u001B[37m" + "▓" + "\u001B[35m" +"▒▒▒▒" + "\u001B[0;00m";
-                this.rapresentation[3] = "\u001B[35m" + "▒▒▒▒" + "\u001B[37m" + "▓" + "\u001B[35m" + "▒▒▒▒" + "\u001B[0;00m";
+                this.rapresentation[1] = "\u001B[35m" + "▒▒" + "\u001B[37m" +"▓▓▓▓▓" + "\u001B[35m" + "▒▒" + "\u001B[0;00m";
+                this.rapresentation[2] = "\u001B[35m" + "▒▒▒▒" + "\u001B[38;5;94m" + "▓" + "\u001B[35m" +"▒▒▒▒" + "\u001B[0;00m";
+                this.rapresentation[3] = "\u001B[35m" + "▒▒▒▒" + "\u001B[38;5;94m" + "▓" + "\u001B[35m" + "▒▒▒▒" + "\u001B[0;00m";
                 this.rapresentation[4] = "\u001B[35m" + " ▒▒▒▒▒▒▒ " + "\u001B[0;00m";
                 break;
 

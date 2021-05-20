@@ -38,6 +38,12 @@ public class LeaderCardVisualization {
         saveCard(specialAbility);
     }
 
+    LeaderCardVisualization(String in){
+        this.card = new String[22];
+        this.effect = "nothing";
+        saveCard("nothing");
+    }
+
     private String resourceToColorConversion(String resource) {
         switch (resource) {
             case "COIN":
@@ -166,7 +172,7 @@ public class LeaderCardVisualization {
                 this.card[16] = "┃   ADDITIONAL PRODUCTION   ┃";
                 this.card[17] = "┃                           ┃";
                 this.card[18] = "┃  " + this.effectColor + "┌───┐     " + "\u001B[0;00m" + "┌───┐   ┌───┐  ┃";
-                this.card[19] = "┃  " + this.effectColor + "│ █ │     " + "\u001B[0;00m" + "│ ? │ + │ † │  ┃";
+                this.card[19] = "┃  " + this.effectColor + "│ █ │" + "\u001B[0;00m" + "  →  │ ? │ + │ † │  ┃";
                 this.card[20] = "┃  " + this.effectColor + "└───┘     " + "\u001B[0;00m" + "└───┘   └───┘  ┃";
                 this.card[21] = "┗━━━━━━━━━━━━━━━━━━━━━━━━━━━┛";
                 break;

@@ -3,7 +3,7 @@ package it.polimi.ingsw.Server;
 import it.polimi.ingsw.Events.ClientToServer.EventToServer;
 import it.polimi.ingsw.Events.ServerToClient.*;
 import it.polimi.ingsw.Controller.ObserveConnectionToClient;
-import it.polimi.ingsw.Events.ServerToClient.BuyDevelopmentCardTurnToClient.SendReselectedDevelopmentCardAvailableToClient;
+import it.polimi.ingsw.Events.ServerToClient.TurnReselection;
 import it.polimi.ingsw.Events.ServerToClient.SupportClass.DevelopmentCardToClient;
 import it.polimi.ingsw.Events.ServerToClient.BuyDevelopmentCardTurnToClient.SendSpaceDevelopmentCardToClient;
 import it.polimi.ingsw.Events.ServerToClient.SupportClass.LeaderCardToClient;
@@ -159,9 +159,9 @@ public class ConnectionToClient implements Runnable, EventToClientNotifier {
     // ----------------------------------------
 
     @Override
-    public void sendReselectedDevelopmentCards(String message) {
-        SendReselectedDevelopmentCardAvailableToClient sendReselectedDevelopmentCardAvailableToClient = new SendReselectedDevelopmentCardAvailableToClient(message);
-        asyncSendEvent(sendReselectedDevelopmentCardAvailableToClient);
+    public void sendTurnReselection(String message) {
+        TurnReselection turnReselection = new TurnReselection(message);
+        asyncSendEvent(turnReselection);
     }
 
     @Override
