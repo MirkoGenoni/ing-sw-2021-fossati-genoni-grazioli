@@ -9,12 +9,19 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class AdditionalProductionView {
-    Messages noCards = new Messages("You got no active cards with additional deposit");
+    Messages noCards = new Messages("You got no active cards with additional production");
     ArrayList<AdditionalProductionVisualization> productions;
     ArrayList<Boolean> activation;
     ArrayList<Resource> requested;
 
+    /*public static void main(String[] args) {
+        ArrayList<String> test = new ArrayList<>();
+        test.add("COIN");
+        test.add("SHIELD");
 
+        AdditionalProductionView prova = new AdditionalProductionView(test);
+        prova.startAdditionalProductionView();
+    }*/
 
     public AdditionalProductionView(ArrayList<String> type){
         activation = new ArrayList<>();
@@ -155,22 +162,22 @@ public class AdditionalProductionView {
                         "┃                                                                                                                         ┃");
 
                 for(int i=0; i<19; i++)
-                    System.out.println("┃                           " + productions.get(0).returnLine(i) + "     " + productions.get(1).returnLine(i) + "                           ┃");
+                    System.out.println("┃           " + productions.get(0).returnLine(i) + "                                     " + productions.get(1).returnLine(i) + "           ┃");
 
-                System.out.print("┃                                         -1-                                 -2-                                         ┃\n" );
+                System.out.print("┃                         -1-                                                                 -2-                         ┃\n" );
 
                 for(int k=0; k<3; k++) {
-                    System.out.print("┃                                     ");
+                    System.out.print("┃                     ");
                     if(activation.get(0)){
-                        System.out.print(activated[k] + "                         ");
+                        System.out.print(activated[k] + "                                                         ");
                     }
                     else{
-                        System.out.print("                                    ");
+                        System.out.print("                                                                    ");
                     }
                     if(activation.get(1)){
-                        System.out.print(activated[k] + "                                     ┃\n");
+                        System.out.print(activated[k] + "                     ┃\n");
                     } else {
-                        System.out.print("                                                ┃\n");
+                        System.out.print("                                ┃\n");
                     }
                 }
 
@@ -180,8 +187,8 @@ public class AdditionalProductionView {
 
                 if (text) {
                     System.out.print("                                      SELECT THE PRODUCTION CARD YOU WANT TO ACTIVATE                                     \n\n" +
-                            "                                            |    Type nothing or activate, followed by comma    |                                  \n" +
-                            "                                            |                and the card number                |                                  \n\n" +
+                            "                                   |    Type nothing or activate, followed by comma    |                                           \n" +
+                            "                                   |                and the card number                |                                           \n\n" +
                             "                                                      ");
                 }
                 break;
@@ -203,7 +210,7 @@ public class AdditionalProductionView {
             printAdditionalProductionView(false);
             System.out.print("\n                              INSERT THE MATERIAL OR MATERIALS YOU WANT FROM THIS PRODUCTION:                              \n" +
                                "                                       (if more than one separate them with a comma)                                       \n" +
-                    "\n                                                                ");
+                    "\n                                                         ");
             Scanner in = new Scanner(System.in);
             input = in.nextLine();
 

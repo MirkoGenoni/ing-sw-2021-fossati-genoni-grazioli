@@ -1,5 +1,6 @@
 package it.polimi.ingsw.Client.CLI;
 
+import it.polimi.ingsw.Client.CLI.Views.NewTurnView;
 import it.polimi.ingsw.Client.CLI.Views.ProductionView.AdditionalProductionView;
 import it.polimi.ingsw.Client.CLI.Views.ProductionView.DevelopmentCardView;
 import it.polimi.ingsw.Client.CLI.Views.LeaderCardView.LeaderCardView;
@@ -217,13 +218,13 @@ public class CLI implements EventToClientVisitor {
     }
 
     @Override
-    public void visit(NewTurnToClient newTurn){
+    public void visit(NewTurnToClient newTurn) {
 
         MarketView market = new MarketView(newTurn.getMarket());
 
-        for(int i=0; i<newTurn.getMarket().getGrid().size(); i++){
+        for (int i = 0; i < newTurn.getMarket().getGrid().size(); i++) {
             System.out.print("  " + newTurn.getMarket().getGrid().get(i).toString());
-            if(i==3 || i==7 || i==11){
+            if (i == 3 || i == 7 || i == 11) {
                 System.out.println("");
             }
         }
@@ -235,16 +236,16 @@ public class CLI implements EventToClientVisitor {
         System.out.println("ho ricevuto Array Dev disponibili: ");
         for (DevelopmentCardToClient[] cards : newTurn.getDevelopmentCards()) {
             for (DevelopmentCardToClient card : cards)
-                if(card!=null) {
-                    System.out.println("id: " + card.getCardID() +  " color: " + card.getColor() + " level: " + card.getLevel() + " cost: " + card.getCost() + " Req: " + card.getMaterialRequired() + " Grant: " + card.getProductionResult());
-                }else{
+                if (card != null) {
+                    System.out.println("id: " + card.getCardID() + " color: " + card.getColor() + " level: " + card.getLevel() + " cost: " + card.getCost() + " Req: " + card.getMaterialRequired() + " Grant: " + card.getProductionResult());
+                } else {
                     System.out.println("NO CARDS");
                 }
         }
 
 
-        for(int i=0; i<newTurn.getPlayers().size(); i++){
-            if(newTurn.getPlayers().get(i).getPlayerNameSend().equals(namePlayer)){
+        for (int i = 0; i < newTurn.getPlayers().size(); i++) {
+            if (newTurn.getPlayers().get(i).getPlayerNameSend().equals(namePlayer)) {
                 index = i;
             }
         }
@@ -260,10 +261,10 @@ public class CLI implements EventToClientVisitor {
         System.out.println(player.getLeaderCardActive().toString());
 
         System.out.println("le mie development");
-        for(DevelopmentCardToClient card : player.getDevelopmentCardPlayer()) {
-            if(card!=null){
-                System.out.println("id: " + card.getCardID() +  " color: " + card.getColor() + " level: " + card.getLevel() + " cost: " + card.getCost() + " Req: " + card.getMaterialRequired() + " Grant: " + card.getProductionResult());
-            }else{
+        for (DevelopmentCardToClient card : player.getDevelopmentCardPlayer()) {
+            if (card != null) {
+                System.out.println("id: " + card.getCardID() + " color: " + card.getColor() + " level: " + card.getLevel() + " cost: " + card.getCost() + " Req: " + card.getMaterialRequired() + " Grant: " + card.getProductionResult());
+            } else {
                 System.out.println("null");
             }
         }
@@ -276,29 +277,29 @@ public class CLI implements EventToClientVisitor {
         System.out.println(player.getPopeFavorTiles().toString());
 
 
-        boolean valid = false;
-        do {
-            System.out.println("è il mio turno: scrivo market, buydevelopment o usedevelopment (turn)");
-            Scanner scanIn = new Scanner(System.in);
-            String line = scanIn.nextLine();
-            if (line.equals("market")) {
+        NewTurnView chooseTurn = new NewTurnView();
+        String out = chooseTurn.startTurnChoise();
+
+        switch(out){
+            case "market":
                 int line1 = market.launchChoiseView();
                 ArrayList<Boolean> tmp = marketWhiteChangeActive(player.getLeaderCardActive());
                 connectionToServer.sendChooseLine(line1, tmp);
-                valid = true;
-            } else if (line.equals("buydevelopment")) {
+                break;
+            case "buydevelopment":
                 selectedDevelopmentCard(developmentSaleView);
-                valid = true;
-            } else if (line.equals("usedevelopment")) {
+                break;
+            case "usedevelopment":
                 choseDevelopment(player.getDevelopmentCardPlayer(), player.getLeaderCardActive());
-                valid = true;
-            } else if (line.equals("turn")) {
-                connectionToServer.sendTurnPlayed(line);
-                valid = true;
-            } else {
-                System.out.println("please retry");
-            }
-        }while(!valid);
+                break;
+            case "turn":
+                connectionToServer.sendTurnPlayed(out);
+                break;
+
+            case "viewBoard":
+                //TODO: aggiungere scelta visualizzazione gameboard giocatore corrente e altri giocatori
+                break;
+        }
     }
 
     @Override
