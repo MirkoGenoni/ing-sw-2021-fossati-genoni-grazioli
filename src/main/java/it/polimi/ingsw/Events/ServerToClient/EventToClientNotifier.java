@@ -4,6 +4,7 @@ import it.polimi.ingsw.Model.DevelopmentCard.DevelopmentCard;
 import it.polimi.ingsw.Model.FaithTrack.FaithTrack;
 import it.polimi.ingsw.Model.Game.Player;
 import it.polimi.ingsw.Model.LeaderCard.LeaderCard;
+import it.polimi.ingsw.Model.Lorenzo.SoloAction;
 import it.polimi.ingsw.Model.Market.Market;
 import it.polimi.ingsw.Model.Resource.Resource;
 
