@@ -20,7 +20,7 @@ public class ActivateProductionTurn {
         this.controllerToModel = controllerToModel;
     }
 
-    public void productionsActivation(boolean useBaseProduction, Resource resourceRequested1, Resource resourceRequested2,
+    public boolean productionsActivation(boolean useBaseProduction, Resource resourceRequested1, Resource resourceRequested2,
                                     ProductedMaterials resourceGranted, ArrayList<Boolean> useLeaders, ArrayList<Resource> materialLeaders,
                                     ArrayList<Boolean> useDevelop, String playerName){
 
@@ -50,8 +50,13 @@ public class ActivateProductionTurn {
         }
 
 
-        //ADD ALL TO STRONGBOX TODO SE LA MOSSA E' NULLA (0 RISORSE DI OGNI COSA COMUNICARLO)
-        if(actualPlayerBoard.getResourceHandler().checkMaterials(materialRequested)){
+        boolean valid = false;
+        for(Resource r : materialRequested.keySet()){
+            if(materialRequested.get(r)!=0){
+                valid=true;
+            }
+        }
+        if(actualPlayerBoard.getResourceHandler().checkMaterials(materialRequested) && valid){
             try {
                 actualPlayerBoard.getResourceHandler().takeMaterials(materialRequested);
             } catch (ResourceException e) {
@@ -73,11 +78,16 @@ public class ActivateProductionTurn {
             System.out.println("Risorse aggiunte correttamente alla strongbox");
             controllerToModel.getConnectionsToClient().get(currentPlayerIndex).sendNotify("Risorse aggiunte correttamente alla strongbox");
             controllerToModel.getConnectionsToClient().get(currentPlayerIndex).sendNotify("Avanzi di "+ faithPoints + " punti fede");
+        }else if(!actualPlayerBoard.getResourceHandler().checkMaterials(materialRequested)){
+            System.out.println("non ci sono abbastanza risorse");
+            controllerToModel.getConnectionsToClient().get(currentPlayerIndex).sendTurnReselection("Not enough resources");
+            return false;
+        }else if(!valid){
+            System.out.println("non hai selezionato nulla");
+            controllerToModel.getConnectionsToClient().get(currentPlayerIndex).sendTurnReselection("No productions selected");
+            return false;
         }
-        else{
-            System.out.println("non ci sono abbastanza risorse");  //TODO cc
-            controllerToModel.getConnectionsToClient().get(currentPlayerIndex).sendNotify("NON HAI ABBASTANZA RISORSE!!!");
-        }
+        return true;
     }
 
     private void leaderCardProduction(ArrayList<Boolean> useLeaders, ArrayList<Resource> materialLeaders,

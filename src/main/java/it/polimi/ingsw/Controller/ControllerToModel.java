@@ -251,7 +251,7 @@ public class ControllerToModel {
     }
 
     public void saveNewDepositState(ArrayList<Resource> newDepositState, int discardResources){
-        if(marketTurn.saveNewDepositState(newDepositState, discardResources, currentPlayerIndex) && checkPlayLorenzo()){
+        if(marketTurn.saveNewDepositState(newDepositState, discardResources, currentPlayerIndex) && checkMultiplayer()){
             newTurn();
         }
 
@@ -265,7 +265,7 @@ public class ControllerToModel {
     }
 
     public void spaceDevelopmentCard(int space){
-        if(buyDevelopmentCardTurn.spaceDevelopmentCard(space, currentPlayerIndex) && checkPlayLorenzo()){
+        if(buyDevelopmentCardTurn.spaceDevelopmentCard(space, currentPlayerIndex) && checkMultiplayer()){
             newTurn();
         }
     }
@@ -278,9 +278,9 @@ public class ControllerToModel {
                                    ProductedMaterials resourceGranted, ArrayList<Boolean> useLeaders, ArrayList<Resource> materialLeaders,
                                    ArrayList<Boolean> useDevelop, String playerName){
 
-        activateProductionTurn.productionsActivation(useBaseProduction, resourceRequested1, resourceRequested2, resourceGranted,
+        boolean tmpB = activateProductionTurn.productionsActivation(useBaseProduction, resourceRequested1, resourceRequested2, resourceGranted,
                                     useLeaders, materialLeaders, useDevelop, playerName);
-        if(checkPlayLorenzo()){  // vedi checklorenzo
+        if(tmpB && checkMultiplayer()){  // vedi checklorenzo
             newTurn();
         }
 
@@ -311,7 +311,7 @@ public class ControllerToModel {
         connectionsToClient.get(currentPlayerIndex).sendNewTurn(turnNumber, game.getMarketBoard(), game.getDevelopmentCardsAvailable(), players, game.getPlayersFaithTrack());
     }
 
-    public boolean checkPlayLorenzo(){
+    public boolean checkMultiplayer(){
         // metodo da mettere private dopo aver tolto il turn dalle opzioni di scelta!!!!!!
         if(turnNumber != 0 && players.length == 1){
             if(lorenzoTurn.playLorenzo()){
