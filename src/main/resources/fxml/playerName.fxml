@@ -9,8 +9,7 @@
    <children>
       <TextField fx:id="textName" layoutX="300.0" layoutY="164.0" />
       <Button fx:id="buttonName" layoutX="174.0" layoutY="164.0" mnemonicParsing="false" onAction="#sendName" text="OK" />
-      <Label fx:id="nickname" layoutX="230.0" layoutY="75.0" text="Choose your nickname" />
-      <Label fx:id="numPlayer" layoutX="230.0" layoutY="75.0" opacity="0.0" text="You are the first player" />
+      <Label fx:id="text" layoutX="159.0" layoutY="75.0" prefHeight="17.0" prefWidth="322.0" textAlignment="CENTER" />
       <Button fx:id="buttonNum" disable="true" layoutX="174.0" layoutY="164.0" mnemonicParsing="false" onAction="#sendNum" opacity="0.0" text="OK" />
    </children>
 </AnchorPane>

@@ -49,7 +49,8 @@ public class VisitClass implements EventToClientVisitor {
     public void visit(SendNumPlayerToClient numPlayer) {
         System.out.println("arrivato num player");
         PlayerNameController controller = (PlayerNameController) gui.getCurrentController();
-        controller.arriveNumPlayer();
+        Platform.runLater(new Thread(()-> controller.arriveNumPlayer()));
+
     }
 
     @Override

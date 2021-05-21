@@ -3,34 +3,23 @@ package it.polimi.ingsw.Client.GUI.ControllerGUI;
 import it.polimi.ingsw.Client.GUI.GUI;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
-public class PlayerNameController implements GUIController{
+import java.net.URL;
+import java.util.ResourceBundle;
+
+public class PlayerNameController implements GUIController, Initializable {
     private GUI gui;
 
     @FXML Button buttonName;
     @FXML Button buttonNum;
     @FXML TextField textName;
-    @FXML Label nickname;
-    @FXML Label numPlayer;
-
-    @Override
-    public void setGUI(GUI gui) {
-        this.gui = gui;
-    }
-
-
-    public Label getNumPlayer() {
-        return numPlayer;
-    }
-
-
-
+    @FXML Label text;
 
     public void sendName(ActionEvent actionEvent) {
-        System.out.println("ok");
         String playerName = textName.getText();
         textName.clear();
         gui.setNamePlayer(playerName);
@@ -39,11 +28,9 @@ public class PlayerNameController implements GUIController{
     }
 
     public void arriveNumPlayer(){
-        System.out.println("chiamato");
         buttonName.setOpacity(0);
         buttonName.setDisable(true);
-        nickname.setOpacity(0);
-        numPlayer.setOpacity(1);
+        text.setText("You are the first player!!! Insert number of players");
         buttonNum.setDisable(false);
         buttonNum.setOpacity(1);
 
@@ -53,5 +40,16 @@ public class PlayerNameController implements GUIController{
         int num = Integer.parseInt(textName.getText());
         textName.clear();
         gui.getConnectionToServer().sendNumPlayer(num);
+    }
+
+
+    @Override
+    public void setGUI(GUI gui) {
+        this.gui = gui;
+    }
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        text.setText("Choose your nickname");
     }
 }
