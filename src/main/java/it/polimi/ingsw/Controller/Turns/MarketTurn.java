@@ -59,7 +59,7 @@ public class MarketTurn {
         this.tmpMarketReturn = new ArrayList<>(tmpR);
         controllerToModel.getConnectionsToClient().get(currentPlayerIndex).sendReorganizeDeposit(tmpR, controllerToModel.getPlayers()[currentPlayerIndex].getPlayerBoard().getResourceHandler().getDepositState());
     }
-    //TODO CONTROL DISCARD RESOURCES FOR LORENZO
+
     public boolean saveNewDepositState(ArrayList<Resource> newDepositState, int discardResources, int currentPlayerIndex){
         System.out.println(" riscorse scartate " +discardResources);
         boolean tmp = false;
@@ -78,6 +78,12 @@ public class MarketTurn {
                 }
                 if(tmp && savePlayer != -1){
                     controllerToModel.controlPlayerPath(savePlayer);
+                }
+                if(controllerToModel.getPlayers().length==1){
+                    if(controllerToModel.getGame().getPlayersFaithTrack().forwardPos(1)){
+                        controllerToModel.controlPlayerPath(1);
+                    }
+
                 }
 
             }

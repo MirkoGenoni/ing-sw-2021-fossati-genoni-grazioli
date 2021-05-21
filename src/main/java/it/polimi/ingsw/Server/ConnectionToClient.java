@@ -200,8 +200,8 @@ public class ConnectionToClient implements Runnable, EventToClientNotifier {
     }
 
     @Override
-    public void sendLorenzoTurn(SoloAction lorenzoAction) {
-        LorenzoActionToClient lorenzoActionToClient = new LorenzoActionToClient(lorenzoAction);
+    public void sendLorenzoTurn(SoloAction lorenzoAction, int lorenzoPosition) {
+        LorenzoActionToClient lorenzoActionToClient = new LorenzoActionToClient(lorenzoAction, lorenzoPosition);
         asyncSendEvent(lorenzoActionToClient);
     }
 
