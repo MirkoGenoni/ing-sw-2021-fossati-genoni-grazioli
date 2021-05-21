@@ -98,7 +98,7 @@ public class GUI extends Application {
     public void start(Stage stage) {
         loadGraphics();
         ArrayList<String> nameScene = new ArrayList<String>(List.of("setup", "playerName","initialLeaderView", "leaderCardView" ,"playerView", "newDepositView",
-                "marketView", "buyDevelopmentView", "selectDevSpaceView", "productionView"));
+                "marketView", "buyDevelopmentView", "selectDevSpaceView", "productionView", "lorenzoView"));
         for (String s : nameScene) {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/" + s + ".fxml"));
             try {
@@ -124,11 +124,10 @@ public class GUI extends Application {
 
         currentScene = scenes.get("setup");
         currentController = controllers.get("setup");
-        centerApplication();
         stage.setResizable(false);
         stage.setScene(currentScene);
-        centerApplication();
         stage.show();
+        centerApplication();
 
     }
 

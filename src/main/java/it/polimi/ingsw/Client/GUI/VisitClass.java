@@ -103,7 +103,19 @@ public class VisitClass implements EventToClientVisitor {
 
     @Override
     public void visit(TurnReselection message) {
-
+        CountDownLatch threadCount = new CountDownLatch(1);
+        System.out.println("nuovo turno");
+        Platform.runLater(new Thread(()-> {
+            gui.changeScene("playerView");
+            threadCount.countDown();
+        }));
+        try {
+            threadCount.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        PlayerViewController controller = (PlayerViewController) gui.getCurrentController();
+        Platform.runLater(new Thread(() -> controller.tabTurnNotActive(false)));
     }
 
     @Override
@@ -147,12 +159,11 @@ public class VisitClass implements EventToClientVisitor {
         Platform.runLater(new Thread(() -> controller.tabTurnNotActive(false)));
         Platform.runLater(new Thread(() -> controller.updateTable(newTurn.getDevelopmentCards(), newTurn.getMarket())));
         Platform.runLater(new Thread(()-> controller.updatePlayerBoard(newTurn.getPlayers())));
-
-
     }
 
     @Override
     public void visit(EndGameToClient message) {
+        connectionToServer.setActive(false);
         System.out.println(message.getMessage());
     }
 
@@ -167,9 +178,19 @@ public class VisitClass implements EventToClientVisitor {
 
     @Override
     public void visit(LorenzoActionToClient lorenzoAction) {
-        System.out.println(lorenzoAction.getLorenzoAction().toString());
-        connectionToServer.sendReplayLorenzoAction();
+        CountDownLatch threadCount = new CountDownLatch(1);
+        Platform.runLater(new Thread(()-> {
+            gui.changeScene("lorenzoView");
+            threadCount.countDown();
+        }));
+        try {
+            threadCount.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        LorenzoViewController controller = (LorenzoViewController) gui.getCurrentController();
+        controller.drawSoloAction(lorenzoAction.getLorenzoAction());
     }
-    //TODO non implementato
+
 
 }
