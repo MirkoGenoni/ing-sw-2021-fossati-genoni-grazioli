@@ -49,19 +49,12 @@ public class MarketViewController implements GUIController, Initializable {
     @Override
     public void setGUI(GUI gui) {
         this.gui = gui;
+        marble = gui.getMarble();
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        for(Marble m : Marble.values()) {
-            try {
-                FileInputStream input = new FileInputStream("src/main/resources/graphics/marble/" + m.name().toLowerCase() + ".png");
-                Image tmpI = new Image(input);
-                marble.put(m.name().toLowerCase(), tmpI);
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
-        }
+
     }
 
     public void sendCol4(MouseEvent mouseEvent) {

@@ -195,12 +195,13 @@ public class NewDepositViewController implements GUIController, Initializable {
 
 
     public void done(ActionEvent actionEvent) {
-        gui.getConnectionToServer().sendNewDepositState(getDepositState(), getMarketResource());
+
         numDepositClicked.clear();
         resourceClicked.clear();
         gui.changeScene("playerView");
         PlayerViewController controller = (PlayerViewController) gui.getCurrentController();
-        controller.tabTurnActive(true);
+        controller.tabTurnNotActive(true);
+        gui.getConnectionToServer().sendNewDepositState(getDepositState(), getMarketResource());
     }
 
     @Override

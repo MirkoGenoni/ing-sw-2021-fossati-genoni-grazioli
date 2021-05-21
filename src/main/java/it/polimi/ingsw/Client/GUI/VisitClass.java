@@ -1,10 +1,8 @@
 package it.polimi.ingsw.Client.GUI;
 
+import it.polimi.ingsw.Client.CLI.Views.LeaderCardView.LeaderCardView;
 import it.polimi.ingsw.Client.ConnectionToServer;
-import it.polimi.ingsw.Client.GUI.ControllerGUI.PlayerNameController;
-import it.polimi.ingsw.Client.GUI.ControllerGUI.NewDepositViewController;
-import it.polimi.ingsw.Client.GUI.ControllerGUI.PlayerViewController;
-import it.polimi.ingsw.Client.GUI.ControllerGUI.SelectDevelopmentSpaceView;
+import it.polimi.ingsw.Client.GUI.ControllerGUI.*;
 import it.polimi.ingsw.Events.ServerToClient.*;
 import it.polimi.ingsw.Events.ServerToClient.TurnReselection;
 import it.polimi.ingsw.Events.ServerToClient.BuyDevelopmentCardTurnToClient.SendSpaceDevelopmentCardToClient;
@@ -15,6 +13,7 @@ import it.polimi.ingsw.Model.Resource.Resource;
 import javafx.application.Platform;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.CountDownLatch;
 
 public class VisitClass implements EventToClientVisitor {
@@ -35,7 +34,6 @@ public class VisitClass implements EventToClientVisitor {
 
     @Override
     public void visit(SendPlayerNameToClient playerName) {
-
         connectionToServer.setPlayerName(playerName.getPlayerName());
         CountDownLatch threadCount = new CountDownLatch(1);
         Platform.runLater(new Thread(() -> {
@@ -47,7 +45,6 @@ public class VisitClass implements EventToClientVisitor {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        PlayerNameController controller = (PlayerNameController) gui.getCurrentController();
     }
 
     @Override
@@ -60,14 +57,32 @@ public class VisitClass implements EventToClientVisitor {
     @Override
     public void visit(SendArrayLeaderCardsToClient leaderCardArray) {
         if(leaderCardArray.isInitialLeaderCards()){
-            connectionToServer.sendDiscardInitialLeaderCards(1,2);
+            CountDownLatch threadCount = new CountDownLatch(1);
+            Platform.runLater(new Thread(() ->{
+                gui.changeScene("initialLeaderView");
+                threadCount.countDown();
+            }));
+            try {
+                threadCount.await();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            InitialLeaderViewController controller = (InitialLeaderViewController) gui.getCurrentController();
+            Platform.runLater(new Thread(()-> controller.drawLeader(leaderCardArray.getLeaderCardArray())));
         }else{
-            ArrayList<Integer> tmp = new ArrayList<>();
-            tmp.add(2);
-            tmp.add(2);
-            connectionToServer.sendLeaderCardTurn(tmp);
+            CountDownLatch threadCount = new CountDownLatch(1);
+            Platform.runLater(new Thread(() ->{
+                gui.changeScene("leaderCardView");
+                threadCount.countDown();
+            }));
+            try {
+                threadCount.await();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            LeaderCardViewController controller = (LeaderCardViewController) gui.getCurrentController();
+            Platform.runLater(new Thread(() -> controller.drawLeader(leaderCardArray.getLeaderCardArray())));
         }
-        //TODO non implementato
     }
 
     @Override
@@ -129,7 +144,7 @@ public class VisitClass implements EventToClientVisitor {
         }
         gui.setLastTurn(newTurn);
         PlayerViewController controller = (PlayerViewController) gui.getCurrentController();
-        Platform.runLater(new Thread(() -> controller.tabTurnActive(false)));
+        Platform.runLater(new Thread(() -> controller.tabTurnNotActive(false)));
         Platform.runLater(new Thread(() -> controller.updateTable(newTurn.getDevelopmentCards(), newTurn.getMarket())));
         Platform.runLater(new Thread(()-> controller.updatePlayerBoard(newTurn.getPlayers())));
 
@@ -138,7 +153,7 @@ public class VisitClass implements EventToClientVisitor {
 
     @Override
     public void visit(EndGameToClient message) {
-
+        System.out.println(message.getMessage());
     }
 
     @Override
@@ -152,7 +167,8 @@ public class VisitClass implements EventToClientVisitor {
 
     @Override
     public void visit(LorenzoActionToClient lorenzoAction) {
-
+        System.out.println(lorenzoAction.getLorenzoAction().toString());
+        connectionToServer.sendReplayLorenzoAction();
     }
     //TODO non implementato
 

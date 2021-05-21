@@ -4,6 +4,8 @@ import it.polimi.ingsw.Client.ConnectionToServer;
 import it.polimi.ingsw.Client.GUI.ControllerGUI.GUIController;
 import it.polimi.ingsw.Events.ServerToClient.NewTurnToClient;
 import it.polimi.ingsw.Events.ServerToClient.SupportClass.PlayerInformationToClient;
+import it.polimi.ingsw.Model.Market.Marble;
+import it.polimi.ingsw.Model.Resource.Resource;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Rectangle2D;
@@ -29,6 +31,10 @@ public class GUI extends Application {
     private Scene currentScene;
     private GUIController currentController;
     private Stage stage;
+
+    //Graphics
+    private Map<String, Image> resources = new HashMap<>();
+    private Map<String, Image> marble = new HashMap<>();
 
     //Scene
     private Map<String, Scene> scenes = new HashMap<>();
@@ -64,6 +70,14 @@ public class GUI extends Application {
         visit = new VisitClass(connectionToServer, this);
     }
 
+    public Map<String, Image> getResources() {
+        return resources;
+    }
+
+    public Map<String, Image> getMarble() {
+        return marble;
+    }
+
     public String getNamePlayer() {
         return namePlayer;
     }
@@ -82,8 +96,9 @@ public class GUI extends Application {
 
     @Override
     public void start(Stage stage) {
-        ArrayList<String> nameScene = new ArrayList<String>(List.of("setup", "playerName", "playerView", "newDepositView",
-                "marketView", "buyDevelopmentView", "selectDevSpaceView"));
+        loadGraphics();
+        ArrayList<String> nameScene = new ArrayList<String>(List.of("setup", "playerName","initialLeaderView", "leaderCardView" ,"playerView", "newDepositView",
+                "marketView", "buyDevelopmentView", "selectDevSpaceView", "productionView"));
         for (String s : nameScene) {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/" + s + ".fxml"));
             try {
@@ -112,7 +127,9 @@ public class GUI extends Application {
         centerApplication();
         stage.setResizable(false);
         stage.setScene(currentScene);
+        centerApplication();
         stage.show();
+
     }
 
     public void centerApplication() {
@@ -127,7 +144,29 @@ public class GUI extends Application {
         currentScene = scenes.get(s);
         stage.setResizable(false);
         stage.setScene(currentScene);
+        centerApplication();
         stage.show();
+    }
+
+    private void loadGraphics(){
+        for(Marble m : Marble.values()){
+            try {
+                FileInputStream input = new FileInputStream("src/main/resources/graphics/marble/" + m.name().toLowerCase() + ".png");
+                Image tmpI = new Image(input);
+                marble.put(m.name().toLowerCase(), tmpI);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+        for(Resource r : Resource.values()){
+            try{
+                FileInputStream input = new FileInputStream("src/main/resources/graphics/resource/" + r.name().toLowerCase() + ".png");
+                Image tmpI = new Image(input);
+                resources.put(r.name().toLowerCase(), tmpI);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
 

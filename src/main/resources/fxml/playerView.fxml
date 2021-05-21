@@ -65,11 +65,29 @@
                      <font>
                         <Font size="15.0" />
                      </font></Label>
-                  <Label fx:id="faith" layoutX="65.0" layoutY="35.0" prefHeight="24.0" prefWidth="80.0" textFill="WHITE" />
-                  <Label fx:id="pope" layoutX="49.0" layoutY="77.0" prefHeight="17.0" prefWidth="113.0" textFill="WHITE" />
+                  <Label fx:id="faith" layoutX="1071.0" layoutY="150.0" prefHeight="24.0" prefWidth="80.0" textFill="WHITE" />
+                  <Label fx:id="pope" layoutX="1055.0" layoutY="192.0" prefHeight="17.0" prefWidth="113.0" textFill="WHITE" />
                   <ImageView fx:id="devPlayer0" fitHeight="323.0" fitWidth="210.0" layoutX="463.0" layoutY="419.0" pickOnBounds="true" preserveRatio="true" />
                   <ImageView fx:id="devPlayer1" fitHeight="323.0" fitWidth="210.0" layoutX="694.0" layoutY="419.0" pickOnBounds="true" preserveRatio="true" />
                   <ImageView fx:id="devPlayer2" fitHeight="323.0" fitWidth="210.0" layoutX="930.0" layoutY="419.0" pickOnBounds="true" preserveRatio="true" />
+                  <Button fx:id="showLeader" layoutX="62.0" layoutY="29.0" mnemonicParsing="false" onAction="#showLeader" prefHeight="26.0" prefWidth="64.0" text="Leader" />
+                  <AnchorPane fx:id="leaderPane" disable="true" layoutX="-2.0" prefHeight="830.0" prefWidth="250.0" style="-fx-background-color: #C9C09D;" visible="false">
+                     <children>
+                        <Button fx:id="hideLeader" layoutX="70.0" layoutY="29.0" mnemonicParsing="false" onAction="#hideLeader" text="Hide" />
+                        <ImageView fx:id="leaderPlayer1" fitHeight="323.0" fitWidth="210.0" layoutX="20.0" layoutY="445.0" pickOnBounds="true" preserveRatio="true" />
+                        <ImageView fx:id="leaderPlayer0" fitHeight="323.0" fitWidth="210.0" layoutX="20.0" layoutY="73.0" pickOnBounds="true" preserveRatio="true" />
+                        <Label fx:id="leaderText0" layoutX="20.0" layoutY="402.0" prefWidth="210.0" textAlignment="CENTER" textFill="WHITE">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="leaderText1" layoutX="20.0" layoutY="773.0" prefWidth="210.0" textFill="WHITE">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </AnchorPane>
                </children></AnchorPane>
       </content>
     </Tab>

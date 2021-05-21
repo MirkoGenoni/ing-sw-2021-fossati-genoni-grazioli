@@ -6,44 +6,43 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-
-<AnchorPane minHeight="500.0" minWidth="550.0" prefHeight="500.0" prefWidth="550.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.Client.GUI.ControllerGUI.NewDepositViewController">
+<AnchorPane minHeight="500.0" minWidth="600.0" prefHeight="500.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.Client.GUI.ControllerGUI.NewDepositViewController">
    <children>
-      <ImageView fitHeight="500.0" fitWidth="384.0">
+      <ImageView fitHeight="500.0" fitWidth="440.0">
          <image>
             <Image url="@../graphics/background/deposit.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="deposit1" fitHeight="75.0" fitWidth="75.0" layoutX="167.0" layoutY="117.0" onMouseClicked="#save" pickOnBounds="true" preserveRatio="true" />
-      <ImageView fx:id="deposit2" fitHeight="75.0" fitWidth="75.0" layoutX="122.0" layoutY="246.0" onMouseClicked="#save" pickOnBounds="true" preserveRatio="true" />
-      <ImageView fx:id="deposit3" fitHeight="75.0" fitWidth="75.0" layoutX="207.0" layoutY="246.0" onMouseClicked="#save" pickOnBounds="true" preserveRatio="true" />
-      <ImageView fx:id="deposit4" fitHeight="75.0" fitWidth="75.0" layoutX="82.0" layoutY="372.0" onMouseClicked="#save" pickOnBounds="true" preserveRatio="true" />
-      <ImageView fx:id="deposit5" fitHeight="75.0" fitWidth="75.0" layoutX="163.0" layoutY="372.0" onMouseClicked="#save" pickOnBounds="true" preserveRatio="true" />
-      <ImageView fx:id="deposit6" fitHeight="75.0" fitWidth="75.0" layoutX="244.0" layoutY="372.0" onMouseClicked="#save" pickOnBounds="true" preserveRatio="true" />
-      <ImageView fx:id="coinImg" fitHeight="75.0" fitWidth="75.0" layoutX="403.0" layoutY="64.0" onMouseClicked="#save" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="deposit1" fitHeight="75.0" fitWidth="75.0" layoutX="200.0" layoutY="117.0" onMouseClicked="#save" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="deposit2" fitHeight="75.0" fitWidth="75.0" layoutX="151.0" layoutY="246.0" onMouseClicked="#save" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="deposit3" fitHeight="75.0" fitWidth="75.0" layoutX="236.0" layoutY="246.0" onMouseClicked="#save" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="deposit4" fitHeight="75.0" fitWidth="75.0" layoutX="113.0" layoutY="372.0" onMouseClicked="#save" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="deposit5" fitHeight="75.0" fitWidth="75.0" layoutX="194.0" layoutY="372.0" onMouseClicked="#save" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="deposit6" fitHeight="75.0" fitWidth="75.0" layoutX="275.0" layoutY="372.0" onMouseClicked="#save" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="coinImg" fitHeight="75.0" fitWidth="75.0" layoutX="457.0" layoutY="64.0" onMouseClicked="#save" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../graphics/resource/coin.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="stoneImg" fitHeight="75.0" fitWidth="75.0" layoutX="403.0" layoutY="149.0" onMouseClicked="#save" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="stoneImg" fitHeight="75.0" fitWidth="75.0" layoutX="457.0" layoutY="149.0" onMouseClicked="#save" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../graphics/resource/stone.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="shieldImg" fitHeight="75.0" fitWidth="75.0" layoutX="410.0" layoutY="237.0" onMouseClicked="#save" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="shieldImg" fitHeight="75.0" fitWidth="75.0" layoutX="464.0" layoutY="237.0" onMouseClicked="#save" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../graphics/resource/shield.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="servantImg" fitHeight="75.0" fitWidth="75.0" layoutX="403.0" layoutY="330.0" onMouseClicked="#save" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="servantImg" fitHeight="75.0" fitWidth="75.0" layoutX="457.0" layoutY="330.0" onMouseClicked="#save" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../graphics/resource/servant.png" />
          </image>
       </ImageView>
-      <Label fx:id="numCoin" layoutX="494.0" layoutY="87.0" prefHeight="17.0" prefWidth="34.0" />
-      <Label fx:id="numServant" layoutX="494.0" layoutY="355.0" prefHeight="17.0" prefWidth="34.0" />
-      <Label fx:id="numShield" layoutX="494.0" layoutY="266.0" prefHeight="17.0" prefWidth="34.0" />
-      <Label fx:id="numStone" layoutX="494.0" layoutY="175.0" prefHeight="17.0" prefWidth="34.0" />
-      <Button fx:id="doneButton" layoutX="444.0" layoutY="439.0" mnemonicParsing="false" onAction="#done" text="Done" />
+      <Label fx:id="numCoin" layoutX="548.0" layoutY="87.0" prefHeight="17.0" prefWidth="34.0" />
+      <Label fx:id="numServant" layoutX="548.0" layoutY="355.0" prefHeight="17.0" prefWidth="34.0" />
+      <Label fx:id="numShield" layoutX="548.0" layoutY="266.0" prefHeight="17.0" prefWidth="34.0" />
+      <Label fx:id="numStone" layoutX="548.0" layoutY="175.0" prefHeight="17.0" prefWidth="34.0" />
+      <Button fx:id="doneButton" layoutX="498.0" layoutY="439.0" mnemonicParsing="false" onAction="#done" text="Done" />
    </children>
 </AnchorPane>

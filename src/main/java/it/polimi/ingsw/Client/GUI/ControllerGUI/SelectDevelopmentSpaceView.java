@@ -15,7 +15,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 
 
-import java.awt.*;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.net.URL;
@@ -98,10 +97,11 @@ public class SelectDevelopmentSpaceView implements GUIController, Initializable 
         }else if(spaceSelected.size()==0){
             error.setText("Select One Space");
         }else if(spaceSelected.size() == 1 && permittedSpace.get(spaceSelected.get(0))){
-            gui.getConnectionToServer().sendSelectedDevelopmentCardSpace(spaceSelected.get(0));
+
             gui.changeScene("playerView");
             PlayerViewController controller = (PlayerViewController) gui.getCurrentController();
-            controller.tabTurnActive(true);
+            controller.tabTurnNotActive(true);
+            gui.getConnectionToServer().sendSelectedDevelopmentCardSpace(spaceSelected.get(0));
             spaceSelected.clear();
             developSpacePlayer.forEach(d -> d.setImage(null));
             selection.forEach(s -> s.setOpacity(0));

@@ -4,6 +4,7 @@ import it.polimi.ingsw.Model.Lorenzo.SoloAction;
 
 public class LorenzoActionToClient extends EventToClient{
     private final SoloAction lorenzoAction;
+    // TODO
 
     public LorenzoActionToClient(SoloAction lorenzoAction) {
         this.lorenzoAction = lorenzoAction;

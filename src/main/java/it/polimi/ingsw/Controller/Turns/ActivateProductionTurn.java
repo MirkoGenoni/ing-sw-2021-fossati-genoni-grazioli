@@ -75,7 +75,7 @@ public class ActivateProductionTurn {
             controllerToModel.getConnectionsToClient().get(currentPlayerIndex).sendNotify("Avanzi di "+ faithPoints + " punti fede");
         }
         else{
-            System.out.println("non ci sono abbastanza risorse");
+            System.out.println("non ci sono abbastanza risorse");  //TODO cc
             controllerToModel.getConnectionsToClient().get(currentPlayerIndex).sendNotify("NON HAI ABBASTANZA RISORSE!!!");
         }
     }

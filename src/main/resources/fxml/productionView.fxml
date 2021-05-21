@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="700.0" minWidth="920.0" prefHeight="700.0" prefWidth="920.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.Client.GUI.ControllerGUI.ActivateProductionController">
+   <children>
+      <ImageView fitHeight="590.0" fitWidth="920.0" layoutX="2.0" layoutY="110.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../graphics/background/productionSpace.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="dev0" fitHeight="323.0" fitWidth="210.0" layoutX="183.0" layoutY="280.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="dev1" fitHeight="323.0" fitWidth="210.0" layoutX="411.0" layoutY="280.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="dev2" fitHeight="323.0" fitWidth="210.0" layoutX="649.0" layoutY="280.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="baseProduction" fitHeight="150.0" fitWidth="161.0" layoutX="2.0" layoutY="412.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fitHeight="75.0" fitWidth="75.0" layoutX="163.0" layoutY="27.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../graphics/resource/coin.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="75.0" fitWidth="75.0" layoutX="318.0" layoutY="24.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../graphics/resource/stone.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="75.0" fitWidth="75.0" layoutX="473.0" layoutY="21.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../graphics/resource/shield.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="75.0" fitWidth="75.0" layoutX="621.0" layoutY="25.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../graphics/resource/servant.png" />
+         </image>
+      </ImageView>
+      <Label fx:id="coin" layoutX="254.0" layoutY="50.0" prefHeight="17.0" prefWidth="36.0" />
+      <Label fx:id="stone" layoutX="405.0" layoutY="50.0" prefHeight="17.0" prefWidth="36.0" />
+      <Label fx:id="shield" layoutX="550.0" layoutY="50.0" prefHeight="17.0" prefWidth="36.0" />
+      <Label fx:id="servant" layoutX="707.0" layoutY="50.0" prefHeight="17.0" prefWidth="36.0" />
+      <ImageView fx:id="resource1" fitHeight="50.0" fitWidth="50.0" layoutX="23.0" layoutY="443.0" onMouseClicked="#change" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="resource2" fitHeight="50.0" fitWidth="50.0" layoutX="23.0" layoutY="493.0" onMouseClicked="#change" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="resourceProduced" fitHeight="50.0" fitWidth="50.0" layoutX="100.0" layoutY="468.0" onMouseClicked="#change" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="dev0sel" fitHeight="17.0" fitWidth="210.0" layoutX="183.0" layoutY="609.0" opacity="0.0" pickOnBounds="true">
+         <image>
+            <Image url="@../graphics/icons/empty.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="dev1sel" fitHeight="17.0" fitWidth="210.0" layoutX="411.0" layoutY="609.0" opacity="0.0" pickOnBounds="true">
+         <image>
+            <Image url="@../graphics/icons/empty.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="dev2sel" fitHeight="17.0" fitWidth="210.0" layoutX="649.0" layoutY="609.0" opacity="0.0" pickOnBounds="true">
+         <image>
+            <Image url="@../graphics/icons/empty.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="baseProductionSel" fitHeight="17.0" fitWidth="161.0" layoutX="2.0" layoutY="568.0" opacity="0.0" pickOnBounds="true">
+         <image>
+            <Image url="@../graphics/icons/empty.png" />
+         </image>
+      </ImageView>
+      <Button fx:id="done" layoutX="800.0" layoutY="651.0" mnemonicParsing="false" onAction="#done" text="Done" />
+   </children>
+</AnchorPane>

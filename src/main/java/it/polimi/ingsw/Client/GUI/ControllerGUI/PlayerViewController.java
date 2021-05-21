@@ -3,6 +3,7 @@ package it.polimi.ingsw.Client.GUI.ControllerGUI;
 import it.polimi.ingsw.Client.GUI.GUI;
 import it.polimi.ingsw.Events.ServerToClient.NewTurnToClient;
 import it.polimi.ingsw.Events.ServerToClient.SupportClass.DevelopmentCardToClient;
+import it.polimi.ingsw.Events.ServerToClient.SupportClass.LeaderCardToClient;
 import it.polimi.ingsw.Events.ServerToClient.SupportClass.MarketToClient;
 import it.polimi.ingsw.Events.ServerToClient.SupportClass.PlayerInformationToClient;
 import it.polimi.ingsw.Model.Market.Marble;
@@ -23,14 +24,16 @@ import java.util.*;
 
 public class PlayerViewController implements GUIController, Initializable {
     private GUI gui;
-    private Map<String, Image> marketMarble = new HashMap<>();
-    private Map<String, Image> resources = new HashMap<>();
-    private ArrayList<ImageView> deposit = new ArrayList<>();
+    private Map<String, Image> marketMarble;
+    protected Map<String, Image> resources;
+    private ArrayList<ImageView> deposit;
     private NewTurnToClient turnTmp;
 
 
     private ArrayList<ImageView> devCard = new ArrayList<>();
-    private ArrayList<ImageView> devCardPlayer = new ArrayList<>();
+    private ArrayList<ImageView> devCardPlayer;
+    private ArrayList<ImageView> leaderCardPlayer;
+    private ArrayList<Label> leaderText;
 
     // deposit player
     @FXML ImageView deposit1;
@@ -48,6 +51,12 @@ public class PlayerViewController implements GUIController, Initializable {
     @FXML Label stone;
     @FXML Label shield;
     @FXML Label servant;
+    // leader of the player
+    @FXML ImageView leaderPlayer0;
+    @FXML ImageView leaderPlayer1;
+    @FXML Label leaderText0;
+    @FXML Label leaderText1;
+
 
     @FXML Label faith;
     @FXML Label pope;
@@ -57,6 +66,9 @@ public class PlayerViewController implements GUIController, Initializable {
     @FXML ImageView marbleOut;
     @FXML GridPane developmentGrid;
     @FXML AnchorPane playerBoardPane;
+    @FXML AnchorPane leaderPane;
+    @FXML Button showLeader;
+    @FXML Button hideLeader;
 
 
 
@@ -100,10 +112,26 @@ public class PlayerViewController implements GUIController, Initializable {
         shield.setText("X " + player.getStrongBox().get(Resource.SHIELD));
         servant.setText("X " + player.getStrongBox().get(Resource.SERVANT));
 
+        //visualize leaderCard;
+        // active
+        System.out.println(player.getLeaderCardActive().toString());
+        if(player.getLeaderCardActive().size()!=0){
+            for(int i=0; i<player.getLeaderCardActive().size(); i++){
+                try {
+                    FileInputStream input = new FileInputStream("src/main/resources/graphics/leaderCard/" + player.getLeaderCardActive().get(i).getNameCard() + ".png");
+                    leaderCardPlayer.get(1-i).setImage(new Image(input));
+                    leaderText.get(1-i).setText("ACTIVE");
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
         // visualzie faith position
         faith.setText(player.getFaithMarkerPosition() + "/24");
         // visualize pope
         pope.setText(player.getPopeFavorTiles().toString());
+
 
 
     }
@@ -156,7 +184,7 @@ public class PlayerViewController implements GUIController, Initializable {
 
     @FXML AnchorPane tabTurn;
 
-    public void tabTurnActive(boolean b){
+    public void tabTurnNotActive(boolean b){
         tabTurn.setDisable(b);
     }
 
@@ -176,6 +204,18 @@ public class PlayerViewController implements GUIController, Initializable {
     }
 
     public void activateProductionTurn(ActionEvent actionEvent) {
+        gui.changeScene("productionView");
+        ActivateProductionController controller = (ActivateProductionController) gui.getCurrentController();
+        int numPlayer = findPlayerIndex();
+        ArrayList<Image> tmp = new ArrayList<>();
+        for(int i=0; i<devCardPlayer.size(); i++){
+            if(devCardPlayer.get(i).getImage()!=null){
+                tmp.add(devCardPlayer.get(i).getImage());
+            }else{
+                tmp.add(null);
+            }
+        }
+        controller.drawProduction(tmp, turnTmp.getPlayers().get(numPlayer).getDeposit(), turnTmp.getPlayers().get(numPlayer).getStrongBox());
     }
 
     private int findPlayerIndex(){
@@ -188,37 +228,20 @@ public class PlayerViewController implements GUIController, Initializable {
         return numPlayer;
     }
 
+    public void drawLeaderCard(ArrayList<Image> leaderInHand){
+        for(int i=0; i<leaderInHand.size(); i++){
+            leaderCardPlayer.get(i).setImage(leaderInHand.get(i));
+            leaderText.get(i).setText("IN HAND");
+        }
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        for(Marble m : Marble.values()){
-            try {
-                FileInputStream input = new FileInputStream("src/main/resources/graphics/marble/" + m.name().toLowerCase() + ".png");
-                Image tmpI = new Image(input);
-                marketMarble.put(m.name().toLowerCase(), tmpI);
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
-        }
-        for(Resource r : Resource.values()){
-            try{
-                FileInputStream input = new FileInputStream("src/main/resources/graphics/resource/" + r.name().toLowerCase() + ".png");
-                Image tmpI = new Image(input);
-                resources.put(r.name().toLowerCase(), tmpI);
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
-        }
 
-        deposit.add(deposit1);
-        deposit.add(deposit2);
-        deposit.add(deposit3);
-        deposit.add(deposit4);
-        deposit.add(deposit5);
-        deposit.add(deposit6);
-
-        devCardPlayer.add(devPlayer0);
-        devCardPlayer.add(devPlayer1);
-        devCardPlayer.add(devPlayer2);
+        deposit = new ArrayList<>(List.of(deposit1, deposit2, deposit3, deposit4, deposit5, deposit6));
+        devCardPlayer = new ArrayList<>(List.of(devPlayer0, devPlayer1, devPlayer2));
+        leaderCardPlayer = new ArrayList<>(List.of(leaderPlayer0, leaderPlayer1));
+        leaderText = new ArrayList<>(List.of(leaderText0, leaderText1));
 
 
     }
@@ -226,5 +249,20 @@ public class PlayerViewController implements GUIController, Initializable {
     @Override
     public void setGUI(GUI gui) {
         this.gui = gui;
+        marketMarble = gui.getMarble();
+        resources = gui.getResources();
+    }
+
+
+
+    public void showLeader(ActionEvent actionEvent) {
+        leaderPane.setDisable(false);
+        leaderPane.setVisible(true);
+
+    }
+
+    public void hideLeader(ActionEvent actionEvent) {
+        leaderPane.setVisible(false);
+        leaderPane.setDisable(true);
     }
 }
