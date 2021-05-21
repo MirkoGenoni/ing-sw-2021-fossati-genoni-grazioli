@@ -12,10 +12,12 @@ import java.io.FileNotFoundException;
 
 public class LorenzoViewController implements GUIController{
     private GUI gui;
+    private int lorenzoPosition;
 
     @FXML ImageView soloAction;
 
-    public void drawSoloAction(SoloAction token){
+    public void drawSoloAction(SoloAction token, int lorenzoPosition){
+        this.lorenzoPosition = lorenzoPosition;
         try{
             FileInputStream input = new FileInputStream("src/main/resources/graphics/soloActionToken/" + token.name().toLowerCase() + ".png");
             soloAction.setImage(new Image(input));
@@ -33,6 +35,7 @@ public class LorenzoViewController implements GUIController{
         gui.getConnectionToServer().sendReplayLorenzoAction();
         gui.changeScene("playerView");
         PlayerViewController controller = (PlayerViewController) gui.getCurrentController();
+        controller.lorenzoFaith(lorenzoPosition);
         controller.tabTurnNotActive(true);
     }
 }

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -7,7 +8,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="800.0"  xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.Client.GUI.ControllerGUI.MarketViewController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.Client.GUI.ControllerGUI.MarketViewController">
    <children>
       <GridPane fx:id="gridMarble" hgap="10.0" layoutX="189.0" layoutY="171.0" prefHeight="320.0" prefWidth="430.0" vgap="10.0">
         <columnConstraints>
@@ -63,5 +64,6 @@
             <Image url="@../graphics/icons/legenda.png" />
          </image>
       </ImageView>
+      <Button fx:id="back" layoutX="698.0" layoutY="63.0" mnemonicParsing="false" onAction="#back" text="Back" />
    </children>
 </AnchorPane>

@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<AnchorPane maxHeight="750.0" maxWidth="820.0" minHeight="750.0" minWidth="820.0" prefHeight="750.0" prefWidth="820.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.Client.GUI.ControllerGUI.BuyDevelopmentViewController">
+<AnchorPane maxHeight="750.0" maxWidth="820.0" minHeight="750.0" minWidth="820.0" prefHeight="750.0" prefWidth="820.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.Client.GUI.ControllerGUI.BuyDevelopmentViewController">
    <children>
       <GridPane fx:id="gridDev" hgap="10.0" layoutX="12.0" layoutY="15.0" maxHeight="713.0" maxWidth="638.0" minHeight="713.0" minWidth="638.0" prefHeight="713.0" prefWidth="638.0" vgap="10.0">
         <columnConstraints>
@@ -51,5 +51,6 @@
       <Label fx:id="shield" layoutX="763.0" layoutY="355.0" prefHeight="17.0" prefWidth="36.0" />
       <Label fx:id="servant" layoutX="763.0" layoutY="447.0" prefHeight="17.0" prefWidth="36.0" />
       <Label fx:id="error" layoutX="668.0" layoutY="607.0" prefHeight="17.0" prefWidth="136.0" />
+      <Button fx:id="back" layoutX="700.0" layoutY="33.0" mnemonicParsing="false" onAction="#back" text="Back" />
    </children>
 </AnchorPane>

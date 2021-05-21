@@ -1,10 +1,8 @@
 package it.polimi.ingsw.Client.GUI.ControllerGUI;
 
 import it.polimi.ingsw.Client.GUI.GUI;
-import it.polimi.ingsw.Events.ServerToClient.SupportClass.DevelopmentCardToClient;
 import it.polimi.ingsw.Model.DevelopmentCard.ProductedMaterials;
 import it.polimi.ingsw.Model.Resource.Resource;
-import javafx.beans.binding.BooleanExpression;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -101,41 +99,12 @@ public class ActivateProductionController implements GUIController, Initializabl
                 });
             }
         }
-
-
-
-
-
-
-    }
-
-    private void changeResources(ImageView resource){
-        if(resource.getImage()==null){
-            resource.setImage(resources.get("coin"));
-        }else if(resource.getImage().equals(resources.get("coin"))){
-            resource.setImage(resources.get("stone"));
-        }else if(resource.getImage().equals(resources.get("stone"))){
-            resource.setImage(resources.get("shield"));
-        }else if(resource.getImage().equals(resources.get("shield"))){
-            resource.setImage(resources.get("servant"));
-        }else if(resource.getImage().equals(resources.get("servant"))){
-            resource.setImage(null);
-        }
     }
 
 
-    @Override
-    public void setGUI(GUI gui) {
-        this.gui = gui;
-        resources = gui.getResources();
-    }
 
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
 
-        devProduction = new ArrayList<>(List.of(dev0, dev1, dev2));
-        selectionDev = new ArrayList<>(List.of(dev0sel, dev1sel, dev2sel));
-    }
+
 
     public void done(ActionEvent actionEvent) {
         //risorse
@@ -176,6 +145,20 @@ public class ActivateProductionController implements GUIController, Initializabl
         PlayerViewController controller = (PlayerViewController) gui.getCurrentController();
         controller.tabTurnNotActive(true);
         gui.getConnectionToServer().sendSelectedProductionDevelopmentCard(baseProduction, resourceChoose1, resourceChoose2, resourceGranted, leaderTmp, leaderRtmp, useDevelop);
+        clear();
+
+    }
+
+    public void change(MouseEvent mouseEvent) {
+        changeResources((ImageView)mouseEvent.getSource());
+    }
+
+    public void back(ActionEvent actionEvent) {
+        gui.changeScene("playerView");
+        clear();
+    }
+
+    private void clear(){
         devSelected.clear();
         devProduction.forEach(dev -> dev.setImage(null));
         devProduction.forEach(dev -> dev.setEffect(null));
@@ -186,10 +169,31 @@ public class ActivateProductionController implements GUIController, Initializabl
         for(String s : totalResources.keySet()){
             totalResources.put(s, 0);
         }
-
     }
 
-    public void change(MouseEvent mouseEvent) {
-        changeResources((ImageView)mouseEvent.getSource());
+    private void changeResources(ImageView resource){
+        if(resource.getImage()==null){
+            resource.setImage(resources.get("coin"));
+        }else if(resource.getImage().equals(resources.get("coin"))){
+            resource.setImage(resources.get("stone"));
+        }else if(resource.getImage().equals(resources.get("stone"))){
+            resource.setImage(resources.get("shield"));
+        }else if(resource.getImage().equals(resources.get("shield"))){
+            resource.setImage(resources.get("servant"));
+        }else if(resource.getImage().equals(resources.get("servant"))){
+            resource.setImage(null);
+        }
+    }
+
+    @Override
+    public void setGUI(GUI gui) {
+        this.gui = gui;
+        resources = gui.getResources();
+    }
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        devProduction = new ArrayList<>(List.of(dev0, dev1, dev2));
+        selectionDev = new ArrayList<>(List.of(dev0sel, dev1sel, dev2sel));
     }
 }

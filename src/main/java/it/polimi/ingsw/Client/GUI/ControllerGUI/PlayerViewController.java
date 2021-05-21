@@ -17,6 +17,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.net.URL;
@@ -34,6 +35,7 @@ public class PlayerViewController implements GUIController, Initializable {
     private ArrayList<ImageView> devCardPlayer;
     private ArrayList<ImageView> leaderCardPlayer;
     private ArrayList<Label> leaderText;
+    private ArrayList<ImageView> popeFavorTiles;
 
     // deposit player
     @FXML ImageView deposit1;
@@ -56,10 +58,14 @@ public class PlayerViewController implements GUIController, Initializable {
     @FXML ImageView leaderPlayer1;
     @FXML Label leaderText0;
     @FXML Label leaderText1;
+    // pope space
+    @FXML ImageView pope0;
+    @FXML ImageView pope1;
+    @FXML ImageView pope2;
 
 
     @FXML Label faith;
-    @FXML Label pope;
+    @FXML Label faithlorenzo;
 
     // table
     @FXML GridPane gridMarket;
@@ -127,10 +133,22 @@ public class PlayerViewController implements GUIController, Initializable {
             }
         }
 
+        //visualize pope favor tiles
+        for (int i=0; i<player.getPopeFavorTiles().size(); i++){
+            if(player.getPopeFavorTiles().get(i)!=0){
+                try {
+                    FileInputStream input = new FileInputStream("src/main/resources/graphics/pope/" + popeFavorTiles.get(i).getId() +".png");
+                    popeFavorTiles.get(i).setImage(new Image(input));
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+            }else{
+                popeFavorTiles.get(i).setImage(null);
+            }
+        }
+
         // visualzie faith position
         faith.setText(player.getFaithMarkerPosition() + "/24");
-        // visualize pope
-        pope.setText(player.getPopeFavorTiles().toString());
 
 
 
@@ -181,6 +199,10 @@ public class PlayerViewController implements GUIController, Initializable {
         marbleOut.setImage(marketMarble.get(market.getOutMarble().name().toLowerCase()));
     }
 
+    public void lorenzoFaith(int lorenzoPosition){
+        faithlorenzo.setText("Lorenzo Position -> " + lorenzoPosition +"/24");
+    }
+
 
     @FXML AnchorPane tabTurn;
 
@@ -218,15 +240,7 @@ public class PlayerViewController implements GUIController, Initializable {
         controller.drawProduction(tmp, turnTmp.getPlayers().get(numPlayer).getDeposit(), turnTmp.getPlayers().get(numPlayer).getStrongBox());
     }
 
-    private int findPlayerIndex(){
-        int numPlayer = -1;
-        for(int i=0; i<turnTmp.getPlayers().size(); i++){
-            if(turnTmp.getPlayers().get(i).getPlayerNameSend().equals(gui.getNamePlayer())){
-                numPlayer = i;
-            }
-        }
-        return numPlayer;
-    }
+
 
     public void drawLeaderCard(ArrayList<Image> leaderInHand){
         for(int i=0; i<leaderInHand.size(); i++){
@@ -234,26 +248,6 @@ public class PlayerViewController implements GUIController, Initializable {
             leaderText.get(i).setText("IN HAND");
         }
     }
-
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-
-        deposit = new ArrayList<>(List.of(deposit1, deposit2, deposit3, deposit4, deposit5, deposit6));
-        devCardPlayer = new ArrayList<>(List.of(devPlayer0, devPlayer1, devPlayer2));
-        leaderCardPlayer = new ArrayList<>(List.of(leaderPlayer0, leaderPlayer1));
-        leaderText = new ArrayList<>(List.of(leaderText0, leaderText1));
-
-
-    }
-
-    @Override
-    public void setGUI(GUI gui) {
-        this.gui = gui;
-        marketMarble = gui.getMarble();
-        resources = gui.getResources();
-    }
-
-
 
     public void showLeader(ActionEvent actionEvent) {
         leaderPane.setDisable(false);
@@ -264,5 +258,31 @@ public class PlayerViewController implements GUIController, Initializable {
     public void hideLeader(ActionEvent actionEvent) {
         leaderPane.setVisible(false);
         leaderPane.setDisable(true);
+    }
+
+    private int findPlayerIndex(){
+        int numPlayer = -1;
+        for(int i=0; i<turnTmp.getPlayers().size(); i++){
+            if(turnTmp.getPlayers().get(i).getPlayerNameSend().equals(gui.getNamePlayer())){
+                numPlayer = i;
+            }
+        }
+        return numPlayer;
+    }
+
+    @Override
+    public void setGUI(GUI gui) {
+        this.gui = gui;
+        marketMarble = gui.getMarble();
+        resources = gui.getResources();
+    }
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        deposit = new ArrayList<>(List.of(deposit1, deposit2, deposit3, deposit4, deposit5, deposit6));
+        devCardPlayer = new ArrayList<>(List.of(devPlayer0, devPlayer1, devPlayer2));
+        leaderCardPlayer = new ArrayList<>(List.of(leaderPlayer0, leaderPlayer1));
+        leaderText = new ArrayList<>(List.of(leaderText0, leaderText1));
+        popeFavorTiles = new ArrayList<>(List.of(pope0, pope1, pope2));
     }
 }

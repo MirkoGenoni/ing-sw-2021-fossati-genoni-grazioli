@@ -3,6 +3,7 @@ package it.polimi.ingsw.Client.GUI.ControllerGUI;
 import it.polimi.ingsw.Client.GUI.GUI;
 import it.polimi.ingsw.Events.ServerToClient.SupportClass.LeaderCardToClient;
 import it.polimi.ingsw.Model.Market.Marble;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.image.Image;
@@ -10,8 +11,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.net.URL;
 import java.util.*;
 
@@ -101,4 +100,7 @@ public class MarketViewController implements GUIController, Initializable {
         }
     }
 
+    public void back(ActionEvent actionEvent) {
+        gui.changeScene("playerView");
+    }
 }

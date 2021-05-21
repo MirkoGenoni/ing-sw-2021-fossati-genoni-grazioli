@@ -134,15 +134,25 @@ public class BuyDevelopmentViewController implements GUIController, Initializabl
                     }
                 }
             }
-            totalResources.clear();
-            devSelected.clear();
-            devImg.forEach(dev -> dev.setImage(null));
-            devImg.forEach(dev -> dev.setEffect(null));
-            devImg.clear();
+            clear();
             gui.getConnectionToServer().sendSelectedDevelopmentCard(devColor, developmentSelected.getLevel()-1);
 
 
 
         }
+    }
+
+    public void back(ActionEvent actionEvent) {
+        gui.changeScene("playerView");
+        clear();
+
+    }
+
+    private void clear(){
+        totalResources.clear();
+        devSelected.clear();
+        devImg.forEach(dev -> dev.setImage(null));
+        devImg.forEach(dev -> dev.setEffect(null));
+        devImg.clear();
     }
 }

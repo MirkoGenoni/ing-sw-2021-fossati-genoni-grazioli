@@ -325,6 +325,7 @@ public class CLI implements EventToClientVisitor {
     @Override
     public void visit(LorenzoActionToClient lorenzoAction) {
         System.out.println("lorenzo ha pescato -> " + lorenzoAction.getLorenzoAction().toString());
+        System.out.println("lorenzo si trova " + lorenzoAction.getLorenzoPosition() + "/24");
         try {
             TimeUnit.SECONDS.sleep(3);
         } catch (InterruptedException e) {

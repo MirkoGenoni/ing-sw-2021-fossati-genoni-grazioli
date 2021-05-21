@@ -1,6 +1,5 @@
 package it.polimi.ingsw.Client.GUI;
 
-import it.polimi.ingsw.Client.CLI.Views.LeaderCardView.LeaderCardView;
 import it.polimi.ingsw.Client.ConnectionToServer;
 import it.polimi.ingsw.Client.GUI.ControllerGUI.*;
 import it.polimi.ingsw.Events.ServerToClient.*;
@@ -13,7 +12,6 @@ import it.polimi.ingsw.Model.Resource.Resource;
 import javafx.application.Platform;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.CountDownLatch;
 
 public class VisitClass implements EventToClientVisitor {
@@ -104,7 +102,6 @@ public class VisitClass implements EventToClientVisitor {
     @Override
     public void visit(TurnReselection message) {
         CountDownLatch threadCount = new CountDownLatch(1);
-        System.out.println("nuovo turno");
         Platform.runLater(new Thread(()-> {
             gui.changeScene("playerView");
             threadCount.countDown();
@@ -189,7 +186,7 @@ public class VisitClass implements EventToClientVisitor {
             e.printStackTrace();
         }
         LorenzoViewController controller = (LorenzoViewController) gui.getCurrentController();
-        controller.drawSoloAction(lorenzoAction.getLorenzoAction());
+        controller.drawSoloAction(lorenzoAction.getLorenzoAction(), lorenzoAction.getLorenzoPosition());
     }
 
 
