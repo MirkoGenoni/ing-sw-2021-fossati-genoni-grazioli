@@ -37,6 +37,8 @@ public class PlayerViewController implements GUIController, Initializable {
     private ArrayList<Label> leaderText;
     private ArrayList<ImageView> popeFavorTiles;
 
+
+    @FXML Label name;
     // deposit player
     @FXML ImageView deposit1;
     @FXML ImageView deposit2;
@@ -86,6 +88,8 @@ public class PlayerViewController implements GUIController, Initializable {
         turnTmp = gui.getLastTurn();
         PlayerInformationToClient player = players.get(findPlayerIndex());
         gui.setLastInformation(player);
+
+        name.setText(player.getPlayerNameSend());
         // visualize development card of the player
         for(int i=0; i<player.getDevelopmentCardPlayer().size(); i++){
             if(player.getDevelopmentCardPlayer().get(i)!=null){

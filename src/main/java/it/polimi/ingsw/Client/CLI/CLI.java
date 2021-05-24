@@ -219,86 +219,89 @@ public class CLI implements EventToClientVisitor {
 
     @Override
     public void visit(NewTurnToClient newTurn) {
+        if(newTurn.isYourTurn()){
 
-        MarketView market = new MarketView(newTurn.getMarket());
 
-        for (int i = 0; i < newTurn.getMarket().getGrid().size(); i++) {
-            System.out.print("  " + newTurn.getMarket().getGrid().get(i).toString());
-            if (i == 3 || i == 7 || i == 11) {
-                System.out.println("");
+            MarketView market = new MarketView(newTurn.getMarket());
+
+            for (int i = 0; i < newTurn.getMarket().getGrid().size(); i++) {
+                System.out.print("  " + newTurn.getMarket().getGrid().get(i).toString());
+                if (i == 3 || i == 7 || i == 11) {
+                    System.out.println("");
+                }
             }
-        }
-        System.out.println(" ");
-        System.out.println("out marble :" + newTurn.getMarket().getOutMarble().toString());
+            System.out.println(" ");
+            System.out.println("out marble :" + newTurn.getMarket().getOutMarble().toString());
 
-        DevelopmentCardView developmentSaleView = new DevelopmentCardView(newTurn.getDevelopmentCards());
+            DevelopmentCardView developmentSaleView = new DevelopmentCardView(newTurn.getDevelopmentCards());
 
-        System.out.println("ho ricevuto Array Dev disponibili: ");
-        for (DevelopmentCardToClient[] cards : newTurn.getDevelopmentCards()) {
-            for (DevelopmentCardToClient card : cards)
+            System.out.println("ho ricevuto Array Dev disponibili: ");
+            for (DevelopmentCardToClient[] cards : newTurn.getDevelopmentCards()) {
+                for (DevelopmentCardToClient card : cards)
+                    if (card != null) {
+                        System.out.println("id: " + card.getCardID() + " color: " + card.getColor() + " level: " + card.getLevel() + " cost: " + card.getCost() + " Req: " + card.getMaterialRequired() + " Grant: " + card.getProductionResult());
+                    } else {
+                        System.out.println("NO CARDS");
+                    }
+            }
+
+
+            for (int i = 0; i < newTurn.getPlayers().size(); i++) {
+                if (newTurn.getPlayers().get(i).getPlayerNameSend().equals(namePlayer)) {
+                    index = i;
+                }
+            }
+            PlayerInformationToClient player = newTurn.getPlayers().get(index);
+
+            System.out.println("il mio deposito");
+            System.out.println(player.getDeposit());
+
+            System.out.println("la mia strongbox");
+            System.out.println(player.getStrongBox().toString());
+
+            System.out.println("le leadercard attive");
+            System.out.println(player.getLeaderCardActive().toString());
+
+            System.out.println("le mie development");
+            for (DevelopmentCardToClient card : player.getDevelopmentCardPlayer()) {
                 if (card != null) {
                     System.out.println("id: " + card.getCardID() + " color: " + card.getColor() + " level: " + card.getLevel() + " cost: " + card.getCost() + " Req: " + card.getMaterialRequired() + " Grant: " + card.getProductionResult());
                 } else {
-                    System.out.println("NO CARDS");
+                    System.out.println("null");
                 }
-        }
-
-
-        for (int i = 0; i < newTurn.getPlayers().size(); i++) {
-            if (newTurn.getPlayers().get(i).getPlayerNameSend().equals(namePlayer)) {
-                index = i;
             }
-        }
-        PlayerInformationToClient player = newTurn.getPlayers().get(index);
+            DevelopmentCardView BoardCard = new DevelopmentCardView(player.getDevelopmentCardPlayer());
 
-        System.out.println("il mio deposito");
-        System.out.println(player.getDeposit());
+            System.out.println("la mia posizione");
+            System.out.println(player.getFaithMarkerPosition() + "/24");
 
-        System.out.println("la mia strongbox");
-        System.out.println(player.getStrongBox().toString());
+            System.out.println("i miei pope");
+            System.out.println(player.getPopeFavorTiles().toString());
 
-        System.out.println("le leadercard attive");
-        System.out.println(player.getLeaderCardActive().toString());
 
-        System.out.println("le mie development");
-        for (DevelopmentCardToClient card : player.getDevelopmentCardPlayer()) {
-            if (card != null) {
-                System.out.println("id: " + card.getCardID() + " color: " + card.getColor() + " level: " + card.getLevel() + " cost: " + card.getCost() + " Req: " + card.getMaterialRequired() + " Grant: " + card.getProductionResult());
-            } else {
-                System.out.println("null");
+            NewTurnView chooseTurn = new NewTurnView();
+            String out = chooseTurn.startTurnChoise();
+
+            switch(out){
+                case "market":
+                    int line1 = market.launchChoiseView();
+                    ArrayList<Boolean> tmp = marketWhiteChangeActive(player.getLeaderCardActive());
+                    connectionToServer.sendChooseLine(line1, tmp);
+                    break;
+                case "buydevelopment":
+                    selectedDevelopmentCard(developmentSaleView);
+                    break;
+                case "usedevelopment":
+                    choseDevelopment(player.getDevelopmentCardPlayer(), player.getLeaderCardActive());
+                    break;
+                case "turn":
+                    connectionToServer.sendTurnPlayed(out);
+                    break;
+
+                case "viewBoard":
+                    //TODO: aggiungere scelta visualizzazione gameboard giocatore corrente e altri giocatori
+                    break;
             }
-        }
-        DevelopmentCardView BoardCard = new DevelopmentCardView(player.getDevelopmentCardPlayer());
-
-        System.out.println("la mia posizione");
-        System.out.println(player.getFaithMarkerPosition() + "/24");
-
-        System.out.println("i miei pope");
-        System.out.println(player.getPopeFavorTiles().toString());
-
-
-        NewTurnView chooseTurn = new NewTurnView();
-        String out = chooseTurn.startTurnChoise();
-
-        switch(out){
-            case "market":
-                int line1 = market.launchChoiseView();
-                ArrayList<Boolean> tmp = marketWhiteChangeActive(player.getLeaderCardActive());
-                connectionToServer.sendChooseLine(line1, tmp);
-                break;
-            case "buydevelopment":
-                selectedDevelopmentCard(developmentSaleView);
-                break;
-            case "usedevelopment":
-                choseDevelopment(player.getDevelopmentCardPlayer(), player.getLeaderCardActive());
-                break;
-            case "turn":
-                connectionToServer.sendTurnPlayed(out);
-                break;
-
-            case "viewBoard":
-                //TODO: aggiungere scelta visualizzazione gameboard giocatore corrente e altri giocatori
-                break;
         }
     }
 

@@ -91,6 +91,7 @@
                   <ImageView fx:id="pope0" fitHeight="96.0" fitWidth="90.0" layoutX="292.0" layoutY="114.0" pickOnBounds="true" preserveRatio="true" />
                   <ImageView fx:id="pope1" fitHeight="96.0" fitWidth="90.0" layoutX="586.0" layoutY="56.0" pickOnBounds="true" preserveRatio="true" />
                   <ImageView fx:id="pope2" fitHeight="96.0" fitWidth="90.0" layoutX="939.0" layoutY="114.0" pickOnBounds="true" preserveRatio="true" />
+                  <Label fx:id="name" layoutX="561.0" layoutY="21.0" prefHeight="17.0" prefWidth="140.0" textFill="WHITE" />
                </children></AnchorPane>
       </content>
     </Tab>

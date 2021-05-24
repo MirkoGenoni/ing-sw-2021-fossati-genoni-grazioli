@@ -12,12 +12,14 @@ public class NewTurnToClient extends EventToClient{
     private final MarketToClient market;
     private final DevelopmentCardToClient[][] developmentCards;
     private final ArrayList<PlayerInformationToClient> players;
+    private final boolean yourTurn;
 
-    public NewTurnToClient(int turnNumber, MarketToClient market, DevelopmentCardToClient[][] developmentCards, ArrayList<PlayerInformationToClient> players) {
+    public NewTurnToClient(int turnNumber, MarketToClient market, DevelopmentCardToClient[][] developmentCards, ArrayList<PlayerInformationToClient> players, boolean yourTurn) {
         this.turnNumber = turnNumber;
         this.market = market;
         this.developmentCards = developmentCards;
         this.players = players;
+        this.yourTurn = yourTurn;
     }
 
     public int getTurnNumber() {
@@ -34,6 +36,10 @@ public class NewTurnToClient extends EventToClient{
 
     public ArrayList<PlayerInformationToClient> getPlayers() {
         return players;
+    }
+
+    public boolean isYourTurn() {
+        return yourTurn;
     }
 
     @Override
