@@ -1,8 +1,13 @@
 package it.polimi.ingsw.Client.CLI.Views.ProductionView;
 
 import it.polimi.ingsw.Events.ServerToClient.SupportClass.DevelopmentCardToClient;
+import it.polimi.ingsw.Model.DevelopmentCard.DevelopmentCard;
+import it.polimi.ingsw.Model.DevelopmentCard.ProductedMaterials;
+import it.polimi.ingsw.Model.Resource.Resource;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 public class DevelopmentCardView {
@@ -11,6 +16,39 @@ public class DevelopmentCardView {
     String color;
     ArrayList<Boolean> activation;
     String[][] state;
+
+    /*public static void main(String[] args) {
+        Map<Resource,Integer> cost = new HashMap<>();
+        Map<Resource,Integer> requirements = new HashMap<>();
+
+        int j=0;
+        for(Resource r: Resource.values()){
+            if (j < 3) {
+                cost.put(r,5);
+                requirements.put(r,5);
+            }
+            j++;
+        }
+        Map<ProductedMaterials,Integer> productionResult = new HashMap<>();
+
+        int k=0;
+
+        for(ProductedMaterials s: ProductedMaterials.values()){
+            if (k < 3)
+            productionResult.put(s,1);
+            k++;
+        }
+
+        DevelopmentCardToClient prova = new DevelopmentCardToClient("prova1", "GREEN", 1, cost, 3, requirements, productionResult);
+
+        ArrayList<DevelopmentCardToClient> in = new ArrayList<>();
+        for(int i=0; i<3; i++)
+            in.add(prova);
+
+        DevelopmentCardView test = new DevelopmentCardView(in);
+        test.startProductionCardBoardView();
+        System.out.println(test.getActivation());
+    }*/
 
     public DevelopmentCardView(DevelopmentCardToClient[][] input) {
         for (int i = 0; i < 4; i++) {
@@ -34,7 +72,7 @@ public class DevelopmentCardView {
     }
 
     public DevelopmentCardView(ArrayList<DevelopmentCardToClient> input) {
-        int i = 0;
+        int i = 1;
 
         for (DevelopmentCardToClient r : input) {
             if (r != null) {
@@ -148,10 +186,11 @@ public class DevelopmentCardView {
             }
         }
 
-        printDevelopmentCardGrid(0, false);
         String input = "";
 
         while (true) {
+            printDevelopmentCardGrid(0, false);
+
             Scanner in = new Scanner(System.in);
             input = in.nextLine();
             String[] formatInput = input.split(",", 2);
@@ -172,7 +211,8 @@ public class DevelopmentCardView {
                 }
 
                 if (this.cards.get(tmp - 1).getCardNumber() != 0) {
-                    switch (formatInput[1]) {
+
+                    switch (formatInput[0]) {
                         case "activate":
                             activation.set(tmp - 1, true);
 
@@ -183,7 +223,7 @@ public class DevelopmentCardView {
                             }
 
                             break;
-                        case "deactivate":
+                        case "nothing":
                             activation.set(tmp - 1, false);
 
                             for (int k = 0; k < 3; k++) {
@@ -205,22 +245,33 @@ public class DevelopmentCardView {
                 "                                               ╔═══════════════════════════╗                                               \n" +
                         "                                               ║ DEVELOPMENT CARD RECEIVED ║                                               \n" +
                         "                                               ╚═══════════════════════════╝                                               \n" +
-                        "┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓");
+                        "┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓\n" +
+                        "┃                                                                                                                         ┃\n" +
+                        "┃                                                                                                                         ┃");
         for (int i = 0; i < 27; i++)
             System.out.println("┃    " + this.cards.get(currentView).printCard(i) + "          " + this.cards.get(currentView + 1).printCard(i) + "          " + this.cards.get(currentView + 2).printCard(i) + "    ┃");
         if (market) {
-            System.out.println("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛");
+            System.out.println("┃                                                                                                                         ┃\n" +
+                    "┃                  -1-                                      -2-                                      -3-                  ┃\n" +
+                    "┃                                                                                                                         ┃\n" +
+                    "┃                                                                                                                         ┃\n" +
+                    "┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛");
 
-            System.out.print("                     Insert a color (blue,yellow,green,purple) to see the other cards\n" +
-                    "                                         or a number to select the current card for buy\n" +
+            System.out.print("\n                                              SELECT THE CARD YOU WANT TO BUY                                              \n\n" +
+                    "                                       | Insert a color (green, yellow, blue, purple) to see |    \n" +
+                    "                                       |   other cards or a number to buy the card you see   |    \n" +
                     "                                                                  \n" +
                     "                                                          ");
         } else {
             for (int j = 0; j < 3; j++)
                 System.out.println("┃              " + this.state[0][j] + "                              " + this.state[1][j] + "                              " + this.state[2][j] + "              ┃");
-            System.out.print("                                Select the number of card you want to activate           \n" +
-                    "                                                     Type done when finished\n" +
-                    "                                                               ");
+
+            System.out.println("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛\n");
+            System.out.println("                                        SELECT THE DEVELOPMENT YOU WANT TO ACTIVATE         \n");
+            System.out.print(  "                           |   Select the action you want to perform (activate, nothing)   |                             \n" +
+                               "                           | followed by comma and the number of card you want to activate |\n" +
+                               "                                                Type done when finished                     \n\n" +
+                    "                                                                    ");
         }
     }
 }

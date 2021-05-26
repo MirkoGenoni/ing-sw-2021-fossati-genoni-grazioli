@@ -10,7 +10,8 @@ public enum DevelopmentCardSymbols {
     LVL2("2"),
     LVL3("3"),
     LEADER("leader"),
-    ANYTHING("anything");
+    ANYTHING("anything"),
+    CROSS("cross");
 
     private final String[] rapresentation;
     private int number;
@@ -85,6 +86,9 @@ public enum DevelopmentCardSymbols {
                 this.rapresentation[2] = "▌     ▐";
                 this.rapresentation[3] = "▌     ▐";
                 this.rapresentation[4] = "▙▞▚▄▞▚▟";
+                break;
+
+            case "cross":
                 break;
 
             default:

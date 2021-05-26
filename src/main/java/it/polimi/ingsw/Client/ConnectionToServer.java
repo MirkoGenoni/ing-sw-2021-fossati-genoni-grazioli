@@ -20,6 +20,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Map;
 
 public class ConnectionToServer implements Runnable, EventToServerNotifier {
     private final Socket socket;
@@ -143,8 +144,8 @@ public class ConnectionToServer implements Runnable, EventToServerNotifier {
     }
 
     @Override
-    public void sendNewDepositState(ArrayList<Resource> newDepositState, int discardResources) {
-        NewDepositStateToServer newDepositStateToServer = new NewDepositStateToServer(newDepositState, discardResources, this.playerName);
+    public void sendNewDepositState(ArrayList<Resource> newDepositState, int discardResources, boolean isAdditional, ArrayList<Resource> additionalDepositState) {
+        NewDepositStateToServer newDepositStateToServer = new NewDepositStateToServer(newDepositState, discardResources, this.playerName, isAdditional, additionalDepositState);
         asyncSendEvent(newDepositStateToServer);
     }
 

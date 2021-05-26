@@ -42,6 +42,7 @@ public class MarketView {
     }
 
     private void printMarketLineChoice(){
+        System.out.print("\u001B[2J\u001B[3J\u001B[H");
         System.out.println("                                                  ╔═══════════════════════╗                                                \n" +
                            "                                                  ║ MARKET LINE SELECTION ║                                                \n" +
                            "                                                  ╚═══════════════════════╝                                                \n" +

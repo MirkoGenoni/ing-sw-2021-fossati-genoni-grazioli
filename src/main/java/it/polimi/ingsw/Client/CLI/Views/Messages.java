@@ -1,15 +1,20 @@
 package it.polimi.ingsw.Client.CLI.Views;
 
+import java.util.concurrent.TimeUnit;
+
 public class Messages {
     String message;
+    boolean error;
 
-    public Messages(String message){
+    public Messages(String message, boolean error){
+        this.error = error;
         this.message = message;
     }
 
     public void printMessage(){
         System.out.print("\u001B[2J\u001B[3J\u001B[H");
-        System.out.print("\u001B[31m");
+        if(error)
+            System.out.print("\u001B[31m");
 
         for(int i=0; i<24; i++)
             System.out.println("                                                                                                                           ");

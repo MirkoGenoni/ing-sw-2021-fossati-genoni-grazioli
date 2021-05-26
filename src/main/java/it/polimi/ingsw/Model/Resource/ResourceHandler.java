@@ -16,6 +16,7 @@ public class ResourceHandler {
     ArrayList<Resource> deposit;
     Map<Resource, Integer> deposit_available;
     Strongbox strongbox;
+    ArrayList<Resource> additional_deposit_state;
     Map<Resource, Integer> additional_deposit;
 
     /**
@@ -32,6 +33,7 @@ public class ResourceHandler {
 
         this.strongbox  = new Strongbox();
         this.additional_deposit = new HashMap<>();
+        this.additional_deposit_state = new ArrayList<>();
     }
 
     /**
@@ -45,8 +47,11 @@ public class ResourceHandler {
 
         if(additional_deposit.size()==2)
             throw new ResourceException("Already 2 additional deposit");
-        if(!check)
+        if(!check) {
             additional_deposit.put(type, 0);
+            this.additional_deposit_state.add(null);
+            this.additional_deposit_state.add(null);
+        }
         else
             //There aren't 2 different leader card that add deposit of the same resource type
             throw new ResourceException("Already added an additional deposit with this resource");
@@ -74,19 +79,7 @@ public class ResourceHandler {
      * @return an arraylist that represents the current state of the additional deposit
      */
     public ArrayList<Resource> getAdditionalDeposit(){
-        ArrayList<Resource> tmp = new ArrayList<>();
-
-        for(Resource r: Resource.values()){
-            if(additional_deposit.containsKey(r) && additional_deposit.get(r)==0)
-                for(int i=0; i<2; i++)
-                    tmp.add(null);
-            if(additional_deposit.containsKey(r)) {
-                for (int i = 0; i < additional_deposit.get(r); i++)
-                    tmp.add(r);
-            }
-        }
-
-        return tmp;
+        return new ArrayList<>(this.additional_deposit_state);
     }
 
     /**
@@ -120,27 +113,31 @@ public class ResourceHandler {
     }
 
     /**
-     * This method adds resources to the additional deposits checking that they're not full and that the
+     * This method accept new additional deposits state checking that they're not full and that the
      * material is compatible with the type of the deposit
-     * @param received is a map that contains the resources that needs to be added
+     * @param received is an arraylist that contains the new additional deposits state
      * @throws ResourceException if the deposit is already full or if the resource is not compatible with the deposit
      */
-    public void addMaterialAdditionalDeposit(Map<Resource, Integer> received) throws ResourceException{
+    public void newAdditionalDepositState(ArrayList<Resource> received) throws ResourceException{
+        Map<Resource,Integer> tmp = new HashMap<>();
 
-        //This checks that the user is not trying to add more resources than the additional deposit can contain
-        for(Resource r: received.keySet()){
-            if(additional_deposit.containsKey(r) && additional_deposit.get(r) + received.get(r)>2)
-                throw new ResourceException("Additional deposit already full");
+        //initialize the new additionalDeposit and checks its correct form
+        for(Resource j: additional_deposit.keySet()){
+            tmp.put(j,0);
         }
 
-        //This checks that the deposit can contain the type of the resources passed by the user
-        for(Resource r: received.keySet()){
-            if(additional_deposit.containsKey(r) && received.get(r)>0)
-                additional_deposit.put(r, additional_deposit.get(r) + received.get(r));
-
-            if(!additional_deposit.containsKey(r) && received.get(r)>0)
-                throw new ResourceException("Resource not compatible with the additional deposit");
+        //adds the correct amount of resources to the additional deposit
+        for(Resource r: received){
+            if(r!=null) {
+                if (additional_deposit.containsKey(r) && tmp.get(r) < 2)
+                    tmp.put(r, tmp.get(r) + 1);
+                else
+                    throw new ResourceException("Additional deposits already full or resource not compatible");
+            }
         }
+
+        this.additional_deposit_state = new ArrayList<>(received);
+        this.additional_deposit = tmp;
     }
 
     /**
@@ -173,36 +170,44 @@ public class ResourceHandler {
     public void takeMaterials(Map<Resource, Integer> taken) throws ResourceException{
         int i = 0;
         int j = 0;
+        int k = 0;
+
+        Map<Resource, Integer> tmpAdditional = new HashMap<>(this.additional_deposit);
+        Map<Resource, Integer> tmpDeposit = new HashMap<>(this.deposit_available);
+        Map<Resource, Integer> tmpStrongbox = new HashMap<>();
 
         for (Resource r : Resource.values()) {
 
             //This checks if there are eventual additional deposits and remove from them firstly the resources
             if(taken.containsKey(r) && taken.get(r)!=0) {
-                if(additional_deposit.containsKey(r) && additional_deposit.get(r)>0){
-                    if(taken.get(r) > additional_deposit.get(r)){
-                        taken.put(r, taken.get(r)-additional_deposit.get(r));
-                        additional_deposit.put(r, 0);
+                if(tmpAdditional.containsKey(r) && tmpAdditional.get(r)>0){
+                    if(taken.get(r) > tmpAdditional.get(r)){
+                        taken.put(r, taken.get(r)-tmpAdditional.get(r));
+                        tmpAdditional.put(r, 0);
+                        k++;
                     }
-                    if(taken.get(r).equals(additional_deposit.get(r))){
+                    if(taken.get(r).equals(tmpAdditional.get(r))){
                         taken.put(r, 0);
-                        additional_deposit.put(r, 0);
+                        tmpAdditional.put(r, 0);
+                        k++;
                     }
-                    if(taken.get(r) < additional_deposit.get(r)){
+                    if(taken.get(r) < tmpAdditional.get(r)){
+                        tmpAdditional.put(r, tmpAdditional.get(r)-taken.get(r));
                         taken.put(r, 0);
-                        additional_deposit.put(r, additional_deposit.get(r)-taken.get(r));
+                        k++;
                     }
                 }
             }
 
             //this checks eventual materials inside the deposit and remove them
-            if(taken.containsKey(r) && taken.get(r)!=0 && taken.get(r)<=deposit_available.get(r)) {
-                deposit_available.put(r, deposit_available.get(r) - taken.get(r));
+            if(taken.containsKey(r) && taken.get(r)!=0 && taken.get(r)<=tmpDeposit.get(r)) {
+                tmpDeposit.put(r, tmpDeposit.get(r) - taken.get(r));
                 taken.put(r, 0);
                 i++;
             }
-            else if(taken.containsKey(r) && taken.get(r)!=0 && taken.get(r)>deposit_available.get(r)) {
-                taken.put(r, taken.get(r) - deposit_available.get(r));
-                deposit_available.put(r, 0);
+            else if(taken.containsKey(r) && taken.get(r)!=0 && taken.get(r)>tmpDeposit.get(r)) {
+                taken.put(r, taken.get(r) - tmpDeposit.get(r));
+                tmpDeposit.put(r, 0);
                 j++;
             }
         }
@@ -211,8 +216,19 @@ public class ResourceHandler {
         if (i< Resource.values().length)
             strongbox.returnMaterials(taken);
 
+        //update of the resources counter
+        this.additional_deposit.clear();
+        this.additional_deposit.putAll(tmpAdditional);
+
+        this.deposit_available.clear();
+        this.deposit_available.putAll(tmpDeposit);
+
         if(i!=0 || j!=0)
-            this.correctDeposit();
+            this.correctDeposit(deposit, deposit_available);
+
+        if(k!=0)
+            this.correctDeposit(additional_deposit_state, additional_deposit);
+
     }
 
     /**
@@ -263,8 +279,14 @@ public class ResourceHandler {
         return true;
     }
 
-    private void correctDeposit(){
-        Map<Resource,Integer> temp= new HashMap<>(deposit_available);
+    /**
+     * This method is used by the take materials method to synchronise the map that represents the counter of
+     * resources available and the true representation inside the arraylists for additional deposit and the deposti
+     * @param deposit is the additional deposit or the deposit
+     * @param deposit_av is the relative map that represents the resource counter
+     */
+    private void correctDeposit(ArrayList<Resource> deposit, Map<Resource, Integer> deposit_av){
+        Map<Resource,Integer> temp= new HashMap<>(deposit_av);
 
         for(int i=0; i<deposit.size(); i++){
             if(temp.containsKey(deposit.get(i)))

@@ -149,8 +149,9 @@ public class ConnectionToClient implements Runnable, EventToClientNotifier {
     // ----------------------------------
 
     @Override
-    public void sendReorganizeDeposit(ArrayList<Resource> marketResources, ArrayList<Resource> depositState) {
-        SendReorganizeDepositToClient sendReorganizeDepositToClient = new SendReorganizeDepositToClient(marketResources, depositState);
+    public void sendReorganizeDeposit(ArrayList<Resource> marketResources, ArrayList<Resource> depositState,
+                                      boolean isAdditional, ArrayList<Resource> typeAdditional, ArrayList<Resource> additionalState) {
+        SendReorganizeDepositToClient sendReorganizeDepositToClient = new SendReorganizeDepositToClient(marketResources, depositState, isAdditional, typeAdditional, additionalState);
         asyncSendEvent(sendReorganizeDepositToClient);
     }
 

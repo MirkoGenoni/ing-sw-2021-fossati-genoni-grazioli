@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class AdditionalProductionView {
-    Messages noCards = new Messages("You got no active cards with additional production");
+    Messages noCards = new Messages("You got no active cards with additional production", true);
     ArrayList<AdditionalProductionVisualization> productions;
     ArrayList<Boolean> activation;
     ArrayList<Resource> requested;
@@ -142,10 +142,13 @@ public class AdditionalProductionView {
                         "                                                 ║ ADDITIONAL PRODUCTION ║\n" +
                         "                                                 ╚═══════════════════════╝                                                 \n" +
                         "┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓\n" +
+                        "┃                                                                                                                         ┃\n" +
                         "┃                                                                                                                         ┃");
-                for(int i=0; i<19; i++)
+                for(int i=0; i<25; i++)
                     System.out.print("┃                                             " + productions.get(0).returnLine(i) + "                                             ┃\n");
                 System.out.print("┃                                                                                                                         ┃\n" +
+                        "┃                                                                                                                         ┃\n" +
+                        "┃                                                                                                                         ┃\n" +
                                  "┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛\n");
 
                 if(text){
@@ -161,7 +164,7 @@ public class AdditionalProductionView {
                         "┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓\n" +
                         "┃                                                                                                                         ┃");
 
-                for(int i=0; i<19; i++)
+                for(int i=0; i<25; i++)
                     System.out.println("┃           " + productions.get(0).returnLine(i) + "                                     " + productions.get(1).returnLine(i) + "           ┃");
 
                 System.out.print("┃                         -1-                                                                 -2-                         ┃\n" );

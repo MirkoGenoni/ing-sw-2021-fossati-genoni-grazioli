@@ -27,7 +27,7 @@ public interface EventToClientNotifier {
     // ----------------------------------
     // EVENTS FOR THE MARKET TURN
     // ----------------------------------
-    void sendReorganizeDeposit(ArrayList<Resource> marketResources, ArrayList<Resource> depositState);
+    void sendReorganizeDeposit(ArrayList<Resource> marketResources, ArrayList<Resource> depositState, boolean isAdditional, ArrayList<Resource> additionalType, ArrayList<Resource> additionalState);
 
     // ----------------------------------------
     // EVENTS FOR THE BUY DEVELOPMENT CARD TURN

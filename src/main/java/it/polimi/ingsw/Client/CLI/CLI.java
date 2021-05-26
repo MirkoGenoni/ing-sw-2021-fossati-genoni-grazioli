@@ -1,7 +1,10 @@
 package it.polimi.ingsw.Client.CLI;
 
+import it.polimi.ingsw.Client.CLI.Views.CLIHandler;
+import it.polimi.ingsw.Client.CLI.Views.Messages;
 import it.polimi.ingsw.Client.CLI.Views.NewTurnView;
 import it.polimi.ingsw.Client.CLI.Views.ProductionView.AdditionalProductionView;
+import it.polimi.ingsw.Client.CLI.Views.ProductionView.BaseProduction;
 import it.polimi.ingsw.Client.CLI.Views.ProductionView.DevelopmentCardView;
 import it.polimi.ingsw.Client.CLI.Views.LeaderCardView.LeaderCardView;
 import it.polimi.ingsw.Client.CLI.Views.MarketView.MarketView;
@@ -21,12 +24,15 @@ import it.polimi.ingsw.Model.Resource.Resource;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
 public class CLI implements EventToClientVisitor {
     private final ConnectionToServer connectionToServer;
     private String namePlayer;
+    private CLIHandler handler;
     private int index = -1;
     private final Thread asyncPrint = new Thread(()->{
         System.out.print("                                                                                                                          \n" +
@@ -61,6 +67,7 @@ public class CLI implements EventToClientVisitor {
 
     public CLI(ConnectionToServer connectionToServer) {
         this.connectionToServer = connectionToServer;
+        this.handler = new CLIHandler(this.connectionToServer);
     }
 
     public void receiveEvent(EventToClient event){
@@ -132,6 +139,8 @@ public class CLI implements EventToClientVisitor {
     // -------------------------------------------
     @Override
     public void visit(SendArrayLeaderCardsToClient leaderCardArray) {
+        handler.leaderCardSelection(leaderCardArray.getLeaderCardArray(), leaderCardArray.isInitialLeaderCards());
+        /*
         if(leaderCardArray.isInitialLeaderCards()) {
             LeaderCardView leaderCardView = new LeaderCardView(leaderCardArray.getLeaderCardArray());
             int[] received = leaderCardView.StartInitialLeaderCardView();
@@ -140,7 +149,7 @@ public class CLI implements EventToClientVisitor {
             LeaderCardView leaderCardView = new LeaderCardView(leaderCardArray.getLeaderCardArray());
             ArrayList<Integer> received = leaderCardView.StartCardView();
             connectionToServer.sendLeaderCardTurn(received);
-        }
+        }*/
     }
     // ----------------------------------
     // EVENTS FOR THE MARKET TURN
@@ -148,22 +157,15 @@ public class CLI implements EventToClientVisitor {
 
     @Override
     public void visit(SendReorganizeDepositToClient newResources) {
-        System.out.println("mi è arrivato il deposito");
-
-        NewDepositView view = new NewDepositView(newResources.getDepositResources(), newResources.getMarketResources());
+        handler.selectNewDeposit(newResources.getDepositResources(), newResources.getMarketResources(), newResources.isAdditionalDeposit(), newResources.getType(), newResources.getAdditionalDepositState());
+        /*NewDepositView view = new NewDepositView(newResources.getDepositResources(), newResources.getMarketResources(), false, null, null);
         view.LaunchView();
-
-        connectionToServer.sendNewDepositState(view.getDepositState(), view.getMarketReceived());
+        connectionToServer.sendNewDepositState(view.getDepositState(), view.getMarketReceived());*/
     }
 
     // ----------------------------------------
     // EVENTS FOR THE BUY DEVELOPMENT CARD TURN
     // ----------------------------------------
-
-    @Override
-    public void visit(TurnReselection message) {
-        System.out.println(message.getMessage());
-    }
 
     @Override
     public void visit(SendSpaceDevelopmentCardToClient developmentCardSpace) {
@@ -212,43 +214,34 @@ public class CLI implements EventToClientVisitor {
         }
 
         if(!message.getMessage().equals("WaitForOtherPlayers") && !message.getMessage().equals("AllPlayersConnected")){
-            System.out.print("ho ricevuto: ");
-            System.out.println(message.getMessage());
+            Messages messages = new Messages(message.getMessage(), false);
+            messages.printMessage();
         }
+    }
+
+    @Override
+    public void visit(TurnReselection message) {
+        handler.newTurn();
     }
 
     @Override
     public void visit(NewTurnToClient newTurn) {
 
-        MarketView market = new MarketView(newTurn.getMarket());
+        Map<String, PlayerInformationToClient> players= new HashMap<>();
 
-        for (int i = 0; i < newTurn.getMarket().getGrid().size(); i++) {
-            System.out.print("  " + newTurn.getMarket().getGrid().get(i).toString());
-            if (i == 3 || i == 7 || i == 11) {
-                System.out.println("");
-            }
+        handler.newState(this.namePlayer, players, newTurn.getMarket(), newTurn.getDevelopmentCards());
+
+        for (int k = 0; k < newTurn.getPlayers().size(); k++) {
+            players.put(newTurn.getPlayers().get(k).getPlayerNameSend(), newTurn.getPlayers().get(k));
         }
-        System.out.println(" ");
-        System.out.println("out marble :" + newTurn.getMarket().getOutMarble().toString());
-
-        DevelopmentCardView developmentSaleView = new DevelopmentCardView(newTurn.getDevelopmentCards());
-
-        System.out.println("ho ricevuto Array Dev disponibili: ");
-        for (DevelopmentCardToClient[] cards : newTurn.getDevelopmentCards()) {
-            for (DevelopmentCardToClient card : cards)
-                if (card != null) {
-                    System.out.println("id: " + card.getCardID() + " color: " + card.getColor() + " level: " + card.getLevel() + " cost: " + card.getCost() + " Req: " + card.getMaterialRequired() + " Grant: " + card.getProductionResult());
-                } else {
-                    System.out.println("NO CARDS");
-                }
-        }
-
 
         for (int i = 0; i < newTurn.getPlayers().size(); i++) {
             if (newTurn.getPlayers().get(i).getPlayerNameSend().equals(namePlayer)) {
                 index = i;
             }
         }
+
+        /* FOR DEBUG! PRINTS THE CORRECT STATE OF THE CURRENT PLAYER WITHOUT THE USE OF THE CLI (check for visualization)
         PlayerInformationToClient player = newTurn.getPlayers().get(index);
 
         System.out.println("il mio deposito");
@@ -268,43 +261,20 @@ public class CLI implements EventToClientVisitor {
                 System.out.println("null");
             }
         }
-        DevelopmentCardView BoardCard = new DevelopmentCardView(player.getDevelopmentCardPlayer());
 
         System.out.println("la mia posizione");
         System.out.println(player.getFaithMarkerPosition() + "/24");
 
         System.out.println("i miei pope");
-        System.out.println(player.getPopeFavorTiles().toString());
+        System.out.println(player.getPopeFavorTiles().toString());*/
 
-
-        NewTurnView chooseTurn = new NewTurnView();
-        String out = chooseTurn.startTurnChoise();
-
-        switch(out){
-            case "market":
-                int line1 = market.launchChoiseView();
-                ArrayList<Boolean> tmp = marketWhiteChangeActive(player.getLeaderCardActive());
-                connectionToServer.sendChooseLine(line1, tmp);
-                break;
-            case "buydevelopment":
-                selectedDevelopmentCard(developmentSaleView);
-                break;
-            case "usedevelopment":
-                choseDevelopment(player.getDevelopmentCardPlayer(), player.getLeaderCardActive());
-                break;
-            case "turn":
-                connectionToServer.sendTurnPlayed(out);
-                break;
-
-            case "viewBoard":
-                //TODO: aggiungere scelta visualizzazione gameboard giocatore corrente e altri giocatori
-                break;
-        }
+        handler.newTurn();
     }
 
     @Override
     public void visit(EndGameToClient message) {
-        System.out.println("ho ricevuto " + message.getMessage());
+        Messages messageEnd = new Messages("GAME ENDED", false);
+        messageEnd.printMessage();
         connectionToServer.setActive(false);
     }
 
@@ -315,7 +285,7 @@ public class CLI implements EventToClientVisitor {
         for(int i=0; i< numResources.getNumResources(); i++){
             initialResources.add(selectResource("scegli la risorsa num " + i + " tra: coin, shield, servant, stone"));
         }
-        NewDepositView newDepositView = new NewDepositView(numResources.getDepositState(), initialResources);
+        NewDepositView newDepositView = new NewDepositView(numResources.getDepositState(), initialResources,false, null, null);
         newDepositView.LaunchView();
 
         connectionToServer.sendInitialDepositState(newDepositView.getDepositState());
@@ -334,166 +304,6 @@ public class CLI implements EventToClientVisitor {
         connectionToServer.sendReplayLorenzoAction();
     }
 
-    private ArrayList<Boolean> marketWhiteChangeActive(ArrayList<LeaderCardToClient> leaderCardActive){
-        ArrayList<Boolean> leaderCardWhiteChange = new ArrayList<>();
-        for(int i=0; i< leaderCardActive.size(); i++){
-            if(leaderCardActive.get(i).getEffect().equals("marketWhiteChange")){
-                char answer = selectActivation("vuoi usare la carta attiva marketWhiteChange" + leaderCardActive.get(i) + "?");
-                if(answer == 'Y'){
-                    leaderCardWhiteChange.add(true);
-                }else{
-                    leaderCardWhiteChange.add(false);
-                }
-            }else{
-                leaderCardWhiteChange.add(false);
-            }
-        }
-        return leaderCardWhiteChange;
-    }
-
-
-    private void selectedDevelopmentCard(DevelopmentCardView in){
-        in.startCardForSaleSelection();
-        int num;
-        String color;
-        num = in.getNum();
-        color = in.getColor();
-        int colorForCard;
-
-            switch (color) {
-                case "green":
-                    colorForCard = 0;
-                    break;
-                case "blue":
-                    colorForCard = 1;
-                    break;
-                case "yellow":
-                    colorForCard = 2;
-                    break;
-                case "purple":
-                    colorForCard = 3;
-                    break;
-                default:
-                    throw new RuntimeException(); //attention Exception
-            }
-            connectionToServer.sendSelectedDevelopmentCard(colorForCard, num-1); //livello da 0 a 2
-    }
-
-
-
-
-    private void choseDevelopment(ArrayList<DevelopmentCardToClient> activeDevCards, ArrayList<LeaderCardToClient> activeLeaderCards){
-
-        char answer = selectActivation("Do you want to Activate the BASE Production? Y/N?");
-        boolean useBaseProduction = false;
-        Resource resourceRequested1 = null;
-        Resource resourceRequested2 = null;
-        Resource resourceGranted = null;
-
-        if (answer == 'Y') {
-            useBaseProduction = true;
-            resourceRequested1 = selectResource("Select the first MATERIAL for the base production");
-            resourceRequested2 = selectResource("Select the second MATERIAL for the base production");
-            resourceGranted = selectResource("Select which resource you want to obtain from the base production");
-
-            System.out.println("selected "+ resourceRequested1 + " "+ resourceRequested2+"--> "+resourceGranted);
-        }
-
-
-        answer = selectActivation("Do you want to Activate one of the LEADER Production? Y/N?");
-
-        ArrayList<String> leaderCardPower = new ArrayList<>();
-        ArrayList<Boolean> activation = new ArrayList<>();
-        ArrayList<Resource> materialLeader = new ArrayList<>();
-
-        if(answer == 'Y'){
-                for (int i=0; i<activeLeaderCards.size(); i++){          //control if there's an active LeaderCard additionalProd
-                    if(activeLeaderCards.get(i).getEffect().equals("additionalProduction")) {
-                        leaderCardPower.add(activeLeaderCards.get(i).getResourceType());
-                    }
-                }
-
-                AdditionalProductionView prova = new AdditionalProductionView(leaderCardPower);
-                prova.startAdditionalProductionView();
-                activation = prova.getActivation();
-                materialLeader = prova.getRequested();
-        }
-
-
-        answer = selectActivation("Do you want to use any of yours DEVELOPMENT CARDS? Y/N?");
-        ArrayList<Boolean> useDevelop = new ArrayList<>();
-        for (int i=0; i<3; i++)
-            useDevelop.add(false);
-
-        if(answer == 'Y'){
-            for(int i=0; i<3; i++) {
-                if (activeDevCards.get(i) != null) {
-                    answer = selectActivation("Do you want to use the ACTIVE PRODUCTION number: " + i + " ?" + " Y/N?");
-                    if (answer == 'Y')
-                        useDevelop.set(i, true);
-                }
-            }
-        }
-
-        //DEBUG
-        System.out.println("invio questi dati:");
-        System.out.println("use_baseprod: " + useBaseProduction);
-        System.out.println("selected for base prod: "+ resourceRequested1 + " "+ resourceRequested2+"--> "+resourceGranted);
-        System.out.println("use leaders --> "+ activation.toString());
-        System.out.println("material leaders --> "+ materialLeader.toString());
-        System.out.println("use develop --> "+ useDevelop.toString());
-
-        ProductedMaterials prodottoBaseProd = null;
-        if (resourceGranted!=null) { //deve essere un producted materials
-            prodottoBaseProd = ProductedMaterials.valueOf(resourceGranted.name());
-        }
-
-        //VANNO MANDATE TUTTE COME PRODUCTION RESULT
-
-        //MANDA EVENTO CON:  BOOL_USA_GAMEPROD,PROD1,PROD2,PRODCHOOSE//ARRAY_LEADERS-> MATERIAL 1ST LEADER/MATERIAL 2ND LEADER//ARRAY_DEVELOP
-
-        connectionToServer.sendSelectedProductionDevelopmentCard(useBaseProduction, resourceRequested1, resourceRequested2, prodottoBaseProd,
-                                                                    activation, materialLeader, useDevelop);
-
-        }
-
-
-
-
-        /*
-     --------------------------------------------------------------
-      METODI PER PARSE DELLA SCELTA --> Y/N E UNA RESOURCE
-     --------------------------------------------------------------
-    */
-
-    // PARSA LA SCELTA Y/N
-    private char selectActivation (String message) {
-        Scanner scan = new Scanner(System.in);
-        char choose;
-        boolean isValid;
-        do {
-            System.out.println(message);
-            String input;
-            input = scan.nextLine();
-            isValid = false;   //CONTROL
-            input = input.trim();
-            input = input.toUpperCase();
-            choose = input.charAt(0);
-            if (input.length() == 1 && (choose == 'Y' || choose == 'N')) {
-                System.out.println("selected: " + choose);
-                isValid = true;
-            }
-            if (!isValid) {
-                System.out.println("Non valid Argument");
-                isValid = false;
-            }
-        } while (!isValid);
-
-        return choose;
-    }
-
-
-    //PARSA LA SCELTA DI UNA RISORSA
     private Resource selectResource(String message){
         Scanner scan = new Scanner(System.in);
         boolean validMaterial;
@@ -514,11 +324,5 @@ public class CLI implements EventToClientVisitor {
 
         return resource;
     }
-
-
-
-
-
-
 
 }

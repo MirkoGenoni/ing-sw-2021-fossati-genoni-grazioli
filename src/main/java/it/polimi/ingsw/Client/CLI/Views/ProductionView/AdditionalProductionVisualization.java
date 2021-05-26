@@ -36,26 +36,32 @@ public class AdditionalProductionVisualization {
     }
 
     private void saveProduction(String colorProduction, DevelopmentCardSymbols symbol, DevelopmentCardSymbols typeRequired, DevelopmentCardSymbols production1, DevelopmentCardSymbols production2){
-        this.additionalProduction = new String[19];
+        this.additionalProduction = new String[25];
         this.additionalProduction[0] = "┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓";
         this.additionalProduction[1] = "┃    ADDITIONAL PRODUCTION    ┃";
         this.additionalProduction[2] = "┣━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┫";
-        this.additionalProduction[3] = "┃           " + symbol.returnLine(0)+ "           ┃";
-        this.additionalProduction[4] = "┃           " + symbol.returnLine(1)+ "           ┃";
-        this.additionalProduction[5] = "┃           " + symbol.returnLine(2)+ "           ┃";
-        this.additionalProduction[6] = "┃           " + symbol.returnLine(3)+ "           ┃";
-        this.additionalProduction[7] = "┃           " + symbol.returnLine(4)+ "           ┃";
-        this.additionalProduction[8] = "┣━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┫";
-        this.additionalProduction[9] = "┃          REQUIREMENT        ┃";
-        this.additionalProduction[10] = "┃             " + typeRequired.returnLine(0) + "           ┃";
-        this.additionalProduction[11] = "┃           1x" + typeRequired.returnLine(1) + "           ┃";
-        this.additionalProduction[12] = "┃             " + typeRequired.returnLine(2) + "           ┃";
-        this.additionalProduction[13] = "┣━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┫";
-        this.additionalProduction[14] = "┃           PRODUCE           ┃";
-        this.additionalProduction[15] = "┃        " + production1.returnLine(0) + "     " + production2.returnLine(0) + "      ┃";
-        this.additionalProduction[16] = "┃      1x" + production1.returnLine(1) + "   2x" + production2.returnLine(1) + "      ┃";
-        this.additionalProduction[17] = "┃        " + production1.returnLine(2) + "     " + production2.returnLine(2) + "      ┃";
-        this.additionalProduction[18] = "┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛";
+        this.additionalProduction[3] = "┃                             ┃";
+        this.additionalProduction[4] = "┃           " + symbol.returnLine(0)+ "           ┃";
+        this.additionalProduction[5] = "┃           " + symbol.returnLine(1)+ "           ┃";
+        this.additionalProduction[6] = "┃           " + symbol.returnLine(2)+ "           ┃";
+        this.additionalProduction[7] = "┃           " + symbol.returnLine(3)+ "           ┃";
+        this.additionalProduction[8] = "┃           " + symbol.returnLine(4)+ "           ┃";
+        this.additionalProduction[9] = "┃                             ┃";
+        this.additionalProduction[10] = "┣━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┫";
+        this.additionalProduction[11] = "┃          REQUIREMENT        ┃";
+        this.additionalProduction[12] = "┃                             ┃";
+        this.additionalProduction[13] = "┃             " + typeRequired.returnLine(0) + "           ┃";
+        this.additionalProduction[14] = "┃           1x" + typeRequired.returnLine(1) + "           ┃";
+        this.additionalProduction[15] = "┃             " + typeRequired.returnLine(2) + "           ┃";
+        this.additionalProduction[16] = "┃                             ┃";
+        this.additionalProduction[17] = "┣━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┫";
+        this.additionalProduction[18] = "┃           PRODUCE           ┃";
+        this.additionalProduction[19] = "┃                             ┃";
+        this.additionalProduction[20] = "┃        " + production1.returnLine(0) + "     " + production2.returnLine(0) + "      ┃";
+        this.additionalProduction[21] = "┃      1x" + production1.returnLine(1) + "   2x" + production2.returnLine(1) + "      ┃";
+        this.additionalProduction[22] = "┃        " + production1.returnLine(2) + "     " + production2.returnLine(2) + "      ┃";
+        this.additionalProduction[23] = "┃                             ┃";
+        this.additionalProduction[24] = "┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛";
     }
 
     public String returnLine(int in){

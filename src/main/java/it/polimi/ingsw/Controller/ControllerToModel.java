@@ -250,8 +250,8 @@ public class ControllerToModel {
         marketTurn.marketChooseLine(namePlayer, line, currentPlayerIndex, leaderMarketWhiteChange);
     }
 
-    public void saveNewDepositState(ArrayList<Resource> newDepositState, int discardResources){
-        if(marketTurn.saveNewDepositState(newDepositState, discardResources, currentPlayerIndex) && checkMultiplayer()){
+    public void saveNewDepositState(ArrayList<Resource> newDepositState, int discardResources, boolean isAdditional, ArrayList<Resource> additionalDepositState){
+        if(marketTurn.saveNewDepositState(newDepositState, discardResources, currentPlayerIndex, isAdditional, additionalDepositState) && checkMultiplayer()){
             newTurn();
         }
 

@@ -4,6 +4,7 @@ import it.polimi.ingsw.Model.DevelopmentCard.ProductedMaterials;
 import it.polimi.ingsw.Model.Resource.Resource;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 // list of the event that the client could send to the server
 public interface EventToServerNotifier {
@@ -24,7 +25,7 @@ public interface EventToServerNotifier {
     // EVENTS FOR THE MARKET TURN INTERACTION
     // -------------------------------------------
     void sendChooseLine(int numLine, ArrayList<Boolean> leaderMarketWhiteChange);
-    void sendNewDepositState(ArrayList<Resource> newDepositState, int discardResources);
+    void sendNewDepositState(ArrayList<Resource> newDepositState, int discardResources , boolean isAdditional, ArrayList<Resource> additionalDepositState);
 
     // ------------------------------------------------------
     // EVENTS FOR THE BUY DEVELOPMENT CARD TURN INTERACTION

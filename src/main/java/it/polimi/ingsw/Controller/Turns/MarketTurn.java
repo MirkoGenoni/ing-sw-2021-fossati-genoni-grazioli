@@ -57,16 +57,20 @@ public class MarketTurn {
         }
 
         this.tmpMarketReturn = new ArrayList<>(tmpR);
-        controllerToModel.getConnectionsToClient().get(currentPlayerIndex).sendReorganizeDeposit(tmpR, controllerToModel.getPlayers()[currentPlayerIndex].getPlayerBoard().getResourceHandler().getDepositState());
+        sendMarketDepositData(currentPlayerIndex);
     }
 
-    public boolean saveNewDepositState(ArrayList<Resource> newDepositState, int discardResources, int currentPlayerIndex){
+    public boolean saveNewDepositState(ArrayList<Resource> newDepositState, int discardResources, int currentPlayerIndex, boolean isAdditional, ArrayList<Resource> additionalDepositState){
         System.out.println(" riscorse scartate " +discardResources);
         boolean tmp = false;
         int savePlayer = -1;
         // deve fare il check del nuovo stato del deposito se non va bene rimanda l'evento di riorganizzare il deposito
         try{
+            if(isAdditional)
+                controllerToModel.getPlayers()[currentPlayerIndex].getPlayerBoard().getResourceHandler().newAdditionalDepositState(additionalDepositState);
+
             controllerToModel.getPlayers()[currentPlayerIndex].getPlayerBoard().getResourceHandler().newDepositState(newDepositState);
+
             for(int i=0; i<discardResources; i++){
                 for( int j=0; j<controllerToModel.getPlayers().length; j++){
                     if(j!=currentPlayerIndex){
@@ -90,10 +94,32 @@ public class MarketTurn {
             return true;
         } catch (ResourceException e) {
             controllerToModel.getConnectionsToClient().get(currentPlayerIndex).sendNotify(e.getMessage());
-            controllerToModel.getConnectionsToClient().get(currentPlayerIndex).sendReorganizeDeposit(tmpMarketReturn, controllerToModel.getPlayers()[currentPlayerIndex].getPlayerBoard().getResourceHandler().getDepositState());
+            sendMarketDepositData(currentPlayerIndex);
             return false;
         }
 
+    }
+
+    public void sendMarketDepositData(int currentPlayerIndex){
+
+        boolean isAdditional = false;
+        ArrayList<Resource> additionalType = new ArrayList<>();
+        ArrayList<Resource> additionalState = controllerToModel.getPlayers()[currentPlayerIndex].getPlayerBoard().getResourceHandler().getAdditionalDeposit();
+
+        try {   //controlla se il giocatore ha attivato una leadercard biggerDeposit e crea l'evento di conseguenza
+            for(LeaderCard r: controllerToModel.getPlayers()[currentPlayerIndex].getPlayerBoard().getLeaderCardHandler().getLeaderCardsActive()){
+                if(r!=null){
+                    if(r.getSpecialAbility().getEffect().equals("biggerDeposit")){
+                        isAdditional = true;
+                        additionalType.add(r.getSpecialAbility().getMaterialType());
+                    }
+                }
+            }
+
+        } catch (LeaderCardException e) {
+
+        }
+        controllerToModel.getConnectionsToClient().get(currentPlayerIndex).sendReorganizeDeposit(new ArrayList<>(this.tmpMarketReturn), controllerToModel.getPlayers()[currentPlayerIndex].getPlayerBoard().getResourceHandler().getDepositState(), isAdditional, additionalType, additionalState);
     }
 
 }
