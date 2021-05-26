@@ -154,7 +154,11 @@ public class VisitClass implements EventToClientVisitor {
         }
         gui.setLastTurn(newTurn);
         PlayerViewController controller = (PlayerViewController) gui.getCurrentController();
-        Platform.runLater(new Thread(() -> controller.tabTurnNotActive(false)));
+        if(newTurn.isYourTurn()){
+            Platform.runLater(new Thread(() -> controller.tabTurnNotActive(false)));
+        }else{
+            Platform.runLater(new Thread(() -> controller.tabTurnNotActive(true)));
+        }
         Platform.runLater(new Thread(() -> controller.updateTable(newTurn.getDevelopmentCards(), newTurn.getMarket())));
         Platform.runLater(new Thread(()-> controller.updatePlayerBoard(newTurn.getPlayers())));
     }

@@ -308,7 +308,14 @@ public class ControllerToModel {
     }
 
     public void turnToView(){
-        connectionsToClient.get(currentPlayerIndex).sendNewTurn(turnNumber, game.getMarketBoard(), game.getDevelopmentCardsAvailable(), players, game.getPlayersFaithTrack());
+        for(int i=0; i<connectionsToClient.size(); i++){
+            if(i==currentPlayerIndex){
+                connectionsToClient.get(i).sendNewTurn(turnNumber, game.getMarketBoard(), game.getDevelopmentCardsAvailable(), players, game.getPlayersFaithTrack(), true);
+            }else{
+                connectionsToClient.get(i).sendNewTurn(turnNumber, game.getMarketBoard(), game.getDevelopmentCardsAvailable(), players, game.getPlayersFaithTrack(), false);
+            }
+        }
+
     }
 
     public boolean checkMultiplayer(){

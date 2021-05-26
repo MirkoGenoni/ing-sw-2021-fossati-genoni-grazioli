@@ -143,7 +143,7 @@ public class GUI extends Application {
         currentScene = scenes.get(s);
         stage.setResizable(false);
         stage.setScene(currentScene);
-        centerApplication();
+        //centerApplication();
         stage.show();
     }
 

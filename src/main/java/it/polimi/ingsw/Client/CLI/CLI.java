@@ -226,32 +226,33 @@ public class CLI implements EventToClientVisitor {
 
     @Override
     public void visit(NewTurnToClient newTurn) {
+        if (newTurn.isYourTurn()) {
 
-        Map<String, PlayerInformationToClient> players= new HashMap<>();
+            Map<String, PlayerInformationToClient> players = new HashMap<>();
 
-        handler.newState(this.namePlayer, players, newTurn.getMarket(), newTurn.getDevelopmentCards());
+            handler.newState(this.namePlayer, players, newTurn.getMarket(), newTurn.getDevelopmentCards());
 
-        for (int k = 0; k < newTurn.getPlayers().size(); k++) {
-            players.put(newTurn.getPlayers().get(k).getPlayerNameSend(), newTurn.getPlayers().get(k));
-        }
-
-        for (int i = 0; i < newTurn.getPlayers().size(); i++) {
-            if (newTurn.getPlayers().get(i).getPlayerNameSend().equals(namePlayer)) {
-                index = i;
+            for (int k = 0; k < newTurn.getPlayers().size(); k++) {
+                players.put(newTurn.getPlayers().get(k).getPlayerNameSend(), newTurn.getPlayers().get(k));
             }
-        }
+
+            for (int i = 0; i < newTurn.getPlayers().size(); i++) {
+                if (newTurn.getPlayers().get(i).getPlayerNameSend().equals(namePlayer)) {
+                    index = i;
+                }
+            }
 
         /* FOR DEBUG! PRINTS THE CORRECT STATE OF THE CURRENT PLAYER WITHOUT THE USE OF THE CLI (check for visualization)
         PlayerInformationToClient player = newTurn.getPlayers().get(index);
 
-        System.out.println("il mio deposito");
-        System.out.println(player.getDeposit());
+            System.out.println("il mio deposito");
+            System.out.println(player.getDeposit());
 
-        System.out.println("la mia strongbox");
-        System.out.println(player.getStrongBox().toString());
+            System.out.println("la mia strongbox");
+            System.out.println(player.getStrongBox().toString());
 
-        System.out.println("le leadercard attive");
-        System.out.println(player.getLeaderCardActive().toString());
+            System.out.println("le leadercard attive");
+            System.out.println(player.getLeaderCardActive().toString());
 
         System.out.println("le mie development");
         for (DevelopmentCardToClient card : player.getDevelopmentCardPlayer()) {
@@ -262,13 +263,14 @@ public class CLI implements EventToClientVisitor {
             }
         }
 
-        System.out.println("la mia posizione");
-        System.out.println(player.getFaithMarkerPosition() + "/24");
+            System.out.println("la mia posizione");
+            System.out.println(player.getFaithMarkerPosition() + "/24");
 
         System.out.println("i miei pope");
         System.out.println(player.getPopeFavorTiles().toString());*/
 
-        handler.newTurn();
+            handler.newTurn();
+        }
     }
 
     @Override

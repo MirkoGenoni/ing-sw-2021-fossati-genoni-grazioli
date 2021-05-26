@@ -39,7 +39,7 @@ public interface EventToClientNotifier {
     // OTHER EVENTS
     // ----------------------------------
     void sendNotify(String message);
-    void sendNewTurn(int turnNumber, Market market, DevelopmentCard[][] developmentCards, Player[] players, FaithTrack faithTrack);
+    void sendNewTurn(int turnNumber, Market market, DevelopmentCard[][] developmentCards, Player[] players, FaithTrack faithTrack, boolean yourTurn);
     void sendEndGame(String message);
     void sendInitialResources(int numResources, ArrayList<Resource> depositState);
     void sendLorenzoTurn(SoloAction lorenzoAction, int lorenzoPosition);
