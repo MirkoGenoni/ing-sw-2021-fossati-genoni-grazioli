@@ -230,11 +230,11 @@ public class CLI implements EventToClientVisitor {
 
             Map<String, PlayerInformationToClient> players = new HashMap<>();
 
-            handler.newState(this.namePlayer, players, newTurn.getMarket(), newTurn.getDevelopmentCards());
-
             for (int k = 0; k < newTurn.getPlayers().size(); k++) {
                 players.put(newTurn.getPlayers().get(k).getPlayerNameSend(), newTurn.getPlayers().get(k));
             }
+
+            handler.newState(this.namePlayer, players, newTurn.getMarket(), newTurn.getDevelopmentCards());
 
             for (int i = 0; i < newTurn.getPlayers().size(); i++) {
                 if (newTurn.getPlayers().get(i).getPlayerNameSend().equals(namePlayer)) {
