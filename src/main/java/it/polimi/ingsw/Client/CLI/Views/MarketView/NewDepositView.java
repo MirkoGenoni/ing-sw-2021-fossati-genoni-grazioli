@@ -17,7 +17,7 @@ public class NewDepositView {
     Map<String, Integer> marketReceived;
     boolean additionalDeposit;
 
-    public static void main(String[] args) {
+    /*public static void main(String[] args) {
         ArrayList<Resource> depositState = new ArrayList<>();
         for (int i = 0; i < 6; i++) {
             depositState.add(null);
@@ -48,7 +48,7 @@ public class NewDepositView {
         System.out.println(prova.getDepositState());
         System.out.println(prova.getMarketReceived());
         System.out.println(prova.getAdditionalDepositState());
-    }
+    }*/
 
     public NewDepositView(ArrayList<Resource> depositState, ArrayList<Resource> marketReceived, boolean additionalDeposit, ArrayList<Resource> type, ArrayList<Resource> additionalDepositState) {
 

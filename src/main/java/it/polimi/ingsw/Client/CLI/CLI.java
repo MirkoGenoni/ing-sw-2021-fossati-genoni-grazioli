@@ -236,6 +236,7 @@ public class CLI implements EventToClientVisitor {
 
             handler.newState(this.namePlayer, players, newTurn.getMarket(), newTurn.getDevelopmentCards());
 
+        /* FOR DEBUG! PRINTS THE CORRECT STATE OF THE CURRENT PLAYER WITHOUT THE USE OF THE CLI (check for visualization)
             for (int i = 0; i < newTurn.getPlayers().size(); i++) {
                 if (newTurn.getPlayers().get(i).getPlayerNameSend().equals(namePlayer)) {
                     index = i;

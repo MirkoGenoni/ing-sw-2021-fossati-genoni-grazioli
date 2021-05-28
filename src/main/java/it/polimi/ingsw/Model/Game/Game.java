@@ -10,10 +10,8 @@ import it.polimi.ingsw.Model.FaithTrack.FaithTrack;
 import it.polimi.ingsw.Model.LeaderCard.*;
 import it.polimi.ingsw.Model.Market.Market;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -102,13 +100,13 @@ public abstract class Game {
         JsonStreamParser parser;
         allLeaderCards = new ArrayList<>();
         Gson gson = new GsonBuilder().create();
+        parser = null;
         try {
-            parser = new JsonStreamParser(new InputStreamReader(
-                    new FileInputStream("src/main/java/it/polimi/ingsw/Model/resources/LeaderCards.json"), "UTF-8"));
-        } catch (UnsupportedEncodingException e) {
-            throw new StartGameException("Invalid encoding type");
+            parser = new JsonStreamParser(new InputStreamReader(getClass().getResource("/json/LeaderCards.json").openStream()));
         } catch (FileNotFoundException e) {
             throw new StartGameException("File not found");
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 
         while(parser.hasNext()){
@@ -180,13 +178,15 @@ public abstract class Game {
         }
 
         Gson gson = new GsonBuilder().create();
+        parser = null;
+
         try {
-            parser = new JsonStreamParser(new InputStreamReader(
-                    new FileInputStream("src/main/java/it/polimi/ingsw/Model/resources/DevelopmentCards.json"), "UTF-8"));
-        } catch (UnsupportedEncodingException e) {
-            throw new StartGameException("Invalid encoding type");
+
+            parser = new JsonStreamParser(new InputStreamReader(getClass().getResource("/json/DevelopmentCards.json").openStream()));
         } catch (FileNotFoundException e) {
             throw new StartGameException("File not found");
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 
         while(parser.hasNext()){

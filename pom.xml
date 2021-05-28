@@ -50,9 +50,11 @@
     <build>
         <resources>
             <resource>
-                <directory>${project.basedir}/src/main/java/it/polimi/ingsw/Model/</directory>
+                <directory>${project.basedir}/src/main/</directory>
                 <includes>
                     <include>**/*.json</include>
+                    <include>**/*.fxml</include>
+                    <include>**/*.png</include>
                 </includes>
             </resource>
         </resources>

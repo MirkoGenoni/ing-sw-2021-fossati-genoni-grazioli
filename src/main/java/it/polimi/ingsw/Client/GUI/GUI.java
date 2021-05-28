@@ -17,6 +17,7 @@ import javafx.stage.Stage;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -114,12 +115,11 @@ public class GUI extends Application {
         this.stage = stage;
         this.stage.setTitle("Maestri Del Rinascimento");
         try{
-            Image tmpI = new Image(new FileInputStream("src/main/resources/graphics/icons/calamaio.png"));
+            Image tmpI = new Image(getClass().getResource("/graphics/icons/calamaio.png").openStream());
             this.stage.getIcons().add(tmpI);
-        } catch (FileNotFoundException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
-
 
 
         currentScene = scenes.get("setup");
@@ -150,19 +150,19 @@ public class GUI extends Application {
     private void loadGraphics(){
         for(Marble m : Marble.values()){
             try {
-                FileInputStream input = new FileInputStream("src/main/resources/graphics/marble/" + m.name().toLowerCase() + ".png");
+                InputStream input = getClass().getResource("/graphics/marble/" + m.name().toLowerCase() + ".png").openStream();
                 Image tmpI = new Image(input);
                 marble.put(m.name().toLowerCase(), tmpI);
-            } catch (FileNotFoundException e) {
+            } catch (IOException e) {
                 e.printStackTrace();
             }
         }
         for(Resource r : Resource.values()){
             try{
-                FileInputStream input = new FileInputStream("src/main/resources/graphics/resource/" + r.name().toLowerCase() + ".png");
+                InputStream input = getClass().getResource("/graphics/resource/" + r.name().toLowerCase() + ".png").openStream();
                 Image tmpI = new Image(input);
                 resources.put(r.name().toLowerCase(), tmpI);
-            } catch (FileNotFoundException e) {
+            } catch (IOException e) {
                 e.printStackTrace();
             }
         }
