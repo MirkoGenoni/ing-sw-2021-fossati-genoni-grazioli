@@ -16,6 +16,7 @@ public class AdditionalProduction implements SpecialAbility{
     private int victoryPoints;
     private String cardRequired1;
     private int quantityRequired1;
+    private int levelRequired1;
     private Resource materialAdditionalProduction;
 
     @Override
@@ -40,5 +41,18 @@ public class AdditionalProduction implements SpecialAbility{
     @Override
     public Resource getMaterialType() {
         return materialAdditionalProduction;
+    }
+
+
+    public String getCardRequired() {
+        return cardRequired1;
+    }
+
+    public int getQuantityRequired(){
+        return quantityRequired1;
+    }
+
+    public int getLevelRequired() {
+        return levelRequired1;
     }
 }

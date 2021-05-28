@@ -50,4 +50,19 @@ public class MarketWhiteChange implements SpecialAbility{
     }
 
 
+    public String getCardRequired1() {
+        return cardRequired1;
+    }
+
+    public int getCardQuantityRequired1() {
+        return quantityRequired1;
+    }
+
+    public String getCardRequired2() {
+        return cardRequired2;
+    }
+
+    public int getCardQuantityRequired2() {
+        return quantityRequired2;
+    }
 }

@@ -46,4 +46,22 @@ public class CostLess implements SpecialAbility {
     public Resource getMaterialType() {
         return materialCostLess;
     }
+
+
+    public String getCardRequired1() {
+        return cardRequired1;
+    }
+
+    public int getQuantityRequired1() {
+        return quantityRequired1;
+    }
+
+    public String getCardRequired2() {
+        return cardRequired2;
+    }
+
+    public int getQuantityRequired2() {
+        return quantityRequired2;
+    }
+
 }

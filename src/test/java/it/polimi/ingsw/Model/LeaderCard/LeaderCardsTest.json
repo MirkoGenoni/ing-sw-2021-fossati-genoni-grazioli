@@ -1,10 +1,11 @@
 {
   "name" : "leaderCard1",
-  "specialAbility" :  {
+  "specialAbility" : {
     "effect" : "additionalProduction",
     "victoryPoints" : 4,
     "cardRequired1" : "BLUE",
     "quantityRequired1" : 1,
+    "levelRequired1" : 2,
     "materialAdditionalProduction" : "SERVANT"
   }
 }

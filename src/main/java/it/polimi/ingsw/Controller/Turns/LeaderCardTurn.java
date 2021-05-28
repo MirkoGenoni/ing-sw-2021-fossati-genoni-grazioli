@@ -8,7 +8,7 @@ import it.polimi.ingsw.Model.Exceptions.ResourceException;
 import it.polimi.ingsw.Model.Game.Game;
 import it.polimi.ingsw.Model.Game.Player;
 import it.polimi.ingsw.Model.Gameboard.Gameboard;
-import it.polimi.ingsw.Model.LeaderCard.LeaderCard;
+import it.polimi.ingsw.Model.LeaderCard.*;
 import it.polimi.ingsw.Model.Resource.Resource;
 
 import java.util.ArrayList;
@@ -68,16 +68,17 @@ public class LeaderCardTurn {
 
     private void additionalProductionLeaderCard(LeaderCard leaderToActivate, int i) throws DevelopmentCardException, LeaderCardException {
         int currentPlayerIndex = controllerToModel.getCurrentPlayerIndex();
-        ArrayList<String> requirements;
         Gameboard actualPlayerBoard = controllerToModel.getPlayers()[currentPlayerIndex].getPlayerBoard();
-
+        //cast
+        AdditionalProduction currentLeaderAbility = (AdditionalProduction) leaderToActivate.getSpecialAbility();
         System.out.println("additionalProduction");
-        requirements = leaderToActivate.getSpecialAbility().getRequirements();
-        CardColor color = CardColor.valueOf(requirements.get(0));
+
+        CardColor color = CardColor.valueOf(currentLeaderAbility.getCardRequired());
         ArrayList<CardColor> colorRequired = new ArrayList<>();
         ArrayList<Integer> level = new ArrayList<>();
         colorRequired.add(color); //add color in ArrayList
-        level.add(2); //deve essere di livello 2 (forzatura)
+        Integer levelRequired = currentLeaderAbility.getLevelRequired();
+        level.add(levelRequired); //add level in Arraylist
         if (actualPlayerBoard.getDevelopmentCardHandler().checkDevelopmentCard(colorRequired, level)) {
             actualPlayerBoard.getLeaderCardHandler().activateLeaderCard(i);
             System.out.println("Activated!");
@@ -90,18 +91,20 @@ public class LeaderCardTurn {
 
     private void biggerDepositLeaderCard(LeaderCard leaderToActivate, int i) throws LeaderCardException {
         int currentPlayerIndex = controllerToModel.getCurrentPlayerIndex();
-        ArrayList<String> requirements;
-        Gameboard actualPlayerBoard = controllerToModel.getPlayers()[currentPlayerIndex].getPlayerBoard();
 
+        Gameboard actualPlayerBoard = controllerToModel.getPlayers()[currentPlayerIndex].getPlayerBoard();
+        //cast
+        BiggerDeposit currentLeaderAbility = (BiggerDeposit) leaderToActivate.getSpecialAbility();
         System.out.println("biggerDeposit");
-        requirements = leaderToActivate.getSpecialAbility().getRequirements();
-        Resource resource = Resource.valueOf(requirements.get(0));
+
+        Resource resource = Resource.valueOf(currentLeaderAbility.getMaterialRequired());
+        Integer resourceQuantity = currentLeaderAbility.getQuantityRequired();
         Map<Resource, Integer> requires = new HashMap<>();
-        requires.put(resource, 5); // PER FORZA 5 (FORZATURA!!)
+        requires.put(resource, resourceQuantity);
         if (actualPlayerBoard.getResourceHandler().checkMaterials(requires)) {
             actualPlayerBoard.getLeaderCardHandler().activateLeaderCard(i);
             try {
-                actualPlayerBoard.getResourceHandler().addAdditionalDeposit(leaderToActivate.getSpecialAbility().getMaterialType());
+                actualPlayerBoard.getResourceHandler().addAdditionalDeposit(currentLeaderAbility.getMaterialType());
             } catch (ResourceException e) {
                 System.out.println(e.getMessage());
                 e.printStackTrace();
@@ -115,17 +118,21 @@ public class LeaderCardTurn {
 
     private void costlessLeaderCard(LeaderCard leaderToActivate, int i) throws LeaderCardException {
         int currentPlayerIndex = controllerToModel.getCurrentPlayerIndex();
-        ArrayList<String> requirements;
-        Gameboard actualPlayerBoard = controllerToModel.getPlayers()[currentPlayerIndex].getPlayerBoard();
 
+        Gameboard actualPlayerBoard = controllerToModel.getPlayers()[currentPlayerIndex].getPlayerBoard();
+        //cast
+        CostLess currentLeaderAbility = (CostLess) leaderToActivate.getSpecialAbility();
         System.out.println("costLess");
-        requirements = leaderToActivate.getSpecialAbility().getRequirements();
+
         ArrayList<CardColor> colorsRequired = new ArrayList<>();
-        for (String s : requirements) {
-            colorsRequired.add(CardColor.valueOf(s));
-        }
-        if (actualPlayerBoard.getDevelopmentCardHandler().checkCountDevelopmentCard(colorsRequired.get(0), 1) &&
-                actualPlayerBoard.getDevelopmentCardHandler().checkCountDevelopmentCard(colorsRequired.get(1), 1)) {
+
+        colorsRequired.add(CardColor.valueOf(currentLeaderAbility.getCardRequired1()));
+        int quantity1 = currentLeaderAbility.getQuantityRequired1();
+        colorsRequired.add(CardColor.valueOf(currentLeaderAbility.getCardRequired2()));
+        int quantity2 = currentLeaderAbility.getQuantityRequired2();
+
+        if (actualPlayerBoard.getDevelopmentCardHandler().checkCountDevelopmentCard(colorsRequired.get(0), quantity1) &&
+                actualPlayerBoard.getDevelopmentCardHandler().checkCountDevelopmentCard(colorsRequired.get(1), quantity2)) {
             actualPlayerBoard.getLeaderCardHandler().activateLeaderCard(i);
             System.out.println("Card Activated!");
             controllerToModel.getConnectionsToClient().get(currentPlayerIndex).sendNotify("Activate the "+ i + " leader");
@@ -138,14 +145,18 @@ public class LeaderCardTurn {
         int currentPlayerIndex = controllerToModel.getCurrentPlayerIndex();
         ArrayList<String> requirements;
         Gameboard actualPlayerBoard = controllerToModel.getPlayers()[currentPlayerIndex].getPlayerBoard();
-
+        //cast
+        MarketWhiteChange currentLeaderAbility = (MarketWhiteChange) leaderToActivate.getSpecialAbility();
         System.out.println("marketWhiteChange");
-        requirements = leaderToActivate.getSpecialAbility().getRequirements();
-        ArrayList<CardColor> colorsRequired = new ArrayList<>();
-        colorsRequired.add(CardColor.valueOf(requirements.get(0))); //TWICE
-        colorsRequired.add(CardColor.valueOf(requirements.get(2))); //ONCE
-        if (actualPlayerBoard.getDevelopmentCardHandler().checkCountDevelopmentCard(colorsRequired.get(0), 2) &&
-                actualPlayerBoard.getDevelopmentCardHandler().checkCountDevelopmentCard(colorsRequired.get(1), 1)) {
+
+
+        CardColor color1 = CardColor.valueOf(currentLeaderAbility.getCardRequired1()); //TWICE
+        CardColor color2 = CardColor.valueOf(currentLeaderAbility.getCardRequired2()); //ONCE
+        int quantity1 = currentLeaderAbility.getCardQuantityRequired1();
+        int quantity2 = currentLeaderAbility.getCardQuantityRequired2();
+
+        if (actualPlayerBoard.getDevelopmentCardHandler().checkCountDevelopmentCard(color1, quantity1) &&
+                actualPlayerBoard.getDevelopmentCardHandler().checkCountDevelopmentCard(color2, quantity2)) {
             actualPlayerBoard.getLeaderCardHandler().activateLeaderCard(i);
             System.out.println("Card Activated!");
             controllerToModel.getConnectionsToClient().get(currentPlayerIndex).sendNotify("Activate the "+ i + " leader");

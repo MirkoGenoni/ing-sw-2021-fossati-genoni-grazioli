@@ -5,6 +5,7 @@
     "victoryPoints" : 4,
     "cardRequired1" : "YELLOW",
     "quantityRequired1" : 1,
+    "levelRequired1" : 2,
     "materialAdditionalProduction" : "SHIELD"
   }
 }
@@ -15,6 +16,7 @@
     "victoryPoints" : 4,
     "cardRequired1" : "BLUE",
     "quantityRequired1" : 1,
+    "levelRequired1" : 2,
     "materialAdditionalProduction" : "SERVANT"
   }
 }
@@ -25,6 +27,7 @@
     "victoryPoints" : 4,
     "cardRequired1" : "PURPLE",
     "quantityRequired1" : 1,
+    "levelRequired1" : 2,
     "materialAdditionalProduction" : "STONE"
   }
 }
@@ -35,6 +38,7 @@
     "victoryPoints" : 4,
     "cardRequired1" : "GREEN",
     "quantityRequired1" : 1,
+    "levelRequired1" : 2,
     "materialAdditionalProduction" : "COIN"
   }
 }

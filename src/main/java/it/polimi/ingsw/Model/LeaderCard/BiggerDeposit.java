@@ -38,4 +38,12 @@ public class BiggerDeposit implements SpecialAbility{
     public Resource getMaterialType() {
         return materialBiggerDeposit;
     }
+
+    public String getMaterialRequired() {
+        return materialRequired1;
+    }
+
+    public int getQuantityRequired() {
+        return quantityRequired1;
+    }
 }
