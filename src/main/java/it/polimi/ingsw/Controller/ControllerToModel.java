@@ -121,7 +121,7 @@ public class ControllerToModel {
             initialResources(currentPlayerIndex);
             for(int i=0; i<connectionsToClient.size(); i++){
                 try{
-                    connectionsToClient.get(i).sendArrayLeaderCards(multiGame.getPlayers()[i].getPlayerBoard().getLeaderCardHandler().getLeaderCardsAvailable(), true);
+                    connectionsToClient.get(i).sendArrayLeaderCards(multiGame.getPlayers()[i].getPlayerBoard().getLeaderCardHandler().getLeaderCardsAvailable(), true, players[i]);
                 } catch (LeaderCardException e) {
                     e.printStackTrace();
                 }
@@ -142,7 +142,7 @@ public class ControllerToModel {
             game = singleGame;
             singleGame.startGame();
             try{
-                connectionsToClient.get(currentPlayerIndex).sendArrayLeaderCards(singleGame.getPlayer().getPlayerBoard().getLeaderCardHandler().getLeaderCardsAvailable(), true);
+                connectionsToClient.get(currentPlayerIndex).sendArrayLeaderCards(singleGame.getPlayer().getPlayerBoard().getLeaderCardHandler().getLeaderCardsAvailable(), true, players[0]);
             } catch (LeaderCardException e) {
                 e.printStackTrace();
             }
@@ -203,7 +203,8 @@ public class ControllerToModel {
             }
             connectionsToClient.forEach(cc -> cc.sendNotify("è il turno di " + activePlayer.getName()));
             try {
-                connectionsToClient.get(currentPlayerIndex).sendArrayLeaderCards(players[currentPlayerIndex].getPlayerBoard().getLeaderCardHandler().getLeaderCardsAvailable(),false);
+
+                connectionsToClient.get(currentPlayerIndex).sendArrayLeaderCards(players[currentPlayerIndex].getPlayerBoard().getLeaderCardHandler().getLeaderCardsAvailable(),false, players[currentPlayerIndex]);
             } catch (LeaderCardException e) {
                 turnToView();
             }

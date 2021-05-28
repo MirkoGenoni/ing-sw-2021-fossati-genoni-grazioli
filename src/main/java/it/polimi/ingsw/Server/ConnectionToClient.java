@@ -27,6 +27,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ConnectionToClient implements Runnable, EventToClientNotifier {
     private Socket clientSocket;
@@ -139,8 +141,9 @@ public class ConnectionToClient implements Runnable, EventToClientNotifier {
     // EVENTS THAT SEND LEADER CARD INFORMATION
     // ----------------------------------------
     @Override
-    public void sendArrayLeaderCards(ArrayList<LeaderCard> leaderCards, boolean initialLeaderCards) {
-        SendArrayLeaderCardsToClient sendArrayLeaderCardsToClient = new SendArrayLeaderCardsToClient(leaderCardToSend(leaderCards), initialLeaderCards);
+    public void sendArrayLeaderCards(ArrayList<LeaderCard> leaderCards, boolean initialLeaderCards, Player currentPlayer) {
+        Map<String, Integer> countOfDevelopmentCards = countNumberOfDevelopmentCards(currentPlayer);
+        SendArrayLeaderCardsToClient sendArrayLeaderCardsToClient = new SendArrayLeaderCardsToClient(leaderCardToSend(leaderCards), countOfDevelopmentCards, initialLeaderCards);
         asyncSendEvent(sendArrayLeaderCardsToClient);
     }
 
@@ -281,6 +284,23 @@ public class ConnectionToClient implements Runnable, EventToClientNotifier {
 
         }
         return playerInformation;
+    }
+
+    private Map<String, Integer> countNumberOfDevelopmentCards(Player currentPlayer){
+        ArrayList<DevelopmentCard> devCollection = currentPlayer.getPlayerBoard().getDevelopmentCardHandler().getDevelopmentCardColl();
+        Map<String, Integer> numberOfDevelopment = new HashMap<>();
+        String cardKey;
+
+        for(DevelopmentCard developmentCard : devCollection){
+            cardKey = developmentCard.getColor().name() + " level: " + developmentCard.getLevel();
+            if(numberOfDevelopment.containsKey(cardKey)){
+                numberOfDevelopment.put(cardKey, numberOfDevelopment.get(cardKey)+1);
+            }else{
+                numberOfDevelopment.put(cardKey,1);
+            }
+        }
+
+        return numberOfDevelopment;
     }
 
 
