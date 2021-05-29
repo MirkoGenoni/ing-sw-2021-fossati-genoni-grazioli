@@ -100,14 +100,8 @@ public abstract class Game {
         JsonStreamParser parser;
         allLeaderCards = new ArrayList<>();
         Gson gson = new GsonBuilder().create();
-        parser = null;
-        try {
-            parser = new JsonStreamParser(new InputStreamReader(getClass().getResource("/json/LeaderCards.json").openStream()));
-        } catch (FileNotFoundException e) {
-            throw new StartGameException("File not found");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        parser = new JsonStreamParser(new InputStreamReader(getClass().getResourceAsStream("/json/LeaderCards.json")));
+
 
         while(parser.hasNext()){
             JsonElement elem = parser.next();
@@ -178,17 +172,7 @@ public abstract class Game {
         }
 
         Gson gson = new GsonBuilder().create();
-        parser = null;
-
-        try {
-
-            parser = new JsonStreamParser(new InputStreamReader(getClass().getResource("/json/DevelopmentCards.json").openStream()));
-        } catch (FileNotFoundException e) {
-            throw new StartGameException("File not found");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
+        parser = new JsonStreamParser(new InputStreamReader(getClass().getResourceAsStream("/json/DevelopmentCards.json")));
         while(parser.hasNext()){
             JsonElement elem = parser.next();
             DevelopmentCard dev = gson.fromJson((elem.getAsJsonObject()), DevelopmentCard.class);

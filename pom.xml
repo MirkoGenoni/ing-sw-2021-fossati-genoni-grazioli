@@ -50,7 +50,7 @@
     <build>
         <resources>
             <resource>
-                <directory>${project.basedir}/src/main/</directory>
+                <directory>${project.basedir}/src/main/resources</directory>
                 <includes>
                     <include>**/*.json</include>
                     <include>**/*.fxml</include>
