@@ -172,13 +172,6 @@ public class CLIHandler {
             useDevelop.add(false);
 
         if(answer == 'Y'){
-            /*for(int i=0; i<3; i++) {
-                if (activeDevCards.get(i) != null) {
-                    answer = selectActivation("Do you want to use the ACTIVE PRODUCTION number: " + i + " ?" + " Y/N?");
-                    if (answer == 'Y')
-                        useDevelop.set(i, true);
-                }
-            }*/
             developmentCardBoard.startProductionCardBoardView();
             useDevelop = developmentCardBoard.getActivation();
         }
@@ -243,24 +236,19 @@ public class CLIHandler {
         return choose;
     }
 
-    private Resource selectResource(String message){
-        Scanner scan = new Scanner(System.in);
-        boolean validMaterial;
-        Resource resource = null;
-        do {
-            validMaterial = true;
-            System.out.println(message);
-            String materialInput1 = scan.nextLine();
-            materialInput1 = materialInput1.trim();
-            materialInput1 = materialInput1.toUpperCase();
-            try {
-                resource = Resource.valueOf(materialInput1);
-            } catch (IllegalArgumentException e) {
-                System.out.println("Selected a non valid material, please rewrite it");
-                validMaterial = false;
-            }
-        } while (!validMaterial);
+    public void initialResourceSelection(int numResources, ArrayList<Resource> depositState){
+        InitialResourceView selection= new InitialResourceView(numResources);
+        Resource choosen = selection.startChoosing();
 
-        return resource;
+        ArrayList<Resource> initialResources = new ArrayList<>();
+
+        for(int i=0; i< numResources; i++){
+            initialResources.add(choosen);
+        }
+
+        NewDepositView newDepositView = new NewDepositView(depositState, initialResources,false, null, null);
+        newDepositView.LaunchView();
+
+        connection.sendInitialDepositState(newDepositView.getDepositState());
     }
 }

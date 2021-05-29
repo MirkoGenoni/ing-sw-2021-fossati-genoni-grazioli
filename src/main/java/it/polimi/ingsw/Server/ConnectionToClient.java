@@ -270,13 +270,13 @@ public class ConnectionToClient implements Runnable, EventToClientNotifier {
             Gameboard tmpGameBoard = players[i].getPlayerBoard();
             try {
                 PlayerInformationToClient tmp = new PlayerInformationToClient(players[i].getName(), tmpGameBoard.getResourceHandler().getDepositState(),
-                        tmpGameBoard.getResourceHandler().getStrongboxState(), leaderCardToSend(tmpGameBoard.getLeaderCardHandler().getLeaderCardsActive()),
+                        tmpGameBoard.getResourceHandler().getStrongboxState(), tmpGameBoard.getResourceHandler().getAdditionalDeposit(), leaderCardToSend(tmpGameBoard.getLeaderCardHandler().getLeaderCardsActive()),
                         developmentCardActiveToSend(tmpGameBoard.getDevelopmentCardHandler().getActiveDevelopmentCard()),
                         tmpGameBoard.getPopeFavorTilesState(), faithTrack.getPosition(i));
                 playerInformation.add(tmp);
             } catch (LeaderCardException e) {
                 PlayerInformationToClient tmp = new PlayerInformationToClient(players[i].getName(), tmpGameBoard.getResourceHandler().getDepositState(),
-                        tmpGameBoard.getResourceHandler().getStrongboxState(), leaderCardToSend(null),
+                        tmpGameBoard.getResourceHandler().getStrongboxState(),tmpGameBoard.getResourceHandler().getAdditionalDeposit(), leaderCardToSend(null),
                         developmentCardActiveToSend(tmpGameBoard.getDevelopmentCardHandler().getActiveDevelopmentCard()),
                         tmpGameBoard.getPopeFavorTilesState(), faithTrack.getPosition(i));
                 playerInformation.add(tmp);

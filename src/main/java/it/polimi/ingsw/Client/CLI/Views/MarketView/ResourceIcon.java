@@ -34,7 +34,7 @@ public enum ResourceIcon {
                     break;
                 case "shield":
                     this.color[0]="\u001B[36m";
-                    this.color[1]="\u001B[97m";
+                    this.color[1]="\u001B[0m";
                     this.icon_line[0] = color[0] + "  ▓▓▓▓▓▓▓▓▓  " + "\u001B[0m";
                     this.icon_line[1] = color[0] + " ▓▓"   + color[1] + "▒▒▒▒▒▒▒" + color[0] + "▓▓ " + "\u001B[0m";
                     this.icon_line[2] = color[0] + "▓▓▓"   + color[1] + "▒▒▒▒▒▒▒" + color[0] + "▓▓▓" + "\u001B[0m";

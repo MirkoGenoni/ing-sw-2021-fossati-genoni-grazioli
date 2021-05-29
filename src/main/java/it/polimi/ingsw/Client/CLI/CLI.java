@@ -227,7 +227,6 @@ public class CLI implements EventToClientVisitor {
     @Override
     public void visit(NewTurnToClient newTurn) {
         if (newTurn.isYourTurn()) {
-
             Map<String, PlayerInformationToClient> players = new HashMap<>();
 
             for (int k = 0; k < newTurn.getPlayers().size(); k++) {
@@ -283,16 +282,7 @@ public class CLI implements EventToClientVisitor {
 
     @Override
     public void visit(SendInitialResourcesToClient numResources) {
-        System.out.println("scelta delle risorse iniziali");
-        ArrayList<Resource> initialResources = new ArrayList<>();
-        for(int i=0; i< numResources.getNumResources(); i++){
-            initialResources.add(selectResource("scegli la risorsa num " + i + " tra: coin, shield, servant, stone"));
-        }
-        NewDepositView newDepositView = new NewDepositView(numResources.getDepositState(), initialResources,false, null, null);
-        newDepositView.LaunchView();
-
-        connectionToServer.sendInitialDepositState(newDepositView.getDepositState());
-
+        handler.initialResourceSelection(numResources.getNumResources(), numResources.getDepositState());
     }
 
     @Override
@@ -306,26 +296,4 @@ public class CLI implements EventToClientVisitor {
         }
         connectionToServer.sendReplayLorenzoAction();
     }
-
-    private Resource selectResource(String message){
-        Scanner scan = new Scanner(System.in);
-        boolean validMaterial;
-        Resource resource = null;
-        do {
-            validMaterial = true;
-            System.out.println(message);
-            String materialInput1 = scan.nextLine();
-            materialInput1 = materialInput1.trim();
-            materialInput1 = materialInput1.toUpperCase();
-            try {
-                resource = Resource.valueOf(materialInput1);
-            } catch (IllegalArgumentException e) {
-                System.out.println("Selected a non valid material, please rewrite it");
-                validMaterial = false;
-            }
-        } while (!validMaterial);
-
-        return resource;
-    }
-
 }
