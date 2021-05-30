@@ -5,8 +5,6 @@ import it.polimi.ingsw.Events.ClientToServer.BuyDevelopmentCardToServer.Selected
 import it.polimi.ingsw.Events.ClientToServer.BuyDevelopmentCardToServer.SelectedDevelopmentCardToBuyToServer;
 import it.polimi.ingsw.Events.ClientToServer.MarketTurnToServer.ChooseLineToServer;
 import it.polimi.ingsw.Events.ClientToServer.MarketTurnToServer.NewDepositStateToServer;
-import it.polimi.ingsw.Events.ClientToServer.StartConnectionToServer.NumPlayerToServer;
-import it.polimi.ingsw.Events.ClientToServer.StartConnectionToServer.PlayerNameToServer;
 import it.polimi.ingsw.Events.ClientToServer.StartGameToServer.DiscardInitialLeaderCards;
 import it.polimi.ingsw.Events.ClientToServer.StartGameToServer.InitialResourcesChoose;
 
@@ -31,18 +29,7 @@ public class ControllerConnection implements EventToServerVisitor, ObserveConnec
     // -------------------------------------------------------
     // EVENTS FOR THE START OF THE CONNECTION WITH THE SERVER
     // -------------------------------------------------------
-    @Override
-    public void visit(NumPlayerToServer numPlayer) {
-        System.out.println("ho ricevuto il numero di giocatori " + numPlayer.getNumPlayer());
-        controllerToModel.setNumPlayer(numPlayer.getNumPlayer());
-    }
 
-    @Override
-    public void visit(PlayerNameToServer newPlayerName) {
-        System.out.println(" mi è arrivato il nome del giocatore " + newPlayerName.getOldPlayerName());
-        System.out.println(" il nuovo è : " + newPlayerName.getNewPlayerName());
-        controllerToModel.SetPlayerName(newPlayerName.getNewPlayerName(), newPlayerName.getOldPlayerName());
-    }
 
     // -------------------------------------------
     // EVENTS FOR THE LEADER CARD INTERACTION

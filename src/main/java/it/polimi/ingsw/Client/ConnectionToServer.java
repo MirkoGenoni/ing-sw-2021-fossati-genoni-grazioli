@@ -5,10 +5,11 @@ import it.polimi.ingsw.Client.GUI.GUI;
 import it.polimi.ingsw.Events.ClientToServer.*;
 import it.polimi.ingsw.Events.ClientToServer.BuyDevelopmentCardToServer.SelectedDevelopmentCardSpaceToServer;
 import it.polimi.ingsw.Events.ClientToServer.BuyDevelopmentCardToServer.SelectedDevelopmentCardToBuyToServer;
+import it.polimi.ingsw.Events.ClientToServer.InitialConnectionToServer.SendNumPlayerToServer;
+import it.polimi.ingsw.Events.ClientToServer.InitialConnectionToServer.SendPlayerNameToServer;
+import it.polimi.ingsw.Events.ClientToServer.InitialConnectionToServer.SendRoomToServer;
 import it.polimi.ingsw.Events.ClientToServer.MarketTurnToServer.ChooseLineToServer;
 import it.polimi.ingsw.Events.ClientToServer.MarketTurnToServer.NewDepositStateToServer;
-import it.polimi.ingsw.Events.ClientToServer.StartConnectionToServer.NumPlayerToServer;
-import it.polimi.ingsw.Events.ClientToServer.StartConnectionToServer.PlayerNameToServer;
 import it.polimi.ingsw.Events.ClientToServer.StartGameToServer.DiscardInitialLeaderCards;
 import it.polimi.ingsw.Events.ClientToServer.StartGameToServer.InitialResourcesChoose;
 import it.polimi.ingsw.Events.ServerToClient.EventToClient;
@@ -20,7 +21,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.Map;
 
 public class ConnectionToServer implements Runnable, EventToServerNotifier {
     private final Socket socket;
@@ -107,17 +107,7 @@ public class ConnectionToServer implements Runnable, EventToServerNotifier {
     // -------------------------------------------------------
     // EVENTS FOR THE START OF THE CONNECTION WITH THE SERVER
     // -------------------------------------------------------
-    @Override
-    public void sendNumPlayer(int numPlayer) {
-        NumPlayerToServer numPlayerToServer = new NumPlayerToServer(numPlayer, this.playerName);
-        asyncSendEvent(numPlayerToServer);
-    }
 
-    @Override
-    public void sendNewPlayerName(String newPlayerName) {
-        PlayerNameToServer playerNameToServer = new PlayerNameToServer(newPlayerName, this.playerName);
-        asyncSendEvent(playerNameToServer);
-    }
 
     // -------------------------------------------
     // EVENTS FOR THE LEADER CARD INTERACTION
@@ -192,6 +182,24 @@ public class ConnectionToServer implements Runnable, EventToServerNotifier {
     public void sendReplayLorenzoAction() {
         ReplayLorenzoActionToServer replayLorenzoActionToServer = new ReplayLorenzoActionToServer(this.playerName);
         asyncSendEvent(replayLorenzoActionToServer);
+    }
+
+    @Override
+    public void sendRoom(int room, boolean newRoom) {
+        SendRoomToServer sendRoomToServer = new SendRoomToServer(room, newRoom);
+        asyncSendEvent(sendRoomToServer);
+    }
+
+    @Override
+    public void sendPlayerName(String playerName) {
+        SendPlayerNameToServer sendPlayerNameToServer = new SendPlayerNameToServer(playerName);
+        asyncSendEvent(sendPlayerNameToServer);
+    }
+
+    @Override
+    public void sendNumPlayer(int num) {
+        SendNumPlayerToServer sendNumPlayerToServer = new SendNumPlayerToServer(num, this.playerName);
+        asyncSendEvent(sendNumPlayerToServer);
     }
 
 

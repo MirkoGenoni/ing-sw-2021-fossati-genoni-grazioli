@@ -77,27 +77,6 @@ public class ControllerToModel {
         this.numPlayer = numPlayer;
     }
 
-    public void SetPlayerName(String newPlayerName, String oldPlayerName){
-        boolean tmp = false;
-        for(int j=0; j< connectionsToClient.size(); j++){
-            if(connectionsToClient.get(j).getNamePlayer().equals(newPlayerName)){
-                tmp=true;
-            }
-        }
-        for(int i=0; i< connectionsToClient.size(); i++){
-            if(connectionsToClient.get(i).getNamePlayer().equals(oldPlayerName)){
-                if(tmp){
-                    System.out.println("due nomi uguali");
-                    connectionsToClient.get(i).sendPlayerName(oldPlayerName);
-                }else{
-                    System.out.println("setto il nuovo nome");
-                    connectionsToClient.get(i).setNamePlayer(newPlayerName);
-                }
-
-            }
-        }
-    }
-
     // -------------------------------------------
     // METHODS FOR THE START OF THE MATCH
     // -------------------------------------------
@@ -131,7 +110,7 @@ public class ControllerToModel {
             currentPlayerIndex --; // serve perchè il nextTurn incrementa il numero di giocatori
             // create classes of type of turn
             createTurns();
-            newTurn();
+            //newTurn();
 
         }else if(numPlayer == 1){
             players = new Player[numPlayer];
@@ -152,7 +131,7 @@ public class ControllerToModel {
             System.out.println("creo lorenzo");
             lorenzoTurn = new LorenzoTurn(this, singleGame, 1);
             // nuovo turno da rivedere
-            newTurn();
+            //newTurn();
         }
     }
 
@@ -193,14 +172,6 @@ public class ControllerToModel {
             connectionsToClient.forEach(c -> c.setActive(false));
             System.out.println("il gioco è finito");
         }else{
-            while(true) {
-                try {
-                    if ((players[currentPlayerIndex].getPlayerBoard().getLeaderCardHandler().getLeaderCardsAvailable().size()<=2))
-                        break;
-                } catch (LeaderCardException e) {
-                    break;
-                }
-            }
             connectionsToClient.forEach(cc -> cc.sendNotify("è il turno di " + activePlayer.getName()));
             try {
 
@@ -237,6 +208,21 @@ public class ControllerToModel {
                 }
             }
         }
+        // il gioco parte solo quando tutti i giocatori hanno scartato le carte leader iniziali
+        int playerDiscard = 0;
+        for(int i=0; i<players.length; i++){
+            try {
+                if(players[i].getPlayerBoard().getLeaderCardHandler().getLeaderCardsAvailable().size()<=2){
+                    playerDiscard++;
+                }
+            } catch (LeaderCardException e) {
+                e.printStackTrace();
+            }
+        }
+        if(playerDiscard==numPlayer){
+            newTurn();
+        }
+
     }
 
     public void leaderCardTurn(String playerName, ArrayList<Integer> actions){

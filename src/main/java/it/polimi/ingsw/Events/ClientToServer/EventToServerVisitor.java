@@ -4,8 +4,6 @@ import it.polimi.ingsw.Events.ClientToServer.BuyDevelopmentCardToServer.Selected
 import it.polimi.ingsw.Events.ClientToServer.BuyDevelopmentCardToServer.SelectedDevelopmentCardToBuyToServer;
 import it.polimi.ingsw.Events.ClientToServer.MarketTurnToServer.ChooseLineToServer;
 import it.polimi.ingsw.Events.ClientToServer.MarketTurnToServer.NewDepositStateToServer;
-import it.polimi.ingsw.Events.ClientToServer.StartConnectionToServer.NumPlayerToServer;
-import it.polimi.ingsw.Events.ClientToServer.StartConnectionToServer.PlayerNameToServer;
 import it.polimi.ingsw.Events.ClientToServer.StartGameToServer.DiscardInitialLeaderCards;
 import it.polimi.ingsw.Events.ClientToServer.StartGameToServer.InitialResourcesChoose;
 
@@ -15,8 +13,7 @@ public interface EventToServerVisitor {
     // -------------------------------------------------------
     // EVENTS FOR THE START OF THE CONNECTION WITH THE SERVER
     // -------------------------------------------------------
-    void visit(NumPlayerToServer numPlayer);
-    void visit(PlayerNameToServer newPlayerName);
+
 
     // -------------------------------------------
     // EVENTS FOR THE LEADER CARD INTERACTION

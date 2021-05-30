@@ -3,14 +3,15 @@ package it.polimi.ingsw.Server;
 import it.polimi.ingsw.Events.ClientToServer.EventToServer;
 import it.polimi.ingsw.Events.ServerToClient.*;
 import it.polimi.ingsw.Controller.ObserveConnectionToClient;
+import it.polimi.ingsw.Events.ServerToClient.InitialConnectionToClient.SendNamePlayerRequestToClient;
+import it.polimi.ingsw.Events.ServerToClient.InitialConnectionToClient.SendNumPlayerRequestToClient;
+import it.polimi.ingsw.Events.ServerToClient.InitialConnectionToClient.SendRoomRequestToClient;
 import it.polimi.ingsw.Events.ServerToClient.TurnReselection;
 import it.polimi.ingsw.Events.ServerToClient.SupportClass.DevelopmentCardToClient;
 import it.polimi.ingsw.Events.ServerToClient.BuyDevelopmentCardTurnToClient.SendSpaceDevelopmentCardToClient;
 import it.polimi.ingsw.Events.ServerToClient.SupportClass.LeaderCardToClient;
 import it.polimi.ingsw.Events.ServerToClient.SupportClass.MarketToClient;
 import it.polimi.ingsw.Events.ServerToClient.MarketTurnToClient.SendReorganizeDepositToClient;
-import it.polimi.ingsw.Events.ServerToClient.StartConnectionToClient.SendNumPlayerToClient;
-import it.polimi.ingsw.Events.ServerToClient.StartConnectionToClient.SendPlayerNameToClient;
 import it.polimi.ingsw.Events.ServerToClient.SupportClass.PlayerInformationToClient;
 import it.polimi.ingsw.Model.DevelopmentCard.DevelopmentCard;
 import it.polimi.ingsw.Model.Exceptions.LeaderCardException;
@@ -118,24 +119,14 @@ public class ConnectionToClient implements Runnable, EventToClientNotifier {
         return namePlayer;
     }
 
-    public void setObserveConnectionToClient(ObserveConnectionToClient observeConnectionToClient){
+    public synchronized void setObserveConnectionToClient(ObserveConnectionToClient observeConnectionToClient){
         this.observeConnectionToClient = observeConnectionToClient;
     }
 
     // -------------------------------------------------------
     // EVENTS FOR THE START OF THE CONNECTION WITH THE CLIENT
     // -------------------------------------------------------
-    @Override
-    public void sendPlayerName(String playerName) {
-        SendPlayerNameToClient sendPlayerNameToClient = new SendPlayerNameToClient(playerName);
-        asyncSendEvent(sendPlayerNameToClient);
-    }
 
-    @Override
-    public void sendNumPlayer(String message) {
-        SendNumPlayerToClient sendNumPlayerToClient = new SendNumPlayerToClient(message);
-        asyncSendEvent(sendNumPlayerToClient);
-    }
 
     // ----------------------------------------
     // EVENTS THAT SEND LEADER CARD INFORMATION
@@ -207,6 +198,24 @@ public class ConnectionToClient implements Runnable, EventToClientNotifier {
     public void sendLorenzoTurn(SoloAction lorenzoAction, int lorenzoPosition) {
         LorenzoActionToClient lorenzoActionToClient = new LorenzoActionToClient(lorenzoAction, lorenzoPosition);
         asyncSendEvent(lorenzoActionToClient);
+    }
+
+    @Override
+    public void sendRoomRequestToClient(String message) {
+        SendRoomRequestToClient sendRoomRequestToClient = new SendRoomRequestToClient(message);
+        asyncSendEvent(sendRoomRequestToClient);
+    }
+
+    @Override
+    public void sendNamePlayerRequest(String message) {
+        SendNamePlayerRequestToClient sendNamePlayerRequestToClient = new SendNamePlayerRequestToClient(message);
+        asyncSendEvent(sendNamePlayerRequestToClient);
+    }
+
+    @Override
+    public void sendNumPlayerRequest(String message) {
+        SendNumPlayerRequestToClient sendNumPlayerRequestToClient    = new SendNumPlayerRequestToClient(message);
+        asyncSendEvent(sendNumPlayerRequestToClient);
     }
 
 

@@ -1,15 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.Client.GUI.ControllerGUI.PlayerNameController">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.Client.GUI.ControllerGUI.PlayerNameController">
    <children>
       <TextField fx:id="textName" layoutX="300.0" layoutY="164.0" />
-      <Button fx:id="buttonName" layoutX="174.0" layoutY="164.0" mnemonicParsing="false" onAction="#sendName" text="OK" />
+      <Button fx:id="buttonName" disable="true" layoutX="174.0" layoutY="164.0" mnemonicParsing="false" onAction="#sendName" opacity="0.0" text="OK" />
       <Label fx:id="text" layoutX="159.0" layoutY="75.0" prefHeight="17.0" prefWidth="322.0" textAlignment="CENTER" />
       <Button fx:id="buttonNum" disable="true" layoutX="174.0" layoutY="164.0" mnemonicParsing="false" onAction="#sendNum" opacity="0.0" text="OK" />
+      <Button fx:id="buttonRoom" disable="true" layoutX="174.0" layoutY="164.0" mnemonicParsing="false" onAction="#chooseRoom" opacity="0.0" text="OK" />
+      <Label fx:id="message" layoutX="170.0" layoutY="250.0" prefHeight="17.0" prefWidth="310.0" />
+      <CheckBox fx:id="booleanRoom" disable="true" layoutX="298.0" layoutY="200.0" mnemonicParsing="false" onAction="#selected" opacity="0.0" text="New Room" />
    </children>
 </AnchorPane>

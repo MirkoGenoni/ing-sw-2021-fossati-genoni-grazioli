@@ -4,7 +4,6 @@ import it.polimi.ingsw.Model.DevelopmentCard.ProductedMaterials;
 import it.polimi.ingsw.Model.Resource.Resource;
 
 import java.util.ArrayList;
-import java.util.Map;
 
 // list of the event that the client could send to the server
 public interface EventToServerNotifier {
@@ -12,8 +11,7 @@ public interface EventToServerNotifier {
     // -------------------------------------------------------
     // EVENTS FOR THE START OF THE CONNECTION WITH THE SERVER
     // -------------------------------------------------------
-    void sendNumPlayer(int numPlayer);
-    void sendNewPlayerName(String newPlayerName);
+
 
     // -------------------------------------------
     // EVENTS FOR THE LEADER CARD INTERACTION
@@ -50,5 +48,9 @@ public interface EventToServerNotifier {
     // EVENT FOR LORENZO TURN
     // ------------------------------------------------------
     void sendReplayLorenzoAction();
+
+    void sendRoom(int room, boolean newRoom);
+    void sendPlayerName(String playerName);
+    void sendNumPlayer(int num);
 
 }

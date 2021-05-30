@@ -1,12 +1,13 @@
-package it.polimi.ingsw.Events.ServerToClient.StartConnectionToClient;
+package it.polimi.ingsw.Events.ServerToClient.InitialConnectionToClient;
 
 import it.polimi.ingsw.Events.ServerToClient.EventToClient;
 import it.polimi.ingsw.Events.ServerToClient.EventToClientVisitor;
 
-public class SendNumPlayerToClient extends EventToClient {
+public class SendRoomRequestToClient extends EventToClient {
     private final String message;
 
-    public SendNumPlayerToClient(String message) {
+    public SendRoomRequestToClient(String message){
+
         this.message = message;
     }
 

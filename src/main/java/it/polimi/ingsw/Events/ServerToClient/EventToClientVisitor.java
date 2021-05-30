@@ -1,9 +1,10 @@
 package it.polimi.ingsw.Events.ServerToClient;
 
 import it.polimi.ingsw.Events.ServerToClient.BuyDevelopmentCardTurnToClient.SendSpaceDevelopmentCardToClient;
+import it.polimi.ingsw.Events.ServerToClient.InitialConnectionToClient.SendNamePlayerRequestToClient;
+import it.polimi.ingsw.Events.ServerToClient.InitialConnectionToClient.SendNumPlayerRequestToClient;
+import it.polimi.ingsw.Events.ServerToClient.InitialConnectionToClient.SendRoomRequestToClient;
 import it.polimi.ingsw.Events.ServerToClient.MarketTurnToClient.SendReorganizeDepositToClient;
-import it.polimi.ingsw.Events.ServerToClient.StartConnectionToClient.SendNumPlayerToClient;
-import it.polimi.ingsw.Events.ServerToClient.StartConnectionToClient.SendPlayerNameToClient;
 
 // list of the event that the client receive from the server
 public interface EventToClientVisitor {
@@ -11,8 +12,7 @@ public interface EventToClientVisitor {
     // -------------------------------------------------------
     // EVENTS FOR THE START OF THE CONNECTION WITH THE CLIENT
     // -------------------------------------------------------
-    void visit(SendPlayerNameToClient playerName);
-    void visit(SendNumPlayerToClient numPlayer);
+
 
     // -------------------------------------------
     // EVENTS THAT RECEIVE LEADER CARD INFORMATION
@@ -39,5 +39,7 @@ public interface EventToClientVisitor {
     void visit(SendInitialResourcesToClient numResources);
     void visit(LorenzoActionToClient lorenzoAction);
 
-
+    void visit(SendRoomRequestToClient roomRequest);
+    void visit(SendNamePlayerRequestToClient nameRequest);
+    void visit(SendNumPlayerRequestToClient numPlayer);
 }

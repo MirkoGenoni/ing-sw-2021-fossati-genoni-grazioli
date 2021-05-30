@@ -16,8 +16,7 @@ public interface EventToClientNotifier {
     // -------------------------------------------------------
     // EVENTS FOR THE START OF THE CONNECTION WITH THE CLIENT
     // -------------------------------------------------------
-    void sendPlayerName(String playerName);
-    void sendNumPlayer(String message);
+
 
     // ----------------------------------------
     // EVENTS THAT SEND LEADER CARD INFORMATION
@@ -43,4 +42,8 @@ public interface EventToClientNotifier {
     void sendEndGame(String message);
     void sendInitialResources(int numResources, ArrayList<Resource> depositState);
     void sendLorenzoTurn(SoloAction lorenzoAction, int lorenzoPosition);
+
+    void sendRoomRequestToClient(String message);
+    void sendNamePlayerRequest(String message);
+    void sendNumPlayerRequest(String message);
 }

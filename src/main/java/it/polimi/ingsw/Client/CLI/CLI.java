@@ -2,28 +2,18 @@ package it.polimi.ingsw.Client.CLI;
 
 import it.polimi.ingsw.Client.CLI.Views.CLIHandler;
 import it.polimi.ingsw.Client.CLI.Views.Messages;
-import it.polimi.ingsw.Client.CLI.Views.NewTurnView;
-import it.polimi.ingsw.Client.CLI.Views.ProductionView.AdditionalProductionView;
-import it.polimi.ingsw.Client.CLI.Views.ProductionView.BaseProduction;
-import it.polimi.ingsw.Client.CLI.Views.ProductionView.DevelopmentCardView;
-import it.polimi.ingsw.Client.CLI.Views.LeaderCardView.LeaderCardView;
-import it.polimi.ingsw.Client.CLI.Views.MarketView.MarketView;
-import it.polimi.ingsw.Client.CLI.Views.MarketView.NewDepositView;
 import it.polimi.ingsw.Client.ConnectionToServer;
 import it.polimi.ingsw.Events.ServerToClient.*;
-import it.polimi.ingsw.Events.ServerToClient.SupportClass.DevelopmentCardToClient;
+import it.polimi.ingsw.Events.ServerToClient.InitialConnectionToClient.SendNamePlayerRequestToClient;
+import it.polimi.ingsw.Events.ServerToClient.InitialConnectionToClient.SendNumPlayerRequestToClient;
+import it.polimi.ingsw.Events.ServerToClient.InitialConnectionToClient.SendRoomRequestToClient;
 import it.polimi.ingsw.Events.ServerToClient.BuyDevelopmentCardTurnToClient.SendSpaceDevelopmentCardToClient;
 import it.polimi.ingsw.Events.ServerToClient.MarketTurnToClient.SendReorganizeDepositToClient;
-import it.polimi.ingsw.Events.ServerToClient.StartConnectionToClient.SendNumPlayerToClient;
-import it.polimi.ingsw.Events.ServerToClient.StartConnectionToClient.SendPlayerNameToClient;
-import it.polimi.ingsw.Events.ServerToClient.SupportClass.LeaderCardToClient;
 import it.polimi.ingsw.Events.ServerToClient.SupportClass.PlayerInformationToClient;
 import it.polimi.ingsw.Events.ServerToClient.TurnReselection;
-import it.polimi.ingsw.Model.DevelopmentCard.ProductedMaterials;
 import it.polimi.ingsw.Model.Resource.Resource;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
@@ -78,61 +68,9 @@ public class CLI implements EventToClientVisitor {
     // -------------------------------------------------------
     // EVENTS FOR THE START OF THE CONNECTION WITH THE CLIENT
     // -------------------------------------------------------
-    @Override
-    public void visit(SendPlayerNameToClient playerName) {
-        namePlayer = playerName.getPlayerName();
-        connectionToServer.setPlayerName(playerName.getPlayerName());
-
-        System.out.print("                                                                                                                          \n");
-
-        System.out.print("                                    INSERT NAME: ");
-
-        try {
-            System.in.read(new byte[System.in.available()]);
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
-        }
-
-        Scanner scanIn = new Scanner(System.in);
 
 
-        String line = scanIn.nextLine();
-        connectionToServer.sendNewPlayerName(line);
-        namePlayer = line;
-        connectionToServer.setPlayerName(line);
 
-    }
-
-    @Override
-    public void visit(SendNumPlayerToClient numPlayer) {
-        //System.out.println("ho ricevuto la richiesta di numero di giocatori");
-        //System.out.println(numPlayer.getMessage());
-
-        System.out.print("                                                                                                                           \n");
-
-        System.out.print("                                    YOU'RE THE FIRST PLAYER! ");
-
-        try {
-            TimeUnit.SECONDS.sleep(1);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        for(int i=0; i<60; i++)
-            System.out.print("\b");
-
-        System.out.print("                                   INSERT NUMBER OF PLAYERS: ");
-
-        try {
-            System.in.read(new byte[System.in.available()]);
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
-        }
-
-        Scanner scanIn = new Scanner(System.in);
-        int num = scanIn.nextInt();
-        connectionToServer.sendNumPlayer(num);
-    }
 
     // -------------------------------------------
     // EVENTS THAT RECEIVE LEADER CARD INFORMATION
@@ -296,4 +234,97 @@ public class CLI implements EventToClientVisitor {
         }
         connectionToServer.sendReplayLorenzoAction();
     }
+
+    @Override
+    public void visit(SendRoomRequestToClient roomRequest) {
+        System.out.println(roomRequest.getMessage());
+        System.out.println("mi è arrivata la riciesta della stanza: scrivila");
+        Scanner ScanIn = new Scanner(System.in);
+        int room = ScanIn.nextInt();
+        System.out.println("è nuova??");
+        Scanner ScanIn1 = new Scanner(System.in);
+        int num = ScanIn1.nextInt();
+        boolean tmp;
+        if(num == 1){
+            tmp=true;
+        }else{
+            tmp=false;
+        }
+        System.out.println(tmp + " è il voolean");
+        connectionToServer.sendRoom(room, tmp);
+    }
+
+    @Override
+    public void visit(SendNamePlayerRequestToClient nameRequest) {
+        System.out.println(nameRequest.getRequest());
+        System.out.print("                                                                                                                          \n");
+
+        System.out.print("                                    INSERT NAME: ");
+
+        try {
+            System.in.read(new byte[System.in.available()]);
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+
+        Scanner scanIn = new Scanner(System.in);
+
+
+        String line = scanIn.nextLine();
+        connectionToServer.sendPlayerName(line);
+        namePlayer = line;
+        connectionToServer.setPlayerName(line);
+    }
+
+    @Override
+    public void visit(SendNumPlayerRequestToClient numPlayer) {
+        System.out.println(numPlayer.getMessage());
+
+        System.out.print("                                                                                                                           \n");
+
+        System.out.print("                                    YOU'RE THE FIRST PLAYER! ");
+
+        try {
+            TimeUnit.SECONDS.sleep(1);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        for(int i=0; i<60; i++)
+            System.out.print("\b");
+
+        System.out.print("                                   INSERT NUMBER OF PLAYERS: ");
+
+        try {
+            System.in.read(new byte[System.in.available()]);
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+
+        Scanner scanIn = new Scanner(System.in);
+        int num = scanIn.nextInt();
+        connectionToServer.sendNumPlayer(num);
+    }
+
+    private Resource selectResource(String message){
+        Scanner scan = new Scanner(System.in);
+        boolean validMaterial;
+        Resource resource = null;
+        do {
+            validMaterial = true;
+            System.out.println(message);
+            String materialInput1 = scan.nextLine();
+            materialInput1 = materialInput1.trim();
+            materialInput1 = materialInput1.toUpperCase();
+            try {
+                resource = Resource.valueOf(materialInput1);
+            } catch (IllegalArgumentException e) {
+                System.out.println("Selected a non valid material, please rewrite it");
+                validMaterial = false;
+            }
+        } while (!validMaterial);
+
+        return resource;
+    }
+
 }

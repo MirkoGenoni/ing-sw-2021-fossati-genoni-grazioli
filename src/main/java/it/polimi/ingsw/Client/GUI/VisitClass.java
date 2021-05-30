@@ -3,11 +3,12 @@ package it.polimi.ingsw.Client.GUI;
 import it.polimi.ingsw.Client.ConnectionToServer;
 import it.polimi.ingsw.Client.GUI.ControllerGUI.*;
 import it.polimi.ingsw.Events.ServerToClient.*;
+import it.polimi.ingsw.Events.ServerToClient.InitialConnectionToClient.SendNamePlayerRequestToClient;
+import it.polimi.ingsw.Events.ServerToClient.InitialConnectionToClient.SendNumPlayerRequestToClient;
+import it.polimi.ingsw.Events.ServerToClient.InitialConnectionToClient.SendRoomRequestToClient;
 import it.polimi.ingsw.Events.ServerToClient.TurnReselection;
 import it.polimi.ingsw.Events.ServerToClient.BuyDevelopmentCardTurnToClient.SendSpaceDevelopmentCardToClient;
 import it.polimi.ingsw.Events.ServerToClient.MarketTurnToClient.SendReorganizeDepositToClient;
-import it.polimi.ingsw.Events.ServerToClient.StartConnectionToClient.SendNumPlayerToClient;
-import it.polimi.ingsw.Events.ServerToClient.StartConnectionToClient.SendPlayerNameToClient;
 import it.polimi.ingsw.Model.Resource.Resource;
 import javafx.application.Platform;
 
@@ -30,28 +31,7 @@ public class VisitClass implements EventToClientVisitor {
     }
 
 
-    @Override
-    public void visit(SendPlayerNameToClient playerName) {
-        connectionToServer.setPlayerName(playerName.getPlayerName());
-        CountDownLatch threadCount = new CountDownLatch(1);
-        Platform.runLater(new Thread(() -> {
-            gui.changeScene("playerName");
-            threadCount.countDown();
-        }));
-        try {
-            threadCount.await();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
 
-    @Override
-    public void visit(SendNumPlayerToClient numPlayer) {
-        System.out.println("arrivato num player");
-        PlayerNameController controller = (PlayerNameController) gui.getCurrentController();
-        Platform.runLater(new Thread(()-> controller.arriveNumPlayer()));
-
-    }
 
     @Override
     public void visit(SendArrayLeaderCardsToClient leaderCardArray) {
@@ -142,7 +122,6 @@ public class VisitClass implements EventToClientVisitor {
     @Override
     public void visit(NewTurnToClient newTurn) {
         CountDownLatch threadCount = new CountDownLatch(1);
-        System.out.println("nuovo turno");
         Platform.runLater(new Thread(()-> {
             gui.changeScene("playerView");
             threadCount.countDown();
@@ -192,6 +171,34 @@ public class VisitClass implements EventToClientVisitor {
         }
         LorenzoViewController controller = (LorenzoViewController) gui.getCurrentController();
         controller.drawSoloAction(lorenzoAction.getLorenzoAction(), lorenzoAction.getLorenzoPosition());
+    }
+
+    @Override
+    public void visit(SendRoomRequestToClient roomRequest) {
+        CountDownLatch threadCount = new CountDownLatch(1);
+        Platform.runLater(new Thread(() -> {
+            gui.changeScene("playerName");
+            threadCount.countDown();
+        }));
+        try {
+            threadCount.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        PlayerNameController controller = (PlayerNameController) gui.getCurrentController();
+        Platform.runLater(new Thread(() -> controller.arriveRoomPlayer(roomRequest.getMessage())));
+    }
+
+    @Override
+    public void visit(SendNamePlayerRequestToClient nameRequest) {
+        PlayerNameController controller = (PlayerNameController) gui.getCurrentController();
+        Platform.runLater(new Thread(() -> controller.arriveNamePlayer(nameRequest.getRequest())));
+    }
+
+    @Override
+    public void visit(SendNumPlayerRequestToClient numPlayer) {
+        PlayerNameController controller = (PlayerNameController) gui.getCurrentController();
+        Platform.runLater(new Thread(() -> controller.arriveNumPlayer(numPlayer.getMessage())));
     }
 
 
