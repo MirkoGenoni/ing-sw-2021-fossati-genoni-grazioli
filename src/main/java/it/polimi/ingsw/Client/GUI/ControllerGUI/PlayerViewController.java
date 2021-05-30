@@ -20,11 +20,16 @@ import javafx.scene.layout.*;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.net.URL;
 import java.util.*;
 
 public class PlayerViewController implements GUIController, Initializable {
     private GUI gui;
+
+    private int faithPosition;
+    private int faithLorenzoPosition;
+
     private Map<String, Image> marketMarble;
     protected Map<String, Image> resources;
     private ArrayList<ImageView> deposit;
@@ -64,6 +69,9 @@ public class PlayerViewController implements GUIController, Initializable {
     @FXML ImageView pope0;
     @FXML ImageView pope1;
     @FXML ImageView pope2;
+    //faith
+    @FXML ImageView faith0;
+    @FXML ImageView lorenzoFaith;
 
 
     @FXML Label faith;
@@ -152,6 +160,9 @@ public class PlayerViewController implements GUIController, Initializable {
         }
 
         // visualzie faith position
+        moveFaith(faith0, player.getFaithMarkerPosition(), faithPosition);
+        System.out.println(faithPosition);
+        faithPosition = player.getFaithMarkerPosition();
         faith.setText(player.getFaithMarkerPosition() + "/24");
 
 
@@ -205,6 +216,13 @@ public class PlayerViewController implements GUIController, Initializable {
 
     public void lorenzoFaith(int lorenzoPosition){
         faithlorenzo.setText("Lorenzo Position -> " + lorenzoPosition +"/24");
+        try {
+            lorenzoFaith.setImage(new Image(getClass().getResource("/graphics/icons/croce_lorenzo.png").openStream()));
+            moveFaith(lorenzoFaith, lorenzoPosition, faithLorenzoPosition);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        faithLorenzoPosition = lorenzoPosition;
     }
 
 
@@ -274,6 +292,20 @@ public class PlayerViewController implements GUIController, Initializable {
         return numPlayer;
     }
 
+    private void moveFaith(ImageView faith, int updateFaithPosition,int  oldPosition){
+        if(updateFaithPosition-oldPosition>0){
+            for(int k= oldPosition; k<updateFaithPosition; k++){
+                if(k<2 || k>=4 && k<9 || k>=11 && k<16 || k>=18 && k<=24){
+                    faith.setLayoutX(faith.getLayoutX() + 59);
+                }else if(k>=2 && k<4 || k>=16 && k<18){
+                    faith.setLayoutY(faith.getLayoutY() - 58);
+                }else if(k>=9 && k<11){
+                    faith.setLayoutY(faith.getLayoutY() + 58);
+                }
+            }
+        }
+    }
+
     @Override
     public void setGUI(GUI gui) {
         this.gui = gui;
@@ -288,5 +320,8 @@ public class PlayerViewController implements GUIController, Initializable {
         leaderCardPlayer = new ArrayList<>(List.of(leaderPlayer0, leaderPlayer1));
         leaderText = new ArrayList<>(List.of(leaderText0, leaderText1));
         popeFavorTiles = new ArrayList<>(List.of(pope0, pope1, pope2));
+
+        faithPosition = 0;
+        faithLorenzoPosition = 0;
     }
 }
