@@ -34,11 +34,14 @@ public class MarketTurn {
         if(tmpM.contains(Marble.NOTHING)){
             try{
                 ArrayList<LeaderCard> tmpL = controllerToModel.getPlayers()[currentPlayerIndex].getPlayerBoard().getLeaderCardHandler().getLeaderCardsActive();
+                //TODO Probabile isEmpty non necessario
                 if(!tmpL.isEmpty()){                                        // controlla se ci sono carte leader attive
-                    for(int i=0; i< tmpL.size() && tmpM.contains(Marble.NOTHING); i++){
-                        if(leaderMarketWhiteChange.get(i) && tmpM.contains(Marble.NOTHING)){  // se ci sono carte leader attive di tipo marketWhiteChenge converte la marble
-                            tmpM.remove(Marble.NOTHING);
-                            tmpM.add(Marble.valueOf(tmpL.get(i).getSpecialAbility().getMaterialType().toString()));
+                    for(int i=0; i< tmpL.size() ; i++){
+                        if(leaderMarketWhiteChange.get(i)){ // se ci sono carte leader attive di tipo marketWhiteChenge converte la marble
+                            while (tmpM.contains(Marble.NOTHING)) {
+                                tmpM.remove(Marble.NOTHING);
+                                tmpM.add(Marble.valueOf(tmpL.get(i).getSpecialAbility().getMaterialType().toString()));
+                            }
                         }
                     }
                 }

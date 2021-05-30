@@ -144,7 +144,7 @@ public class NewDepositView {
         String state = "market";
 
         while (true) {
-            if (state.equals("market")) {
+            if (state.equals("market")) { //TODO FORSE MODIFICARE
                 PrintDepositChoise(this.depositState, marketReceived);
             }
             if (state.equals("additionalDeposit")) {

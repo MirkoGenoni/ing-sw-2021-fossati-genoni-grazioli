@@ -173,15 +173,14 @@ public class CLI implements EventToClientVisitor {
 
             handler.newState(this.namePlayer, players, newTurn.getMarket(), newTurn.getDevelopmentCards());
 
-        /* FOR DEBUG! PRINTS THE CORRECT STATE OF THE CURRENT PLAYER WITHOUT THE USE OF THE CLI (check for visualization)
-            for (int i = 0; i < newTurn.getPlayers().size(); i++) {
+        // TODO FOR DEBUG! PRINTS THE CORRECT STATE OF THE CURRENT PLAYER WITHOUT THE USE OF THE CLI (check for visualization)
+          /*  for (int i = 0; i < newTurn.getPlayers().size(); i++) {
                 if (newTurn.getPlayers().get(i).getPlayerNameSend().equals(namePlayer)) {
                     index = i;
                 }
             }
 
-        /* FOR DEBUG! PRINTS THE CORRECT STATE OF THE CURRENT PLAYER WITHOUT THE USE OF THE CLI (check for visualization)
-        PlayerInformationToClient player = newTurn.getPlayers().get(index);
+            PlayerInformationToClient player = newTurn.getPlayers().get(index);
 
             System.out.println("il mio deposito");
             System.out.println(player.getDeposit());
@@ -192,20 +191,20 @@ public class CLI implements EventToClientVisitor {
             System.out.println("le leadercard attive");
             System.out.println(player.getLeaderCardActive().toString());
 
-        System.out.println("le mie development");
-        for (DevelopmentCardToClient card : player.getDevelopmentCardPlayer()) {
-            if (card != null) {
-                System.out.println("id: " + card.getCardID() + " color: " + card.getColor() + " level: " + card.getLevel() + " cost: " + card.getCost() + " Req: " + card.getMaterialRequired() + " Grant: " + card.getProductionResult());
-            } else {
-                System.out.println("null");
+            System.out.println("le mie development");
+            for (DevelopmentCardToClient card : player.getDevelopmentCardPlayer()) {
+                if (card != null) {
+                    System.out.println("id: " + card.getCardID() + " color: " + card.getColor() + " level: " + card.getLevel() + " cost: " + card.getCost() + " Req: " + card.getMaterialRequired() + " Grant: " + card.getProductionResult());
+                } else {
+                    System.out.println("null");
+                }
             }
-        }
 
             System.out.println("la mia posizione");
             System.out.println(player.getFaithMarkerPosition() + "/24");
 
-        System.out.println("i miei pope");
-        System.out.println(player.getPopeFavorTiles().toString());*/
+            System.out.println("i miei pope");
+            System.out.println(player.getPopeFavorTiles().toString());*/
 
             handler.newTurn();
         }
