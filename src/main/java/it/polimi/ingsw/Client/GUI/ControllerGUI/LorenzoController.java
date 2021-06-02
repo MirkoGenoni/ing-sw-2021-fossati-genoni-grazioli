@@ -10,7 +10,7 @@ import javafx.scene.image.ImageView;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
-public class LorenzoViewController implements GUIController{
+public class LorenzoController implements GUIController{
     private GUI gui;
     private int lorenzoPosition;
 

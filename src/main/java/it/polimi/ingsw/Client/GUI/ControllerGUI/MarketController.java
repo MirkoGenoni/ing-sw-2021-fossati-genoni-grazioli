@@ -14,7 +14,7 @@ import javafx.scene.layout.GridPane;
 import java.net.URL;
 import java.util.*;
 
-public class MarketViewController implements GUIController, Initializable {
+public class MarketController implements GUIController, Initializable {
     private GUI gui;
     private Map<String, Image> marble = new HashMap<>();
 

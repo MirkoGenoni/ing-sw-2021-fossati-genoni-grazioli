@@ -36,80 +36,34 @@ public class VisitClass implements EventToClientVisitor {
     @Override
     public void visit(SendArrayLeaderCardsToClient leaderCardArray) {
         if(leaderCardArray.isInitialLeaderCards()){
-            CountDownLatch threadCount = new CountDownLatch(1);
-            Platform.runLater(new Thread(() ->{
-                gui.changeScene("initialLeaderView");
-                threadCount.countDown();
-            }));
-            try {
-                threadCount.await();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            InitialLeaderViewController controller = (InitialLeaderViewController) gui.getCurrentController();
+            changeSceneThread("initialLeaderView");
+            InitialLeaderController controller = (InitialLeaderController) gui.getCurrentController();
             Platform.runLater(new Thread(()-> controller.drawLeader(leaderCardArray.getLeaderCardArray())));
         }else{
-            CountDownLatch threadCount = new CountDownLatch(1);
-            Platform.runLater(new Thread(() ->{
-                gui.changeScene("leaderCardView");
-                threadCount.countDown();
-            }));
-            try {
-                threadCount.await();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            LeaderCardViewController controller = (LeaderCardViewController) gui.getCurrentController();
+            changeSceneThread("leaderCardView");
+            LeaderCardController controller = (LeaderCardController) gui.getCurrentController();
             Platform.runLater(new Thread(() -> controller.drawLeader(leaderCardArray.getLeaderCardArray())));
         }
     }
 
     @Override
     public void visit(SendReorganizeDepositToClient newResources) {
-        CountDownLatch threadCount = new CountDownLatch(1);
-        Platform.runLater(new Thread(() -> {
-            gui.changeScene("newDepositView");
-            threadCount.countDown();
-        }));
-        try {
-            threadCount.await();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        NewDepositViewController controller = (NewDepositViewController) gui.getCurrentController();
+        changeSceneThread("newDepositView");
+        NewDepositController controller = (NewDepositController) gui.getCurrentController();
         Platform.runLater(new Thread(() -> controller.drawDeposit(newResources.getDepositResources(), newResources.getMarketResources())));
     }
 
     @Override
     public void visit(TurnReselection message) {
-        CountDownLatch threadCount = new CountDownLatch(1);
-        Platform.runLater(new Thread(()-> {
-            gui.changeScene("playerView");
-            threadCount.countDown();
-        }));
-        try {
-            threadCount.await();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        changeSceneThread("playerView");
         PlayerViewController controller = (PlayerViewController) gui.getCurrentController();
         Platform.runLater(new Thread(() -> controller.tabTurnNotActive(false)));
     }
 
     @Override
     public void visit(SendSpaceDevelopmentCardToClient developmentCardSpace) {
-        System.out.println("dove metto la carta??");
-        CountDownLatch threadCount = new CountDownLatch(1);
-        Platform.runLater(new Thread(()-> {
-            gui.changeScene("selectDevSpaceView");
-            threadCount.countDown();
-        }));
-        try {
-            threadCount.await();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        SelectDevelopmentSpaceView controller = (SelectDevelopmentSpaceView) gui.getCurrentController();
+        changeSceneThread("selectDevSpaceView");
+        SelectDevelopmentSpaceController controller = (SelectDevelopmentSpaceController) gui.getCurrentController();
         Platform.runLater(new Thread(() -> controller.drawDevPlayer(developmentCardSpace.getDevelopmentCardSpace())));
     }
 
@@ -121,16 +75,7 @@ public class VisitClass implements EventToClientVisitor {
 
     @Override
     public void visit(NewTurnToClient newTurn) {
-        CountDownLatch threadCount = new CountDownLatch(1);
-        Platform.runLater(new Thread(()-> {
-            gui.changeScene("playerView");
-            threadCount.countDown();
-        }));
-        try {
-            threadCount.await();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        changeSceneThread("playerView");
         gui.setLastTurn(newTurn);
         PlayerViewController controller = (PlayerViewController) gui.getCurrentController();
         if(newTurn.isYourTurn()){
@@ -150,41 +95,22 @@ public class VisitClass implements EventToClientVisitor {
 
     @Override
     public void visit(SendInitialResourcesToClient numResources) {
-        ArrayList<Resource> res = new ArrayList<>();
-        for(int i=0; i<6; i++){
-            res.add(null);
-        }
-        connectionToServer.sendInitialDepositState(res);
+        changeSceneThread("initialResourcesView");
+        InitialResourcesController controller = (InitialResourcesController) gui.getCurrentController();
+        Platform.runLater(new Thread(() -> controller.arriveInitialResources(numResources.getNumResources())));
     }
 
     @Override
     public void visit(LorenzoActionToClient lorenzoAction) {
-        CountDownLatch threadCount = new CountDownLatch(1);
-        Platform.runLater(new Thread(()-> {
-            gui.changeScene("lorenzoView");
-            threadCount.countDown();
-        }));
-        try {
-            threadCount.await();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        LorenzoViewController controller = (LorenzoViewController) gui.getCurrentController();
-        controller.drawSoloAction(lorenzoAction.getLorenzoAction(), lorenzoAction.getLorenzoPosition());
+        changeSceneThread("lorenzoView");
+        LorenzoController controller = (LorenzoController) gui.getCurrentController();
+        Platform.runLater(new Thread(() -> controller.drawSoloAction(lorenzoAction.getLorenzoAction(), lorenzoAction.getLorenzoPosition())));
+
     }
 
     @Override
     public void visit(SendRoomRequestToClient roomRequest) {
-        CountDownLatch threadCount = new CountDownLatch(1);
-        Platform.runLater(new Thread(() -> {
-            gui.changeScene("playerName");
-            threadCount.countDown();
-        }));
-        try {
-            threadCount.await();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        changeSceneThread("playerName");
         PlayerNameController controller = (PlayerNameController) gui.getCurrentController();
         Platform.runLater(new Thread(() -> controller.arriveRoomPlayer(roomRequest.getMessage())));
     }
@@ -199,6 +125,19 @@ public class VisitClass implements EventToClientVisitor {
     public void visit(SendNumPlayerRequestToClient numPlayer) {
         PlayerNameController controller = (PlayerNameController) gui.getCurrentController();
         Platform.runLater(new Thread(() -> controller.arriveNumPlayer(numPlayer.getMessage())));
+    }
+
+    private void changeSceneThread(String scene){
+        CountDownLatch threadCount = new CountDownLatch(1);
+        Platform.runLater(new Thread(() -> {
+            gui.changeScene(scene);
+            threadCount.countDown();
+        }));
+        try {
+            threadCount.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
 

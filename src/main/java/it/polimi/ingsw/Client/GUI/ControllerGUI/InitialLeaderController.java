@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class InitialLeaderViewController implements GUIController, Initializable {
+public class InitialLeaderController implements GUIController, Initializable {
     private GUI gui;
     private ArrayList<ImageView> leader;
 

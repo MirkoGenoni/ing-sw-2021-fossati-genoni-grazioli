@@ -25,12 +25,7 @@ public class ControllerConnection implements EventToServerVisitor, ObserveConnec
         event.acceptServerVisitor(this);
     }
 
-    // Events that arrive from the ConnectionToClient // Questi sono per il multiplayer...
-    // -------------------------------------------------------
-    // EVENTS FOR THE START OF THE CONNECTION WITH THE SERVER
-    // -------------------------------------------------------
-
-
+    // Events that arrive from the ConnectionToClient
     // -------------------------------------------
     // EVENTS FOR THE LEADER CARD INTERACTION
     // -------------------------------------------
@@ -102,7 +97,6 @@ public class ControllerConnection implements EventToServerVisitor, ObserveConnec
 
     @Override
     public void visit(InitialResourcesChoose newInitialDepositState) {
-        System.out.println("mi è arrivat il deposito iniziale");
         controllerToModel.initialResourcesChoose(newInitialDepositState.getInitialResourcesChoose(), newInitialDepositState.getPlayerName());
     }
 

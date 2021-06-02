@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class LeaderCardViewController implements GUIController, Initializable {
+public class LeaderCardController implements GUIController, Initializable {
     private GUI gui;
 
     private ArrayList<ImageView> leaderCard;

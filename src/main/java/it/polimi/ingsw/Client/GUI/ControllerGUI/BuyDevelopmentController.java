@@ -23,7 +23,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
 
-public class BuyDevelopmentViewController implements GUIController, Initializable {
+public class BuyDevelopmentController implements GUIController, Initializable {
     private GUI gui;
     
     @FXML GridPane gridDev;

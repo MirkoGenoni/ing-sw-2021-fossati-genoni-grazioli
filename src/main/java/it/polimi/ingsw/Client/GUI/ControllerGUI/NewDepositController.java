@@ -13,17 +13,14 @@ import javafx.scene.input.MouseEvent;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.ResourceBundle;
+import java.util.*;
 
 
-public class NewDepositViewController implements GUIController, Initializable {
+public class NewDepositController implements GUIController, Initializable {
     private GUI gui;
 
-    private Map<String, Image> resources = new HashMap<>();
-    private ArrayList<ImageView> depositImg = new ArrayList<>();
+    private Map<String, Image> resources;
+    private ArrayList<ImageView> depositImg;
     private ArrayList<Integer> numDepositClicked = new ArrayList<>();
     private ArrayList<String> resourceClicked = new ArrayList<>();
 
@@ -94,43 +91,33 @@ public class NewDepositViewController implements GUIController, Initializable {
     public void save(MouseEvent mouseEvent) {
         switch (((ImageView) mouseEvent.getSource()).getId()){
             case "deposit1":
-                System.out.println("cliccato deposit1");
                 numDepositClicked.add(0);
                 break;
             case "deposit2":
-                System.out.println("cliccato deposit2");
                 numDepositClicked.add(1);
                 break;
             case "deposit3":
-                System.out.println("cliccato deposit3");
                 numDepositClicked.add(2);
                 break;
             case "deposit4":
-                System.out.println("cliccato deposit4");
                 numDepositClicked.add(3);
                 break;
             case "deposit5":
-                System.out.println("cliccato deposit5");
                 numDepositClicked.add(4);
                 break;
             case "deposit6":
-                System.out.println("cliccato deposit6");
                 numDepositClicked.add(5);
                 break;
             case "stoneImg":
-                System.out.println("cliccato stone");
                 resourceClicked.add("stone");
                 break;
             case "shieldImg":
-                System.out.println("cliccato shield");
                 resourceClicked.add("shield");
                 break;
             case "servantImg":
-                System.out.println("cliccato servant");
                 resourceClicked.add("servant");
                 break;
             case "coinImg":
-                System.out.println("cliccato coin");
                 resourceClicked.add("coin");
                 break;
 
@@ -206,28 +193,12 @@ public class NewDepositViewController implements GUIController, Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
-        for(Resource r : Resource.values()){
-            try {
-                FileInputStream input = new FileInputStream("src/main/resources/graphics/resource/" + r.name().toLowerCase() + ".png");
-                Image tmpI = new Image(input);
-                resources.put(r.name().toLowerCase(), tmpI);
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
-        }
-        depositImg.add(deposit1);
-        depositImg.add(deposit2);
-        depositImg.add(deposit3);
-        depositImg.add(deposit4);
-        depositImg.add(deposit5);
-        depositImg.add(deposit6);
-
-
+        depositImg = new ArrayList<>(List.of(deposit1, deposit2, deposit3, deposit4, deposit5, deposit6));
     }
 
     @Override
     public void setGUI(GUI gui) {
         this.gui = gui;
+        resources = gui.getResources();
     }
 }

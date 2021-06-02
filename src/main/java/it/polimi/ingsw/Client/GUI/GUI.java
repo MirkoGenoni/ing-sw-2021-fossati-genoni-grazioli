@@ -98,8 +98,8 @@ public class GUI extends Application {
     @Override
     public void start(Stage stage) {
         loadGraphics();
-        ArrayList<String> nameScene = new ArrayList<String>(List.of("setup", "playerName","initialLeaderView", "leaderCardView" ,"playerView", "newDepositView",
-                "marketView", "buyDevelopmentView", "selectDevSpaceView", "productionView", "lorenzoView"));
+        ArrayList<String> nameScene = new ArrayList<String>(List.of("setup", "playerName", "initialResourcesView","initialLeaderView", "leaderCardView",
+                "playerView", "newDepositView", "marketView", "buyDevelopmentView", "selectDevSpaceView", "productionView", "lorenzoView"));
         for (String s : nameScene) {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/" + s + ".fxml"));
             try {

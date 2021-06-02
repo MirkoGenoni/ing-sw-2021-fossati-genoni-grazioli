@@ -29,6 +29,8 @@ public class ControllerToModel {
     private int numPlayer;
     private int firstPlayer;
 
+    private int initialResourceArrive;
+
     // type of turn
     private MarketTurn marketTurn;
     private BuyDevelopmentCardTurn buyDevelopmentCardTurn;
@@ -43,6 +45,7 @@ public class ControllerToModel {
     public ControllerToModel() {
         this.connectionsToClient = new ArrayList<>();
         numPlayer = 0;
+        initialResourceArrive =0;
     }
 
     public int getNumPlayer() {
@@ -98,6 +101,7 @@ public class ControllerToModel {
             firstPlayer=currentPlayerIndex;
             System.out.println("il primo giocatre ha indirizzo: " + currentPlayerIndex);
             initialResources(currentPlayerIndex);
+            /*
             for(int i=0; i<connectionsToClient.size(); i++){
                 try{
                     connectionsToClient.get(i).sendArrayLeaderCards(multiGame.getPlayers()[i].getPlayerBoard().getLeaderCardHandler().getLeaderCardsAvailable(), true, players[i]);
@@ -105,6 +109,8 @@ public class ControllerToModel {
                     e.printStackTrace();
                 }
             }
+
+             */
             this.activePlayer = players[0];
             turnNumber = 0;
             currentPlayerIndex --; // serve perchè il nextTurn incrementa il numero di giocatori
@@ -191,6 +197,16 @@ public class ControllerToModel {
                 try {
                     players[i].getPlayerBoard().getResourceHandler().newDepositState(initialDepositState);
                 } catch (ResourceException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        initialResourceArrive++;
+        if(initialResourceArrive == numPlayer-1){
+            for(int i=0; i<connectionsToClient.size(); i++){
+                try{
+                    connectionsToClient.get(i).sendArrayLeaderCards(multiGame.getPlayers()[i].getPlayerBoard().getLeaderCardHandler().getLeaderCardsAvailable(), true, players[i]);
+                } catch (LeaderCardException e) {
                     e.printStackTrace();
                 }
             }

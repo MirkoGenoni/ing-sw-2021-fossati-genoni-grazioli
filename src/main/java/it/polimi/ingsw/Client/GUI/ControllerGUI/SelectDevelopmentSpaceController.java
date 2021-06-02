@@ -21,7 +21,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
-public class SelectDevelopmentSpaceView implements GUIController, Initializable {
+public class SelectDevelopmentSpaceController implements GUIController, Initializable {
     private GUI gui;
     private ArrayList<ImageView> developSpacePlayer = new ArrayList<>();
     private ArrayList<Integer> spaceSelected = new ArrayList<>();

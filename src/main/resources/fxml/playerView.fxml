@@ -65,12 +65,20 @@
                      <font>
                         <Font size="15.0" />
                      </font></Label>
-                  <Label fx:id="faith" layoutX="1071.0" layoutY="150.0" prefHeight="24.0" prefWidth="80.0" textFill="WHITE" />
-                  <Label fx:id="faithlorenzo" layoutX="914.0" layoutY="221.0" prefHeight="17.0" prefWidth="254.0" textFill="WHITE" />
                   <ImageView fx:id="devPlayer0" fitHeight="323.0" fitWidth="210.0" layoutX="463.0" layoutY="419.0" pickOnBounds="true" preserveRatio="true" />
                   <ImageView fx:id="devPlayer1" fitHeight="323.0" fitWidth="210.0" layoutX="694.0" layoutY="419.0" pickOnBounds="true" preserveRatio="true" />
                   <ImageView fx:id="devPlayer2" fitHeight="323.0" fitWidth="210.0" layoutX="930.0" layoutY="419.0" pickOnBounds="true" preserveRatio="true" />
                   <Button fx:id="showLeader" layoutX="62.0" layoutY="29.0" mnemonicParsing="false" onAction="#showLeader" prefHeight="26.0" prefWidth="64.0" text="Leader" />
+                  <ImageView fx:id="pope0" fitHeight="96.0" fitWidth="90.0" layoutX="292.0" layoutY="114.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="pope1" fitHeight="96.0" fitWidth="90.0" layoutX="586.0" layoutY="56.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="pope2" fitHeight="96.0" fitWidth="90.0" layoutX="939.0" layoutY="114.0" pickOnBounds="true" preserveRatio="true" />
+                  <Label fx:id="name" layoutX="561.0" layoutY="21.0" prefHeight="17.0" prefWidth="140.0" textFill="WHITE" />
+                  <ImageView fx:id="lorenzoFaith" fitHeight="53.0" fitWidth="53.0" layoutX="46.0" layoutY="164.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="faith0" fitHeight="53.0" fitWidth="53.0" layoutX="52.0" layoutY="164.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../graphics/resource/croce.png" />
+                     </image>
+                  </ImageView>
                   <AnchorPane fx:id="leaderPane" disable="true" layoutX="-2.0" prefHeight="830.0" prefWidth="250.0" style="-fx-background-color: #C9C09D;" visible="false">
                      <children>
                         <Button fx:id="hideLeader" layoutX="70.0" layoutY="29.0" mnemonicParsing="false" onAction="#hideLeader" text="Hide" />
@@ -88,16 +96,6 @@
                         </Label>
                      </children>
                   </AnchorPane>
-                  <ImageView fx:id="pope0" fitHeight="96.0" fitWidth="90.0" layoutX="292.0" layoutY="114.0" pickOnBounds="true" preserveRatio="true" />
-                  <ImageView fx:id="pope1" fitHeight="96.0" fitWidth="90.0" layoutX="586.0" layoutY="56.0" pickOnBounds="true" preserveRatio="true" />
-                  <ImageView fx:id="pope2" fitHeight="96.0" fitWidth="90.0" layoutX="939.0" layoutY="114.0" pickOnBounds="true" preserveRatio="true" />
-                  <Label fx:id="name" layoutX="561.0" layoutY="21.0" prefHeight="17.0" prefWidth="140.0" textFill="WHITE" />
-                  <ImageView fx:id="lorenzoFaith" fitHeight="53.0" fitWidth="53.0" layoutX="46.0" layoutY="164.0" pickOnBounds="true" preserveRatio="true" />
-                  <ImageView fx:id="faith0" fitHeight="53.0" fitWidth="53.0" layoutX="52.0" layoutY="164.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../graphics/resource/croce.png" />
-                     </image>
-                  </ImageView>
                </children></AnchorPane>
       </content>
     </Tab>

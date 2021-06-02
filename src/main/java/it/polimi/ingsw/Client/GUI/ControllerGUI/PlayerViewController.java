@@ -3,10 +3,8 @@ package it.polimi.ingsw.Client.GUI.ControllerGUI;
 import it.polimi.ingsw.Client.GUI.GUI;
 import it.polimi.ingsw.Events.ServerToClient.NewTurnToClient;
 import it.polimi.ingsw.Events.ServerToClient.SupportClass.DevelopmentCardToClient;
-import it.polimi.ingsw.Events.ServerToClient.SupportClass.LeaderCardToClient;
 import it.polimi.ingsw.Events.ServerToClient.SupportClass.MarketToClient;
 import it.polimi.ingsw.Events.ServerToClient.SupportClass.PlayerInformationToClient;
-import it.polimi.ingsw.Model.Market.Marble;
 import it.polimi.ingsw.Model.Resource.Resource;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -17,7 +15,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -31,7 +28,7 @@ public class PlayerViewController implements GUIController, Initializable {
     private int faithLorenzoPosition;
 
     private Map<String, Image> marketMarble;
-    protected Map<String, Image> resources;
+    private Map<String, Image> resources;
     private ArrayList<ImageView> deposit;
     private NewTurnToClient turnTmp;
 
@@ -74,9 +71,6 @@ public class PlayerViewController implements GUIController, Initializable {
     @FXML ImageView lorenzoFaith;
 
 
-    @FXML Label faith;
-    @FXML Label faithlorenzo;
-
     // table
     @FXML GridPane gridMarket;
     @FXML ImageView marbleOut;
@@ -86,9 +80,7 @@ public class PlayerViewController implements GUIController, Initializable {
     @FXML Button showLeader;
     @FXML Button hideLeader;
 
-
-
-
+    @FXML AnchorPane tabTurn;
 
 
 
@@ -161,9 +153,7 @@ public class PlayerViewController implements GUIController, Initializable {
 
         // visualzie faith position
         moveFaith(faith0, player.getFaithMarkerPosition(), faithPosition);
-        System.out.println(faithPosition);
         faithPosition = player.getFaithMarkerPosition();
-        faith.setText(player.getFaithMarkerPosition() + "/24");
 
 
 
@@ -215,7 +205,6 @@ public class PlayerViewController implements GUIController, Initializable {
     }
 
     public void lorenzoFaith(int lorenzoPosition){
-        faithlorenzo.setText("Lorenzo Position -> " + lorenzoPosition +"/24");
         try {
             lorenzoFaith.setImage(new Image(getClass().getResource("/graphics/icons/croce_lorenzo.png").openStream()));
             moveFaith(lorenzoFaith, lorenzoPosition, faithLorenzoPosition);
@@ -226,23 +215,22 @@ public class PlayerViewController implements GUIController, Initializable {
     }
 
 
-    @FXML AnchorPane tabTurn;
+
 
     public void tabTurnNotActive(boolean b){
         tabTurn.setDisable(b);
     }
 
     public void marketTurn(ActionEvent actionEvent) {
-
         gui.changeScene("marketView");
-        MarketViewController controller = (MarketViewController) gui.getCurrentController();
+        MarketController controller = (MarketController) gui.getCurrentController();
         int numPlayer = findPlayerIndex();
         controller.drawMarket(turnTmp.getMarket().getGrid(), turnTmp.getMarket().getOutMarble(), turnTmp.getPlayers().get(numPlayer).getLeaderCardActive());
     }
 
     public void buyDevelopmentTurn(ActionEvent actionEvent) {
         gui.changeScene("buyDevelopmentView");
-        BuyDevelopmentViewController controller = (BuyDevelopmentViewController) gui.getCurrentController();
+        BuyDevelopmentController controller = (BuyDevelopmentController) gui.getCurrentController();
         int numPlayer = findPlayerIndex();
         controller.drawDevelopment(turnTmp.getDevelopmentCards(), turnTmp.getPlayers().get(numPlayer).getDeposit(), turnTmp.getPlayers().get(numPlayer).getStrongBox());
     }

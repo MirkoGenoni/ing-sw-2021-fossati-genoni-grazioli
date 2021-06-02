@@ -10,18 +10,24 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class PlayerNameController implements GUIController, Initializable {
     private GUI gui;
 
     @FXML Button buttonName;
-    @FXML Button buttonNum;
     @FXML Button buttonRoom;
     @FXML TextField textName;
     @FXML Label text;
     @FXML Label message;
     @FXML CheckBox booleanRoom;
+
+    @FXML Button numPlayer1;
+    @FXML Button numPlayer2;
+    @FXML Button numPlayer3;
+    @FXML Button numPlayer4;
 
     public void arriveRoomPlayer(String message){
         text.setText(message);
@@ -45,12 +51,13 @@ public class PlayerNameController implements GUIController, Initializable {
         buttonName.setOpacity(0);
         buttonName.setDisable(true);
         text.setText(message);
-        buttonNum.setDisable(false);
-        buttonNum.setOpacity(1);
+        textName.setDisable(true);
+        textName.setOpacity(0);
+        ArrayList<Button> tmp = new ArrayList<>(List.of(numPlayer1, numPlayer2, numPlayer3, numPlayer4));
+        tmp.forEach(but -> but.setDisable(false));
+        tmp.forEach(but -> but.setOpacity(1));
 
     }
-
-
 
     public void sendName(ActionEvent actionEvent) {
         String playerName = textName.getText();
@@ -60,17 +67,35 @@ public class PlayerNameController implements GUIController, Initializable {
         gui.getConnectionToServer().setPlayerName(playerName);
     }
 
-
-    public void sendNum(ActionEvent actionEvent) {
-        int num = Integer.parseInt(textName.getText());
-        textName.clear();
-        gui.getConnectionToServer().sendNumPlayer(num);
-    }
-
     public void chooseRoom(ActionEvent actionEvent) {
         int room = Integer.parseInt(textName.getText());
         textName.clear();
         gui.getConnectionToServer().sendRoom(room, booleanRoom.isSelected());
+    }
+
+    public void selected(ActionEvent actionEvent) {
+        if(booleanRoom.isSelected()){
+            booleanRoom.setSelected(true);
+        }else{
+            booleanRoom.setSelected(false);
+        }
+    }
+
+
+    public void sendOne(ActionEvent actionEvent) {
+        sendNum(1);
+    }
+
+    public void sendTwo(ActionEvent actionEvent) {
+        sendNum(2);
+    }
+
+    public void sendThree(ActionEvent actionEvent) {
+        sendNum(3);
+    }
+
+    public void sendFour(ActionEvent actionEvent) {
+        sendNum(4);
     }
 
 
@@ -84,12 +109,10 @@ public class PlayerNameController implements GUIController, Initializable {
         text.setText("Choose your nickname");
     }
 
-
-    public void selected(ActionEvent actionEvent) {
-        if(booleanRoom.isSelected()){
-            booleanRoom.setSelected(true);
-        }else{
-            booleanRoom.setSelected(false);
-        }
+    private void sendNum(int num){
+        gui.getConnectionToServer().sendNumPlayer(num);
     }
+
+
+
 }
