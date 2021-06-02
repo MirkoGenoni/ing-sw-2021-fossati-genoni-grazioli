@@ -42,8 +42,8 @@ public class CLIHandler {
         this.developmentCardForSale = new DevelopmentCardView(developmentCardToBuy);
     }
 
-    public void leaderCardSelection(ArrayList<LeaderCardToClient> received, boolean initial){
-            this.leaderCardSelection = new LeaderCardView(received);
+    public void leaderCardSelection(ArrayList<LeaderCardToClient> received, boolean initial, Map<String, Integer> totalReceived){
+            this.leaderCardSelection = new LeaderCardView(received, totalReceived);
             if(initial){
                 int[] receive = leaderCardSelection.StartInitialLeaderCardView();
                 this.connection.sendDiscardInitialLeaderCards(receive[0], receive[1]);

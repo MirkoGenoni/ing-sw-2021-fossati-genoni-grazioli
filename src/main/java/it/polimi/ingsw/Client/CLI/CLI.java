@@ -77,7 +77,7 @@ public class CLI implements EventToClientVisitor {
     // -------------------------------------------
     @Override
     public void visit(SendArrayLeaderCardsToClient leaderCardArray) {
-        handler.leaderCardSelection(leaderCardArray.getLeaderCardArray(), leaderCardArray.isInitialLeaderCards());
+        handler.leaderCardSelection(leaderCardArray.getLeaderCardArray(), leaderCardArray.isInitialLeaderCards(), leaderCardArray.getNumberOfDevelopmentCards());
         /*
         if(leaderCardArray.isInitialLeaderCards()) {
             LeaderCardView leaderCardView = new LeaderCardView(leaderCardArray.getLeaderCardArray());
@@ -173,8 +173,8 @@ public class CLI implements EventToClientVisitor {
 
             handler.newState(this.namePlayer, players, newTurn.getMarket(), newTurn.getDevelopmentCards());
 
-        // TODO FOR DEBUG! PRINTS THE CORRECT STATE OF THE CURRENT PLAYER WITHOUT THE USE OF THE CLI (check for visualization)
-          /*  for (int i = 0; i < newTurn.getPlayers().size(); i++) {
+        /* FOR DEBUG! PRINTS THE CORRECT STATE OF THE CURRENT PLAYER WITHOUT THE USE OF THE CLI (check for visualization)
+            for (int i = 0; i < newTurn.getPlayers().size(); i++) {
                 if (newTurn.getPlayers().get(i).getPlayerNameSend().equals(namePlayer)) {
                     index = i;
                 }
@@ -194,7 +194,7 @@ public class CLI implements EventToClientVisitor {
             System.out.println("le mie development");
             for (DevelopmentCardToClient card : player.getDevelopmentCardPlayer()) {
                 if (card != null) {
-                    System.out.println("id: " + card.getCardID() + " color: " + card.getColor() + " level: " + card.getLevel() + " cost: " + card.getCost() + " Req: " + card.getMaterialRequired() + " Grant: " + card.getProductionResult());
+                   System.out.println("id: " + card.getCardID() + " color: " + card.getColor() + " level: " + card.getLevel() + " cost: " + card.getCost() + " Req: " + card.getMaterialRequired() + " Grant: " + card.getProductionResult());
                 } else {
                     System.out.println("null");
                 }

@@ -141,10 +141,11 @@ public class NewDepositView {
 
         String input = "";
 
-        String state = "market";
+        String state = "deposit";
 
         while (true) {
-            if (state.equals("market")) { //TODO FORSE MODIFICARE
+
+            if (state.equals("deposit")) {
                 PrintDepositChoise(this.depositState, marketReceived);
             }
             if (state.equals("additionalDeposit")) {
@@ -162,15 +163,20 @@ public class NewDepositView {
                 if (formatInput[0].equals("additionalDeposit") && this.additionalDepositState.size() != 0) {
                     state = "additionalDeposit";
                 }
-                if (additionalDepositState.size() == 0) {
+                else if (formatInput[0].equals("additionalDeposit")) {
                     Messages message = new Messages("YOU DON'T HAVE ANY ADDITIONAL DEPOSIT", true);
                     message.printMessage();
                 }
-                if (formatInput[0].equals("market")) {
-                    state = "market";
+                else if (formatInput[0].equals("deposit")) {
+                    state = "deposit";
                 }
-                if (formatInput[0].equals("done"))
+                else if (formatInput[0].equals("done")) {
                     break;
+                } else {
+                    Messages message = new Messages("INSERT A CORRECT INPUT PLEASE", true);
+                    message.printMessage();
+                    continue;
+                }
             }
 
             if (formatInput.length == 2) {
@@ -180,7 +186,7 @@ public class NewDepositView {
                 int num = -1;
                 formatInput[1] = formatInput[1].trim();
 
-                //trasformo la seconda stringa in un numero
+                //trasformo la seconda stringa in un numero e verifico che lo sia
                 try {
                     num = Integer.parseInt(formatInput[1]);
                 } catch (IllegalArgumentException e) {
@@ -189,56 +195,47 @@ public class NewDepositView {
                     continue;
                 }
 
-
-                if((this.type.size()==4 && (num<1 || num>5)) || (type.size()==2 && (num<1 || num>2))){
-                    Messages message = new Messages("INSERT A CORRECT INPUT PLEASE", true);
-                    message.printMessage();
-                    continue;
-                }
-
                 formatInput[0] = formatInput[0].toUpperCase();
 
-                if (state.equals("market")) {
+                if (state.equals("deposit")) {
                     //tolgo il materiale dalle risorse ottenute dal market da inserire in deposito
                     if (marketReceived.containsKey(formatInput[0]) && num > 0 && num < 7)
-                        if (marketReceived.get(formatInput[0]) - 1 > -1) {
-                            marketReceived.put(formatInput[0], marketReceived.get(formatInput[0]) - 1);
-
-                            //aggiungo il materiale tolto dal deposito ai materiali disponibili
-                            if (marketReceived.containsKey(formatInput[0]) && depositState.get(num - 1) != null)
-                                marketReceived.put(depositState.get(num - 1).toString(), marketReceived.get(depositState.get(num - 1).toString()) + 1);
-
-                            //aggiungo il materiale tolto dai materiali disponibili al deposito
-                            if (marketReceived.containsKey(formatInput[0]))
-                                depositState.set(num - 1, ResourceIcon.valueOf(formatInput[0]));
-                        } else {
-                            Messages message = new Messages("INSERT A CORRECT INPUT PLEASE", true);
-                        }
+                        resourceHandle(this.depositState, formatInput[0], num);
                 }
 
                 if (state.equals("additionalDeposit")) {
-                    if ((formatInput[0].equals("NOTHING") || formatInput[0].equals(type.get(num - 1).toString()))
-                            && marketReceived.containsKey(formatInput[0]) && num > 0 && num < additionalDepositState.size() + 1) {
 
-                        if (marketReceived.get(formatInput[0]) - 1 > -1) {
-                            marketReceived.put(formatInput[0], marketReceived.get(formatInput[0]) - 1);
-
-                            //aggiungo il materiale tolto dal deposito ai materiali disponibili
-                            if (marketReceived.containsKey(formatInput[0]) && additionalDepositState.get(num - 1) != null)
-                                marketReceived.put(additionalDepositState.get(num - 1).toString(), marketReceived.get(additionalDepositState.get(num - 1).toString()) + 1);
-
-                            //aggiungo il materiale tolto dai materiali disponibili al deposito
-                            if (marketReceived.containsKey(formatInput[0]))
-                                additionalDepositState.set(num - 1, ResourceIcon.valueOf(formatInput[0]));
-                        }
-                    } else {
+                    if((this.type.size()==4 && (num<1 || num>5)) || (type.size()==2 && (num<1 || num>2))){
                         Messages message = new Messages("INSERT A CORRECT INPUT PLEASE", true);
+                        message.printMessage();
+                        continue;
                     }
+
+                    if ((formatInput[0].equals("NOTHING") || formatInput[0].equals(type.get(num - 1).toString()))
+                            && marketReceived.containsKey(formatInput[0]) && num > 0 && num < additionalDepositState.size() + 1)
+                        resourceHandle(this.additionalDepositState, formatInput[0], num);
                 }
             }
 
         }
 
+    }
+
+    private void resourceHandle(ArrayList<ResourceIcon> deposit, String formatInput, int num){
+        if (marketReceived.get(formatInput) - 1 > -1) {
+            marketReceived.put(formatInput, marketReceived.get(formatInput) - 1);
+
+            //aggiungo il materiale tolto dal deposito ai materiali disponibili
+            if (marketReceived.containsKey(formatInput) && deposit.get(num - 1) != null)
+                marketReceived.put(deposit.get(num - 1).toString(), marketReceived.get(deposit.get(num - 1).toString()) + 1);
+
+            //aggiungo il materiale tolto dai materiali disponibili al deposito
+            if (marketReceived.containsKey(formatInput))
+                deposit.set(num - 1, ResourceIcon.valueOf(formatInput));
+        } else {
+            Messages message = new Messages("INSERT A CORRECT INPUT PLEASE", true);
+            message.printMessage();
+        }
     }
 
     public void PrintDepositChoise(ArrayList<ResourceIcon> incoming, Map<String, Integer> acquired) {
@@ -307,27 +304,7 @@ public class NewDepositView {
                 " ┃                                                                                                                       ┃ \n" +
                 " ┃                                                                                                                       ┃ ");
 
-        if (additionalDepositState.size() == 4) {
-            System.out.print(" ┃                                         " + this.additionalDepositState.get(0).returnLine(0) + "                          " + this.additionalDepositState.get(1).returnLine(0) + "                          ┃ \n" +
-                    " ┃                                         " + this.additionalDepositState.get(0).returnLine(1) + "                          " + this.additionalDepositState.get(1).returnLine(1) + "                          ┃ \n" +
-                    " ┃        SPECIAL ABILITY                  " + this.additionalDepositState.get(0).returnLine(2) + "                          " + this.additionalDepositState.get(1).returnLine(2) + "                          ┃ \n" +
-                    " ┃            DEPOSIT                      " + this.additionalDepositState.get(0).returnLine(3) + "                          " + this.additionalDepositState.get(1).returnLine(3) + "                          ┃ \n" +
-                    " ┃             ( "+colorSymbol(0) + " )                       " + this.additionalDepositState.get(0).returnLine(4) + "                          " + this.additionalDepositState.get(1).returnLine(4) + "                          ┃ \n" +
-                    " ┃                                         " + this.additionalDepositState.get(0).returnLine(5) + "                          " + this.additionalDepositState.get(1).returnLine(5) + "                          ┃ \n" +
-                    " ┃                                              -1-                                    -2-                               ┃ \n" +
-                    " ┃                                                                                                                       ┃ \n" +
-                    " ┃                                                                                                                       ┃ \n" +
-                    " ┃                                                                                                                       ┃ \n" +
-                    " ┃                                                                                                                       ┃ \n" +
-                    " ┃                                         " + this.additionalDepositState.get(2).returnLine(0) + "                          " + this.additionalDepositState.get(3).returnLine(0) + "                          ┃ \n" +
-                    " ┃                                         " + this.additionalDepositState.get(2).returnLine(1) + "                          " + this.additionalDepositState.get(3).returnLine(1) + "                          ┃ \n" +
-                    " ┃        SPECIAL ABILITY                  " + this.additionalDepositState.get(2).returnLine(2) + "                          " + this.additionalDepositState.get(3).returnLine(2) + "                          ┃ \n" +
-                    " ┃            DEPOSIT                      " + this.additionalDepositState.get(2).returnLine(3) + "                          " + this.additionalDepositState.get(3).returnLine(3) + "                          ┃ \n" +
-                    " ┃             ( "+ colorSymbol(2) + " )                       " + this.additionalDepositState.get(2).returnLine(4) + "                          " + this.additionalDepositState.get(3).returnLine(4) + "                          ┃ \n" +
-                    " ┃                                         " + this.additionalDepositState.get(2).returnLine(5) + "                          " + this.additionalDepositState.get(3).returnLine(5) + "                          ┃ \n" +
-                    " ┃                                              -3-                                    -4-                               ┃ \n");
-        }
-        if (additionalDepositState.size() == 2) {
+        if (additionalDepositState.size() == 2 || additionalDepositState.size() == 4) {
             System.out.print(" ┃                                                                                                                       ┃ \n" +
                     " ┃                                                                                                                       ┃ \n" +
                     " ┃                                                                                                                       ┃ \n" +
@@ -347,6 +324,15 @@ public class NewDepositView {
                     " ┃                                                                                                                       ┃ \n" +
                     " ┃                                                                                                                       ┃ \n");
 
+        }
+        if (additionalDepositState.size() == 4) {
+            System.out.print(" ┃                                         " + this.additionalDepositState.get(2).returnLine(0) + "                          " + this.additionalDepositState.get(3).returnLine(0) + "                          ┃ \n" +
+                    " ┃                                         " + this.additionalDepositState.get(2).returnLine(1) + "                          " + this.additionalDepositState.get(3).returnLine(1) + "                          ┃ \n" +
+                    " ┃        SPECIAL ABILITY                  " + this.additionalDepositState.get(2).returnLine(2) + "                          " + this.additionalDepositState.get(3).returnLine(2) + "                          ┃ \n" +
+                    " ┃            DEPOSIT                      " + this.additionalDepositState.get(2).returnLine(3) + "                          " + this.additionalDepositState.get(3).returnLine(3) + "                          ┃ \n" +
+                    " ┃             ( " + colorSymbol(2) + " )                       " + this.additionalDepositState.get(2).returnLine(4) + "                          " + this.additionalDepositState.get(3).returnLine(4) + "                          ┃ \n" +
+                    " ┃                                         " + this.additionalDepositState.get(2).returnLine(5) + "                          " + this.additionalDepositState.get(3).returnLine(5) + "                          ┃ \n" +
+                    " ┃                                              -3-                                    -4-                               ┃ \n");
         }
         System.out.print("\u001B[0;00m" + " ┃                                                                                                                       ┃ \n" +
                 " ┃                                                                                                                       ┃ \n" +

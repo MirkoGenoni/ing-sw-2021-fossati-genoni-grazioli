@@ -1,14 +1,16 @@
 package it.polimi.ingsw.Client.CLI.Views.LeaderCardView;
 
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.Scanner;
 
 import it.polimi.ingsw.Events.ServerToClient.SupportClass.LeaderCardToClient;
 
 public class LeaderCardView {
     ArrayList<LeaderCardVisualization> cards;
+    Map<String, Integer> totalResource;
 
-    public LeaderCardView(ArrayList<LeaderCardToClient> leaderCardArray){
+    public LeaderCardView(ArrayList<LeaderCardToClient> leaderCardArray, Map<String, Integer> totalResource){
 
         cards = new ArrayList<>();
 
@@ -21,6 +23,10 @@ public class LeaderCardView {
 
         if (leaderCardArray.size() < 2) {
             cards.add(new LeaderCardVisualization("nothing"));
+        }
+
+        if(totalResource.size()>0){
+            this.totalResource = totalResource;
         }
     }
 
@@ -113,9 +119,13 @@ public class LeaderCardView {
         ArrayList<Integer> send = new ArrayList<>();
         send.add(0);
         send.add(0);
+        String currentState = "leaderCard";
 
         while(true){
-            printCardRack(this.cards, state);
+            if(currentState.equals("leaderCard"))
+                printCardRack(this.cards, state);
+            if(currentState.equals("totalResource"))
+                printCurrentState();
 
             String input = "";
             Scanner in = new Scanner(System.in);
@@ -124,9 +134,16 @@ public class LeaderCardView {
             //separo le due stringhe usando la virgola come separatore
             String[] formatInput = input.split(",", 2);
 
-            if(formatInput.length == 1)
-                if(formatInput[0].equals("done"))
+            if(formatInput.length == 1) {
+                if (formatInput[0].equals("done"))
                     return send;
+
+                if(formatInput[0].equals("leaderCard"))
+                    currentState = "leaderCard";
+
+                if(formatInput[0].equals("totalResource"))
+                    currentState = "totalResource";
+            }
 
             if(formatInput.length == 2) {
                 //elimino eventuali spazi iniziali dalle due stringhe
@@ -193,8 +210,84 @@ public class LeaderCardView {
                 "                               |       Type the action you want to perform followed       |                                \n" +
                 "                               |    by comma and the number of card you want to act on    |                                \n" +
                 "                               |      -discard-         -activate-         -nothing-      |                                \n" +
-                "                                                                                                                     \n" +
+                "                                                                                                                    \n" +
+                "                      (type totalResource to see the total amount of resources and development card)\n\n" +
                 "                                                 ");
+    }
+
+    private void printCurrentState(){
+        System.out.print("\u001B[2J\u001B[3J\u001B[H");
+
+        System.out.print("                                                     ╔═══════════════════╗\n" +
+                "                                                     ║   TOTAL COUNTER   ║\n" +
+                "                                                     ╚═══════════════════╝\n" +
+                " ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓ \n" +
+                " ┃                                                                                                                       ┃ \n" +
+                " ┃                                                                                                                       ┃ \n" +
+                " ┃                                                                                                                       ┃ \n" +
+                " ┃                                                                                                                       ┃ \n" +
+                " ┃                   DEVELOPMENT CARD ( "+ "\u001B[32m" +"█" + "\u001B[0m"+ " ):                                   DEVELOPMENT CARD ( "+ "\u001B[36m" +"█" + "\u001B[0m"+ " ):                   ┃ \n" +
+                " ┃                                                                                                                       ┃ \n" +
+                " ┃                      LEVEL 1: " + getTotal("GREEN level: 1") +"                                                LEVEL 1: " + getTotal("BLUE level: 1") +"                             ┃ \n" +
+                " ┃                                                                                                                       ┃ \n" +
+                " ┃                      LEVEL 2: " + getTotal("GREEN level: 2") +"                                                LEVEL 2: " + getTotal("BLUE level: 2") +"                             ┃ \n" +
+                " ┃                                                                                                                       ┃ \n" +
+                " ┃                      LEVEL 3: " + getTotal("GREEN level: 3") +"                                                LEVEL 3: " + getTotal("BLUE level: 3") +"                             ┃ \n" +
+                " ┃                                                                                                                       ┃ \n" +
+                " ┃                                                                                                                       ┃ \n" +
+                " ┃                                                                                                                       ┃ \n" +
+                " ┃                                                                                                                       ┃ \n" +
+                " ┃                                                                                                                       ┃ \n" +
+                " ┃                   DEVELOPMENT CARD ( "+ "\u001B[93m" +"█" + "\u001B[0m"+ " ):                                   DEVELOPMENT CARD ( "+ "\u001B[35m" +"█" + "\u001B[0m"+ " ):                   ┃ \n" +
+                " ┃                                                                                                                       ┃ \n" +
+                " ┃                      LEVEL 1: " + getTotal("YELLOW level: 1") +"                                                LEVEL 1: " + getTotal("PURPLE level: 1") +"                             ┃ \n" +
+                " ┃                                                                                                                       ┃ \n" +
+                " ┃                      LEVEL 2: " + getTotal("YELLOW level: 2") +"                                                LEVEL 2: " + getTotal("PURPLE level: 2") +"                             ┃ \n" +
+                " ┃                                                                                                                       ┃ \n" +
+                " ┃                      LEVEL 3: " + getTotal("YELLOW level: 3") +"                                                LEVEL 3: " + getTotal("PURPLE level: 3") +"                             ┃ \n" +
+                " ┃                                                                                                                       ┃ \n" +
+                " ┃                                                                                                                       ┃ \n" +
+                " ┃                                                                                                                       ┃ \n" +
+                " ┃                                                                                                                       ┃ \n" +
+                " ┃              ┌────────────────────────────────────────────────────────────────────────────────────────┐               ┃ \n" +
+                " ┃              │                                                                                        │               ┃ \n" +
+                " ┃              │ COIN: ");
+
+        if(getTotal("COIN")<10)
+            System.out.print("0" + getTotal("COIN") + "                SERVANT: ");
+        else
+            System.out.print(getTotal("COIN") + "                SHIELD: ");
+
+        if(getTotal("COIN")<10)
+            System.out.print("0" + getTotal("SERVANT") + "                SHIELD: ");
+        else
+            System.out.print(getTotal("SERVANT") + "                SHIELD: ");
+
+        if(getTotal("COIN")<10)
+            System.out.print("0" + getTotal("SHIELD") + "                STONE: ");
+        else
+            System.out.print(getTotal("SHIELD") + "                STONE: ");
+
+        if(getTotal("COIN")<10)
+            System.out.print("0" + getTotal("STONE") + " │               ┃ \n");
+        else
+            System.out.print(getTotal("STONE") + " │               ┃ \n");
+
+        System.out.print(" ┃              │                                                                                        │               ┃ \n" +
+                " ┃              └────────────────────────────────────────────────────────────────────────────────────────┘               ┃ \n" +
+                " ┃                                                                                                                       ┃ \n" +
+                " ┃                                                                                                                       ┃ \n" +
+                " ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛ \n\n" +
+                "                                      THIS IS THE TOTAL OF YOUR RESOURCES AND DEVELOPMENT CARD \n" +
+                "                                      (type leaderCard to return to the leader card selection)\n\n" +
+                "                                                             ");
+    }
+
+    private int getTotal(String in){
+        if(totalResource.get(in)!=null)
+            return totalResource.get(in);
+        else
+            return 0;
     }
 }
 

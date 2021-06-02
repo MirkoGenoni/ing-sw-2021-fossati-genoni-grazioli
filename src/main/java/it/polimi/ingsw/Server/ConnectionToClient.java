@@ -309,6 +309,23 @@ public class ConnectionToClient implements Runnable, EventToClientNotifier {
             }
         }
 
+        for(Resource r : Resource.values())
+            numberOfDevelopment.put(r.toString(), currentPlayer.getPlayerBoard().getResourceHandler().getStrongboxState().get(r));
+
+        ArrayList<Resource> depositmp = currentPlayer.getPlayerBoard().getResourceHandler().getDepositState();
+        for(Resource r: depositmp){
+            if(r!=null)
+                numberOfDevelopment.put(r.toString(), numberOfDevelopment.get(r.toString())+1);
+        }
+
+        if(currentPlayer.getPlayerBoard().getResourceHandler().getAdditionalDeposit().size()!=0){
+            ArrayList<Resource> additionaltmp = currentPlayer.getPlayerBoard().getResourceHandler().getAdditionalDeposit();
+            for(Resource r: additionaltmp){
+                if(r!=null)
+                    numberOfDevelopment.put(r.toString(), numberOfDevelopment.get(r.toString())+1);
+            }
+        }
+
         return numberOfDevelopment;
     }
 
