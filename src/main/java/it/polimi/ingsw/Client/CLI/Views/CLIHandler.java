@@ -194,22 +194,47 @@ public class CLIHandler {
 
     }
 
+    //TODO ALMENO UN BOOLEAN A TRUE PER LEADER WHITE CHANGE
     private ArrayList<Boolean> marketWhiteChangeActive(ArrayList<LeaderCardToClient> leaderCardActive){
         ArrayList<Boolean> leaderCardWhiteChange = new ArrayList<>();
-        for(int i=0; i< leaderCardActive.size(); i++){
+
+        for(int i=0; i< leaderCardActive.size(); i++){ //Find market white change power
             if(leaderCardActive.get(i).getEffect().equals("marketWhiteChange")){
-                char answer = selectActivation("vuoi usare la carta attiva marketWhiteChange" + leaderCardActive.get(i) + "?");
-                if(answer == 'Y'){
-                    leaderCardWhiteChange.add(true);
-                }else{
-                    leaderCardWhiteChange.add(false);
-                }
+                leaderCardWhiteChange.add(true);
             }else{
                 leaderCardWhiteChange.add(false);
             }
         }
+
+        if(leaderCardActive.size()==2){ //due leader attivi
+            if(leaderCardWhiteChange.get(0) && leaderCardWhiteChange.get(1)){ //ONLY IF YOU HAVE TWO WHITE-CHANGE
+              leaderCardWhiteChange = selectWitchWhiteChange(leaderCardActive); //torna array con un solo true e un solo false
+            }
+        }
         return leaderCardWhiteChange;
     }
+
+
+    private ArrayList<Boolean> selectWitchWhiteChange(ArrayList<LeaderCardToClient> leaderCardActive){ //CALLED ONLY IF THE PLAYER HAS 2 WHITE-CHANGE
+        char answer;
+        ArrayList<Boolean> leaderSelection = new ArrayList<>();
+        leaderSelection.add(false);
+        leaderSelection.add(false);
+
+        do{
+            for (int i=0;i<leaderCardActive.size(); i++) {
+                answer = selectActivation("Do you want to obtain " + leaderCardActive.get(i).getResourceType() + " from the White Marble? Y/N?");
+                if (answer == 'Y') {
+                    leaderSelection.set(i, true); //TODO FORSE BREAK
+                } else {
+                    leaderSelection.set(i, false);
+                }
+            }
+        }while(leaderSelection.get(0) == leaderSelection.get(1)); //TODO FARE MESSAGGIO SE SCRIVE STUPIDAGGINI
+
+        return leaderSelection;
+    }
+
 
     private char selectActivation (String message) {
         Scanner scan = new Scanner(System.in);

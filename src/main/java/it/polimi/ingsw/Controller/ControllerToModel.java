@@ -13,6 +13,8 @@ import it.polimi.ingsw.Model.Resource.Resource;
 import it.polimi.ingsw.Server.ConnectionToClient;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /*
    modifica direttamente il model
@@ -136,6 +138,16 @@ public class ControllerToModel {
             createTurns();
             System.out.println("creo lorenzo");
             lorenzoTurn = new LorenzoTurn(this, singleGame, 1);
+
+            //TODO PER CHEATTARE
+            if(false) {
+                Map<Resource, Integer> cheatMap = new HashMap<>();
+                for (Resource r : Resource.values())
+                    cheatMap.put(r, 100);
+                players[0].getPlayerBoard().getResourceHandler().addMaterialStrongbox(cheatMap);
+            }
+
+
             // nuovo turno da rivedere
             //newTurn();
         }
