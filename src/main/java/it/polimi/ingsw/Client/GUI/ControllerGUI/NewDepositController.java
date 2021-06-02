@@ -19,6 +19,8 @@ import java.util.*;
 public class NewDepositController implements GUIController, Initializable {
     private GUI gui;
 
+    private boolean isInitial;
+
     private Map<String, Image> resources;
     private ArrayList<ImageView> depositImg;
     private ArrayList<Integer> numDepositClicked = new ArrayList<>();
@@ -58,7 +60,8 @@ public class NewDepositController implements GUIController, Initializable {
     }
 
 
-    public void drawDeposit(ArrayList<Resource> depositState, ArrayList<Resource> marketReceived){
+    public void drawDeposit(ArrayList<Resource> depositState, ArrayList<Resource> marketReceived, boolean isInitial){
+        this.isInitial = isInitial;
         this.depositState = depositState;
 
         for(int i=0; i<depositState.size(); i++){
@@ -182,13 +185,17 @@ public class NewDepositController implements GUIController, Initializable {
 
 
     public void done(ActionEvent actionEvent) {
-
         numDepositClicked.clear();
         resourceClicked.clear();
         gui.changeScene("playerView");
         PlayerViewController controller = (PlayerViewController) gui.getCurrentController();
         controller.tabTurnNotActive(true);
-        gui.getConnectionToServer().sendNewDepositState(getDepositState(), getMarketResource(), false, new ArrayList<>());
+        if(isInitial){
+            gui.getConnectionToServer().sendInitialDepositState(getDepositState());
+        }else{
+            gui.getConnectionToServer().sendNewDepositState(getDepositState(), getMarketResource(), false, new ArrayList<>());
+        }
+
     }
 
     @Override

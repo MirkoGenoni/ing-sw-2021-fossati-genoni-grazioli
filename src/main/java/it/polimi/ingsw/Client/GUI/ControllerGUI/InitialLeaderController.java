@@ -6,6 +6,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -29,6 +30,8 @@ public class InitialLeaderController implements GUIController, Initializable {
     @FXML ImageView leader1;
     @FXML ImageView leader2;
     @FXML ImageView leader3;
+
+    @FXML Button done;
 
     public void drawLeader(ArrayList<LeaderCardToClient> leaderCard){
         for(int i=0; i<leaderCard.size(); i++){
@@ -86,6 +89,9 @@ public class InitialLeaderController implements GUIController, Initializable {
             // error TODO
         }else if(selectedLeader.size()==2){
             gui.getConnectionToServer().sendDiscardInitialLeaderCards(selectedLeader.get(0), selectedLeader.get(1));
+            done.setDisable(true);
+            done.setOpacity(0);
+            //wait other player
         }
     }
 }

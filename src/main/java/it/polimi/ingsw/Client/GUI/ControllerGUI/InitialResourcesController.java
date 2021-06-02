@@ -40,7 +40,7 @@ public class InitialResourcesController implements GUIController{
             emptyDeposit.add(null);
             emptyDeposit.add(null);
             emptyDeposit.add(null);
-            controller.drawDeposit(emptyDeposit, resourcesChoose);
+            controller.drawDeposit(emptyDeposit, resourcesChoose, true);
         }
     }
 

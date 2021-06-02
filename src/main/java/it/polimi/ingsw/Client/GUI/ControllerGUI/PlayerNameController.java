@@ -16,6 +16,7 @@ import java.util.ResourceBundle;
 
 public class PlayerNameController implements GUIController, Initializable {
     private GUI gui;
+    private ArrayList<Button> buttonNumPlayer;
 
     @FXML Button buttonName;
     @FXML Button buttonRoom;
@@ -48,14 +49,9 @@ public class PlayerNameController implements GUIController, Initializable {
     }
 
     public void arriveNumPlayer(String message){
-        buttonName.setOpacity(0);
-        buttonName.setDisable(true);
         text.setText(message);
-        textName.setDisable(true);
-        textName.setOpacity(0);
-        ArrayList<Button> tmp = new ArrayList<>(List.of(numPlayer1, numPlayer2, numPlayer3, numPlayer4));
-        tmp.forEach(but -> but.setDisable(false));
-        tmp.forEach(but -> but.setOpacity(1));
+        buttonNumPlayer.forEach(but -> but.setDisable(false));
+        buttonNumPlayer.forEach(but -> but.setOpacity(1));
 
     }
 
@@ -65,6 +61,12 @@ public class PlayerNameController implements GUIController, Initializable {
         gui.setNamePlayer(playerName);
         gui.getConnectionToServer().sendPlayerName(playerName);
         gui.getConnectionToServer().setPlayerName(playerName);
+        text.setText("Wait other players");
+        textName.setOpacity(0);
+        textName.setDisable(true);
+        buttonName.setOpacity(0);
+        buttonName.setDisable(true);
+
     }
 
     public void chooseRoom(ActionEvent actionEvent) {
@@ -107,10 +109,14 @@ public class PlayerNameController implements GUIController, Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         text.setText("Choose your nickname");
+        buttonNumPlayer = new ArrayList<>(List.of(numPlayer1, numPlayer2, numPlayer3, numPlayer4));
     }
 
     private void sendNum(int num){
         gui.getConnectionToServer().sendNumPlayer(num);
+        buttonNumPlayer.forEach(but -> but.setOpacity(0));
+        buttonNumPlayer.forEach(but -> but.setDisable(true));
+        text.setText("Wait other players");
     }
 
 
