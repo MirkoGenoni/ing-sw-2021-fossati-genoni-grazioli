@@ -84,9 +84,9 @@ public class PlayerViewController implements GUIController, Initializable {
 
 
 
-    public void updatePlayerBoard(ArrayList<PlayerInformationToClient> players){
+    public void updatePlayerBoard(Map<String, PlayerInformationToClient> players){
         turnTmp = gui.getLastTurn();
-        PlayerInformationToClient player = players.get(findPlayerIndex());
+        PlayerInformationToClient player = players.get(gui.getNamePlayer());
         gui.setLastInformation(player);
 
         name.setText(player.getPlayerNameSend());
@@ -224,21 +224,18 @@ public class PlayerViewController implements GUIController, Initializable {
     public void marketTurn(ActionEvent actionEvent) {
         gui.changeScene("marketView");
         MarketController controller = (MarketController) gui.getCurrentController();
-        int numPlayer = findPlayerIndex();
-        controller.drawMarket(turnTmp.getMarket().getGrid(), turnTmp.getMarket().getOutMarble(), turnTmp.getPlayers().get(numPlayer).getLeaderCardActive());
+        controller.drawMarket(turnTmp.getMarket().getGrid(), turnTmp.getMarket().getOutMarble(), turnTmp.getPlayers().get(gui.getNamePlayer()).getLeaderCardActive());
     }
 
     public void buyDevelopmentTurn(ActionEvent actionEvent) {
         gui.changeScene("buyDevelopmentView");
         BuyDevelopmentController controller = (BuyDevelopmentController) gui.getCurrentController();
-        int numPlayer = findPlayerIndex();
-        controller.drawDevelopment(turnTmp.getDevelopmentCards(), turnTmp.getPlayers().get(numPlayer).getDeposit(), turnTmp.getPlayers().get(numPlayer).getStrongBox());
+        controller.drawDevelopment(turnTmp.getDevelopmentCards(), turnTmp.getPlayers().get(gui.getNamePlayer()).getDeposit(), turnTmp.getPlayers().get(gui.getNamePlayer()).getStrongBox());
     }
 
     public void activateProductionTurn(ActionEvent actionEvent) {
         gui.changeScene("productionView");
         ActivateProductionController controller = (ActivateProductionController) gui.getCurrentController();
-        int numPlayer = findPlayerIndex();
         ArrayList<Image> tmp = new ArrayList<>();
         for(int i=0; i<devCardPlayer.size(); i++){
             if(devCardPlayer.get(i).getImage()!=null){
@@ -247,7 +244,7 @@ public class PlayerViewController implements GUIController, Initializable {
                 tmp.add(null);
             }
         }
-        controller.drawProduction(tmp, turnTmp.getPlayers().get(numPlayer).getDeposit(), turnTmp.getPlayers().get(numPlayer).getStrongBox());
+        controller.drawProduction(tmp, turnTmp.getPlayers().get(gui.getNamePlayer()).getDeposit(), turnTmp.getPlayers().get(gui.getNamePlayer()).getStrongBox());
     }
 
 
@@ -268,16 +265,6 @@ public class PlayerViewController implements GUIController, Initializable {
     public void hideLeader(ActionEvent actionEvent) {
         leaderPane.setVisible(false);
         leaderPane.setDisable(true);
-    }
-
-    private int findPlayerIndex(){
-        int numPlayer = -1;
-        for(int i=0; i<turnTmp.getPlayers().size(); i++){
-            if(turnTmp.getPlayers().get(i).getPlayerNameSend().equals(gui.getNamePlayer())){
-                numPlayer = i;
-            }
-        }
-        return numPlayer;
     }
 
     private void moveFaith(ImageView faith, int updateFaithPosition,int  oldPosition){

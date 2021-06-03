@@ -5,16 +5,17 @@ import it.polimi.ingsw.Events.ServerToClient.SupportClass.MarketToClient;
 import it.polimi.ingsw.Events.ServerToClient.SupportClass.PlayerInformationToClient;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 // this event ask at the client what type of turn want to do
 public class NewTurnToClient extends EventToClient{
     private final int turnNumber;
     private final MarketToClient market;
     private final DevelopmentCardToClient[][] developmentCards;
-    private final ArrayList<PlayerInformationToClient> players;
+    private final Map<String, PlayerInformationToClient> players;
     private final boolean yourTurn;
 
-    public NewTurnToClient(int turnNumber, MarketToClient market, DevelopmentCardToClient[][] developmentCards, ArrayList<PlayerInformationToClient> players, boolean yourTurn) {
+    public NewTurnToClient(int turnNumber, MarketToClient market, DevelopmentCardToClient[][] developmentCards, Map<String, PlayerInformationToClient> players, boolean yourTurn) {
         this.turnNumber = turnNumber;
         this.market = market;
         this.developmentCards = developmentCards;
@@ -34,7 +35,7 @@ public class NewTurnToClient extends EventToClient{
         return developmentCards;
     }
 
-    public ArrayList<PlayerInformationToClient> getPlayers() {
+    public Map<String, PlayerInformationToClient> getPlayers() {
         return players;
     }
 

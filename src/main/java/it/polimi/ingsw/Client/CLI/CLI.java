@@ -165,13 +165,7 @@ public class CLI implements EventToClientVisitor {
     @Override
     public void visit(NewTurnToClient newTurn) {
         if (newTurn.isYourTurn()) {
-            Map<String, PlayerInformationToClient> players = new HashMap<>();
-
-            for (int k = 0; k < newTurn.getPlayers().size(); k++) {
-                players.put(newTurn.getPlayers().get(k).getPlayerNameSend(), newTurn.getPlayers().get(k));
-            }
-
-            handler.newState(this.namePlayer, players, newTurn.getMarket(), newTurn.getDevelopmentCards());
+            handler.newState(this.namePlayer, newTurn.getPlayers(), newTurn.getMarket(), newTurn.getDevelopmentCards());
 
         /* FOR DEBUG! PRINTS THE CORRECT STATE OF THE CURRENT PLAYER WITHOUT THE USE OF THE CLI (check for visualization)
             for (int i = 0; i < newTurn.getPlayers().size(); i++) {

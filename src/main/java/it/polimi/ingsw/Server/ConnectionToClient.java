@@ -273,8 +273,8 @@ public class ConnectionToClient implements Runnable, EventToClientNotifier {
         return marketToClient;
     }
 
-    private  ArrayList<PlayerInformationToClient> playerInformationToSend(Player[] players, FaithTrack faithTrack){
-        ArrayList<PlayerInformationToClient> playerInformation = new ArrayList<>();
+    private  Map<String, PlayerInformationToClient> playerInformationToSend(Player[] players, FaithTrack faithTrack){
+        Map<String, PlayerInformationToClient> playerInformation = new HashMap<>();
         for(int i=0; i<players.length; i++){
             Gameboard tmpGameBoard = players[i].getPlayerBoard();
             try {
@@ -282,13 +282,13 @@ public class ConnectionToClient implements Runnable, EventToClientNotifier {
                         tmpGameBoard.getResourceHandler().getStrongboxState(), tmpGameBoard.getResourceHandler().getAdditionalDeposit(), leaderCardToSend(tmpGameBoard.getLeaderCardHandler().getLeaderCardsActive()),
                         developmentCardActiveToSend(tmpGameBoard.getDevelopmentCardHandler().getActiveDevelopmentCard()),
                         tmpGameBoard.getPopeFavorTilesState(), faithTrack.getPosition(i));
-                playerInformation.add(tmp);
+                playerInformation.put(players[i].getName(),tmp);
             } catch (LeaderCardException e) {
                 PlayerInformationToClient tmp = new PlayerInformationToClient(players[i].getName(), tmpGameBoard.getResourceHandler().getDepositState(),
                         tmpGameBoard.getResourceHandler().getStrongboxState(),tmpGameBoard.getResourceHandler().getAdditionalDeposit(), leaderCardToSend(null),
                         developmentCardActiveToSend(tmpGameBoard.getDevelopmentCardHandler().getActiveDevelopmentCard()),
                         tmpGameBoard.getPopeFavorTilesState(), faithTrack.getPosition(i));
-                playerInformation.add(tmp);
+                playerInformation.put(players[i].getName(),tmp);
             }
 
         }
