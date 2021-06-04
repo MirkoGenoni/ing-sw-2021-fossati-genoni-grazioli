@@ -74,9 +74,9 @@ public class RoomHandler implements EventToServerInitialVisitor, ObserveConnecti
                         e.printStackTrace();
                     }
                 }
-                if(tmpRoom.getNumPlayer()>1 && tmpRoom.getConnectionsToClient().size()<tmpRoom.getNumPlayer()){
+                if(tmpRoom.getNumPlayer()>1 && tmpRoom.getConnections().size()<tmpRoom.getNumPlayer()){
                     tmpRoom.addConnectionToClient(tmpConnection.getNamePlayer(), tmpConnection);
-                    if(tmpRoom.getConnectionsToClient().size()==tmpRoom.getNumPlayer()){
+                    if(tmpRoom.getConnections().size()==tmpRoom.getNumPlayer()){
                         tmpRoom.startGame();
                     }
                 }else{
@@ -87,9 +87,9 @@ public class RoomHandler implements EventToServerInitialVisitor, ObserveConnecti
                 System.out.println("mando numero");
                 tmpConnection.sendNumPlayerRequest("You are the first, write number of player");
                 tmpRoom.setSendNumPlayer(true);
-            }else if(tmpRoom.getNumPlayer()>1 && tmpRoom.getConnectionsToClient().size()<tmpRoom.getNumPlayer()){
+            }else if(tmpRoom.getNumPlayer()>1 && tmpRoom.getConnections().size()<tmpRoom.getNumPlayer()){
                 tmpRoom.addConnectionToClient(tmpConnection.getNamePlayer(), tmpConnection);
-                if(tmpRoom.getConnectionsToClient().size()==tmpRoom.getNumPlayer()){
+                if(tmpRoom.getConnections().size()==tmpRoom.getNumPlayer()){
                     tmpRoom.startGame();
                 }
             }else if(tmpRoom.isStart()){ // se la partita è già iniziata
@@ -104,7 +104,7 @@ public class RoomHandler implements EventToServerInitialVisitor, ObserveConnecti
     @Override
     public void visit(SendNumPlayerToServer numPlayer) {
         tmpRoom.setNumPlayer(numPlayer.getNumPlayer());
-        if(tmpRoom.getConnectionsToClient().size()==tmpRoom.getNumPlayer()){
+        if(tmpRoom.getConnections().size()==tmpRoom.getNumPlayer()){
             tmpRoom.startGame();
             System.out.println("inizia il gioco della stanza " + tmpRoom.getRoomNumber());
         }
@@ -125,8 +125,8 @@ public class RoomHandler implements EventToServerInitialVisitor, ObserveConnecti
     }
 
     private boolean checkDoublePlayerName(String name){
-        for(int i=0; i<tmpRoom.getConnectionsToClient().size(); i++){
-            if(tmpRoom.getConnectionsToClient().get(i).getNamePlayer().equals(name)){
+        for(String s : tmpRoom.getConnections().keySet()){
+            if(s.equals(name)){
                 return false;
             }
         }

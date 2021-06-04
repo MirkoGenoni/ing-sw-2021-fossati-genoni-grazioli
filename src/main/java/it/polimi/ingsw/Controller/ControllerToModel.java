@@ -21,6 +21,7 @@ import java.util.Map;
  */
 public class ControllerToModel {
     private Player[] players;
+    private Map<String, ConnectionToClient> connections;
     private final ArrayList<ConnectionToClient> connectionsToClient;
     private MultiPlayerGame multiGame;
     private SinglePlayerGame singleGame;
@@ -46,6 +47,7 @@ public class ControllerToModel {
 
     public ControllerToModel() {
         this.connectionsToClient = new ArrayList<>();
+        this.connections = new HashMap<>();
         numPlayer = 0;
         initialResourceArrive =0;
     }
@@ -70,11 +72,16 @@ public class ControllerToModel {
         return connectionsToClient;
     }
 
+    public Map<String, ConnectionToClient> getConnections() {
+        return connections;
+    }
+
     // -------------------------------------------------------
     // METHODS FOR THE START OF THE CONNECTION WITH THE CLIENT
     // -------------------------------------------------------
     public void addConnectionToClient(ConnectionToClient connectionToClient){
         connectionsToClient.add(connectionToClient);
+        connections.put(connectionToClient.getNamePlayer(), connectionToClient);
     }
 
     public void setNumPlayer(int numPlayer) {

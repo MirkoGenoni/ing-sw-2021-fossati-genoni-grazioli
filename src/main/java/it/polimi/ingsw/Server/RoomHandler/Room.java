@@ -4,15 +4,13 @@ import it.polimi.ingsw.Controller.ControllerConnection;
 import it.polimi.ingsw.Controller.ControllerToModel;
 import it.polimi.ingsw.Model.Exceptions.StartGameException;
 import it.polimi.ingsw.Server.ConnectionToClient;
-
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 public class Room {
     private final int roomNumber;
     private final Map<String, ConnectionToClient> connections;
-    private ArrayList<ConnectionToClient> connectionsToClient = new ArrayList<>();
+
     private boolean sendNumPlayer;
     private boolean start;
     private int numPlayer;
@@ -35,20 +33,12 @@ public class Room {
         return roomNumber;
     }
 
-    public Map<String, ConnectionToClient> getConnections() {
+    public synchronized Map<String, ConnectionToClient> getConnections() {
         return connections;
     }
 
     public synchronized int getNumPlayer() {
         return numPlayer;
-    }
-
-    public ControllerConnection getControllerConnection() {
-        return controllerConnection;
-    }
-
-    public synchronized ArrayList<ConnectionToClient> getConnectionsToClient() {
-        return connectionsToClient;
     }
 
     public synchronized boolean isSendNumPlayer() {
@@ -69,10 +59,9 @@ public class Room {
     }
 
     public synchronized void addConnectionToClient(String name, ConnectionToClient connection){
-        if( connectionsToClient.size()==0 || connectionsToClient.size()<numPlayer){
+        if( connections.size()==0 || connections.size()<numPlayer){
             System.out.println(connection.getNamePlayer() + " aggiungo la connessione");
-            //connections.put(name, connection);
-            connectionsToClient.add(connection);
+            connections.put(name, connection);
             controllerToModel.addConnectionToClient(connection);
         }else{
             System.out.println(connection.getNamePlayer() + " errore");
@@ -83,7 +72,7 @@ public class Room {
     }
 
     public void startGame(){
-        controllerToModel.getConnectionsToClient().forEach(c -> c.setObserveConnectionToClient(controllerConnection));
+        controllerToModel.getConnections().forEach((k,v) -> v.setObserveConnectionToClient(controllerConnection));
         System.out.println("inizia il gioco");
         start = true;
         try {
