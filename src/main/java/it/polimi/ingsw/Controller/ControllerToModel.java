@@ -93,11 +93,13 @@ public class ControllerToModel {
     // METHODS FOR THE START OF THE MATCH
     // -------------------------------------------
     public void startMatch() throws StartGameException {
-        connectionsToClient.forEach(cc -> cc.sendNotify("AllPlayersConnected"));
-        currentPlayerIndex = connectionsToClient.size();
+        connections.forEach((k,v) -> v.sendNotify("AllPlayersConnected"));
+        //connectionsToClient.forEach(cc -> cc.sendNotify("AllPlayersConnected"));
+        currentPlayerIndex = connections.keySet().size();
         if(numPlayer > 1){
             multiGame = new MultiPlayerGame(numPlayer);
             players = new Player[numPlayer];
+            //TODO cambiare con mappa?
             for(int i=0; i<connectionsToClient.size(); i++){
                 Player tmpP = new Player(connectionsToClient.get(i).getNamePlayer());
                 players[i] = tmpP;
@@ -129,14 +131,15 @@ public class ControllerToModel {
 
         }else if(numPlayer == 1){
             players = new Player[numPlayer];
-            Player tmpP = new Player(connectionsToClient.get(0).getNamePlayer());
+            Player tmpP = new Player(connectionsToClient.get(0).getNamePlayer()); //TODO ATTENZIONE
             players[0] = tmpP;
+            activePlayer = tmpP;
             currentPlayerIndex=0;
             singleGame = new SinglePlayerGame(tmpP);
             game = singleGame;
             singleGame.startGame();
             try{
-                connectionsToClient.get(currentPlayerIndex).sendArrayLeaderCards(singleGame.getPlayer().getPlayerBoard().getLeaderCardHandler().getLeaderCardsAvailable(), true, players[0]);
+                connections.get(activePlayer.getName()).sendArrayLeaderCards(singleGame.getPlayer().getPlayerBoard().getLeaderCardHandler().getLeaderCardsAvailable(), true, players[0]);
             } catch (LeaderCardException e) {
                 e.printStackTrace();
             }
@@ -181,11 +184,14 @@ public class ControllerToModel {
         if(currentPlayerIndex == firstPlayer && endGame.endGameNotify()){
             int winnerPoint=0;
             String winnerName = " ";
-            connectionsToClient.forEach(c -> c.sendNotify(" IL GIOCO E' FINITOO!!!"));
-            for(int i=0; i<connectionsToClient.size(); i++ ){
-                String name = connectionsToClient.get(i).getNamePlayer();
+            connections.forEach((k,v) -> v.sendNotify(" GAME ENDED "));
+            //connectionsToClient.forEach(c -> c.sendNotify(" IL GIOCO E' FINITOO!!!"));
+            //TODO controlla
+            for(int i=0; i<connections.keySet().size(); i++ ){
+                //String name = connectionsToClient.get(i).getNamePlayer();
+                String name = players[i].getName();
                 int playerPoints = endGame.calculatePoints(i);
-                connectionsToClient.forEach(c -> c.sendNotify(name + "ha " + playerPoints + " punti"));
+                connections.forEach((k,v) -> v.sendNotify(name + "ha " + playerPoints + " punti"));
                 if(playerPoints>winnerPoint){
                     winnerPoint = playerPoints;
                     winnerName = name;
@@ -193,14 +199,14 @@ public class ControllerToModel {
             }
             String finalWinnerName = winnerName;
             int finalWinnerPoint = winnerPoint;
-            connectionsToClient.forEach(c -> c.sendEndGame(finalWinnerName + " ha vinto con " + finalWinnerPoint + " punti"));
-            connectionsToClient.forEach(c -> c.setActive(false));
+            connections.forEach((k,v) -> v.sendNotify(finalWinnerName + " ha vinto con " + finalWinnerPoint + " punti"));
+            connections.forEach((k,v) -> v.setActive(false));
             System.out.println("il gioco è finito");
         }else{
-            connectionsToClient.forEach(cc -> cc.sendNotify("è il turno di " + activePlayer.getName()));
+            connections.forEach((k,v) -> v.sendNotify("è il turno di " + activePlayer.getName()));
             try {
 
-                connectionsToClient.get(currentPlayerIndex).sendArrayLeaderCards(players[currentPlayerIndex].getPlayerBoard().getLeaderCardHandler().getLeaderCardsAvailable(),false, players[currentPlayerIndex]);
+                connections.get(activePlayer.getName()).sendArrayLeaderCards(players[currentPlayerIndex].getPlayerBoard().getLeaderCardHandler().getLeaderCardsAvailable(),false, players[currentPlayerIndex]);
             } catch (LeaderCardException e) {
                 turnToView();
             }
@@ -222,9 +228,9 @@ public class ControllerToModel {
         }
         initialResourceArrive++;
         if(initialResourceArrive == numPlayer-1){
-            for(int i=0; i<connectionsToClient.size(); i++){
+            for(int i=0; i<connections.keySet().size(); i++){
                 try{
-                    connectionsToClient.get(i).sendArrayLeaderCards(multiGame.getPlayers()[i].getPlayerBoard().getLeaderCardHandler().getLeaderCardsAvailable(), true, players[i]);
+                    connections.get(players[i].getName()).sendArrayLeaderCards(multiGame.getPlayers()[i].getPlayerBoard().getLeaderCardHandler().getLeaderCardsAvailable(), true, players[i]);
                 } catch (LeaderCardException e) {
                     e.printStackTrace();
                 }
@@ -330,11 +336,11 @@ public class ControllerToModel {
     }
 
     public void turnToView(){
-        for(int i=0; i<connectionsToClient.size(); i++){
+        for(int i=0; i<connections.keySet().size(); i++){
             if(i==currentPlayerIndex){
-                connectionsToClient.get(i).sendNewTurn(turnNumber, game.getMarketBoard(), game.getDevelopmentCardsAvailable(), players, game.getPlayersFaithTrack(), true);
+                connections.get(players[i].getName()).sendNewTurn(turnNumber, game.getMarketBoard(), game.getDevelopmentCardsAvailable(), players, game.getPlayersFaithTrack(), true);
             }else{
-                connectionsToClient.get(i).sendNewTurn(turnNumber, game.getMarketBoard(), game.getDevelopmentCardsAvailable(), players, game.getPlayersFaithTrack(), false);
+                connections.get(players[i].getName()).sendNewTurn(turnNumber, game.getMarketBoard(), game.getDevelopmentCardsAvailable(), players, game.getPlayersFaithTrack(), false);
             }
         }
 
@@ -344,7 +350,7 @@ public class ControllerToModel {
         // metodo da mettere private dopo aver tolto il turn dalle opzioni di scelta!!!!!!
         if(turnNumber != 0 && players.length == 1){
             if(lorenzoTurn.playLorenzo()){
-                connectionsToClient.get(currentPlayerIndex).sendEndGame("HAI PERSO, HA VINTO LORENZO!!");
+                connections.get(players[currentPlayerIndex].getName()).sendEndGame("HAI PERSO, HA VINTO LORENZO!!");
             }
             return false; // se è single game
         }else{
@@ -356,17 +362,17 @@ public class ControllerToModel {
         int current = firstPlayer;
         for(int i=0; i<numPlayer; i++) {
             if(i == 1){
-                connectionsToClient.get(current).sendInitialResources(1, players[current].getPlayerBoard().getResourceHandler().getDepositState());
+                connections.get(players[current].getName()).sendInitialResources(1, players[current].getPlayerBoard().getResourceHandler().getDepositState());
             }else if(i == 2){
                 if(game.getPlayersFaithTrack().forwardPos(current)){
-                    controlPlayerPath(current);
+                    controlPlayerPath(current); //not strictly necessary
                 }
-                connectionsToClient.get(current).sendInitialResources(1, players[current].getPlayerBoard().getResourceHandler().getDepositState());
+                connections.get(players[current].getName()).sendInitialResources(1, players[current].getPlayerBoard().getResourceHandler().getDepositState());
             }else if(i == 3){
                 if(game.getPlayersFaithTrack().forwardPos(current)){
-                    controlPlayerPath(current);
+                    controlPlayerPath(current); //not strictly necessary
                 }
-                connectionsToClient.get(current).sendInitialResources(2, players[current].getPlayerBoard().getResourceHandler().getDepositState());
+                connections.get(players[current].getName()).sendInitialResources(2, players[current].getPlayerBoard().getResourceHandler().getDepositState());
             }
             if(current < players.length-1){
                 current ++;

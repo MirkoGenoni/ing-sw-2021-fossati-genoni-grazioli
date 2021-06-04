@@ -82,9 +82,11 @@ public class LeaderCardTurn {
         if (actualPlayerBoard.getDevelopmentCardHandler().checkDevelopmentCard(colorRequired, level)) {
             actualPlayerBoard.getLeaderCardHandler().activateLeaderCard(i);
             System.out.println("Activated!");
-            controllerToModel.getConnectionsToClient().get(currentPlayerIndex).sendNotify("Activate the "+ i + " leader");
+            //controllerToModel.getConnectionsToClient().get(currentPlayerIndex).sendNotify("Activate the "+ i + " leader");
+            controllerToModel.getConnections().get(controllerToModel.getPlayers()[currentPlayerIndex].getName()).sendNotify("Activate the "+ i + " leader");
         } else {
-            controllerToModel.getConnectionsToClient().get(currentPlayerIndex).sendNotify("Cannot Activate the "+ i + " leader");
+            //controllerToModel.getConnectionsToClient().get(currentPlayerIndex).sendNotify("Cannot Activate the "+ i + " leader");
+            controllerToModel.getConnections().get(controllerToModel.getPlayers()[currentPlayerIndex].getName()).sendNotify("Cannot Activate the "+ i + " leader");
             System.out.println("Cannot Activate the selected leader");
         }
     }
@@ -110,9 +112,11 @@ public class LeaderCardTurn {
                 e.printStackTrace();
             }
             System.out.println("Activated!");
-            controllerToModel.getConnectionsToClient().get(currentPlayerIndex).sendNotify("Activate the "+ i + " leader");
+            //controllerToModel.getConnectionsToClient().get(currentPlayerIndex).sendNotify("Activate the "+ i + " leader");
+            controllerToModel.getConnections().get(controllerToModel.getPlayers()[currentPlayerIndex].getName()).sendNotify("Activate the "+ i + " leader");
         } else {
-            controllerToModel.getConnectionsToClient().get(currentPlayerIndex).sendNotify("Cannot Activate the "+ i + " leader");
+            //controllerToModel.getConnectionsToClient().get(currentPlayerIndex).sendNotify("Cannot Activate the "+ i + " leader");
+            controllerToModel.getConnections().get(controllerToModel.getPlayers()[currentPlayerIndex].getName()).sendNotify("Cannot Activate the "+ i + " leader");
         }
     }
 
@@ -135,9 +139,11 @@ public class LeaderCardTurn {
                 actualPlayerBoard.getDevelopmentCardHandler().checkCountDevelopmentCard(colorsRequired.get(1), quantity2)) {
             actualPlayerBoard.getLeaderCardHandler().activateLeaderCard(i);
             System.out.println("Card Activated!");
-            controllerToModel.getConnectionsToClient().get(currentPlayerIndex).sendNotify("Activate the "+ i + " leader");
+            //controllerToModel.getConnectionsToClient().get(currentPlayerIndex).sendNotify("Activate the "+ i + " leader");
+            controllerToModel.getConnections().get(controllerToModel.getPlayers()[currentPlayerIndex].getName()).sendNotify("Activate the "+ i + " leader");
         } else {
-            controllerToModel.getConnectionsToClient().get(currentPlayerIndex).sendNotify("Cannot Activate the "+ i + " leader");
+            //controllerToModel.getConnectionsToClient().get(currentPlayerIndex).sendNotify("Cannot Activate the "+ i + " leader");
+            controllerToModel.getConnections().get(controllerToModel.getPlayers()[currentPlayerIndex].getName()).sendNotify("Cannot Activate the "+ i + " leader");
         }
     }
 
@@ -159,9 +165,11 @@ public class LeaderCardTurn {
                 actualPlayerBoard.getDevelopmentCardHandler().checkCountDevelopmentCard(color2, quantity2)) {
             actualPlayerBoard.getLeaderCardHandler().activateLeaderCard(i);
             System.out.println("Card Activated!");
-            controllerToModel.getConnectionsToClient().get(currentPlayerIndex).sendNotify("Activate the "+ i + " leader");
+            //controllerToModel.getConnectionsToClient().get(currentPlayerIndex).sendNotify("Activate the "+ i + " leader");
+            controllerToModel.getConnections().get(controllerToModel.getPlayers()[currentPlayerIndex].getName()).sendNotify("Activate the "+ i + " leader");
         } else {
-            controllerToModel.getConnectionsToClient().get(currentPlayerIndex).sendNotify("Cannot Activate the "+ i + " leader");
+            //controllerToModel.getConnectionsToClient().get(currentPlayerIndex).sendNotify("Cannot Activate the "+ i + " leader");
+            controllerToModel.getConnections().get(controllerToModel.getPlayers()[currentPlayerIndex].getName()).sendNotify("Cannot Activate the "+ i + " leader");
         }
     }
 }

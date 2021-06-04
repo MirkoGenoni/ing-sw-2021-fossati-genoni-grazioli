@@ -39,9 +39,12 @@ public class BuyDevelopmentCardTurn {
 
         if (controllerToModel.getPlayers()[currentPlayerIndex].getPlayerBoard().getResourceHandler().checkMaterials(requirements)
                 && controllerToModel.getPlayers()[currentPlayerIndex].getPlayerBoard().getDevelopmentCardHandler().checkBoughtable(level+1).contains(true)) {
-            controllerToModel.getConnectionsToClient().get(currentPlayerIndex).sendDevelopmentCardSpace(controllerToModel.getPlayers()[currentPlayerIndex].getPlayerBoard().getDevelopmentCardHandler().checkBoughtable(level+1));
+            //controllerToModel.getConnectionsToClient().get(currentPlayerIndex).sendDevelopmentCardSpace(controllerToModel.getPlayers()[currentPlayerIndex].getPlayerBoard().getDevelopmentCardHandler().checkBoughtable(level+1));
+            controllerToModel.getConnections().get(controllerToModel.getPlayers()[currentPlayerIndex].getName()).sendDevelopmentCardSpace(controllerToModel.getPlayers()[currentPlayerIndex].getPlayerBoard().getDevelopmentCardHandler().checkBoughtable(level+1));
         } else {
-            controllerToModel.getConnectionsToClient().get(currentPlayerIndex).sendTurnReselection("You can't bought the selected card, please select an other card");
+            //controllerToModel.getConnectionsToClient().get(currentPlayerIndex).sendTurnReselection("You can't bought the selected card, please select an other card");
+            controllerToModel.getConnections().get(controllerToModel.getPlayers()[currentPlayerIndex].getName()).sendTurnReselection("You can't bought the selected card, please select an other card");
+
 
         }
 
@@ -63,7 +66,8 @@ public class BuyDevelopmentCardTurn {
         } catch (ResourceException | StartGameException | DevelopmentCardException e) {
             e.printStackTrace();
         }
-        controllerToModel.getConnectionsToClient().get(currentPlayerIndex).sendNotify("Card correctly Activated");
+        //controllerToModel.getConnectionsToClient().get(currentPlayerIndex).sendNotify("Card correctly Activated");
+        controllerToModel.getConnections().get(controllerToModel.getPlayers()[currentPlayerIndex].getName()).sendNotify("Card correctly Activated");
         return true;
 
     }

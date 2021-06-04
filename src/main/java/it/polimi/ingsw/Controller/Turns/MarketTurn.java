@@ -98,7 +98,8 @@ public class MarketTurn {
             }
             return true;
         } catch (ResourceException e) {
-            controllerToModel.getConnectionsToClient().get(currentPlayerIndex).sendNotify(e.getMessage());
+            //controllerToModel.getConnectionsToClient().get(currentPlayerIndex).sendNotify(e.getMessage());
+            controllerToModel.getConnections().get(controllerToModel.getPlayers()[currentPlayerIndex].getName()).sendNotify(e.getMessage());
             sendMarketDepositData(currentPlayerIndex);
             return false;
         }
@@ -124,7 +125,9 @@ public class MarketTurn {
         } catch (LeaderCardException e) {
 
         }
-        controllerToModel.getConnectionsToClient().get(currentPlayerIndex).sendReorganizeDeposit(new ArrayList<>(this.tmpMarketReturn), controllerToModel.getPlayers()[currentPlayerIndex].getPlayerBoard().getResourceHandler().getDepositState(), isAdditional, additionalType, additionalState);
+        //controllerToModel.getConnectionsToClient().get(currentPlayerIndex).sendReorganizeDeposit(new ArrayList<>(this.tmpMarketReturn), controllerToModel.getPlayers()[currentPlayerIndex].getPlayerBoard().getResourceHandler().getDepositState(), isAdditional, additionalType, additionalState);
+        controllerToModel.getConnections().get(controllerToModel.getPlayers()[currentPlayerIndex].getName()).sendReorganizeDeposit(new ArrayList<>(this.tmpMarketReturn),
+                             controllerToModel.getPlayers()[currentPlayerIndex].getPlayerBoard().getResourceHandler().getDepositState(), isAdditional, additionalType, additionalState);
     }
 
 }

@@ -76,15 +76,20 @@ public class ActivateProductionTurn {
                 }
             }
             System.out.println("Risorse aggiunte correttamente alla strongbox");
-            controllerToModel.getConnectionsToClient().get(currentPlayerIndex).sendNotify("Risorse aggiunte correttamente alla strongbox");
-            controllerToModel.getConnectionsToClient().get(currentPlayerIndex).sendNotify("Avanzi di "+ faithPoints + " punti fede");
+
+            //controllerToModel.getConnectionsToClient().get(currentPlayerIndex).sendNotify("Risorse aggiunte correttamente alla strongbox");
+            controllerToModel.getConnections().get(controllerToModel.getPlayers()[currentPlayerIndex].getName()).sendNotify("Risorse aggiunte correttamente alla strongbox");
+            //controllerToModel.getConnectionsToClient().get(currentPlayerIndex).sendNotify("Avanzi di "+ faithPoints + " punti fede");
+            controllerToModel.getConnections().get(controllerToModel.getPlayers()[currentPlayerIndex].getName()).sendNotify("Avanzi di "+ faithPoints + " punti fede");
         }else if(!actualPlayerBoard.getResourceHandler().checkMaterials(materialRequested)){
             System.out.println("non ci sono abbastanza risorse");
-            controllerToModel.getConnectionsToClient().get(currentPlayerIndex).sendTurnReselection("Not enough resources");
+            //controllerToModel.getConnectionsToClient().get(currentPlayerIndex).sendTurnReselection("Not enough resources");
+            controllerToModel.getConnections().get(controllerToModel.getPlayers()[currentPlayerIndex].getName()).sendTurnReselection("Not enough resources");
             return false;
         }else if(!valid){
             System.out.println("non hai selezionato nulla");
-            controllerToModel.getConnectionsToClient().get(currentPlayerIndex).sendTurnReselection("No productions selected");
+            //controllerToModel.getConnectionsToClient().get(currentPlayerIndex).sendTurnReselection("No productions selected");
+            controllerToModel.getConnections().get(controllerToModel.getPlayers()[currentPlayerIndex].getName()).sendTurnReselection("No productions selected");
             return false;
         }
         return true;
