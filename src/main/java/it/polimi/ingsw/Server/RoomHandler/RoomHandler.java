@@ -42,16 +42,21 @@ public class RoomHandler implements EventToServerInitialVisitor, ObserveConnecti
             Room newRoom = new Room(room.getRoomNumber());
             multiGames.put((Integer) newRoom.getRoomNumber(), newRoom);
             this.tmpRoom = newRoom;
-            tmpConnection.sendNamePlayerRequest("write your name");
+            tmpConnection.sendNamePlayerRequest("write your nickname");
         }else if(room.isNewRoom() && existRoom(room.getRoomNumber())){ // se la stanza è nuova ma esiste gia mando errore
             tmpConnection.sendRoomRequestToClient("the room already exist");
         }else if(!room.isNewRoom() && !existRoom(room.getRoomNumber())){ // se la stanza non è nuova e non esiste mando errore
             tmpConnection.sendRoomRequestToClient("this room doesn't exist");
-        }else if(!room.isNewRoom() && existRoom(room.getRoomNumber())){ // se la stanza non è nuova ed esiste proseguo
+        }else if(!room.isNewRoom() && existRoom(room.getRoomNumber())){ // se la stanza non è nuova ed esiste proseguo e non è iniziata
             this.tmpRoom = multiGames.get((Integer) room.getRoomNumber());
-            tmpConnection.sendNamePlayerRequest("write your name");
-        }else if(existRoom(room.getRoomNumber()) && multiGames.get(room.getRoomNumber()).isStart()){
-            tmpConnection.sendRoomRequestToClient("the match in this room has already start: select another room");
+            if(!tmpRoom.isStart()){
+                tmpConnection.sendNamePlayerRequest("write your nickname");
+            }else if(tmpRoom.isStart() && tmpRoom.isFullPlayer()){
+                tmpConnection.sendRoomRequestToClient("the match in this room has already start: select another room");
+            }else if(tmpRoom.isStart() && !tmpRoom.isFullPlayer()){
+                tmpConnection.sendNamePlayerRequest("write your old nickname to reconnect at this match");
+            }
+
         }
 
 
@@ -75,7 +80,7 @@ public class RoomHandler implements EventToServerInitialVisitor, ObserveConnecti
                     }
                 }
                 if(tmpRoom.getNumPlayer()>1 && tmpRoom.getConnections().size()<tmpRoom.getNumPlayer()){
-                    tmpRoom.addConnectionToClient(tmpConnection.getNamePlayer(), tmpConnection);
+                    tmpRoom.addConnectionToClient(tmpConnection.getNamePlayer(), tmpConnection, false);
                     if(tmpRoom.getConnections().size()==tmpRoom.getNumPlayer()){
                         tmpRoom.startGame();
                     }
@@ -83,17 +88,23 @@ public class RoomHandler implements EventToServerInitialVisitor, ObserveConnecti
                     tmpConnection.sendRoomRequestToClient("this game is full of player, choose another room");
                 }
             }else if(!tmpRoom.isSendNumPlayer()){   // è il primo a connettersi quindi deve dire il numero di giocatori
-                tmpRoom.addConnectionToClient(tmpConnection.getNamePlayer(), tmpConnection);
+                tmpRoom.addConnectionToClient(tmpConnection.getNamePlayer(), tmpConnection, false);
                 System.out.println("mando numero");
                 tmpConnection.sendNumPlayerRequest("You are the first, write number of player");
                 tmpRoom.setSendNumPlayer(true);
-            }else if(tmpRoom.getNumPlayer()>1 && tmpRoom.getConnections().size()<tmpRoom.getNumPlayer()){
-                tmpRoom.addConnectionToClient(tmpConnection.getNamePlayer(), tmpConnection);
+            }else if(tmpRoom.getNumPlayer()>1 && tmpRoom.getConnections().size()<tmpRoom.getNumPlayer() && !tmpRoom.isStart()){
+                tmpRoom.addConnectionToClient(tmpConnection.getNamePlayer(), tmpConnection, false);
                 if(tmpRoom.getConnections().size()==tmpRoom.getNumPlayer()){
                     tmpRoom.startGame();
                 }
-            }else if(tmpRoom.isStart()){ // se la partita è già iniziata
+            }else if(tmpRoom.isStart() && tmpRoom.isFullPlayer()){ // se la partita è già iniziata
                 tmpConnection.sendRoomRequestToClient("the match in this room has already start: select another room");
+            }else if(tmpRoom.isStart() && !tmpRoom.isFullPlayer()){
+                if(checkReconnection(playerName.getPlayerName())){
+                    tmpRoom.addConnectionToClient(tmpConnection.getNamePlayer(), tmpConnection, true);
+                }else{
+                    tmpConnection.sendNamePlayerRequest("This player is not disconnected, write the old nickname");
+                }
             }
         }else{
             tmpConnection.sendNamePlayerRequest("Nickname choose already exist, choose another nickname");
@@ -131,6 +142,10 @@ public class RoomHandler implements EventToServerInitialVisitor, ObserveConnecti
             }
         }
         return true;
+    }
+
+    private boolean checkReconnection(String namePlayer){ // return true se si può riconnettere
+        return tmpRoom.getDisconnectionHandler().checkReconnection(namePlayer);
     }
 
 }

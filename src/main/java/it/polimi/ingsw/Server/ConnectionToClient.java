@@ -37,6 +37,8 @@ public class ConnectionToClient implements Runnable, EventToClientNotifier {
     private String namePlayer;
     private int numPlayer;
 
+    private DisconnectionHandler disconnectionHandler;
+
     //receiver of the event from the client
     private ObserveConnectionToClient observeConnectionToClient;
 
@@ -54,6 +56,7 @@ public class ConnectionToClient implements Runnable, EventToClientNotifier {
             input = new ObjectInputStream(clientSocket.getInputStream());
         } catch (IOException e) {
             e.printStackTrace();
+
         }
     }
 
@@ -66,7 +69,10 @@ public class ConnectionToClient implements Runnable, EventToClientNotifier {
                 observeConnectionToClient.observeEvent(event); // ControllerConnection
                 Thread.sleep(10);
             }
-        } catch (IOException | ClassNotFoundException | InterruptedException e) {
+        } catch (IOException e) {
+            setActive(false);
+            disconnectionHandler.setNullConnection(namePlayer); //TODO specifico
+        } catch (ClassNotFoundException | InterruptedException e) {
             e.printStackTrace();
         }
     }
@@ -77,8 +83,9 @@ public class ConnectionToClient implements Runnable, EventToClientNotifier {
                 output.writeObject(event);   // write the event
                 output.flush();              // send the event
                 output.reset();              // clean buffer
-            } catch (IOException e) {
-                e.printStackTrace();
+            } catch (IOException e) { //TODO specifico
+                setActive(false);
+                disconnectionHandler.setNullConnection(namePlayer);
             }
         }
     }
@@ -101,6 +108,10 @@ public class ConnectionToClient implements Runnable, EventToClientNotifier {
             e.printStackTrace();
         }
         setActive(false);
+    }
+
+    public void setDisconnectionHandler(DisconnectionHandler disconnectionHandler) {
+        this.disconnectionHandler = disconnectionHandler;
     }
 
     public boolean isActive(){

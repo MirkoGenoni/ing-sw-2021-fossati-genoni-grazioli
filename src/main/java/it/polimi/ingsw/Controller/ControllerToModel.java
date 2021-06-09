@@ -21,8 +21,9 @@ import java.util.Map;
  */
 public class ControllerToModel {
     private Player[] players;
-    private Map<String, ConnectionToClient> connections;
-    private final ArrayList<ConnectionToClient> connectionsToClient;
+    private final Map<String, ConnectionToClient> connections;
+    private final ArrayList<String> playerDisconnected;
+    private final ArrayList<String> orderPlayerConnections;
     private MultiPlayerGame multiGame;
     private SinglePlayerGame singleGame;
     private Game game;
@@ -45,9 +46,10 @@ public class ControllerToModel {
     private LorenzoTurn lorenzoTurn;
 
 
-    public ControllerToModel() {
-        this.connectionsToClient = new ArrayList<>();
-        this.connections = new HashMap<>();
+    public ControllerToModel(Map<String, ConnectionToClient> connections) {
+        this.connections = connections;
+        this.playerDisconnected = new ArrayList<>();
+        this.orderPlayerConnections = new ArrayList<>();
         numPlayer = 0;
         initialResourceArrive =0;
     }
@@ -64,30 +66,38 @@ public class ControllerToModel {
         return currentPlayerIndex;
     }
 
-    public Game getGame() {
-        return game;
+    public Player getActivePlayer() {
+        return activePlayer;
     }
 
-    public ArrayList<ConnectionToClient> getConnectionsToClient() {
-        return connectionsToClient;
+    public ArrayList<String> getPlayerDisconnected() {
+        return playerDisconnected;
+    }
+
+    public Game getGame() {
+        return game;
     }
 
     public Map<String, ConnectionToClient> getConnections() {
         return connections;
     }
 
+
     // -------------------------------------------------------
     // METHODS FOR THE START OF THE CONNECTION WITH THE CLIENT
     // -------------------------------------------------------
-    public void addConnectionToClient(ConnectionToClient connectionToClient){
-        connectionsToClient.add(connectionToClient);
-        connections.put(connectionToClient.getNamePlayer(), connectionToClient);
+    public void addPlayerNameOrder(String name){
+        orderPlayerConnections.add(name);
     }
 
     public void setNumPlayer(int numPlayer) {
         System.out.println("ho settato il numero di giocatori");
         this.numPlayer = numPlayer;
     }
+
+
+
+
 
     // -------------------------------------------
     // METHODS FOR THE START OF THE MATCH
@@ -99,9 +109,8 @@ public class ControllerToModel {
         if(numPlayer > 1){
             multiGame = new MultiPlayerGame(numPlayer);
             players = new Player[numPlayer];
-            //TODO cambiare con mappa?
-            for(int i=0; i<connectionsToClient.size(); i++){
-                Player tmpP = new Player(connectionsToClient.get(i).getNamePlayer());
+            for(int i=0; i<orderPlayerConnections.size(); i++){
+                Player tmpP = new Player(orderPlayerConnections.get(i));
                 players[i] = tmpP;
                 multiGame.addPlayer(tmpP);
             }
@@ -131,7 +140,7 @@ public class ControllerToModel {
 
         }else if(numPlayer == 1){
             players = new Player[numPlayer];
-            Player tmpP = new Player(connectionsToClient.get(0).getNamePlayer()); //TODO ATTENZIONE
+            Player tmpP = new Player(orderPlayerConnections.get(0));
             players[0] = tmpP;
             activePlayer = tmpP;
             currentPlayerIndex=0;
@@ -172,7 +181,6 @@ public class ControllerToModel {
         endGame = new EndGame(this);
     }
 
-
     // questi metodi servono per il multiPlayer
 
 
@@ -180,14 +188,25 @@ public class ControllerToModel {
     public void newTurn(){
         System.out.println("è iniziato un nuovo turno");
         activePlayer = nextPlayer();
+        int connectedPlayer=0;
+        // quando si disconnettono tutti i giocatori tranne uno e poi si riconnettono il turno passa dal gioratore successivo in modo errato, al posto che di quello che è rimasto connesso
+        while(connections.get(activePlayer.getName())==null || connectedPlayer==numPlayer){
+            activePlayer = nextPlayer();
+            connectedPlayer++;
+        }
+
+        if(connections.size()<=1 && numPlayer>=2){
+            connections.forEach((k,v) -> v.sendNotify("other player are all disconnected, wait that they rejoin the match"));
+            return;
+        }
+
+
 
         if(currentPlayerIndex == firstPlayer && endGame.endGameNotify()){
             int winnerPoint=0;
             String winnerName = " ";
             connections.forEach((k,v) -> v.sendNotify(" GAME ENDED "));
-            //connectionsToClient.forEach(c -> c.sendNotify(" IL GIOCO E' FINITOO!!!"));
-            //TODO controlla
-            for(int i=0; i<connections.keySet().size(); i++ ){
+            for(int i=0; i<players.length-1; i++ ){
                 //String name = connectionsToClient.get(i).getNamePlayer();
                 String name = players[i].getName();
                 int playerPoints = endGame.calculatePoints(i);
@@ -202,10 +221,10 @@ public class ControllerToModel {
             connections.forEach((k,v) -> v.sendNotify(finalWinnerName + " ha vinto con " + finalWinnerPoint + " punti"));
             connections.forEach((k,v) -> v.setActive(false));
             System.out.println("il gioco è finito");
+            //TODO gestire fine partita
         }else{
             connections.forEach((k,v) -> v.sendNotify("è il turno di " + activePlayer.getName()));
             try {
-
                 connections.get(activePlayer.getName()).sendArrayLeaderCards(players[currentPlayerIndex].getPlayerBoard().getLeaderCardHandler().getLeaderCardsAvailable(),false, players[currentPlayerIndex]);
             } catch (LeaderCardException e) {
                 turnToView();
@@ -215,6 +234,7 @@ public class ControllerToModel {
 
 
     }
+
 
     public void initialResourcesChoose(ArrayList<Resource> initialDepositState, String playerName){
         for(int i=0; i<players.length; i++){
@@ -336,11 +356,11 @@ public class ControllerToModel {
     }
 
     public void turnToView(){
-        for(int i=0; i<connections.keySet().size(); i++){
-            if(i==currentPlayerIndex){
-                connections.get(players[i].getName()).sendNewTurn(turnNumber, game.getMarketBoard(), game.getDevelopmentCardsAvailable(), players, game.getPlayersFaithTrack(), true);
+        for(String s : connections.keySet()){
+            if(s.equals(activePlayer.getName())){
+                connections.get(s).sendNewTurn(turnNumber, game.getMarketBoard(), game.getDevelopmentCardsAvailable(), players, game.getPlayersFaithTrack(), true);
             }else{
-                connections.get(players[i].getName()).sendNewTurn(turnNumber, game.getMarketBoard(), game.getDevelopmentCardsAvailable(), players, game.getPlayersFaithTrack(), false);
+                connections.get(s).sendNewTurn(turnNumber, game.getMarketBoard(), game.getDevelopmentCardsAvailable(), players, game.getPlayersFaithTrack(), false);
             }
         }
 
