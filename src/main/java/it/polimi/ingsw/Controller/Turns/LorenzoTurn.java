@@ -3,6 +3,7 @@ package it.polimi.ingsw.Controller.Turns;
 import it.polimi.ingsw.Controller.ControllerToModel;
 import it.polimi.ingsw.Model.DevelopmentCard.CardColor;
 import it.polimi.ingsw.Model.Exceptions.StartGameException;
+import it.polimi.ingsw.Model.Game.Game;
 import it.polimi.ingsw.Model.Game.SinglePlayerGame;
 import it.polimi.ingsw.Model.Lorenzo.LorenzoIlMagnifico;
 import it.polimi.ingsw.Model.Lorenzo.SoloAction;
@@ -63,7 +64,7 @@ public class LorenzoTurn {
 
         }
         //controllerToModel.getConnectionsToClient().get(controllerToModel.getCurrentPlayerIndex()).sendLorenzoTurn(action, controllerToModel.getGame().getPlayersFaithTrack().getPosition(1));
-        controllerToModel.getConnections().get(controllerToModel.getPlayers()[controllerToModel.getCurrentPlayerIndex()].getName()).sendLorenzoTurn(action, controllerToModel.getGame().getPlayersFaithTrack().getPosition(1));
+        controllerToModel.getConnections().get(controllerToModel.getActivePlayer().getName()).sendLorenzoTurn(action, controllerToModel.getGame().getPlayersFaithTrack().getPosition(1));
         return lorenzoWin;
     }
 
@@ -73,7 +74,7 @@ public class LorenzoTurn {
      * @param color specifies the color of the card to discard
      */
     private void discardCardColorForLorenzo(CardColor color){
-
+        Game game = controllerToModel.getGame();
         int colorForCard;
 
         switch (color) {
@@ -96,13 +97,13 @@ public class LorenzoTurn {
         try {
 
             for (int i = 0; i < 2; i++) {
-                if (controllerToModel.getGame().getDevelopmentCardsAvailable()[colorForCard][0] != null) {
-                    controllerToModel.getGame().buyDevelopmentCard(colorForCard, 0);
-                } else if (controllerToModel.getGame().getDevelopmentCardsAvailable()[colorForCard][1] != null) {
-                    controllerToModel.getGame().buyDevelopmentCard(colorForCard, 1);
-                } else if (controllerToModel.getGame().getDevelopmentCardsAvailable()[colorForCard][2] != null) {
-                    controllerToModel.getGame().buyDevelopmentCard(colorForCard, 2);
-                    if(controllerToModel.getGame().getDevelopmentCardsAvailable()[colorForCard][2] == null)
+                if (game.getDevelopmentCardsAvailable()[colorForCard][0] != null) {
+                    game.buyDevelopmentCard(colorForCard, 0);
+                } else if (game.getDevelopmentCardsAvailable()[colorForCard][1] != null) {
+                    game.buyDevelopmentCard(colorForCard, 1);
+                } else if (game.getDevelopmentCardsAvailable()[colorForCard][2] != null) {
+                    game.buyDevelopmentCard(colorForCard, 2);
+                    if(game.getDevelopmentCardsAvailable()[colorForCard][2] == null)
                         lorenzoWin = true; //se scarta tutte hai perso
                 } else {
                     lorenzoWin = true;

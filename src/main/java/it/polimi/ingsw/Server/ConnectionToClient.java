@@ -194,8 +194,8 @@ public class ConnectionToClient implements Runnable, EventToClientNotifier {
 
 
     @Override
-    public void sendEndGame(String message) {
-        EndGameToClient endGameToClient = new EndGameToClient(message);
+    public void sendEndGame(String message, Map<String, Integer> playersPoint) {
+        EndGameToClient endGameToClient = new EndGameToClient(message, playersPoint);
         asyncSendEvent(endGameToClient);
     }
 

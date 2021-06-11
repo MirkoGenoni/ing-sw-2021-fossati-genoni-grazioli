@@ -9,6 +9,7 @@ import it.polimi.ingsw.Model.Market.Market;
 import it.polimi.ingsw.Model.Resource.Resource;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 // list of the event that the server could sent to the client
 public interface EventToClientNotifier {
@@ -39,7 +40,7 @@ public interface EventToClientNotifier {
     // ----------------------------------
     void sendNotify(String message);
     void sendNewTurn(int turnNumber, Market market, DevelopmentCard[][] developmentCards, Player[] players, FaithTrack faithTrack, boolean yourTurn);
-    void sendEndGame(String message);
+    void sendEndGame(String message, Map<String, Integer> playersPoint);
     void sendInitialResources(int numResources, ArrayList<Resource> depositState);
     void sendLorenzoTurn(SoloAction lorenzoAction, int lorenzoPosition);
 

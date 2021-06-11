@@ -3,6 +3,7 @@ package it.polimi.ingsw.Controller.Turns;
 import it.polimi.ingsw.Controller.ControllerToModel;
 import it.polimi.ingsw.Model.Exceptions.LeaderCardException;
 import it.polimi.ingsw.Model.Exceptions.ResourceException;
+import it.polimi.ingsw.Model.Game.Player;
 import it.polimi.ingsw.Model.LeaderCard.LeaderCard;
 import it.polimi.ingsw.Model.Market.Marble;
 import it.polimi.ingsw.Model.Resource.Resource;
@@ -19,8 +20,10 @@ public class MarketTurn {
         this.controllerToModel = controllerToModel;
     }
 
-    public void marketChooseLine(String namePlayer, int line, int currentPlayerIndex, ArrayList<Boolean> leaderMarketWhiteChange){
+    public void marketChooseLine(String namePlayer, int line, ArrayList<Boolean> leaderMarketWhiteChange){
         System.out.println("aggiungo al player");
+        int currentPlayerIndex = controllerToModel.getCurrentPlayerIndex();
+        Player activePlayer = controllerToModel.getPlayers()[currentPlayerIndex];
         ArrayList<Marble> tmpM =  controllerToModel.getGame().getMarketBoard().chooseLine(line);
         System.out.println(tmpM);
 
@@ -33,7 +36,7 @@ public class MarketTurn {
 
         if(tmpM.contains(Marble.NOTHING)){
             try{
-                ArrayList<LeaderCard> tmpL = controllerToModel.getPlayers()[currentPlayerIndex].getPlayerBoard().getLeaderCardHandler().getLeaderCardsActive();
+                ArrayList<LeaderCard> tmpL = activePlayer.getPlayerBoard().getLeaderCardHandler().getLeaderCardsActive();
                 //TODO Probabile isEmpty non necessario
                 //nel caso in cui entrambi i valori sui leader da usare fossero true, converte solo il primo valore
                 if(!tmpL.isEmpty()){                                        // controlla se ci sono carte leader attive
@@ -48,7 +51,7 @@ public class MarketTurn {
                 //TODO forse altro controllo se c'è white-change e ho due false
                 }
             } catch (LeaderCardException e) {
-                System.out.println(controllerToModel.getPlayers()[currentPlayerIndex].getName() + e.getMessage());
+                System.out.println(activePlayer.getName() + e.getMessage());
             }
         }
         System.out.println(tmpM);
@@ -62,23 +65,24 @@ public class MarketTurn {
         }
 
         this.tmpMarketReturn = new ArrayList<>(tmpR);
-        sendMarketDepositData(currentPlayerIndex);
+        sendMarketDepositData(activePlayer);
     }
 
-    public boolean saveNewDepositState(ArrayList<Resource> newDepositState, int discardResources, int currentPlayerIndex, boolean isAdditional, ArrayList<Resource> additionalDepositState){
+    public boolean saveNewDepositState(ArrayList<Resource> newDepositState, int discardResources, boolean isAdditional, ArrayList<Resource> additionalDepositState){
+        Player activePlayer = controllerToModel.getActivePlayer();
         System.out.println(" riscorse scartate " +discardResources);
         boolean tmp = false;
         int savePlayer = -1;
         // deve fare il check del nuovo stato del deposito se non va bene rimanda l'evento di riorganizzare il deposito
         try{
             if(isAdditional)
-                controllerToModel.getPlayers()[currentPlayerIndex].getPlayerBoard().getResourceHandler().newAdditionalDepositState(additionalDepositState);
+                activePlayer.getPlayerBoard().getResourceHandler().newAdditionalDepositState(additionalDepositState);
 
-            controllerToModel.getPlayers()[currentPlayerIndex].getPlayerBoard().getResourceHandler().newDepositState(newDepositState);
+            activePlayer.getPlayerBoard().getResourceHandler().newDepositState(newDepositState);
 
             for(int i=0; i<discardResources; i++){
                 for( int j=0; j<controllerToModel.getPlayers().length; j++){
-                    if(j!=currentPlayerIndex){
+                    if(!controllerToModel.getPlayers()[j].equals(activePlayer)){
                         if(controllerToModel.getGame().getPlayersFaithTrack().forwardPos(j)){
                             tmp = true;
                             savePlayer = j;
@@ -99,21 +103,21 @@ public class MarketTurn {
             return true;
         } catch (ResourceException e) {
             //controllerToModel.getConnectionsToClient().get(currentPlayerIndex).sendNotify(e.getMessage());
-            controllerToModel.getConnections().get(controllerToModel.getPlayers()[currentPlayerIndex].getName()).sendNotify(e.getMessage());
-            sendMarketDepositData(currentPlayerIndex);
+            controllerToModel.getConnections().get(activePlayer.getName()).sendNotify(e.getMessage());
+            sendMarketDepositData(activePlayer);
             return false;
         }
 
     }
 
-    public void sendMarketDepositData(int currentPlayerIndex){
+    private void sendMarketDepositData(Player activePlayer){
 
         boolean isAdditional = false;
         ArrayList<Resource> additionalType = new ArrayList<>();
-        ArrayList<Resource> additionalState = controllerToModel.getPlayers()[currentPlayerIndex].getPlayerBoard().getResourceHandler().getAdditionalDeposit();
+        ArrayList<Resource> additionalState = activePlayer.getPlayerBoard().getResourceHandler().getAdditionalDeposit();
 
         try {   //controlla se il giocatore ha attivato una leadercard biggerDeposit e crea l'evento di conseguenza
-            for(LeaderCard r: controllerToModel.getPlayers()[currentPlayerIndex].getPlayerBoard().getLeaderCardHandler().getLeaderCardsActive()){
+            for(LeaderCard r: activePlayer.getPlayerBoard().getLeaderCardHandler().getLeaderCardsActive()){
                 if(r!=null){
                     if(r.getSpecialAbility().getEffect().equals("biggerDeposit")){
                         isAdditional = true;
@@ -126,8 +130,8 @@ public class MarketTurn {
 
         }
         //controllerToModel.getConnectionsToClient().get(currentPlayerIndex).sendReorganizeDeposit(new ArrayList<>(this.tmpMarketReturn), controllerToModel.getPlayers()[currentPlayerIndex].getPlayerBoard().getResourceHandler().getDepositState(), isAdditional, additionalType, additionalState);
-        controllerToModel.getConnections().get(controllerToModel.getPlayers()[currentPlayerIndex].getName()).sendReorganizeDeposit(new ArrayList<>(this.tmpMarketReturn),
-                             controllerToModel.getPlayers()[currentPlayerIndex].getPlayerBoard().getResourceHandler().getDepositState(), isAdditional, additionalType, additionalState);
+        controllerToModel.getConnections().get(activePlayer.getName()).sendReorganizeDeposit(new ArrayList<>(this.tmpMarketReturn),
+                             activePlayer.getPlayerBoard().getResourceHandler().getDepositState(), isAdditional, additionalType, additionalState);
     }
 
 }

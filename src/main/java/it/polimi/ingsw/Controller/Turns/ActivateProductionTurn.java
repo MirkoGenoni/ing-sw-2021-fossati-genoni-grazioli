@@ -5,6 +5,7 @@ import it.polimi.ingsw.Model.DevelopmentCard.DevelopmentCard;
 import it.polimi.ingsw.Model.DevelopmentCard.ProductedMaterials;
 import it.polimi.ingsw.Model.Exceptions.LeaderCardException;
 import it.polimi.ingsw.Model.Exceptions.ResourceException;
+import it.polimi.ingsw.Model.Game.Player;
 import it.polimi.ingsw.Model.Gameboard.Gameboard;
 import it.polimi.ingsw.Model.LeaderCard.LeaderCard;
 import it.polimi.ingsw.Model.Resource.Resource;
@@ -22,10 +23,10 @@ public class ActivateProductionTurn {
 
     public boolean productionsActivation(boolean useBaseProduction, Resource resourceRequested1, Resource resourceRequested2,
                                     ProductedMaterials resourceGranted, ArrayList<Boolean> useLeaders, ArrayList<Resource> materialLeaders,
-                                    ArrayList<Boolean> useDevelop, String playerName){
-
+                                    ArrayList<Boolean> useDevelop){
         int currentPlayerIndex = controllerToModel.getCurrentPlayerIndex();
-        Gameboard actualPlayerBoard = controllerToModel.getPlayers()[currentPlayerIndex].getPlayerBoard();
+        Player activePlayer = controllerToModel.getPlayers()[currentPlayerIndex];
+        Gameboard actualPlayerBoard = activePlayer.getPlayerBoard();
 
         Map<Resource,Integer> materialRequested = new HashMap<>();
         for(Resource r : Resource.values())
@@ -42,11 +43,11 @@ public class ActivateProductionTurn {
         }
 
         if(useLeaders.contains(true)) {
-            leaderCardProduction(useLeaders, materialLeaders, materialRequested, materialGranted);
+            leaderCardProduction(useLeaders, materialLeaders, materialRequested, materialGranted, activePlayer);
         }
 
         if(useDevelop.contains(true)) {
-            developmentCardProduction(useDevelop, materialRequested, materialGranted);
+            developmentCardProduction(useDevelop, materialRequested, materialGranted, activePlayer);
         }
 
 
@@ -78,25 +79,25 @@ public class ActivateProductionTurn {
             System.out.println("Risorse aggiunte correttamente alla strongbox");
 
             //controllerToModel.getConnectionsToClient().get(currentPlayerIndex).sendNotify("Risorse aggiunte correttamente alla strongbox");
-            controllerToModel.getConnections().get(controllerToModel.getPlayers()[currentPlayerIndex].getName()).sendNotify("Risorse aggiunte correttamente alla strongbox");
+            controllerToModel.getConnections().get(activePlayer.getName()).sendNotify("Risorse aggiunte correttamente alla strongbox");
             //controllerToModel.getConnectionsToClient().get(currentPlayerIndex).sendNotify("Avanzi di "+ faithPoints + " punti fede");
-            controllerToModel.getConnections().get(controllerToModel.getPlayers()[currentPlayerIndex].getName()).sendNotify("Avanzi di "+ faithPoints + " punti fede");
+            controllerToModel.getConnections().get(activePlayer.getName()).sendNotify("Avanzi di "+ faithPoints + " punti fede");
         }else if(!actualPlayerBoard.getResourceHandler().checkMaterials(materialRequested)){
             System.out.println("non ci sono abbastanza risorse");
             //controllerToModel.getConnectionsToClient().get(currentPlayerIndex).sendTurnReselection("Not enough resources");
-            controllerToModel.getConnections().get(controllerToModel.getPlayers()[currentPlayerIndex].getName()).sendTurnReselection("Not enough resources");
+            controllerToModel.getConnections().get(activePlayer.getName()).sendTurnReselection("Not enough resources");
             return false;
         }else if(!valid){
             System.out.println("non hai selezionato nulla");
             //controllerToModel.getConnectionsToClient().get(currentPlayerIndex).sendTurnReselection("No productions selected");
-            controllerToModel.getConnections().get(controllerToModel.getPlayers()[currentPlayerIndex].getName()).sendTurnReselection("No productions selected");
+            controllerToModel.getConnections().get(activePlayer.getName()).sendTurnReselection("No productions selected");
             return false;
         }
         return true;
     }
 
-    private void leaderCardProduction(ArrayList<Boolean> useLeaders, ArrayList<Resource> materialLeaders,
-                                                               Map<Resource,Integer> materialRequested, Map<ProductedMaterials, Integer> materialGranted){
+    private void leaderCardProduction(ArrayList<Boolean> useLeaders, ArrayList<Resource> materialLeaders, Map<Resource,Integer> materialRequested,
+                                      Map<ProductedMaterials, Integer> materialGranted, Player activePlayer){
 
         ArrayList<ProductedMaterials> productedByLeader = new ArrayList<>();
 
@@ -110,7 +111,7 @@ public class ActivateProductionTurn {
         }
 
         try {
-            ArrayList<LeaderCard> activeLeaders = controllerToModel.getPlayers()[controllerToModel.getCurrentPlayerIndex()].getPlayerBoard().getLeaderCardHandler().getLeaderCardsActive();
+            ArrayList<LeaderCard> activeLeaders = activePlayer.getPlayerBoard().getLeaderCardHandler().getLeaderCardsActive();
 
             for (int i = 0; i < activeLeaders.size(); i++) {
                 if (useLeaders.get(i) && productedByLeader.get(i)!=null) {
@@ -133,8 +134,9 @@ public class ActivateProductionTurn {
 
     }
 
-    private void developmentCardProduction(ArrayList<Boolean> useDevelop, Map<Resource,Integer> materialRequested, Map<ProductedMaterials, Integer> materialGranted){
-        ArrayList<DevelopmentCard> activeDevelopment = controllerToModel.getPlayers()[controllerToModel.getCurrentPlayerIndex()].getPlayerBoard().getDevelopmentCardHandler().getActiveDevelopmentCard();
+    private void developmentCardProduction(ArrayList<Boolean> useDevelop, Map<Resource,Integer> materialRequested, Map<ProductedMaterials,
+                                            Integer> materialGranted, Player activePlayer){
+        ArrayList<DevelopmentCard> activeDevelopment = activePlayer.getPlayerBoard().getDevelopmentCardHandler().getActiveDevelopmentCard();
 
         for(int i=0; i < activeDevelopment.size(); i++){
             if (activeDevelopment.get(i)!=null && useDevelop.get(i)){

@@ -135,7 +135,7 @@ public class ControllerToModel {
             turnNumber = 0;
             currentPlayerIndex --; // serve perchè il nextTurn incrementa il numero di giocatori
             // create classes of type of turn
-            createTurns();
+            createTurns(activePlayer);
             //newTurn();
 
         }else if(numPlayer == 1){
@@ -154,7 +154,7 @@ public class ControllerToModel {
             }
             this.activePlayer = players[0];
             turnNumber = 0;
-            createTurns();
+            createTurns(activePlayer);
             System.out.println("creo lorenzo");
             lorenzoTurn = new LorenzoTurn(this, singleGame, 1);
 
@@ -173,7 +173,7 @@ public class ControllerToModel {
     }
 
 
-    private void createTurns(){
+    private void createTurns(Player activePlayer){
         marketTurn = new MarketTurn(this);
         buyDevelopmentCardTurn = new BuyDevelopmentCardTurn(this);
         leaderCardTurn = new LeaderCardTurn(this);
@@ -200,25 +200,23 @@ public class ControllerToModel {
             return;
         }
 
-
-
         if(currentPlayerIndex == firstPlayer && endGame.endGameNotify()){
+            Map<String, Integer> playersPoint = new HashMap<>();
             int winnerPoint=0;
-            String winnerName = " ";
+            String winnerName="";
             connections.forEach((k,v) -> v.sendNotify(" GAME ENDED "));
             for(int i=0; i<players.length-1; i++ ){
                 //String name = connectionsToClient.get(i).getNamePlayer();
                 String name = players[i].getName();
                 int playerPoints = endGame.calculatePoints(i);
-                connections.forEach((k,v) -> v.sendNotify(name + "ha " + playerPoints + " punti"));
+                playersPoint.put(name, playerPoints);
                 if(playerPoints>winnerPoint){
                     winnerPoint = playerPoints;
                     winnerName = name;
                 }
             }
-            String finalWinnerName = winnerName;
-            int finalWinnerPoint = winnerPoint;
-            connections.forEach((k,v) -> v.sendNotify(finalWinnerName + " ha vinto con " + finalWinnerPoint + " punti"));
+            String message = winnerName + " ha vinto con " + winnerPoint + " punti";
+            connections.forEach((k,v) -> v.sendEndGame(message, playersPoint));
             connections.forEach((k,v) -> v.setActive(false));
             System.out.println("il gioco è finito");
             //TODO gestire fine partita
@@ -287,7 +285,7 @@ public class ControllerToModel {
     }
 
     public void leaderCardTurn(String playerName, ArrayList<Integer> actions){
-        leaderCardTurn.leaderTurns(playerName, actions, currentPlayerIndex);
+        leaderCardTurn.leaderTurns(playerName, actions);
     }
 
 
@@ -295,11 +293,11 @@ public class ControllerToModel {
     // METHODS FOR THE MARKET TURN
     // -------------------------------------------
     public void marketChooseLine(String namePlayer, int line, ArrayList<Boolean> leaderMarketWhiteChange){
-        marketTurn.marketChooseLine(namePlayer, line, currentPlayerIndex, leaderMarketWhiteChange);
+        marketTurn.marketChooseLine(namePlayer, line, leaderMarketWhiteChange);
     }
 
     public void saveNewDepositState(ArrayList<Resource> newDepositState, int discardResources, boolean isAdditional, ArrayList<Resource> additionalDepositState){
-        if(marketTurn.saveNewDepositState(newDepositState, discardResources, currentPlayerIndex, isAdditional, additionalDepositState) && checkMultiplayer()){
+        if(marketTurn.saveNewDepositState(newDepositState, discardResources, isAdditional, additionalDepositState) && checkMultiplayer()){
             newTurn();
         }
 
@@ -309,11 +307,11 @@ public class ControllerToModel {
     // METHODS FOR THE BUY DEVELOPMENT CARD TURN
     // -------------------------------------------
     public void buyDevelopmentCard(int color, int level){
-        buyDevelopmentCardTurn.buyDevelopmentCard(color, level, currentPlayerIndex);
+        buyDevelopmentCardTurn.buyDevelopmentCard(color, level);
     }
 
     public void spaceDevelopmentCard(int space){
-        if(buyDevelopmentCardTurn.spaceDevelopmentCard(space, currentPlayerIndex) && checkMultiplayer()){
+        if(buyDevelopmentCardTurn.spaceDevelopmentCard(space) && checkMultiplayer()){
             newTurn();
         }
     }
@@ -327,7 +325,7 @@ public class ControllerToModel {
                                    ArrayList<Boolean> useDevelop, String playerName){
 
         boolean tmpB = activateProductionTurn.productionsActivation(useBaseProduction, resourceRequested1, resourceRequested2, resourceGranted,
-                                    useLeaders, materialLeaders, useDevelop, playerName);
+                                    useLeaders, materialLeaders, useDevelop);
         if(tmpB && checkMultiplayer()){  // vedi checklorenzo
             newTurn();
         }
@@ -367,10 +365,10 @@ public class ControllerToModel {
     }
 
     public boolean checkMultiplayer(){
-        // metodo da mettere private dopo aver tolto il turn dalle opzioni di scelta!!!!!!
+        //TODO metodo da mettere private dopo aver tolto il turn dalle opzioni di scelta!!!!!!
         if(turnNumber != 0 && players.length == 1){
             if(lorenzoTurn.playLorenzo()){
-                connections.get(players[currentPlayerIndex].getName()).sendEndGame("HAI PERSO, HA VINTO LORENZO!!");
+                connections.get(players[currentPlayerIndex].getName()).sendEndGame("HAI PERSO, HA VINTO LORENZO!!", null );
             }
             return false; // se è single game
         }else{
