@@ -26,10 +26,11 @@ public class MarketTurn {
         Player activePlayer = controllerToModel.getPlayers()[currentPlayerIndex];
         ArrayList<Marble> tmpM =  controllerToModel.getGame().getMarketBoard().chooseLine(line);
         System.out.println(tmpM);
+        int section = controllerToModel.getGame().getPlayersFaithTrack().getSection(controllerToModel.getCurrentPlayerIndex());
 
         if(tmpM.contains(Marble.FAITH)){    // se ci sono marble di tipo faith incrementa direttamente la pedina del giocatore sul tracciato fede
             if(controllerToModel.getGame().getPlayersFaithTrack().forwardPos(currentPlayerIndex)){
-                controllerToModel.controlPlayerPath(currentPlayerIndex);
+                controllerToModel.controlPlayerPath(currentPlayerIndex,section);
             }
             tmpM.remove(Marble.FAITH);
         }
@@ -73,6 +74,7 @@ public class MarketTurn {
         System.out.println(" riscorse scartate " +discardResources);
         boolean tmp = false;
         int savePlayer = -1;
+        int section=0;
         // deve fare il check del nuovo stato del deposito se non va bene rimanda l'evento di riorganizzare il deposito
         try{
             if(isAdditional)
@@ -86,15 +88,17 @@ public class MarketTurn {
                         if(controllerToModel.getGame().getPlayersFaithTrack().forwardPos(j)){
                             tmp = true;
                             savePlayer = j;
+                            section = controllerToModel.getGame().getPlayersFaithTrack().getSection(j);
                         }
                     }
                 }
-                if(tmp && savePlayer != -1){
-                    controllerToModel.controlPlayerPath(savePlayer);
+                if(tmp && savePlayer != -1 && section!=0){
+                    controllerToModel.controlPlayerPath(savePlayer,section);
                 }
                 if(controllerToModel.getPlayers().length==1){
-                    if(controllerToModel.getGame().getPlayersFaithTrack().forwardPos(1)){
-                        controllerToModel.controlPlayerPath(1);
+                    if(controllerToModel.getGame().getPlayersFaithTrack().forwardPos(1)){ //avanza lorenzo
+                        section = controllerToModel.getGame().getPlayersFaithTrack().getSection(1); //Lorenzo's section
+                        controllerToModel.controlPlayerPath(1,section); //controllo rispetto a lorenzo
                     }
 
                 }

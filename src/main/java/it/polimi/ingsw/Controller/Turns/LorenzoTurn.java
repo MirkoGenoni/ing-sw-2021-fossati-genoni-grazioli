@@ -39,13 +39,13 @@ public class LorenzoTurn {
         switch (action) {
             case MOVESHUFFLE:
                 if(controllerToModel.getGame().getPlayersFaithTrack().forwardPos(lorenzoNumPlayer))
-                    controllerToModel.controlPlayerPath(lorenzoNumPlayer);
+                    controllerToModel.controlPlayerPath(lorenzoNumPlayer, controllerToModel.getGame().getPlayersFaithTrack().getSection(lorenzoNumPlayer));
                 controlFaithTrackLorenzoWin();
                 break;
             case ONLYMOVE:
                 for(int i=0; i<2;i++){
                     if(controllerToModel.getGame().getPlayersFaithTrack().forwardPos(lorenzoNumPlayer))
-                        controllerToModel.controlPlayerPath(lorenzoNumPlayer);
+                        controllerToModel.controlPlayerPath(lorenzoNumPlayer, controllerToModel.getGame().getPlayersFaithTrack().getSection(lorenzoNumPlayer));
                 }
                 controlFaithTrackLorenzoWin();
                 break;

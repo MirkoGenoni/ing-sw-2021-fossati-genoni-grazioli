@@ -9,8 +9,10 @@ import it.polimi.ingsw.Events.ServerToClient.InitialConnectionToClient.SendNumPl
 import it.polimi.ingsw.Events.ServerToClient.InitialConnectionToClient.SendRoomRequestToClient;
 import it.polimi.ingsw.Events.ServerToClient.BuyDevelopmentCardTurnToClient.SendSpaceDevelopmentCardToClient;
 import it.polimi.ingsw.Events.ServerToClient.MarketTurnToClient.SendReorganizeDepositToClient;
+import it.polimi.ingsw.Events.ServerToClient.SupportClass.DevelopmentCardToClient;
 import it.polimi.ingsw.Events.ServerToClient.SupportClass.PlayerInformationToClient;
 import it.polimi.ingsw.Events.ServerToClient.TurnReselection;
+import it.polimi.ingsw.Model.Game.Player;
 import it.polimi.ingsw.Model.Resource.Resource;
 
 import java.io.IOException;
@@ -167,14 +169,14 @@ public class CLI implements EventToClientVisitor {
         if (newTurn.isYourTurn()) {
             handler.newState(this.namePlayer, newTurn.getPlayers(), newTurn.getMarket(), newTurn.getDevelopmentCards());
 
-        /* FOR DEBUG! PRINTS THE CORRECT STATE OF THE CURRENT PLAYER WITHOUT THE USE OF THE CLI (check for visualization)
-            for (int i = 0; i < newTurn.getPlayers().size(); i++) {
+        // FOR DEBUG! PRINTS THE CORRECT STATE OF THE CURRENT PLAYER WITHOUT THE USE OF THE CLI (check for visualization)
+            /*for (int i = 0; i < newTurn.getPlayers().size(); i++) {
                 if (newTurn.getPlayers().get(i).getPlayerNameSend().equals(namePlayer)) {
                     index = i;
                 }
             }
 
-            PlayerInformationToClient player = newTurn.getPlayers().get(index);
+            PlayerInformationToClient player = newTurn.getPlayers().get(namePlayer);
 
             System.out.println("il mio deposito");
             System.out.println(player.getDeposit());

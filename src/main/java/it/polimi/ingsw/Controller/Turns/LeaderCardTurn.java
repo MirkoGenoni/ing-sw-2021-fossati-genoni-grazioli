@@ -32,7 +32,7 @@ public class LeaderCardTurn {
                     try {
                         activePlayer.getPlayerBoard().getLeaderCardHandler().discardLeaderCard(i);
                         if(game.getPlayersFaithTrack().forwardPos(currentPlayerIndex)){
-                            controllerToModel.controlPlayerPath(currentPlayerIndex);
+                            controllerToModel.controlPlayerPath(currentPlayerIndex, controllerToModel.getGame().getPlayersFaithTrack().getSection(currentPlayerIndex));
                         }
                     } catch (LeaderCardException e) {
                         e.printStackTrace();

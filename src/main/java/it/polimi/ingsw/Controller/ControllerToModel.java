@@ -336,10 +336,9 @@ public class ControllerToModel {
     // -------------------------------------------
     // METHODS FOR THE MANAGE OF THE FAITH TRACK
     // -------------------------------------------
+    public void controlPlayerPath (int numPlayer, int section){
 
-    public void controlPlayerPath (int numPlayer){
-
-        int section = game.getPlayersFaithTrack().getSection(numPlayer);
+        //int section = game.getPlayersFaithTrack().getSection(numPlayer);
         int sectionToCheck;
 
         for(int i=0; i<players.length; i++){
@@ -383,12 +382,12 @@ public class ControllerToModel {
                 connections.get(players[current].getName()).sendInitialResources(1, players[current].getPlayerBoard().getResourceHandler().getDepositState());
             }else if(i == 2){
                 if(game.getPlayersFaithTrack().forwardPos(current)){
-                    controlPlayerPath(current); //not strictly necessary
+                    //controlPlayerPath(current); //not strictly necessary
                 }
                 connections.get(players[current].getName()).sendInitialResources(1, players[current].getPlayerBoard().getResourceHandler().getDepositState());
             }else if(i == 3){
                 if(game.getPlayersFaithTrack().forwardPos(current)){
-                    controlPlayerPath(current); //not strictly necessary
+                    //controlPlayerPath(current); //not strictly necessary
                 }
                 connections.get(players[current].getName()).sendInitialResources(2, players[current].getPlayerBoard().getResourceHandler().getDepositState());
             }

@@ -73,10 +73,11 @@ public class ActivateProductionTurn {
             int faithPoints = materialGranted.get(ProductedMaterials.FAITHPOINT);
             for(int i=0; i<faithPoints; i++){
                 if(controllerToModel.getGame().getPlayersFaithTrack().forwardPos(currentPlayerIndex)){
-                    controllerToModel.controlPlayerPath(currentPlayerIndex);
+                    controllerToModel.controlPlayerPath(currentPlayerIndex, controllerToModel.getGame().getPlayersFaithTrack().getSection(currentPlayerIndex));
                 }
             }
             System.out.println("Risorse aggiunte correttamente alla strongbox");
+            System.out.println(controllerToModel.getPlayers()[currentPlayerIndex].getName()+ " avanza di "+ faithPoints+ " punti fede");
 
             //controllerToModel.getConnectionsToClient().get(currentPlayerIndex).sendNotify("Risorse aggiunte correttamente alla strongbox");
             controllerToModel.getConnections().get(activePlayer.getName()).sendNotify("Risorse aggiunte correttamente alla strongbox");
