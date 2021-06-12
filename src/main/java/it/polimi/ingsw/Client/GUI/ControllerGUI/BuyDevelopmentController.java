@@ -17,9 +17,9 @@ import javafx.scene.layout.GridPane;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
 
@@ -35,7 +35,7 @@ public class BuyDevelopmentController implements GUIController, Initializable {
     @FXML Label error;
 
     private ArrayList<String> devSelected = new ArrayList<>();
-    private Map<String, Integer> totalResources = new HashMap<>();
+    private Map<String, Integer> totalResources;
     private ArrayList<ImageView> devImg = new ArrayList<>();
 
     //tmp
@@ -55,34 +55,14 @@ public class BuyDevelopmentController implements GUIController, Initializable {
                         tmp.setFitWidth(152);
                         gridDev.add(tmp, i, j);
                         devImg.add(tmp);
-                        tmp.setOnMouseClicked(new EventHandler<MouseEvent>() {
-                            @Override
-                            public void handle(MouseEvent e) {
-                                if(tmp.getEffect()==null){
-                                    tmp.setEffect(new DropShadow());
-                                    devSelected.add(tmp.getId());
-                                }else{
-                                    tmp.setEffect(null);
-                                    devSelected.remove(tmp.getId());
-                                }
-                            }
-                        });
+                        tmp.setOnMouseClicked(selectAction);
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
                     }
                 }
             }
         }
-        for(Resource r : strongBox.keySet()){
-            totalResources.put(r.name().toLowerCase(), strongBox.get(r));
-        }
-
-        for (Resource r : deposit) {
-            if(r!=null){
-                totalResources.put(r.name().toLowerCase(), totalResources.get(r.name().toLowerCase()) + 1);
-            }
-
-        }
+        this.totalResources = gui.calculateTotalResources(deposit, strongBox);
 
         coin.setText("X " + totalResources.get("coin"));
         stone.setText("X " + totalResources.get("stone"));
@@ -155,4 +135,18 @@ public class BuyDevelopmentController implements GUIController, Initializable {
         devImg.forEach(dev -> dev.setEffect(null));
         devImg.clear();
     }
+
+    private EventHandler<MouseEvent> selectAction = new EventHandler<MouseEvent>() {
+        @Override
+        public void handle(MouseEvent mouseEvent) {
+            ImageView tmp = (ImageView) mouseEvent.getSource();
+            if(tmp.getEffect()==null){
+                tmp.setEffect(new DropShadow());
+                devSelected.add(tmp.getId());
+            }else{
+                tmp.setEffect(null);
+                devSelected.remove(tmp.getId());
+            }
+        }
+    };
 }

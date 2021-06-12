@@ -1,6 +1,7 @@
 package it.polimi.ingsw.Client.GUI.ControllerGUI;
 
 import it.polimi.ingsw.Client.GUI.GUI;
+import it.polimi.ingsw.Events.ServerToClient.SupportClass.LeaderCardToClient;
 import it.polimi.ingsw.Model.DevelopmentCard.ProductedMaterials;
 import it.polimi.ingsw.Model.Resource.Resource;
 import javafx.event.ActionEvent;
@@ -13,20 +14,30 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.*;
+
 
 public class ActivateProductionController implements GUIController, Initializable {
     private GUI gui;
 
-    Map <String,Image> resources;
+    private Map <String,Image> resources;
 
-    ArrayList<ImageView> devProduction;
-    ArrayList<ImageView> selectionDev;
+    private ArrayList<ImageView> devProduction;
+    private ArrayList<ImageView> selectionDev;
 
-    Map<String, Integer> totalResources = new HashMap<>();
+    private ArrayList<ImageView> leadAdditionalProduction;
+    private ArrayList<ImageView> selectionLead;
+    private ArrayList<ImageView> resourceLead;
 
-    ArrayList<Integer> devSelected = new ArrayList<>();
+    private Map<String, Integer> totalResources;
+
+    private ArrayList<Integer> devSelected = new ArrayList<>();
+    private Boolean[] leaderSelected;
+    private ArrayList<Integer> leadSelected = new ArrayList<>();
 
 
     @FXML ImageView dev0;
@@ -36,6 +47,16 @@ public class ActivateProductionController implements GUIController, Initializabl
     @FXML ImageView dev0sel;
     @FXML ImageView dev1sel;
     @FXML ImageView dev2sel;
+
+    @FXML ImageView leader0;
+    @FXML ImageView leader1;
+
+    @FXML ImageView lead0sel;
+    @FXML ImageView lead1sel;
+
+    @FXML ImageView resourceLead0;
+    @FXML ImageView resourceLead1;
+
 
     @FXML Label coin;
     @FXML Label stone;
@@ -47,18 +68,9 @@ public class ActivateProductionController implements GUIController, Initializabl
     @FXML ImageView resourceProduced;
 
 
-    public void drawProduction(ArrayList<Image> devPlayer, ArrayList<Resource> deposit, Map<Resource, Integer> strongBox){
+    public void drawProduction(ArrayList<Image> devPlayer, ArrayList<Resource> deposit, Map<Resource, Integer> strongBox, ArrayList<LeaderCardToClient> leaderCardsActive){
 
-        // calculate total resources
-        for(Resource r : strongBox.keySet()){
-            totalResources.put(r.name().toLowerCase(), strongBox.get(r));
-        }
-        for(Resource r : deposit){
-            if(r!=null){
-                totalResources.put(r.name().toLowerCase(), totalResources.get(r.name().toLowerCase()) + 1);
-            }
-        }
-        //TODO creare metodo
+        this.totalResources = gui.calculateTotalResources(deposit, strongBox);
 
         coin.setText("X " + totalResources.get("coin"));
         stone.setText("X " + totalResources.get("stone"));
@@ -69,35 +81,33 @@ public class ActivateProductionController implements GUIController, Initializabl
         for(int i=0; i<devPlayer.size(); i++){
             devProduction.get(i).setImage(devPlayer.get(i));
             if(devPlayer.get(i)!=null){
-                devProduction.get(i).setOnMouseClicked(new EventHandler<MouseEvent>() {
-                    @Override
-                    public void handle(MouseEvent mouseEvent) {
-                        int i=-1;
-                        switch (((ImageView) mouseEvent.getSource()).getId()){
-                            case "dev0":
-                                i=0;
-                                break;
-                            case "dev1":
-                                i=1;
-                                break;
-                            case "dev2":
-                                i=2;
-                                break;
-                        }
-                        Integer k = i;
-                        if(devSelected.contains(k)){
-                            devSelected.remove(k);
-                            devProduction.get(i).setEffect(null);
-                            selectionDev.get(i).setOpacity(0);
-
-                        }else{
-                            devSelected.add(k);
-                            devProduction.get(i).setEffect(new DropShadow());
-                            selectionDev.get(i).setOpacity(0.65);
-                        }
-                    }
-                });
+                devProduction.get(i).setOnMouseClicked(selectDevelopmentProduction);
             }
+        }
+
+        //draw leader additional production
+        leaderSelected = new Boolean[leaderCardsActive.size()];
+        int k=0;
+        for(int i=0; i<leaderCardsActive.size(); i++){
+            if(leaderCardsActive.get(i).getEffect().equals("additionalProduction")){
+                try{
+                    FileInputStream input = new FileInputStream("src/main/resources/graphics/leaderCard/" + leaderCardsActive.get(i).getNameCard() + ".png");
+                    leadAdditionalProduction.get(k).setImage(new Image(input));
+                    leadAdditionalProduction.get(k).setOnMouseClicked(selectLeaderAdditionalProduction);
+                    resourceLead.get(k).setOnMouseClicked(new EventHandler<MouseEvent>() {
+                        @Override
+                        public void handle(MouseEvent mouseEvent) {
+                            changeResources((ImageView) mouseEvent.getSource());
+                        }
+                    });
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+                k++;
+            }else{
+                leaderSelected[i] = false;
+            }
+
         }
     }
 
@@ -139,8 +149,34 @@ public class ActivateProductionController implements GUIController, Initializabl
             }
         }
 
-        ArrayList<Boolean> leaderTmp = new ArrayList<>();
+        //leader
+        int k=0;
+        for(int i=0; i<leaderSelected.length; i++){
+            if(leaderSelected[i]==null || leaderSelected[i]==true){
+                if(leadSelected.contains((Integer) k)){
+                    leaderSelected[i] = true;
+                }else{
+                    leaderSelected[i] = false;
+                }
+                k++;
+            }
+        }
+
+
+        ArrayList<Boolean> leaderTmp = new ArrayList<Boolean>(Arrays.asList(leaderSelected));
+
+        //Resources Leader
         ArrayList<Resource> leaderRtmp = new ArrayList<>();
+        for(int i=0; i<resourceLead.size(); i++){
+            if(resourceLead.get(i).getImage()!=null && leadSelected.contains((Integer)i)){
+                for(Resource r : Resource.values()){
+                    if(resourceLead.get(i).getImage().equals(resources.get(r.name().toLowerCase()))){
+                        leaderRtmp.add(r);
+                    }
+                }
+            }
+        }
+
         gui.changeScene("playerView");
         PlayerViewController controller = (PlayerViewController) gui.getCurrentController();
         controller.tabTurnNotActive(true);
@@ -158,6 +194,54 @@ public class ActivateProductionController implements GUIController, Initializabl
         clear();
     }
 
+    private EventHandler<MouseEvent> selectDevelopmentProduction = new EventHandler<MouseEvent>() {
+        @Override
+        public void handle(MouseEvent mouseEvent) {
+            int i=-1;
+            switch (((ImageView) mouseEvent.getSource()).getId()){
+                case "dev0":
+                    i=0;
+                    break;
+                case "dev1":
+                    i=1;
+                    break;
+                case "dev2":
+                    i=2;
+                    break;
+            }
+            selection(i, devSelected, devProduction, selectionDev);
+        }
+    };
+
+    private EventHandler<MouseEvent> selectLeaderAdditionalProduction = new EventHandler<MouseEvent>() {
+        @Override
+        public void handle(MouseEvent mouseEvent) {
+            //if(((ImageView) mouseEvent.getSource()).getImage()!=null){ }
+            int i = -1;
+            switch(((ImageView) mouseEvent.getSource()).getId()){
+                case "leader0":
+                    i=0;
+                    break;
+                case "leader1":
+                    i=1;
+                    break;
+            }
+            selection(i, leadSelected, leadAdditionalProduction, selectionLead);
+        }
+    };
+
+    private void selection(int i, ArrayList<Integer> selected, ArrayList<ImageView> production, ArrayList<ImageView> selection){
+        if(selected.contains((Integer) i)){
+            selected.remove((Integer) i);
+            production.get(i).setEffect(null);
+            selection.get(i).setOpacity(0);
+        }else{
+            selected.add((Integer) i);
+            production.get(i).setEffect(new DropShadow());
+            selection.get(i).setOpacity(0.65);
+        }
+    }
+
     private void clear(){
         devSelected.clear();
         devProduction.forEach(dev -> dev.setImage(null));
@@ -169,6 +253,11 @@ public class ActivateProductionController implements GUIController, Initializabl
         for(String s : totalResources.keySet()){
             totalResources.put(s, 0);
         }
+        leadSelected.clear();
+        leadAdditionalProduction.forEach(lead -> lead.setImage(null));
+        leadAdditionalProduction.forEach(lead -> lead.setEffect(null));
+        selectionLead.forEach(leadI -> leadI.setOpacity(0));
+        resourceLead.forEach(res -> res.setImage(null));
     }
 
     private void changeResources(ImageView resource){
@@ -195,5 +284,8 @@ public class ActivateProductionController implements GUIController, Initializabl
     public void initialize(URL url, ResourceBundle resourceBundle) {
         devProduction = new ArrayList<>(List.of(dev0, dev1, dev2));
         selectionDev = new ArrayList<>(List.of(dev0sel, dev1sel, dev2sel));
+        leadAdditionalProduction = new ArrayList<>(List.of(leader0, leader1));
+        selectionLead = new ArrayList<>(List.of(lead0sel, lead1sel));
+        resourceLead = new ArrayList<>(List.of(resourceLead0, resourceLead1));
     }
 }

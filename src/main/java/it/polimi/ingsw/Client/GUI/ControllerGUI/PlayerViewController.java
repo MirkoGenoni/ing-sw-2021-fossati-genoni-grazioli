@@ -205,12 +205,8 @@ public class PlayerViewController implements GUIController, Initializable {
     }
 
     public void lorenzoFaith(int lorenzoPosition){
-        try {
-            lorenzoFaith.setImage(new Image(getClass().getResource("/graphics/icons/croce_lorenzo.png").openStream()));
-            moveFaith(lorenzoFaith, lorenzoPosition, faithLorenzoPosition);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        lorenzoFaith.setImage(new Image(getClass().getResourceAsStream("/graphics/icons/croce_lorenzo.png")));
+        moveFaith(lorenzoFaith, lorenzoPosition, faithLorenzoPosition);
         faithLorenzoPosition = lorenzoPosition;
     }
 
@@ -244,7 +240,7 @@ public class PlayerViewController implements GUIController, Initializable {
                 tmp.add(null);
             }
         }
-        controller.drawProduction(tmp, turnTmp.getPlayers().get(gui.getNamePlayer()).getDeposit(), turnTmp.getPlayers().get(gui.getNamePlayer()).getStrongBox());
+        controller.drawProduction(tmp, turnTmp.getPlayers().get(gui.getNamePlayer()).getDeposit(), turnTmp.getPlayers().get(gui.getNamePlayer()).getStrongBox(), turnTmp.getPlayers().get(gui.getNamePlayer()).getLeaderCardActive());
     }
 
 

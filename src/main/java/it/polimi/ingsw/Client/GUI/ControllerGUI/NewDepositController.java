@@ -193,7 +193,7 @@ public class NewDepositController implements GUIController, Initializable {
         if(isInitial){
             gui.getConnectionToServer().sendInitialDepositState(getDepositState());
         }else{
-            gui.getConnectionToServer().sendNewDepositState(getDepositState(), getMarketResource(), false, new ArrayList<>());
+            gui.getConnectionToServer().sendNewDepositState(getDepositState(), getMarketResource(), false, new ArrayList<>()); // TODO additional
         }
 
     }

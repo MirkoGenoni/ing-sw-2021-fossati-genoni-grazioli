@@ -38,34 +38,7 @@ public class InitialLeaderController implements GUIController, Initializable {
             try {
                 FileInputStream input = new FileInputStream("src/main/resources/graphics/LeaderCard/" + leaderCard.get(i).getNameCard() + ".png");
                 leader.get(i).setImage(new Image(input));
-                leader.get(i).setOnMouseClicked(new EventHandler<MouseEvent>() {
-                    @Override
-                    public void handle(MouseEvent mouseEvent) {
-                        Integer i = -1;
-                        switch (((ImageView) mouseEvent.getSource()).getId()){
-                            case "leader0":
-                                i=0;
-                                break;
-                            case "leader1":
-                                i=1;
-                                break;
-                            case "leader2":
-                                i=2;
-                                break;
-                            case "leader3":
-                                i=3;
-                                break;
-                        }
-                        int k = i;
-                        if(!selectedLeader.contains(i)){
-                            selectedLeader.add(i);
-                            leader.get(k).setEffect(new DropShadow());
-                        }else{
-                            selectedLeader.remove(i);
-                            leader.get(k).setEffect(null);
-                        }
-                    }
-                });
+                leader.get(i).setOnMouseClicked(action);
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
@@ -94,4 +67,34 @@ public class InitialLeaderController implements GUIController, Initializable {
             //wait other player
         }
     }
+
+    private EventHandler<MouseEvent> action = new EventHandler<MouseEvent>(){
+
+        @Override
+        public void handle(MouseEvent mouseEvent) {
+            Integer i = -1;
+            switch (((ImageView) mouseEvent.getSource()).getId()){
+                case "leader0":
+                    i=0;
+                    break;
+                case "leader1":
+                    i=1;
+                    break;
+                case "leader2":
+                    i=2;
+                    break;
+                case "leader3":
+                    i=3;
+                    break;
+            }
+            int k = i;
+            if(!selectedLeader.contains(i)){
+                selectedLeader.add(i);
+                leader.get(k).setEffect(new DropShadow());
+            }else{
+                selectedLeader.remove(i);
+                leader.get(k).setEffect(null);
+            }
+        }
+    };
 }

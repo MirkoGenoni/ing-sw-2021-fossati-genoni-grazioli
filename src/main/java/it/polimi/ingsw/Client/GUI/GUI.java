@@ -18,10 +18,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class GUI extends Application {
     private String namePlayer;
@@ -115,9 +112,9 @@ public class GUI extends Application {
         this.stage = stage;
         this.stage.setTitle("Maestri Del Rinascimento");
         try{
-            Image tmpI = new Image(getClass().getResource("/graphics/icons/calamaio.png").openStream());
+            Image tmpI = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/graphics/icons/calamaio.png")));
             this.stage.getIcons().add(tmpI);
-        } catch (IOException e) {
+        } catch (NullPointerException e) {
             e.printStackTrace();
         }
 
@@ -147,6 +144,19 @@ public class GUI extends Application {
         stage.show();
     }
 
+    public Map<String, Integer> calculateTotalResources(ArrayList<Resource> deposit, Map<Resource, Integer> strongBox){
+        Map<String, Integer> totalResources = new HashMap<>();
+        for(Resource r : strongBox.keySet()){
+            totalResources.put(r.name().toLowerCase(), strongBox.get(r));
+        }
+        for(Resource r : deposit){
+            if(r!=null){
+                totalResources.put(r.name().toLowerCase(), totalResources.get(r.name().toLowerCase()) + 1);
+            }
+        }
+        return totalResources;
+    }
+
     private void loadGraphics(){
         for(Marble m : Marble.values()){
             try {
@@ -166,6 +176,8 @@ public class GUI extends Application {
                 e.printStackTrace();
             }
         }
+
+        //TODO load 16 leader and  48 development
     }
 
 
