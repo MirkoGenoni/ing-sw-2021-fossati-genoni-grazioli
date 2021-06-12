@@ -13,10 +13,6 @@ import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
 import java.net.URL;
 import java.util.*;
 
@@ -90,19 +86,14 @@ public class ActivateProductionController implements GUIController, Initializabl
         int k=0;
         for(int i=0; i<leaderCardsActive.size(); i++){
             if(leaderCardsActive.get(i).getEffect().equals("additionalProduction")){
-                try{
-                    FileInputStream input = new FileInputStream("src/main/resources/graphics/leaderCard/" + leaderCardsActive.get(i).getNameCard() + ".png");
-                    leadAdditionalProduction.get(k).setImage(new Image(input));
-                    leadAdditionalProduction.get(k).setOnMouseClicked(selectLeaderAdditionalProduction);
-                    resourceLead.get(k).setOnMouseClicked(new EventHandler<MouseEvent>() {
-                        @Override
-                        public void handle(MouseEvent mouseEvent) {
-                            changeResources((ImageView) mouseEvent.getSource());
-                        }
-                    });
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                }
+                leadAdditionalProduction.get(k).setImage(gui.getLeaderCardsGraphic().get(leaderCardsActive.get(i).getNameCard()));
+                leadAdditionalProduction.get(k).setOnMouseClicked(selectLeaderAdditionalProduction);
+                resourceLead.get(k).setOnMouseClicked(new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent mouseEvent) {
+                        changeResources((ImageView) mouseEvent.getSource());
+                    }
+                });
                 k++;
             }else{
                 leaderSelected[i] = false;
@@ -110,10 +101,6 @@ public class ActivateProductionController implements GUIController, Initializabl
 
         }
     }
-
-
-
-
 
 
     public void done(ActionEvent actionEvent) {
@@ -277,7 +264,7 @@ public class ActivateProductionController implements GUIController, Initializabl
     @Override
     public void setGUI(GUI gui) {
         this.gui = gui;
-        resources = gui.getResources();
+        resources = gui.getResourcesGraphic();
     }
 
     @Override

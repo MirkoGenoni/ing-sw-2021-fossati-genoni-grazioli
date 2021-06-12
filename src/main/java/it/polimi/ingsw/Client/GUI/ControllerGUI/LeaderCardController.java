@@ -37,40 +37,8 @@ public class LeaderCardController implements GUIController, Initializable {
 
     public void drawLeader(ArrayList<LeaderCardToClient> leaderCardAvailable){
         for(int i = 0; i< leaderCardAvailable.size(); i++){
-            try {
-                FileInputStream input = new FileInputStream("src/main/resources/graphics/leaderCard/" + leaderCardAvailable.get(i).getNameCard() + ".png");
-                leaderCard.get(i).setImage(new Image(input));
-                leaderCard.get(i).setOnMouseClicked(new EventHandler<MouseEvent>() {
-                    @Override
-                    public void handle(MouseEvent mouseEvent) {
-                        int i=-1;
-                        switch (((ImageView) mouseEvent.getSource()).getId()){
-                            case "leader0":
-                                i =0;
-                                break;
-                            case "leader1":
-                                i=1;
-                                break;
-                        }
-                        Integer k = i;
-                        if(selectedLeaderToActivate.contains(k)){
-                            selectedLeaderToActivate.remove(k);
-                            selectedLeaderToDiscard.add(k);
-                            actionLeader.get(i).setText("DISCARD");
-                        }else if(selectedLeaderToDiscard.contains(k)){
-                            selectedLeaderToDiscard.remove(k);
-                            actionLeader.get(i).setText("");
-                            leaderCard.get(i).setEffect(null);
-                        }else{
-                            selectedLeaderToActivate.add(k);
-                            actionLeader.get(i).setText("ACTIVATE");
-                            leaderCard.get(i).setEffect(new DropShadow());
-                        }
-                    }
-                });
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
+            leaderCard.get(i).setImage(gui.getLeaderCardsGraphic().get(leaderCardAvailable.get(i).getNameCard()));
+            leaderCard.get(i).setOnMouseClicked(selectLeaderCard);
         }
 
         if(leaderCardAvailable.size()==1){
@@ -78,16 +46,7 @@ public class LeaderCardController implements GUIController, Initializable {
         }
     }
 
-    @Override
-    public void setGUI(GUI gui) {
-        this.gui = gui;
-    }
 
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        leaderCard = new ArrayList<>(List.of(leader0, leader1));
-        actionLeader = new ArrayList<>(List.of(actionLeader0, actionLeader1));
-    }
 
     public void done(ActionEvent actionEvent) {
         ArrayList<Image> leaderCardToDraw = new ArrayList<>();
@@ -121,5 +80,45 @@ public class LeaderCardController implements GUIController, Initializable {
 
 
         gui.getConnectionToServer().sendLeaderCardTurn(sendSelectedLeaderCard);
+    }
+
+    private EventHandler<MouseEvent> selectLeaderCard = new EventHandler<MouseEvent>() {
+        @Override
+        public void handle(MouseEvent mouseEvent) {
+            int i=-1;
+            switch (((ImageView) mouseEvent.getSource()).getId()){
+                case "leader0":
+                    i =0;
+                    break;
+                case "leader1":
+                    i=1;
+                    break;
+            }
+            Integer k = i;
+            if(selectedLeaderToActivate.contains(k)){
+                selectedLeaderToActivate.remove(k);
+                selectedLeaderToDiscard.add(k);
+                actionLeader.get(i).setText("DISCARD");
+            }else if(selectedLeaderToDiscard.contains(k)){
+                selectedLeaderToDiscard.remove(k);
+                actionLeader.get(i).setText("");
+                leaderCard.get(i).setEffect(null);
+            }else{
+                selectedLeaderToActivate.add(k);
+                actionLeader.get(i).setText("ACTIVATE");
+                leaderCard.get(i).setEffect(new DropShadow());
+            }
+        }
+    };
+
+    @Override
+    public void setGUI(GUI gui) {
+        this.gui = gui;
+    }
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        leaderCard = new ArrayList<>(List.of(leader0, leader1));
+        actionLeader = new ArrayList<>(List.of(actionLeader0, actionLeader1));
     }
 }

@@ -17,7 +17,6 @@ import javafx.scene.layout.*;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.net.URL;
 import java.util.*;
 
@@ -93,14 +92,9 @@ public class PlayerViewController implements GUIController, Initializable {
         // visualize development card of the player
         for(int i=0; i<player.getDevelopmentCardPlayer().size(); i++){
             if(player.getDevelopmentCardPlayer().get(i)!=null){
-                try {
-                    FileInputStream input = new FileInputStream("src/main/resources/graphics/developmentCard/" + player.getDevelopmentCardPlayer().get(i).getCardID() + ".png");
-                    devCardPlayer.get(i).setImage(new Image(input));
-                    if(devCardPlayer.get(i).getEffect()==null){
-                        devCardPlayer.get(i).setEffect(new DropShadow());
-                    }
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
+                devCardPlayer.get(i).setImage(gui.getDevelopmentCardsGraphic().get(player.getDevelopmentCardPlayer().get(i).getCardID()));
+                if(devCardPlayer.get(i).getEffect()==null){
+                    devCardPlayer.get(i).setEffect(new DropShadow());
                 }
 
             }else{
@@ -127,13 +121,8 @@ public class PlayerViewController implements GUIController, Initializable {
         System.out.println(player.getLeaderCardActive().toString());
         if(player.getLeaderCardActive().size()!=0){
             for(int i=0; i<player.getLeaderCardActive().size(); i++){
-                try {
-                    FileInputStream input = new FileInputStream("src/main/resources/graphics/leaderCard/" + player.getLeaderCardActive().get(i).getNameCard() + ".png");
-                    leaderCardPlayer.get(1-i).setImage(new Image(input));
-                    leaderText.get(1-i).setText("ACTIVE");
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                }
+                leaderCardPlayer.get(1-i).setImage(gui.getLeaderCardsGraphic().get(player.getLeaderCardActive().get(i).getNameCard()));
+                leaderText.get(1-i).setText("ACTIVE");
             }
         }
 
@@ -165,17 +154,11 @@ public class PlayerViewController implements GUIController, Initializable {
         for(int i=0; i< dev.length; i++){
             for(int j=0; j<dev[i].length; j++){
                 if(dev[i][j]!=null){
-                    FileInputStream input = null;
-                    try {
-                        input = new FileInputStream("src/main/resources/graphics/developmentCard/" + dev[i][j].getCardID() +".png");
-                        ImageView tmp = new ImageView(new Image(input));
-                        tmp.setFitHeight(231);
-                        tmp.setFitWidth(152);
-                        developmentGrid.add(tmp, i, j);
-                        devCard.add(tmp);
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    }
+                    ImageView tmp = new ImageView(gui.getDevelopmentCardsGraphic().get(dev[i][j].getCardID()));
+                    tmp.setFitHeight(231);
+                    tmp.setFitWidth(152);
+                    developmentGrid.add(tmp, i, j);
+                    devCard.add(tmp);
                 }else{
                     ImageView tmp = new ImageView();
                     tmp.setImage(null);
@@ -205,7 +188,13 @@ public class PlayerViewController implements GUIController, Initializable {
     }
 
     public void lorenzoFaith(int lorenzoPosition){
-        lorenzoFaith.setImage(new Image(getClass().getResourceAsStream("/graphics/icons/croce_lorenzo.png")));
+        try{
+            lorenzoFaith.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/graphics/icons/croce_lorenzo.png"))));
+        }catch (NullPointerException e){
+            System.out.println("lorenzo action file not found");
+            e.printStackTrace();
+        }
+
         moveFaith(lorenzoFaith, lorenzoPosition, faithLorenzoPosition);
         faithLorenzoPosition = lorenzoPosition;
     }
@@ -280,8 +269,8 @@ public class PlayerViewController implements GUIController, Initializable {
     @Override
     public void setGUI(GUI gui) {
         this.gui = gui;
-        marketMarble = gui.getMarble();
-        resources = gui.getResources();
+        marketMarble = gui.getMarblesGraphic();
+        resources = gui.getResourcesGraphic();
     }
 
     @Override

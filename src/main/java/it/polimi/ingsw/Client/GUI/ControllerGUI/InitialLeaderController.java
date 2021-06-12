@@ -35,13 +35,8 @@ public class InitialLeaderController implements GUIController, Initializable {
 
     public void drawLeader(ArrayList<LeaderCardToClient> leaderCard){
         for(int i=0; i<leaderCard.size(); i++){
-            try {
-                FileInputStream input = new FileInputStream("src/main/resources/graphics/LeaderCard/" + leaderCard.get(i).getNameCard() + ".png");
-                leader.get(i).setImage(new Image(input));
-                leader.get(i).setOnMouseClicked(action);
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
+            leader.get(i).setImage(gui.getLeaderCardsGraphic().get(leaderCard.get(i).getNameCard()));
+            leader.get(i).setOnMouseClicked(action);
         }
     }
 

@@ -14,8 +14,6 @@ import javafx.scene.image.Image;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
@@ -31,8 +29,10 @@ public class GUI extends Application {
     private Stage stage;
 
     //Graphics
-    private Map<String, Image> resources = new HashMap<>();
-    private Map<String, Image> marble = new HashMap<>();
+    private Map<String, Image> resourcesGraphic = new HashMap<>();
+    private Map<String, Image> marblesGraphic = new HashMap<>();
+    private Map<String, Image> leaderCardsGraphic = new HashMap<>();
+    private Map<String, Image> developmentCardsGraphic = new HashMap<>();
 
     //Scene
     private Map<String, Scene> scenes = new HashMap<>();
@@ -68,12 +68,20 @@ public class GUI extends Application {
         visit = new VisitClass(connectionToServer, this);
     }
 
-    public Map<String, Image> getResources() {
-        return resources;
+    public Map<String, Image> getResourcesGraphic() {
+        return resourcesGraphic;
     }
 
-    public Map<String, Image> getMarble() {
-        return marble;
+    public Map<String, Image> getMarblesGraphic() {
+        return marblesGraphic;
+    }
+
+    public Map<String, Image> getLeaderCardsGraphic() {
+        return leaderCardsGraphic;
+    }
+
+    public Map<String, Image> getDevelopmentCardsGraphic() {
+        return developmentCardsGraphic;
     }
 
     public String getNamePlayer() {
@@ -158,26 +166,55 @@ public class GUI extends Application {
     }
 
     private void loadGraphics(){
+        //load marble
         for(Marble m : Marble.values()){
+            String input = "/graphics/marble/" + m.name().toLowerCase() + ".png";
             try {
-                InputStream input = getClass().getResource("/graphics/marble/" + m.name().toLowerCase() + ".png").openStream();
-                Image tmpI = new Image(input);
-                marble.put(m.name().toLowerCase(), tmpI);
-            } catch (IOException e) {
+                Image tmpI = new Image(Objects.requireNonNull(getClass().getResourceAsStream(input)));
+                marblesGraphic.put(m.name().toLowerCase(), tmpI);
+            } catch (NullPointerException e) {
+                System.out.println("marble file not found, address " + input);
                 e.printStackTrace();
             }
         }
+        //load resource
         for(Resource r : Resource.values()){
+            String input = "/graphics/resource/" + r.name().toLowerCase() + ".png";
             try{
-                InputStream input = getClass().getResource("/graphics/resource/" + r.name().toLowerCase() + ".png").openStream();
-                Image tmpI = new Image(input);
-                resources.put(r.name().toLowerCase(), tmpI);
-            } catch (IOException e) {
+                Image tmpI = new Image(Objects.requireNonNull(getClass().getResourceAsStream(input)));
+                resourcesGraphic.put(r.name().toLowerCase(), tmpI);
+            } catch (NullPointerException e) {
+                System.out.println("resource file not found, address: " + input );
                 e.printStackTrace();
             }
         }
-
-        //TODO load 16 leader and  48 development
+        //load leader cards
+        for(int i=1; i<=16; i++){
+            String input = "/graphics/leaderCard/leaderCard"+ i + ".png";
+            try{
+                Image tmpI = new Image(Objects.requireNonNull(getClass().getResourceAsStream(input)));
+                leaderCardsGraphic.put("leaderCard"+i, tmpI);
+            } catch (NullPointerException e) {
+                System.out.println("leader card file not found, address " + input);
+                e.printStackTrace();
+            }
+        }
+        //load development cards
+        ArrayList<String> color = new ArrayList<>(List.of("B", "G", "P","Y"));
+        for(String s : color){
+            for(int i=1; i<=3; i++){
+                for(int j=1; j<=4; j++){
+                    String input = "/graphics/developmentCard/Dev" + s + "_" + i + j + ".png";
+                    try{
+                        Image tmpI = new Image(Objects.requireNonNull(getClass().getResourceAsStream(input)));
+                        developmentCardsGraphic.put("Dev" + s +"_" + i + j, tmpI);
+                    }catch (NullPointerException e){
+                        System.out.println("development card file not found, address " + input);
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
     }
 
 

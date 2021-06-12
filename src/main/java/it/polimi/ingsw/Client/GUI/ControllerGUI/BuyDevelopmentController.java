@@ -46,19 +46,13 @@ public class BuyDevelopmentController implements GUIController, Initializable {
         for(int i=0; i< dev.length; i++){
             for(int j=0; j<dev[i].length; j++){
                 if(dev[i][j]!=null){
-                    FileInputStream input = null;
-                    try {
-                        input = new FileInputStream("src/main/resources/graphics/developmentCard/" + dev[i][j].getCardID() +".png");
-                        ImageView tmp = new ImageView(new Image(input));
-                        tmp.setId(dev[i][j].getCardID());
-                        tmp.setFitHeight(231);
-                        tmp.setFitWidth(152);
-                        gridDev.add(tmp, i, j);
-                        devImg.add(tmp);
-                        tmp.setOnMouseClicked(selectAction);
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    }
+                    ImageView tmp = new ImageView(gui.getDevelopmentCardsGraphic().get(dev[i][j].getCardID()));
+                    tmp.setId(dev[i][j].getCardID());
+                    tmp.setFitHeight(231);
+                    tmp.setFitWidth(152);
+                    gridDev.add(tmp, i, j);
+                    devImg.add(tmp);
+                    tmp.setOnMouseClicked(selectAction);
                 }
             }
         }

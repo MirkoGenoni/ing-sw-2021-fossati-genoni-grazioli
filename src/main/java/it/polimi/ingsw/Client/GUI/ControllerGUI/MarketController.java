@@ -48,7 +48,7 @@ public class MarketController implements GUIController, Initializable {
     @Override
     public void setGUI(GUI gui) {
         this.gui = gui;
-        marble = gui.getMarble();
+        marble = gui.getMarblesGraphic();
     }
 
     @Override

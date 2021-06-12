@@ -45,47 +45,10 @@ public class SelectDevelopmentSpaceController implements GUIController, Initiali
         ArrayList<DevelopmentCardToClient> devPlayer = player.getDevelopmentCardPlayer();
         for(int i=0; i<devPlayer.size(); i++){
             if(devPlayer.get(i)!=null){
-                try {
-                    FileInputStream input = new FileInputStream("src/main/resources/graphics/developmentCard/" + devPlayer.get(i).getCardID() +".png");
-                    developSpacePlayer.get(i).setImage(new Image(input));
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                }
+                developSpacePlayer.get(i).setImage(gui.getDevelopmentCardsGraphic().get(devPlayer.get(i).getCardID()));
             }
             developSpacePlayer.get(i).setEffect(null);
-            developSpacePlayer.get(i).setOnMouseClicked(
-                    new EventHandler<MouseEvent>() {
-                        @Override
-                        public void handle(MouseEvent mouseEvent) {
-                            int i = -1;
-                            switch (((ImageView) mouseEvent.getSource()).getId()){
-                                case "space0":
-                                    i=0;
-                                    break;
-                                case "space1":
-                                    i=1;
-                                    break;
-                                case "space2":
-                                    i=2;
-                                    break;
-                            }
-                            Integer k = i;
-                            if(!spaceSelected.contains(i)){
-
-                                spaceSelected.add(k);
-                                selection.get(i).setOpacity(0.65);
-                                developSpacePlayer.get(i).setEffect(new DropShadow());
-                            }else{
-                                spaceSelected.remove(k);
-                                selection.get(i).setOpacity(0);
-                                developSpacePlayer.get(i).setEffect(null);
-
-                            }
-
-                        }
-                    }
-            );
-
+            developSpacePlayer.get(i).setOnMouseClicked(selectDevelopmentSpace);
         }
 
     }
@@ -109,6 +72,37 @@ public class SelectDevelopmentSpaceController implements GUIController, Initiali
             error.setText("You can't put the card in this position");
         }
     }
+
+    private EventHandler<MouseEvent> selectDevelopmentSpace = new EventHandler<MouseEvent>() {
+        @Override
+        public void handle(MouseEvent mouseEvent) {
+            int i = -1;
+            switch (((ImageView) mouseEvent.getSource()).getId()){
+                case "space0":
+                    i=0;
+                    break;
+                case "space1":
+                    i=1;
+                    break;
+                case "space2":
+                    i=2;
+                    break;
+            }
+            Integer k = i;
+            if(!spaceSelected.contains(i)){
+
+                spaceSelected.add(k);
+                selection.get(i).setOpacity(0.65);
+                developSpacePlayer.get(i).setEffect(new DropShadow());
+            }else{
+                spaceSelected.remove(k);
+                selection.get(i).setOpacity(0);
+                developSpacePlayer.get(i).setEffect(null);
+
+            }
+
+        }
+    };
 
     @Override
     public void setGUI(GUI gui) {
