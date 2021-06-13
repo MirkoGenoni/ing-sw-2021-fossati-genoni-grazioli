@@ -7,6 +7,7 @@ import it.polimi.ingsw.Client.CLI.Views.MarketView.NewDepositView;
 import it.polimi.ingsw.Client.CLI.Views.ProductionView.AdditionalProductionView;
 import it.polimi.ingsw.Client.CLI.Views.ProductionView.BaseProduction;
 import it.polimi.ingsw.Client.CLI.Views.ProductionView.DevelopmentCardView;
+import it.polimi.ingsw.Client.CLI.Views.ProductionView.DevelopmentCardVisualization;
 import it.polimi.ingsw.Client.ConnectionToServer;
 import it.polimi.ingsw.Events.ServerToClient.SupportClass.DevelopmentCardToClient;
 import it.polimi.ingsw.Events.ServerToClient.SupportClass.LeaderCardToClient;
@@ -26,6 +27,7 @@ public class CLIHandler {
     MarketView market;
     DevelopmentCardView developmentCardForSale;
     LeaderCardView leaderCardSelection;
+    DevelopmentCardVisualization currentBuying;
 
     public CLIHandler(ConnectionToServer connection){
         this.connection = connection;
@@ -67,7 +69,6 @@ public class CLIHandler {
                 connection.sendChooseLine(line1, tmp);
                 break;
             case "buydevelopment":
-                DevelopmentCardView BoardCard = new DevelopmentCardView(players.get(this.namePlayer).getDevelopmentCardPlayer());
                 selectedDevelopmentCard(this.developmentCardForSale);
                 break;
             case "usedevelopment":
@@ -125,6 +126,9 @@ public class CLIHandler {
             default:
                 throw new RuntimeException(); //attention Exception
         }
+
+        this.currentBuying = this.developmentCardForSale.getCard(colorForCard+num-1);
+
         connection.sendSelectedDevelopmentCard(colorForCard, num-1); //livello da 0 a 2
     }
 
@@ -271,9 +275,28 @@ public class CLIHandler {
             initialResources.add(choosen);
         }
 
+        //essendo non ancora iniziato il gioco non può avere depositi addizionali
         NewDepositView newDepositView = new NewDepositView(depositState, initialResources,false, null, null);
         newDepositView.LaunchView();
 
         connection.sendInitialDepositState(newDepositView.getDepositState());
+    }
+
+    public void selectSpaceForDevelopment(ArrayList<Boolean> space){
+        ArrayList<DevelopmentCardToClient> tmp = new ArrayList<>();
+        int i=0;
+
+        for(boolean r : space){
+            if(r && players.get(this.namePlayer).getDevelopmentCardPlayer().get(i) != null)
+                tmp.add(players.get(this.namePlayer).getDevelopmentCardPlayer().get(i));
+            else
+                tmp.add(null);
+
+            i++;
+        }
+
+        DevelopmentCardView selectSpace = new DevelopmentCardView(space, tmp, this.currentBuying);
+        int tmpPos = selectSpace.startSelectionNewCardSpace();
+        connection.sendSelectedDevelopmentCardSpace(tmpPos);
     }
 }

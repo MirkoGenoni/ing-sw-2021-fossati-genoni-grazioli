@@ -9,10 +9,8 @@ import it.polimi.ingsw.Events.ServerToClient.InitialConnectionToClient.SendNumPl
 import it.polimi.ingsw.Events.ServerToClient.InitialConnectionToClient.SendRoomRequestToClient;
 import it.polimi.ingsw.Events.ServerToClient.BuyDevelopmentCardTurnToClient.SendSpaceDevelopmentCardToClient;
 import it.polimi.ingsw.Events.ServerToClient.MarketTurnToClient.SendReorganizeDepositToClient;
-import it.polimi.ingsw.Events.ServerToClient.SupportClass.DevelopmentCardToClient;
 import it.polimi.ingsw.Events.ServerToClient.SupportClass.PlayerInformationToClient;
 import it.polimi.ingsw.Events.ServerToClient.TurnReselection;
-import it.polimi.ingsw.Model.Game.Player;
 import it.polimi.ingsw.Model.Resource.Resource;
 
 import java.io.IOException;
@@ -109,7 +107,8 @@ public class CLI implements EventToClientVisitor {
 
     @Override
     public void visit(SendSpaceDevelopmentCardToClient developmentCardSpace) {
-        boolean bought = true;
+        handler.selectSpaceForDevelopment(developmentCardSpace.getDevelopmentCardSpace());
+        /*boolean bought = true;
         System.out.println("You can put the bought card in these positions:");
         for (int i=0; i<developmentCardSpace.getDevelopmentCardSpace().size(); i++) {
             if (developmentCardSpace.getDevelopmentCardSpace().get(i).equals(true))
@@ -127,7 +126,7 @@ public class CLI implements EventToClientVisitor {
                 bought = false;
             }
         }while (!bought);
-        connectionToServer.sendSelectedDevelopmentCardSpace(selectedPosition);
+        connectionToServer.sendSelectedDevelopmentCardSpace(selectedPosition);*/
     }
 
     // ----------------------------------
@@ -168,15 +167,16 @@ public class CLI implements EventToClientVisitor {
     public void visit(NewTurnToClient newTurn) {
         if (newTurn.isYourTurn()) {
             handler.newState(this.namePlayer, newTurn.getPlayers(), newTurn.getMarket(), newTurn.getDevelopmentCards());
+            handler.newTurn();
 
-        // FOR DEBUG! PRINTS THE CORRECT STATE OF THE CURRENT PLAYER WITHOUT THE USE OF THE CLI (check for visualization)
-            /*for (int i = 0; i < newTurn.getPlayers().size(); i++) {
+        /* FOR DEBUG! PRINTS THE CORRECT STATE OF THE CURRENT PLAYER WITHOUT THE USE OF THE CLI (check for visualization)
+            for (int i = 0; i < newTurn.getPlayers().size(); i++) {
                 if (newTurn.getPlayers().get(i).getPlayerNameSend().equals(namePlayer)) {
                     index = i;
                 }
             }
 
-            PlayerInformationToClient player = newTurn.getPlayers().get(namePlayer);
+            PlayerInformationToClient player = newTurn.getPlayers().get(index);
 
             System.out.println("il mio deposito");
             System.out.println(player.getDeposit());
@@ -201,8 +201,6 @@ public class CLI implements EventToClientVisitor {
 
             System.out.println("i miei pope");
             System.out.println(player.getPopeFavorTiles().toString());*/
-
-            handler.newTurn();
         }
     }
 
@@ -300,26 +298,4 @@ public class CLI implements EventToClientVisitor {
         int num = scanIn.nextInt();
         connectionToServer.sendNumPlayer(num);
     }
-
-    private Resource selectResource(String message){
-        Scanner scan = new Scanner(System.in);
-        boolean validMaterial;
-        Resource resource = null;
-        do {
-            validMaterial = true;
-            System.out.println(message);
-            String materialInput1 = scan.nextLine();
-            materialInput1 = materialInput1.trim();
-            materialInput1 = materialInput1.toUpperCase();
-            try {
-                resource = Resource.valueOf(materialInput1);
-            } catch (IllegalArgumentException e) {
-                System.out.println("Selected a non valid material, please rewrite it");
-                validMaterial = false;
-            }
-        } while (!validMaterial);
-
-        return resource;
-    }
-
 }

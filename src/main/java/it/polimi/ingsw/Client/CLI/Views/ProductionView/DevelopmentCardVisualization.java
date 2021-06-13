@@ -86,6 +86,48 @@ public class DevelopmentCardVisualization {
         }
     }
 
+    public DevelopmentCardVisualization(String s){
+        this.cardNumber = 0;
+        this.victoryPoints = 0;
+        this.cardColor = "";
+        this.level = null;
+        this.cost = null;
+        this.costNumbers = null;
+        this.requirements = null;
+        this.requirementsNumber = null;
+        this.production = null;
+        this.productionNumber = null;
+        this.developmentCard = new String[37];
+
+        this.developmentCard[0] = "                               ";
+        this.developmentCard[1] = "                               ";
+        this.developmentCard[2] = "                               ";
+        this.developmentCard[3] = "                               ";
+        this.developmentCard[4] = "                               ";
+        this.developmentCard[5] = "      ██               ██      ";
+        this.developmentCard[6] = "       ██             ██       ";
+        this.developmentCard[7] = "        ██           ██        ";
+        this.developmentCard[8] = "         ██         ██         ";
+        this.developmentCard[9] = "          ██       ██          ";
+        this.developmentCard[10] = "           ██     ██           ";
+        this.developmentCard[11] = "            ██   ██            ";
+        this.developmentCard[12] = "             ██ ██             ";
+        this.developmentCard[13] = "              ███              ";
+        this.developmentCard[14] = "             ██ ██             ";
+        this.developmentCard[15] = "            ██   ██            ";
+        this.developmentCard[16] = "           ██     ██           ";
+        this.developmentCard[17] = "          ██       ██          ";
+        this.developmentCard[18] = "         ██         ██         ";
+        this.developmentCard[19] = "        ██           ██        ";
+        this.developmentCard[20] = "       ██             ██       ";
+        this.developmentCard[21] = "      ██               ██      ";
+        this.developmentCard[22] = "                               ";
+        this.developmentCard[23] = "                               ";
+        this.developmentCard[24] = "                               ";
+        this.developmentCard[25] = "                               ";
+        this.developmentCard[26] = "                               ";
+    }
+
     private String colorConvertion(String color){
         switch(color) {
             case "YELLOW":

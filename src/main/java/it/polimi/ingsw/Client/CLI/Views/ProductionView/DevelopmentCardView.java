@@ -1,5 +1,6 @@
 package it.polimi.ingsw.Client.CLI.Views.ProductionView;
 
+import com.google.gson.internal.bind.util.ISO8601Utils;
 import it.polimi.ingsw.Events.ServerToClient.SupportClass.DevelopmentCardToClient;
 import it.polimi.ingsw.Model.DevelopmentCard.DevelopmentCard;
 import it.polimi.ingsw.Model.DevelopmentCard.ProductedMaterials;
@@ -12,9 +13,11 @@ import java.util.Scanner;
 
 public class DevelopmentCardView {
     ArrayList<DevelopmentCardVisualization> cards = new ArrayList<>();
+    DevelopmentCardVisualization boughtCard;
     int num;
     String color;
     ArrayList<Boolean> activation;
+    ArrayList<Boolean> freeSpace = new ArrayList<>();
     String[][] state;
 
     /*public static void main(String[] args) {
@@ -93,6 +96,32 @@ public class DevelopmentCardView {
         }
     }
 
+    public DevelopmentCardView(ArrayList<Boolean> freeSpace, ArrayList<DevelopmentCardToClient> state, DevelopmentCardVisualization input) {
+        int i = 0;
+
+        for (DevelopmentCardToClient r : state) {
+            if (r != null) {
+                cards.add(new DevelopmentCardVisualization(i+1,
+                        r.getColor(),
+                        r.getVictoryPoint(),
+                        "LVL" + r.getLevel(),
+                        r.getCost(),
+                        r.getMaterialRequired(),
+                        r.getProductionResult()));
+            }
+            else if(freeSpace.get(i)) {
+                cards.add(new DevelopmentCardVisualization(0));
+            } else {
+                cards.add(new DevelopmentCardVisualization("CROSS"));
+
+            }
+            i++;
+        }
+
+        this.boughtCard = input;
+        this.freeSpace.addAll(freeSpace);
+    }
+
     public int getNum() {
         return num;
     }
@@ -105,6 +134,10 @@ public class DevelopmentCardView {
         return activation;
     }
 
+    public DevelopmentCardVisualization getCard(int card){
+        return this.cards.get(card);
+    }
+
     public void startCardForSaleSelection() {
         int currentView = 0;
         int tmp;
@@ -112,7 +145,7 @@ public class DevelopmentCardView {
         num = -1;
         color = "";
 
-        printDevelopmentCardGrid(currentView, true);
+        printDevelopmentCardGrid(currentView, "market");
 
         String input = "";
         while (true) {
@@ -159,7 +192,7 @@ public class DevelopmentCardView {
 
             }
 
-            printDevelopmentCardGrid(currentView, true);
+            printDevelopmentCardGrid(currentView, "market");
         }
     }
 
@@ -189,7 +222,7 @@ public class DevelopmentCardView {
         String input = "";
 
         while (true) {
-            printDevelopmentCardGrid(0, false);
+            printDevelopmentCardGrid(0, "activate");
 
             Scanner in = new Scanner(System.in);
             input = in.nextLine();
@@ -239,39 +272,102 @@ public class DevelopmentCardView {
         }
     }
 
-    private void printDevelopmentCardGrid(int currentView, boolean market) {
+    public int startSelectionNewCardSpace(){
+        int currentView = 0;
+        Scanner in = new Scanner(System.in);
+        int tmp;
+        String tmpS;
+
+        while(true){
+            printDevelopmentCardGrid(currentView, "insertion");
+            tmp = in.nextInt();
+
+            if(tmp<1 || tmp>this.freeSpace.size())
+                continue;
+
+            if(this.freeSpace.get(tmp-1)) {
+                if (this.cards.get(tmp - 1).getCardNumber() != 0) {
+                    confirmBoughtSpaceSelection(this.boughtCard, this.cards.get(tmp - 1));
+                    in.nextLine();
+                    tmpS = in.nextLine();
+                    if (tmpS.equals("YES"))
+                        return tmp - 1;
+                } else {
+                    return tmp-1;
+                }
+            }
+        }
+    }
+
+    private void printDevelopmentCardGrid(int currentView, String type) {
         System.out.print("\u001B[2J\u001B[3J\u001B[H");
         System.out.println(
                 "                                               ╔═══════════════════════════╗                                               \n" +
                         "                                               ║ DEVELOPMENT CARD RECEIVED ║                                               \n" +
                         "                                               ╚═══════════════════════════╝                                               \n" +
                         "┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓\n" +
-                        "┃                                                                                                                         ┃\n" +
                         "┃                                                                                                                         ┃");
         for (int i = 0; i < 27; i++)
             System.out.println("┃    " + this.cards.get(currentView).printCard(i) + "          " + this.cards.get(currentView + 1).printCard(i) + "          " + this.cards.get(currentView + 2).printCard(i) + "    ┃");
-        if (market) {
+
+        System.out.println("┃                                                                                                                         ┃\n" +
+                    "┃                  -1-                                      -2-                                      -3-                  ┃");
+
+        if (type.equals("market")) {
             System.out.println("┃                                                                                                                         ┃\n" +
-                    "┃                  -1-                                      -2-                                      -3-                  ┃\n" +
-                    "┃                                                                                                                         ┃\n" +
-                    "┃                                                                                                                         ┃\n" +
                     "┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛");
 
             System.out.print("\n                                              SELECT THE CARD YOU WANT TO BUY                                              \n\n" +
-                    "                                       | Insert a color (green, yellow, blue, purple) to see |    \n" +
-                    "                                       |   other cards or a number to buy the card you see   |    \n" +
+                    "                                  | Insert a color (green, yellow, blue, purple) to see |                                  \n" +
+                    "                                  |   other cards or a number to buy the card you see   |\n" +
                     "                                                                  \n" +
                     "                                                          ");
-        } else {
+        } else if(type.equals("activate")) {
+
             for (int j = 0; j < 3; j++)
                 System.out.println("┃              " + this.state[0][j] + "                              " + this.state[1][j] + "                              " + this.state[2][j] + "              ┃");
 
             System.out.println("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛\n");
-            System.out.println("                                        SELECT THE DEVELOPMENT YOU WANT TO ACTIVATE         \n");
-            System.out.print(  "                           |   Select the action you want to perform (activate, nothing)   |                             \n" +
-                               "                           | followed by comma and the number of card you want to activate |\n" +
+            System.out.print("                                        SELECT THE DEVELOPMENT YOU WANT TO ACTIVATE         \n\n");
+            System.out.print(  "                             |   Select the action you want to perform (activate, nothing)   |                             \n" +
+                               "                             | followed by comma and the number of card you want to activate |\n" +
                                "                                                Type done when finished                     \n\n" +
-                    "                                                                    ");
+                    "                                                                 ");
+
+        } else if(type.equals("insertion")){
+            System.out.print("┃                                                                                                                         ┃\n" +
+                    "┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛\n" +
+                    "                                 INSERT THE POSITION WHERE YOU WANT TO PUT THE BOUGHT CARD                                 \n\n" +
+                    "                                 (if you select a spot with a card, this will be replaced)\n\n" +
+                    "                                                 ");
+
+
         }
+    }
+
+    private void confirmBoughtSpaceSelection(DevelopmentCardVisualization bought, DevelopmentCardVisualization substitute){
+        System.out.print("\u001B[2J\u001B[3J\u001B[H");
+        System.out.print("                                                   ╔═══════════════════════════╗ \n" +
+                "                                                   ║       ARE YOU SURE?       ║\n" +
+                "                                                   ╚═══════════════════════════╝ \n" +
+                "┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓\n" +
+                "┃                                                                                                                         ┃\n" +
+                "┃                                                                                                                         ┃\n" +
+                "┃                                                                                                                         ┃\n");
+        for(int i=0; i<12; i++)
+            System.out.print("┃            " + bought.printCard(i) + "                                   " + substitute.printCard(i) + "            ┃\n");
+
+        System.out.print("┃            " + bought.printCard(12) + "           ────────── ╲            " + substitute.printCard(12) + "            ┃\n");
+        System.out.print("┃            " + bought.printCard(13) + "           ────────── ╱            " + substitute.printCard(13) + "            ┃\n");
+
+        for(int i=14; i<27; i++)
+            System.out.print("┃            " + bought.printCard(i) + "                                   " + substitute.printCard(i) + "            ┃\n");
+
+                System.out.print("┃                                                                                                                         ┃\n" +
+                "┃                                                                                                                         ┃\n" +
+                "┃                                                                                                                         ┃\n" +
+                "┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛\n\n" +
+                "                                                      TYPE YES OR NO\n\n" +
+                "                                                            ");
     }
 }
