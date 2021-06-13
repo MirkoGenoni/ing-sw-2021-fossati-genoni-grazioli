@@ -3,6 +3,7 @@ package it.polimi.ingsw.Client.GUI;
 import it.polimi.ingsw.Client.ConnectionToServer;
 import it.polimi.ingsw.Client.GUI.ControllerGUI.GUIController;
 import it.polimi.ingsw.Events.ServerToClient.NewTurnToClient;
+import it.polimi.ingsw.Events.ServerToClient.SupportClass.LeaderCardToClient;
 import it.polimi.ingsw.Events.ServerToClient.SupportClass.PlayerInformationToClient;
 import it.polimi.ingsw.Model.Market.Marble;
 import it.polimi.ingsw.Model.Resource.Resource;
@@ -40,18 +41,26 @@ public class GUI extends Application {
 
     //tmp
     private NewTurnToClient lastTurn;
-    private PlayerInformationToClient lastInformation;
+    private ArrayList<Image> leaderInHand;
+    private ArrayList<String> playersName = new ArrayList<>();
 
-    public void setLastInformation(PlayerInformationToClient lastInformation) {
-        this.lastInformation = lastInformation;
+
+
+
+    public void setLeaderInHand(ArrayList<Image> leaderInHand) {
+        this.leaderInHand = leaderInHand;
     }
 
-    public PlayerInformationToClient getLastInformation() {
-        return lastInformation;
+    public ArrayList<Image> getLeaderInHand() {
+        return leaderInHand;
     }
 
     public NewTurnToClient getLastTurn() {
         return lastTurn;
+    }
+
+    public ArrayList<String> getPlayersName() {
+        return playersName;
     }
 
     public void setLastTurn(NewTurnToClient lastTurn) {

@@ -11,9 +11,6 @@ import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -73,10 +70,13 @@ public class LeaderCardController implements GUIController, Initializable {
         gui.changeScene("playerView");
         PlayerViewController controller = (PlayerViewController) gui.getCurrentController();
         controller.tabTurnNotActive(true);
-
+        /*
         if(leaderCardToDraw.size()>0){
             controller.drawLeaderCard(leaderCardToDraw);
         }
+
+         */
+        gui.setLeaderInHand(leaderCardToDraw);
 
 
         gui.getConnectionToServer().sendLeaderCardTurn(sendSelectedLeaderCard);

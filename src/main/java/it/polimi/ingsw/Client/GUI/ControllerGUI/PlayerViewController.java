@@ -26,11 +26,18 @@ public class PlayerViewController implements GUIController, Initializable {
     private int faithPosition;
     private int faithLorenzoPosition;
 
+    private int initial = -1;
+
     private Map<String, Image> marketMarble;
     private Map<String, Image> resources;
     private ArrayList<ImageView> deposit;
     private NewTurnToClient turnTmp;
 
+    private Map<String, Integer> playersFaithTrackPosition = new HashMap<>();
+    private Map<String, ImageView> playerMarkerPosition = new HashMap<>();
+    private ArrayList<ImageView> faiths;
+
+    private ArrayList<Button> playerButtons;
 
     private ArrayList<ImageView> devCard = new ArrayList<>();
     private ArrayList<ImageView> devCardPlayer;
@@ -38,6 +45,7 @@ public class PlayerViewController implements GUIController, Initializable {
     private ArrayList<Label> leaderText;
     private ArrayList<ImageView> popeFavorTiles;
 
+    @FXML Tab playerBoardView;
 
     @FXML Label name;
     // deposit player
@@ -67,6 +75,9 @@ public class PlayerViewController implements GUIController, Initializable {
     @FXML ImageView pope2;
     //faith
     @FXML ImageView faith0;
+    @FXML ImageView faith1;
+    @FXML ImageView faith2;
+    @FXML ImageView faith3;
     @FXML ImageView lorenzoFaith;
 
 
@@ -79,16 +90,66 @@ public class PlayerViewController implements GUIController, Initializable {
     @FXML Button showLeader;
     @FXML Button hideLeader;
 
+
+    @FXML Button player0;
+    @FXML Button player1;
+    @FXML Button player2;
+    @FXML Button player3;
     @FXML AnchorPane tabTurn;
 
 
 
     public void updatePlayerBoard(Map<String, PlayerInformationToClient> players){
         turnTmp = gui.getLastTurn();
-        PlayerInformationToClient player = players.get(gui.getNamePlayer());
-        gui.setLastInformation(player);
+        if(initial==-1){
+            int buttonToHide = 4 - players.size();
+            for(int i =0; i<buttonToHide; i++){
+                playerButtons.get(3-i).setDisable(true);
+                playerButtons.get(3-i).setOpacity(0);
+            }
 
-        name.setText(player.getPlayerNameSend());
+            gui.getPlayersName().add(gui.getNamePlayer());
+            playerButtons.get(0).setText(gui.getNamePlayer());
+            int z=1;
+            int i=0;
+            for(String s : players.keySet()){
+                if(!s.equals(gui.getNamePlayer())){
+                    gui.getPlayersName().add(s);
+                    playerButtons.get(z).setText(s);
+                    z++;
+                }
+                playersFaithTrackPosition.put(s, 0);
+                playerMarkerPosition.put(s, faiths.get(i));
+                i++;
+            }
+            System.out.println("array: " + gui.getPlayersName());
+
+            initial=0;
+        }
+
+        //update all faith marker
+        for(String s : players.keySet()){
+            moveFaith(playerMarkerPosition.get(s), players.get(s).getFaithMarkerPosition(), playersFaithTrackPosition.get(s));
+            playersFaithTrackPosition.put(s, players.get(s).getFaithMarkerPosition());
+        }
+
+        //visualize player of the client
+        drawPlayerBoard(players.get(gui.getNamePlayer()));
+
+
+
+
+
+
+
+
+
+
+    }
+
+    private void drawPlayerBoard(PlayerInformationToClient player){
+
+
         // visualize development card of the player
         for(int i=0; i<player.getDevelopmentCardPlayer().size(); i++){
             if(player.getDevelopmentCardPlayer().get(i)!=null){
@@ -111,6 +172,8 @@ public class PlayerViewController implements GUIController, Initializable {
             }
         }
         // visualize strongBox
+
+
         coin.setText("X " + player.getStrongBox().get(Resource.COIN));
         stone.setText("X " + player.getStrongBox().get(Resource.STONE));
         shield.setText("X " + player.getStrongBox().get(Resource.SHIELD));
@@ -118,12 +181,19 @@ public class PlayerViewController implements GUIController, Initializable {
 
         //visualize leaderCard;
         // active
+        leaderCardPlayer.forEach(lead -> lead.setImage(null));
+        leaderText.forEach(text -> text.setText(""));
         System.out.println(player.getLeaderCardActive().toString());
         if(player.getLeaderCardActive().size()!=0){
             for(int i=0; i<player.getLeaderCardActive().size(); i++){
                 leaderCardPlayer.get(1-i).setImage(gui.getLeaderCardsGraphic().get(player.getLeaderCardActive().get(i).getNameCard()));
                 leaderText.get(1-i).setText("ACTIVE");
             }
+        }
+
+        //leader card in hand, only for the player of the client
+        if(player.getPlayerNameSend().equals(gui.getNamePlayer())){
+            drawLeaderCard(gui.getLeaderInHand());
         }
 
         //visualize pope favor tiles
@@ -140,17 +210,20 @@ public class PlayerViewController implements GUIController, Initializable {
             }
         }
 
-        // visualzie faith position
-        moveFaith(faith0, player.getFaithMarkerPosition(), faithPosition);
-        faithPosition = player.getFaithMarkerPosition();
-
-
-
+        //visualize faith marker
+        for(String s: playerMarkerPosition.keySet()){
+            if(!s.equals(player.getPlayerNameSend())){
+                playerMarkerPosition.get(s).setOpacity(0);
+            }
+            else{
+                playerMarkerPosition.get(s).setOpacity(1);
+            }
+        }
     }
 
     public void updateTable(DevelopmentCardToClient[][] dev, MarketToClient market){
         devCard.forEach(d -> d.setImage(null));
-        //aggiorno la visione delle developmentCard
+        // update development card view
         for(int i=0; i< dev.length; i++){
             for(int j=0; j<dev[i].length; j++){
                 if(dev[i][j]!=null){
@@ -168,7 +241,7 @@ public class PlayerViewController implements GUIController, Initializable {
             }
         }
 
-        // aggiorno la visone del market
+        // update market view
         int k=0;
         int z=0;
         for(int i= 0; i<market.getGrid().size(); i++){
@@ -235,9 +308,11 @@ public class PlayerViewController implements GUIController, Initializable {
 
 
     public void drawLeaderCard(ArrayList<Image> leaderInHand){
-        for(int i=0; i<leaderInHand.size(); i++){
-            leaderCardPlayer.get(i).setImage(leaderInHand.get(i));
-            leaderText.get(i).setText("IN HAND");
+        if(leaderInHand!=null){
+            for(int i=0; i<leaderInHand.size(); i++){
+                leaderCardPlayer.get(i).setImage(leaderInHand.get(i));
+                leaderText.get(i).setText("IN HAND");
+            }
         }
     }
 
@@ -281,7 +356,26 @@ public class PlayerViewController implements GUIController, Initializable {
         leaderText = new ArrayList<>(List.of(leaderText0, leaderText1));
         popeFavorTiles = new ArrayList<>(List.of(pope0, pope1, pope2));
 
+        playerButtons = new ArrayList<>(List.of(player0, player1, player2, player3));
+        faiths = new ArrayList<>(List.of(faith0, faith1, faith2, faith3));
+
         faithPosition = 0;
         faithLorenzoPosition = 0;
+    }
+
+    public void player0View(ActionEvent actionEvent) {
+        drawPlayerBoard(gui.getLastTurn().getPlayers().get(gui.getPlayersName().get(0)));
+    }
+
+    public void player1View(ActionEvent actionEvent) {
+        drawPlayerBoard(gui.getLastTurn().getPlayers().get(gui.getPlayersName().get(1)));
+    }
+
+    public void player2View(ActionEvent actionEvent) {
+        drawPlayerBoard(gui.getLastTurn().getPlayers().get(gui.getPlayersName().get(2)));
+    }
+
+    public void player3View(ActionEvent actionEvent) {
+        drawPlayerBoard(gui.getLastTurn().getPlayers().get(gui.getPlayersName().get(3)));
     }
 }

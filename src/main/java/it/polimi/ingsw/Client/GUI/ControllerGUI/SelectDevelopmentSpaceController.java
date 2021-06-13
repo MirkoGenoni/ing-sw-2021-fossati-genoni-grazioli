@@ -9,14 +9,11 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.effect.DropShadow;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -41,7 +38,7 @@ public class SelectDevelopmentSpaceController implements GUIController, Initiali
 
     public void drawDevPlayer(ArrayList<Boolean> permittedSpace){
         this.permittedSpace = permittedSpace;
-        PlayerInformationToClient player = gui.getLastInformation();
+        PlayerInformationToClient player = gui.getLastTurn().getPlayers().get(gui.getNamePlayer());
         ArrayList<DevelopmentCardToClient> devPlayer = player.getDevelopmentCardPlayer();
         for(int i=0; i<devPlayer.size(); i++){
             if(devPlayer.get(i)!=null){
