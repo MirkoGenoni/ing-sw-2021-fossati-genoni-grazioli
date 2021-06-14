@@ -34,7 +34,7 @@ public class LeaderCardView {
         while(true){
             printInitialCardRack(this.cards);
 
-            String input = "";
+            String input;
             Scanner in = new Scanner(System.in);
             input = in.nextLine();
 
@@ -87,7 +87,7 @@ public class LeaderCardView {
                 "┃                                                                                                                         ┃\n" +
                 "┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛\n" +
                 "\n" +
-                "                               SELECT THE CARDS YOU WANT TO DISCARD (selection 1, selection2): \n" +
+                "                               SELECT THE CARDS YOU WANT TO DISCARD (selection 1, selection2): \n\n" +
                 "                                                     ");
     }
 
@@ -127,7 +127,7 @@ public class LeaderCardView {
             if(currentState.equals("totalResource"))
                 printCurrentState();
 
-            String input = "";
+            String input;
             Scanner in = new Scanner(System.in);
             input = in.nextLine();
 
@@ -150,7 +150,7 @@ public class LeaderCardView {
                 formatInput[0] = formatInput[0].trim();
                 formatInput[1] = formatInput[1].trim();
 
-                int num1 = -1;
+                int num1;
 
                 try {
                     num1 = Integer.parseInt(formatInput[1]);

@@ -162,7 +162,7 @@ public class ControllerToModel {
             if(false) {
                 Map<Resource, Integer> cheatMap = new HashMap<>();
                 for (Resource r : Resource.values())
-                    cheatMap.put(r, 100);
+                    cheatMap.put(r, 99);
                 players[0].getPlayerBoard().getResourceHandler().addMaterialStrongbox(cheatMap);
             }
 

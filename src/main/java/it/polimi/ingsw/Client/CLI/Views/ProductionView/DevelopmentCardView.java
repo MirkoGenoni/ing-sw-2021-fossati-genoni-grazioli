@@ -1,6 +1,7 @@
 package it.polimi.ingsw.Client.CLI.Views.ProductionView;
 
 import com.google.gson.internal.bind.util.ISO8601Utils;
+import it.polimi.ingsw.Client.CLI.Views.TotalResourceCounter;
 import it.polimi.ingsw.Events.ServerToClient.SupportClass.DevelopmentCardToClient;
 import it.polimi.ingsw.Model.DevelopmentCard.DevelopmentCard;
 import it.polimi.ingsw.Model.DevelopmentCard.ProductedMaterials;
@@ -19,6 +20,7 @@ public class DevelopmentCardView {
     ArrayList<Boolean> activation;
     ArrayList<Boolean> freeSpace = new ArrayList<>();
     String[][] state;
+    TotalResourceCounter totalResourceCounter;
 
     boolean turnEnd;
 
@@ -55,7 +57,7 @@ public class DevelopmentCardView {
         System.out.println(test.getActivation());
     }*/
 
-    public DevelopmentCardView(DevelopmentCardToClient[][] input) {
+    public DevelopmentCardView(DevelopmentCardToClient[][] input, TotalResourceCounter totalResourceCounter) {
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 3; j++) {
                 if(input[i][j]!=null) {
@@ -72,12 +74,14 @@ public class DevelopmentCardView {
             }
         }
 
+        this.totalResourceCounter = totalResourceCounter;
+
         num = -1;
         color = "";
         turnEnd = false;
     }
 
-    public DevelopmentCardView(ArrayList<DevelopmentCardToClient> input) {
+    public DevelopmentCardView(ArrayList<DevelopmentCardToClient> input, TotalResourceCounter totalResourceCounter) {
         int i = 1;
 
         for (DevelopmentCardToClient r : input) {
@@ -97,6 +101,8 @@ public class DevelopmentCardView {
             state = new String[3][3];
             activation = new ArrayList<>();
         }
+
+        this.totalResourceCounter = totalResourceCounter;
 
         turnEnd = false;
     }
@@ -345,18 +351,28 @@ public class DevelopmentCardView {
                     "┃                  -1-                                      -2-                                      -3-                  ┃");
 
         if (type.equals("market")) {
-            System.out.println("┃                                                                                                                         ┃\n" +
-                    "┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛");
 
-            System.out.print("\n                                              SELECT THE CARD YOU WANT TO BUY                                              \n\n" +
+            System.out.print("┃                                                                                                                         ┃\n");
+
+            for(int i=0; i<3; i++)
+                System.out.println(this.totalResourceCounter.returnLine(i));
+
+            System.out.println("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛");
+
+            System.out.print("                                              SELECT THE CARD YOU WANT TO BUY                                              \n\n" +
                     "                                  | Insert a color (green, yellow, blue, purple) to see |                                  \n" +
                     "                                  |   other cards or a number to buy the card you see   |\n" +
                     "                                           " + "\u001B[92m" + "type quit to return to turn selection         \n\n" + "\u001B[0m" +
                     "                                                          ");
         } else if(type.equals("activate")) {
 
-            for (int j = 0; j < 3; j++)
-                System.out.println("┃              " + this.state[0][j] + "                              " + this.state[1][j] + "                              " + this.state[2][j] + "              ┃");
+            if(!activation.get(0) && !activation.get(1) && !activation.get(2)){
+                for(int i=0; i<3; i++)
+                    System.out.println(this.totalResourceCounter.returnLine(i));
+            } else {
+                for (int j = 0; j < 3; j++)
+                    System.out.println("┃              " + this.state[0][j] + "                              " + this.state[1][j] + "                              " + this.state[2][j] + "              ┃");
+            }
 
             System.out.println("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛\n");
             System.out.print("                                        SELECT THE DEVELOPMENT YOU WANT TO ACTIVATE         \n\n");

@@ -17,7 +17,6 @@ import it.polimi.ingsw.Model.DevelopmentCard.ProductedMaterials;
 import it.polimi.ingsw.Model.Resource.Resource;
 
 import java.util.ArrayList;
-import java.util.InputMismatchException;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -29,6 +28,7 @@ public class CLIHandler {
     private DevelopmentCardView developmentCardForSale;
     private LeaderCardView leaderCardSelection;
     private DevelopmentCardVisualization currentBuying;
+    private TotalResourceCounter totalResourceCounter;
 
     private int tmpRoomNumber;
     private String newRoomText;
@@ -55,8 +55,12 @@ public class CLIHandler {
 
         this.players = players;
         this.market = new MarketView(market);
-        this.developmentCardForSale = new DevelopmentCardView(developmentCardToBuy);
         this.turnEnd = false;
+
+        PlayerInformationToClient currentPlayer = players.get(this.namePlayer);
+        this.totalResourceCounter = new TotalResourceCounter(currentPlayer.getStrongBox(), currentPlayer.getDeposit(), currentPlayer.getAdditionalDeposit());
+
+        this.developmentCardForSale = new DevelopmentCardView(developmentCardToBuy, totalResourceCounter);
     }
 
     public void leaderCardSelection(ArrayList<LeaderCardToClient> received, boolean initial, Map<String, Integer> totalReceived){
@@ -92,7 +96,7 @@ public class CLIHandler {
                     this.turnEnd = developmentCardForSale.isTurnEnd();
                     break;
                 case "usedevelopment":
-                    DevelopmentCardView developmentBoard = new DevelopmentCardView(this.players.get(this.namePlayer).getDevelopmentCardPlayer());
+                    DevelopmentCardView developmentBoard = new DevelopmentCardView(this.players.get(this.namePlayer).getDevelopmentCardPlayer(), this.totalResourceCounter);
 
                     ArrayList<String> leaderCardPower = new ArrayList<>();
                     for (int j = 0; j < players.get(this.namePlayer).getLeaderCardActive().size(); j++) {          //control if there's an active LeaderCard additionalProd
