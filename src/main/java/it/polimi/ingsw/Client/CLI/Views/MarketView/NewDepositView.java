@@ -136,9 +136,6 @@ public class NewDepositView {
     }
 
     public void LaunchView() {
-
-        PrintDepositChoise(this.depositState, marketReceived);
-
         String input = "";
 
         String state = "deposit";

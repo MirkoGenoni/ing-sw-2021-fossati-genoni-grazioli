@@ -44,15 +44,11 @@ public class NewTurnView {
                            "                                                ╚═╝   ╚═════╝ ╚═╝  ╚╝ ╚═╝╚══╝                                              \n\n\n");
         System.out.println("                                                 ┏━━━━━━━━━━━━━━━━━━━━━━━┓                                                 \n" +
                            "                                                 ┃YOU CAN CHOOSE BETWEEN:┃                                                 \n" +
-                           "                                                 ┗━━━━━━━━━━━━━━━━━━━━━━━┛\n" +
-                           "\n" +
+                           "                                                 ┗━━━━━━━━━━━━━━━━━━━━━━━┛\n\n" +
                            "                                                         -> MARKET                                                         \n" +
-                           "                                               "+ "\u001B[92m" + "Get Resources from the market " + "\u001B[0m" + "                                               \n" +
-                           "                                                   \n" +
+                           "                                               "+ "\u001B[92m" + "Get Resources from the market " + "\u001B[0m" + "\n\n" +
                            "                                                     -> BUYDEVELOPMENT\n" +
-                           "                                         "+ "\u001B[92m" + "Buy a development card from the available"  + "\u001B[0m\n" +
-                "                                                  \n" +
-                           "                                                   \n" +
+                           "                                         "+ "\u001B[92m" + "Buy a development card from the available"  + "\u001B[0m" + "\n\n" +
                            "                                                     -> USEDEVELOPMENT \n" +
                            "                                        "+ "\u001B[92m" + "Use a development between the ones you have" + "\u001B[0m" + "                                                                    \n\n\n");
         System.out.print("                                       INSERT YOUR CHOICE: ");

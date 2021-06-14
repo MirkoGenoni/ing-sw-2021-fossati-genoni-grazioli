@@ -20,6 +20,8 @@ public class DevelopmentCardView {
     ArrayList<Boolean> freeSpace = new ArrayList<>();
     String[][] state;
 
+    boolean turnEnd;
+
     /*public static void main(String[] args) {
         Map<Resource,Integer> cost = new HashMap<>();
         Map<Resource,Integer> requirements = new HashMap<>();
@@ -72,6 +74,7 @@ public class DevelopmentCardView {
 
         num = -1;
         color = "";
+        turnEnd = false;
     }
 
     public DevelopmentCardView(ArrayList<DevelopmentCardToClient> input) {
@@ -94,6 +97,8 @@ public class DevelopmentCardView {
             state = new String[3][3];
             activation = new ArrayList<>();
         }
+
+        turnEnd = false;
     }
 
     public DevelopmentCardView(ArrayList<Boolean> freeSpace, ArrayList<DevelopmentCardToClient> state, DevelopmentCardVisualization input) {
@@ -120,6 +125,7 @@ public class DevelopmentCardView {
 
         this.boughtCard = input;
         this.freeSpace.addAll(freeSpace);
+        turnEnd = false;
     }
 
     public int getNum() {
@@ -138,9 +144,14 @@ public class DevelopmentCardView {
         return this.cards.get(card);
     }
 
+    public boolean isTurnEnd(){
+        return this.turnEnd;
+    }
+
     public void startCardForSaleSelection() {
         int currentView = 0;
         int tmp;
+        turnEnd = false;
 
         num = -1;
         color = "";
@@ -172,6 +183,7 @@ public class DevelopmentCardView {
 
                 num = tmp;
                 color = tmpc;
+                turnEnd = true;
                 break;
 
             } catch (IllegalArgumentException e) {
@@ -188,15 +200,23 @@ public class DevelopmentCardView {
                         break;
                     case "purple":
                         currentView = 9;
+                        break;
+                    case "quit":
+                        currentView = -1;
+                        break;
                 }
 
             }
+
+            if(currentView == -1)
+                break;
 
             printDevelopmentCardGrid(currentView, "market");
         }
     }
 
     public void startProductionCardBoardView() {
+        turnEnd = false;
         int tmp = -1;
         activation.clear();
 
@@ -228,9 +248,15 @@ public class DevelopmentCardView {
             input = in.nextLine();
             String[] formatInput = input.split(",", 2);
 
-            if (formatInput.length == 1)
-                if (formatInput[0].equals("done"))
+            if (formatInput.length == 1) {
+                if (formatInput[0].equals("done")) {
+                    turnEnd = true;
                     break;
+                } else if (formatInput[0].equals("quit")) {
+                    turnEnd = false;
+                    break;
+                }
+            }
 
             if (formatInput.length == 2) {
                 //elimino eventuali spazi iniziali dalle due stringhe
@@ -280,7 +306,13 @@ public class DevelopmentCardView {
 
         while(true){
             printDevelopmentCardGrid(currentView, "insertion");
-            tmp = in.nextInt();
+
+            try {
+                tmpS  = in.nextLine();
+                tmp = Integer.parseInt(tmpS);
+            } catch(NumberFormatException e){
+                continue;
+            }
 
             if(tmp<1 || tmp>this.freeSpace.size())
                 continue;
@@ -288,7 +320,6 @@ public class DevelopmentCardView {
             if(this.freeSpace.get(tmp-1)) {
                 if (this.cards.get(tmp - 1).getCardNumber() != 0) {
                     confirmBoughtSpaceSelection(this.boughtCard, this.cards.get(tmp - 1));
-                    in.nextLine();
                     tmpS = in.nextLine();
                     if (tmpS.equals("YES"))
                         return tmp - 1;
@@ -320,7 +351,7 @@ public class DevelopmentCardView {
             System.out.print("\n                                              SELECT THE CARD YOU WANT TO BUY                                              \n\n" +
                     "                                  | Insert a color (green, yellow, blue, purple) to see |                                  \n" +
                     "                                  |   other cards or a number to buy the card you see   |\n" +
-                    "                                                                  \n" +
+                    "                                           " + "\u001B[92m" + "type quit to return to turn selection         \n\n" + "\u001B[0m" +
                     "                                                          ");
         } else if(type.equals("activate")) {
 
@@ -331,14 +362,14 @@ public class DevelopmentCardView {
             System.out.print("                                        SELECT THE DEVELOPMENT YOU WANT TO ACTIVATE         \n\n");
             System.out.print(  "                             |   Select the action you want to perform (activate, nothing)   |                             \n" +
                                "                             | followed by comma and the number of card you want to activate |\n" +
-                               "                                                Type done when finished                     \n\n" +
-                    "                                                                 ");
+                               "                                " + "\u001B[92m" + "Type done when finished or quit to return to turn selection\n\n" + "\u001B[0m" +
+                               "                                              ");
 
         } else if(type.equals("insertion")){
             System.out.print("┃                                                                                                                         ┃\n" +
                     "┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛\n" +
                     "                                 INSERT THE POSITION WHERE YOU WANT TO PUT THE BOUGHT CARD                                 \n\n" +
-                    "                                 (if you select a spot with a card, this will be replaced)\n\n" +
+                    "                                  " + "\u001B[92m" + "if you select a spot with a card, this will be replaced \n\n" + "\u001B[0m" +
                     "                                                 ");
 
 
@@ -367,7 +398,7 @@ public class DevelopmentCardView {
                 "┃                                                                                                                         ┃\n" +
                 "┃                                                                                                                         ┃\n" +
                 "┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛\n\n" +
-                "                                                      TYPE YES OR NO\n\n" +
+                "                                                      " + "\u001B[92m" + "type yes or no\n" + "\u001B[0m" +
                 "                                                            ");
     }
 }

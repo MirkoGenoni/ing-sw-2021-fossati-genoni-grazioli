@@ -13,6 +13,7 @@ public class AdditionalProductionView {
     ArrayList<AdditionalProductionVisualization> productions;
     ArrayList<Boolean> activation;
     ArrayList<Resource> requested;
+    boolean turnEnd;
 
     /*public static void main(String[] args) {
         ArrayList<String> test = new ArrayList<>();
@@ -29,6 +30,7 @@ public class AdditionalProductionView {
         activation.add(false);
         requested = new ArrayList<>();
         productions = new ArrayList<>();
+        turnEnd = true;
 
         switch(type.size()) {
             case 1:
@@ -48,6 +50,10 @@ public class AdditionalProductionView {
 
     public ArrayList<Resource> getRequested() {
         return requested;
+    }
+
+    public boolean isTurnEnd() {
+        return turnEnd;
     }
 
     public void startAdditionalProductionView(){
@@ -77,6 +83,10 @@ public class AdditionalProductionView {
                         activation.set(0, false);
                         activation.set(1, false);
                     }
+                    else if(input.equals("QUIT")){
+                        this.turnEnd = false;
+                        break;
+                    }
                 }
                 break;
 
@@ -98,6 +108,10 @@ public class AdditionalProductionView {
                     if(formatInput.length==1){
                         if(formatInput[0].equals("done")) {
                             selectResourceProducted();
+                            break;
+                        }
+                        if(formatInput[0].equals("quit")){
+                            this.turnEnd = false;
                             break;
                         }
                     }

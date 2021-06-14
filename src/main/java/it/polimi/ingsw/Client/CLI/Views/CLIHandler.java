@@ -17,31 +17,46 @@ import it.polimi.ingsw.Model.DevelopmentCard.ProductedMaterials;
 import it.polimi.ingsw.Model.Resource.Resource;
 
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.Map;
 import java.util.Scanner;
 
 public class CLIHandler {
-    ConnectionToServer connection;
-    String namePlayer;
-    Map<String, PlayerInformationToClient> players;
-    MarketView market;
-    DevelopmentCardView developmentCardForSale;
-    LeaderCardView leaderCardSelection;
-    DevelopmentCardVisualization currentBuying;
+    private final ConnectionToServer connection;
+    private String namePlayer;
+    private Map<String, PlayerInformationToClient> players;
+    private MarketView market;
+    private DevelopmentCardView developmentCardForSale;
+    private LeaderCardView leaderCardSelection;
+    private DevelopmentCardVisualization currentBuying;
+
+    private int tmpRoomNumber;
+    private String newRoomText;
+    private boolean isNewRoomOrNot;
+
+    private boolean turnEnd;
+    private int tmpNumPlayers;
 
     public CLIHandler(ConnectionToServer connection){
         this.connection = connection;
     }
 
-    public void newState(String namePlayer,
-                         Map<String, PlayerInformationToClient> players,
+    public int getTmpRoomNumber() {
+        return tmpRoomNumber;
+    }
+
+    public boolean isNewRoomOrNot() {
+        return isNewRoomOrNot;
+    }
+
+    public void newState(Map<String, PlayerInformationToClient> players,
                          MarketToClient market,
                          DevelopmentCardToClient[][] developmentCardToBuy){
 
-        this.namePlayer = namePlayer;
         this.players = players;
         this.market = new MarketView(market);
         this.developmentCardForSale = new DevelopmentCardView(developmentCardToBuy);
+        this.turnEnd = false;
     }
 
     public void leaderCardSelection(ArrayList<LeaderCardToClient> received, boolean initial, Map<String, Integer> totalReceived){
@@ -56,41 +71,49 @@ public class CLIHandler {
     }
 
     public void newTurn(){
-        NewTurnView chooseTurn = new NewTurnView();
-        String out = chooseTurn.startTurnChoise();
-        this.startTurn(out);
-    }
+        
+        this.turnEnd = false;
+        
+        while(!this.turnEnd) {
+            NewTurnView chooseTurn = new NewTurnView();
+            String in = chooseTurn.startTurnChoise();
 
-    public void startTurn(String in){
-        switch(in){
-            case "market":
-                int line1 = market.launchChoiseView();
-                ArrayList<Boolean> tmp = marketWhiteChangeActive(players.get(this.namePlayer).getLeaderCardActive());
-                connection.sendChooseLine(line1, tmp);
-                break;
-            case "buydevelopment":
-                selectedDevelopmentCard(this.developmentCardForSale);
-                break;
-            case "usedevelopment":
-                DevelopmentCardView developmentBoard = new DevelopmentCardView(this.players.get(this.namePlayer).getDevelopmentCardPlayer());
+            switch (in) {
+                case "market":
+                    market.launchChoiseView();
+                    int line1 = market.getChoiseLine();
+                    ArrayList<Boolean> tmp = marketWhiteChangeActive(players.get(this.namePlayer).getLeaderCardActive());
+                    if (market.isTurnEnd())
+                        connection.sendChooseLine(line1, tmp);
+                    this.turnEnd = market.isTurnEnd();
+                    break;
+                case "buydevelopment":
+                    selectedDevelopmentCard(this.developmentCardForSale);
+                    this.turnEnd = developmentCardForSale.isTurnEnd();
+                    break;
+                case "usedevelopment":
+                    DevelopmentCardView developmentBoard = new DevelopmentCardView(this.players.get(this.namePlayer).getDevelopmentCardPlayer());
 
-                ArrayList<String> leaderCardPower = new ArrayList<>();
-                for (int j=0; j<players.get(this.namePlayer).getLeaderCardActive().size(); j++){          //control if there's an active LeaderCard additionalProd
-                    if(players.get(this.namePlayer).getLeaderCardActive().get(j).getEffect().equals("additionalProduction")) {
-                        leaderCardPower.add(players.get(this.namePlayer).getLeaderCardActive().get(j).getResourceType());
+                    ArrayList<String> leaderCardPower = new ArrayList<>();
+                    for (int j = 0; j < players.get(this.namePlayer).getLeaderCardActive().size(); j++) {          //control if there's an active LeaderCard additionalProd
+                        if (players.get(this.namePlayer).getLeaderCardActive().get(j).getEffect().equals("additionalProduction")) {
+                            leaderCardPower.add(players.get(this.namePlayer).getLeaderCardActive().get(j).getResourceType());
+                        }
                     }
-                }
-                AdditionalProductionView additionalProductionView = new AdditionalProductionView(leaderCardPower);
+                    AdditionalProductionView additionalProductionView = new AdditionalProductionView(leaderCardPower);
 
-                choseDevelopment(developmentBoard, additionalProductionView);
-                break;
-            case "turn":
-                connection.sendTurnPlayed(in);
-                break;
+                    this.turnEnd = choseDevelopment(developmentBoard, additionalProductionView);
+                    break;
 
-            case "viewBoard":
-                //TODO: aggiungere scelta visualizzazione gameboard giocatore corrente e altri giocatori
-                break;
+                case "turn":
+                    connection.sendTurnPlayed(in);
+                    this.turnEnd = true;
+                    break;
+
+                case "viewBoard":
+                    //TODO: aggiungere scelta visualizzazione gameboard giocatore corrente e altri giocatori
+                    break;
+            }
         }
     }
 
@@ -104,38 +127,42 @@ public class CLIHandler {
 
     private void selectedDevelopmentCard(DevelopmentCardView in){
         in.startCardForSaleSelection();
-        int num;
-        String color;
-        num = in.getNum();
-        color = in.getColor();
-        int colorForCard;
 
-        switch (color) {
-            case "green":
-                colorForCard = 0;
-                break;
-            case "blue":
-                colorForCard = 1;
-                break;
-            case "yellow":
-                colorForCard = 2;
-                break;
-            case "purple":
-                colorForCard = 3;
-                break;
-            default:
-                throw new RuntimeException(); //attention Exception
+        if(in.isTurnEnd()) {
+            int num;
+            String color;
+            num = in.getNum();
+            color = in.getColor();
+            int colorForCard;
+
+            switch (color) {
+                case "green":
+                    colorForCard = 0;
+                    break;
+                case "blue":
+                    colorForCard = 1;
+                    break;
+                case "yellow":
+                    colorForCard = 2;
+                    break;
+                case "purple":
+                    colorForCard = 3;
+                    break;
+                default:
+                    throw new RuntimeException(); //attention Exception
+            }
+
+            this.currentBuying = this.developmentCardForSale.getCard(colorForCard + num - 1);
+            connection.sendSelectedDevelopmentCard(colorForCard, num - 1); //livello da 0 a 2
         }
-
-        this.currentBuying = this.developmentCardForSale.getCard(colorForCard+num-1);
-
-        connection.sendSelectedDevelopmentCard(colorForCard, num-1); //livello da 0 a 2
     }
 
 
 
 
-    private void choseDevelopment(DevelopmentCardView developmentCardBoard, AdditionalProductionView additionalProductionView){
+    private boolean choseDevelopment(DevelopmentCardView developmentCardBoard, AdditionalProductionView additionalProductionView){
+
+        boolean tmp = true;
 
         char answer = selectActivation("Do you want to Activate the BASE Production? Y/N?");
 
@@ -151,10 +178,15 @@ public class CLIHandler {
             useBaseProduction = true;
             BaseProduction baseProduction = new BaseProduction();
             baseProduction.startBaseProduction();
-            input = baseProduction.getResources();
-            prodottoBaseProd = ProductedMaterials.valueOf(input.get(2).name());
+            tmp = baseProduction.isTurnEnd();
+            if(tmp) {
+                input = baseProduction.getResources();
+                prodottoBaseProd = ProductedMaterials.valueOf(input.get(2).name());
+            }
         }
 
+        if(answer == 'Y' && !tmp)
+            return false;
 
         answer = selectActivation("Do you want to Activate one of the LEADER Production? Y/N?");
 
@@ -162,12 +194,17 @@ public class CLIHandler {
         ArrayList<Boolean> activation = new ArrayList<>();
         ArrayList<Resource> materialLeader = new ArrayList<>();
 
-        if(answer == 'Y'){
-
+        if (answer == 'Y') {
             additionalProductionView.startAdditionalProductionView();
-            activation = additionalProductionView.getActivation();
-            materialLeader = additionalProductionView.getRequested();
+            tmp = additionalProductionView.isTurnEnd();
+            if(tmp) {
+                activation = additionalProductionView.getActivation();
+                materialLeader = additionalProductionView.getRequested();
+            }
         }
+
+        if(answer == 'Y' && !tmp)
+            return false;
 
 
         answer = selectActivation("Do you want to use any of yours DEVELOPMENT CARDS? Y/N?");
@@ -177,17 +214,22 @@ public class CLIHandler {
 
         if(answer == 'Y'){
             developmentCardBoard.startProductionCardBoardView();
-            useDevelop = developmentCardBoard.getActivation();
+            tmp = developmentCardBoard.isTurnEnd();
+            if(tmp)
+                useDevelop = developmentCardBoard.getActivation();
         }
 
-        //DEBUG
+        if(answer == 'Y' && !tmp)
+            return false;
+
+        /*DEBUG
         System.out.println("invio questi dati:");
         System.out.println("use_baseprod: " + useBaseProduction);
         if(useBaseProduction)
             System.out.println("selected for base prod: "+ input.get(0).toString() + " "+ input.get(1).toString() +"--> " + input.get(2).toString());
         System.out.println("use leaders --> "+ activation.toString());
         System.out.println("material leaders --> "+ materialLeader.toString());
-        System.out.println("use develop --> "+ useDevelop.toString());
+        System.out.println("use develop --> "+ useDevelop.toString());*/
 
         //VANNO MANDATE TUTTE COME PRODUCTION RESULT
 
@@ -195,6 +237,8 @@ public class CLIHandler {
 
         connection.sendSelectedProductionDevelopmentCard(useBaseProduction, input.get(0), input.get(1), prodottoBaseProd,
                 activation, materialLeader, useDevelop);
+
+        return true;
 
     }
 
@@ -298,5 +342,117 @@ public class CLIHandler {
         DevelopmentCardView selectSpace = new DevelopmentCardView(space, tmp, this.currentBuying);
         int tmpPos = selectSpace.startSelectionNewCardSpace();
         connection.sendSelectedDevelopmentCardSpace(tmpPos);
+    }
+
+    public void insertInitialData(String DataRequired){
+        Scanner in = new Scanner(System.in);
+        boolean notDone = true;
+
+        while(notDone) {
+            System.out.print("\u001B[2J\u001B[3J\u001B[H");
+            System.out.println("\n" +
+                    "                   ┌───────────────────────────────────────────────────────────────────────────────────┐                   \n" +
+                    "                   │      ╔═══╦═══╗ ╔═════╗ ╔═════╗ ╔═════╗ ╔═════╗ ╔═════╗       ╔═════╗ ╔═════╗      │                   \n" +
+                    "                   │      ║ ╔╗ ╔╗ ║ ║ ╔═╗ ║ ║ ╔═══╝ ╚═╗ ╔═╝ ║ ╔═══╝ ║  ══ ║       ║ ╔═╗ ║ ║  ══╦╝      │                   \n" +
+                    "                   │      ║ ║║ ║║ ║ ║ ╠═╣ ║ ║ ╚═══╗   ║ ║   ║ ╠═══  ║ ╔══╗║       ║ ║ ║ ║ ║ ╔══╝       │                   \n" +
+                    "                   │      ║ ║╚═╝║ ║ ║ ║ ║ ║ ╠════ ║   ║ ║   ║ ╚═══╗ ║ ║  ║║       ║ ╚═╝ ║ ║ ║          │                   \n" +
+                    "                   │      ╚═╝   ╚═╝ ╚═╝ ╚═╝ ╚═════╝   ╚═╝   ╚═════╝ ╚═╝  ╚╝       ╚═════╝ ╚═╝          │                   \n" +
+                    "                   │                                                                                   │                   \n" +
+                    "                   │╔═════╗ ╔═════╗ ╔══╗╔═╗ ╔═════╗ ╔═╗ ╔═════╗ ╔═════╗ ╔═════╗ ╔══╗╔═╗ ╔═════╗ ╔═════╗│                   \n" +
+                    "                   │║  ══ ║ ║ ╔═══╝ ║  ╚╝ ║ ║ ╔═╗ ║ ║ ║ ║ ╔═══╝ ║ ╔═══╝ ║ ╔═╗ ║ ║  ╚╝ ║ ║ ╔═══╝ ║ ╔═══╝│                   \n" +
+                    "                   │║ ╔══╗║ ║ ╠═══  ║ ╔╗  ║ ║ ╠═╣ ║ ║ ║ ║ ╚═══╗ ║ ╚═══╗ ║ ╠═╣ ║ ║ ╔╗  ║ ║ ║     ║ ╠═══ │                   \n" +
+                    "                   │║ ║  ║║ ║ ╚═══╗ ║ ║║  ║ ║ ║ ║ ║ ║ ║ ╠════ ║ ╠════ ║ ║ ║ ║ ║ ║ ║║  ║ ║ ╚═══╗ ║ ╚═══╗│                   \n" +
+                    "                   │╚═╝  ╚╝ ╚═════╝ ╚═╝╚══╝ ╚═╝ ╚═╝ ╚═╝ ╚═════╝ ╚═════╝ ╚═╝ ╚═╝ ╚═╝╚══╝ ╚═════╝ ╚═════╝│                   \n" +
+                    "                   └───────────────────────────────────────────────────────────────────────────────────┘                   \n");
+
+            System.out.print("                                                                                                                          \n" +
+                    "                                                                                                                          \n" +
+                    "                                                                                                                          \n" +
+                    "                                                                                                                          \n");
+
+            System.out.print("                                    INSERT SERVER ADDRESS: " + "\u001B[92m" + connection.getAddress() + "\u001B[0m" + "\n\n");
+
+            if (DataRequired.equals("isNewRoom")) {
+
+                System.out.print("                                    IS YOUR ROOM NEW? ");
+
+                String tmpIn = in.nextLine();
+                tmpIn = tmpIn.toUpperCase();
+
+                if (tmpIn.equals("YES") || tmpIn.equals("Y")) {
+                    this.newRoomText = tmpIn;
+                    this.isNewRoomOrNot = true;
+                    notDone = false;
+                    break;
+                } else if (tmpIn.equals("NO") || tmpIn.equals("N")) {
+                    this.newRoomText = tmpIn;
+                    this.isNewRoomOrNot = false;
+                    notDone = false;
+                    break;
+                }
+            } else {
+                System.out.println("                                    IS YOUR ROOM NEW? " + "\u001B[92m" + this.newRoomText + "\u001B[0m");
+            }
+
+            if (DataRequired.equals("roomNumber")) {
+                String tmpIn;
+                int tmpRoomNumber;
+
+                System.out.print("                                    INSERT ROOM NUMBER: ");
+
+                try {
+                    tmpIn = in.nextLine();
+                    tmpRoomNumber = Integer.parseInt(tmpIn);
+                } catch (NumberFormatException e) {
+                    continue;
+                }
+
+                if (tmpRoomNumber > 0) {
+                    this.tmpRoomNumber = tmpRoomNumber;
+                    notDone = false;
+                }
+            } else if (!DataRequired.equals("isNewRoom")) {
+                System.out.println("                                    INSERT ROOM NUMBER: " + "\u001B[92m" + this.tmpRoomNumber + "\u001B[0m" + "\n");
+            }
+
+            if (DataRequired.equals("namePlayer")) {
+                String tmpName;
+
+                System.out.print("                                    INSERT NAME: ");
+
+                tmpName = in.nextLine();
+                this.namePlayer = tmpName;
+
+                connection.setPlayerName(tmpName);
+                connection.sendPlayerName(tmpName);
+
+                notDone = false;
+            } else if (!DataRequired.equals("isNewRoom") && !DataRequired.equals("roomNumber")) {
+                System.out.println("                                    INSERT NAME: " + "\u001B[92m" + this.namePlayer + "\u001B[0m" + "\n");
+            }
+
+            if (DataRequired.equals("numberOfPlayers")) {
+                String tmpIn;
+                int tmpNumPlayers;
+
+                System.out.print("                                    YOU'RE THE FIRST PLAYER! ");
+
+                for (int i = 0; i < 60; i++)
+                    System.out.print("\b");
+
+                System.out.print("                                   INSERT NUMBER OF PLAYERS: ");
+
+                try {
+                    tmpIn = in.nextLine();
+                    tmpNumPlayers = Integer.parseInt(tmpIn);
+                } catch (NumberFormatException e) {
+                    continue;
+                }
+
+                this.tmpNumPlayers = tmpNumPlayers;
+                notDone = false;
+                connection.sendNumPlayer(tmpNumPlayers);
+            }
+        }
     }
 }

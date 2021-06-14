@@ -12,18 +12,25 @@ public class BaseProduction {
     DevelopmentCardSymbols material2;
     DevelopmentCardSymbols obtain;
     ArrayList<Resource> resources;
+    boolean isTurnEnd;
 
     public BaseProduction(){
         obtain = DevelopmentCardSymbols.ANYTHING;
         material1 = DevelopmentCardSymbols.ANYTHING;
         material2 = DevelopmentCardSymbols.ANYTHING;
+        isTurnEnd = false;
     }
 
     public ArrayList<Resource> getResources() {
         return new ArrayList<>(this.resources);
     }
 
+    public boolean isTurnEnd() {
+        return isTurnEnd;
+    }
+
     public void startBaseProduction(){
+        isTurnEnd = false;
         int valid = 0;
 
         while(valid==0) {
@@ -45,6 +52,9 @@ public class BaseProduction {
 
                 String input = in.nextLine();
 
+                if(input.equals("quit"))
+                    break;
+
                 try {
                     this.resources.add(Resource.valueOf(input.toUpperCase()));
                     i++;
@@ -64,17 +74,24 @@ public class BaseProduction {
             System.out.print("\n\n\n                                             ┌───────────────────────────────┐                                             \n"+
                              "                                             │ARE YOU SURE ABOUT YOUR CHOICE?│\n" +
                              "                                             └───────────────────────────────┘\n\n");
-            System.out.print("                                                        type YES/NO          \n");
+            System.out.print("                                                        type YES/NO          \n" +
+                             "                                           " + "\u001B[92m" + "type quit to return to turn selection \n"+ "\u001B[0m");
             System.out.print("                                                            ");
 
             while (true) {
                 String input = in.nextLine();
                 if (input.equals("YES")) {
                     valid = 1;
+                    isTurnEnd = true;
                     break;
                 }
                 if (input.equals("NO"))
                     break;
+                if(input.equals("quit")) {
+                    valid = -1;
+                    isTurnEnd = false;
+                    break;
+                }
             }
         }
     }

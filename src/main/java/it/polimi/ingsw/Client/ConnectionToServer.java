@@ -24,6 +24,7 @@ import java.util.ArrayList;
 
 public class ConnectionToServer implements Runnable, EventToServerNotifier {
     private final Socket socket;
+    private String address;
     private boolean active;
     private String playerName;
     private boolean activeGui = false;
@@ -38,6 +39,14 @@ public class ConnectionToServer implements Runnable, EventToServerNotifier {
         this.socket = socket;
         this.active = true;
         cli = new CLI(this);
+    }
+
+    public void setAddress(String address){
+        this.address = address;
+    }
+
+    public String getAddress(){
+        return this.address;
     }
 
     public void setGui(GUI gui) {

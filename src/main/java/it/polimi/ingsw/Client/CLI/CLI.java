@@ -21,7 +21,6 @@ import java.util.concurrent.TimeUnit;
 
 public class CLI implements EventToClientVisitor {
     private final ConnectionToServer connectionToServer;
-    private String namePlayer;
     private CLIHandler handler;
     private int index = -1;
     private final Thread asyncPrint = new Thread(()->{
@@ -166,7 +165,7 @@ public class CLI implements EventToClientVisitor {
     @Override
     public void visit(NewTurnToClient newTurn) {
         if (newTurn.isYourTurn()) {
-            handler.newState(this.namePlayer, newTurn.getPlayers(), newTurn.getMarket(), newTurn.getDevelopmentCards());
+            handler.newState(newTurn.getPlayers(), newTurn.getMarket(), newTurn.getDevelopmentCards());
             handler.newTurn();
 
         /* FOR DEBUG! PRINTS THE CORRECT STATE OF THE CURRENT PLAYER WITHOUT THE USE OF THE CLI (check for visualization)
@@ -230,6 +229,7 @@ public class CLI implements EventToClientVisitor {
 
     @Override
     public void visit(SendRoomRequestToClient roomRequest) {
+        /*
         System.out.println(roomRequest.getMessage());
         System.out.println("mi è arrivata la riciesta della stanza: scrivila");
         Scanner ScanIn = new Scanner(System.in);
@@ -243,13 +243,16 @@ public class CLI implements EventToClientVisitor {
         }else{
             tmp=false;
         }
-        System.out.println(tmp + " è il voolean");
-        connectionToServer.sendRoom(room, tmp);
+        System.out.println(tmp + " è il voolean");*/
+
+        handler.insertInitialData("isNewRoom");
+        handler.insertInitialData("roomNumber");
+        connectionToServer.sendRoom(handler.getTmpRoomNumber(), handler.isNewRoomOrNot());
     }
 
     @Override
     public void visit(SendNamePlayerRequestToClient nameRequest) {
-        System.out.println(nameRequest.getRequest());
+        /*System.out.println(nameRequest.getRequest());
         System.out.print("                                                                                                                          \n");
 
         System.out.print("                                    INSERT NAME: ");
@@ -266,12 +269,13 @@ public class CLI implements EventToClientVisitor {
         String line = scanIn.nextLine();
         connectionToServer.sendPlayerName(line);
         namePlayer = line;
-        connectionToServer.setPlayerName(line);
+        connectionToServer.setPlayerName(line);*/
+        handler.insertInitialData("namePlayer");
     }
 
     @Override
     public void visit(SendNumPlayerRequestToClient numPlayer) {
-        System.out.println(numPlayer.getMessage());
+        /*System.out.println(numPlayer.getMessage());
 
         System.out.print("                                                                                                                           \n");
 
@@ -296,6 +300,8 @@ public class CLI implements EventToClientVisitor {
 
         Scanner scanIn = new Scanner(System.in);
         int num = scanIn.nextInt();
-        connectionToServer.sendNumPlayer(num);
+        connectionToServer.sendNumPlayer(num);*/
+
+        handler.insertInitialData("numberOfPlayers");
     }
 }

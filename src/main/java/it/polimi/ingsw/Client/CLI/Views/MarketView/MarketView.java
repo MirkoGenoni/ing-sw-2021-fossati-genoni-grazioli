@@ -10,6 +10,8 @@ import java.util.Scanner;
 public class MarketView {
     ArrayList<MarketIcon> marketState;
     MarketIcon outMarble;
+    int choiseLine;
+    boolean turnEnd;
 
     public MarketView(MarketToClient in){
         marketState = new ArrayList<>();
@@ -19,10 +21,22 @@ public class MarketView {
         }
 
         this.outMarble = MarketIcon.valueOf(in.getOutMarble().toString());
+
+        choiseLine = -1;
+        turnEnd = true;
+    }
+
+    public int getChoiseLine(){
+        return choiseLine;
+    }
+
+    public boolean isTurnEnd(){
+        return turnEnd;
     }
 
 
-    public int launchChoiseView(){
+    public void launchChoiseView(){
+        turnEnd = true;
         printMarketLineChoice();
 
         int num = -1;
@@ -31,6 +45,11 @@ public class MarketView {
             Scanner in = new Scanner(System.in);
             String input = in.nextLine();
 
+            if(input.equals("quit")) {
+                turnEnd = false;
+                break;
+            }
+
             try{
                 num = Integer.parseInt(input);
             } catch(IllegalArgumentException e) {
@@ -38,7 +57,7 @@ public class MarketView {
             }
         }
 
-        return num;
+        this.choiseLine = num;
     }
 
     private void printMarketLineChoice(){
@@ -67,7 +86,7 @@ public class MarketView {
 
         System.out.print("\n" +
                 "                                                      CHOOSE A LINE:\n" +
-                "                                                             \n" +
+                "                                         " + "\u001B[92m" + "or type quit to return to turn selection\n\n" + "\u001B[0m" +
                 "                                                             ");
 
     }

@@ -211,7 +211,7 @@ public class LeaderCardView {
                 "                               |    by comma and the number of card you want to act on    |                                \n" +
                 "                               |      -discard-         -activate-         -nothing-      |                                \n" +
                 "                                                                                                                    \n" +
-                "                      (type totalResource to see the total amount of resources and development card)\n\n" +
+                "                       " + "\u001B[92m" + "type totalResource to see the total amount of resources and development card"+ "\u001B[0;0m" + "\n\n" +
                 "                                                 ");
     }
 
@@ -271,7 +271,7 @@ public class LeaderCardView {
         if(getTotal("COIN")<10)
             System.out.print("0" + getTotal("STONE") + " │               ┃ \n");
         else
-            System.out.print(getTotal("STONE") + " │               ┃ \n");
+            System.out.print(getTotal("STONE") + "  │               ┃ \n");
 
         System.out.print(" ┃              │                                                                                        │               ┃ \n" +
                 " ┃              └────────────────────────────────────────────────────────────────────────────────────────┘               ┃ \n" +
@@ -279,7 +279,7 @@ public class LeaderCardView {
                 " ┃                                                                                                                       ┃ \n" +
                 " ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛ \n\n" +
                 "                                      THIS IS THE TOTAL OF YOUR RESOURCES AND DEVELOPMENT CARD \n" +
-                "                                      (type leaderCard to return to the leader card selection)\n\n" +
+                "                                       " + "\u001B[92m" + "type leaderCard to return to the leader card selection " + "\u001B[0;0m" + "\n\n" +
                 "                                                             ");
     }
 
