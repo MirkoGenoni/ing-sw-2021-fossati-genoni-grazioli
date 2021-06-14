@@ -167,7 +167,7 @@ public class DevelopmentCardHandler {
                 count++;
         }
 
-        return count==quantity;
+        return count >= quantity;
     }
 
 
