@@ -35,4 +35,8 @@ public class DisconnectionHandler {
     public synchronized void clientReconnected(String name){
         controllerToModel.getPlayerDisconnected().remove(name);
     }
+
+    //get runtime
+
+
 }

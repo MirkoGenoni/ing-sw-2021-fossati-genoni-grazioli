@@ -1,6 +1,7 @@
 package it.polimi.ingsw.Client.GUI.ControllerGUI;
 
 import it.polimi.ingsw.Client.GUI.GUI;
+import it.polimi.ingsw.Events.ServerToClient.SupportClass.LeaderCardToClient;
 import it.polimi.ingsw.Model.Resource.Resource;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -21,6 +22,9 @@ public class NewDepositController implements GUIController, Initializable {
 
     private Map<String, Image> resources;
     private ArrayList<ImageView> depositImg;
+    private ArrayList<ImageView> leaderDeposit0;
+    private ArrayList<ImageView> leaderDeposit1;
+    private ArrayList<ImageView> leaderAdditional;
     private ArrayList<Integer> numDepositClicked = new ArrayList<>();
     private ArrayList<String> resourceClicked = new ArrayList<>();
 
@@ -31,6 +35,16 @@ public class NewDepositController implements GUIController, Initializable {
     @FXML ImageView deposit5;
     @FXML ImageView deposit6;
 
+    //additional deposit leader
+    @FXML ImageView leader0;
+    @FXML ImageView leader1;
+
+    @FXML ImageView addDeposit00;
+    @FXML ImageView addDeposit01;
+    @FXML ImageView addDeposit10;
+    @FXML ImageView addDeposit11;
+
+
     @FXML Label numCoin;
     @FXML Label numStone;
     @FXML Label numShield;
@@ -39,15 +53,12 @@ public class NewDepositController implements GUIController, Initializable {
     //tmp
     private Map<String, Integer> marketReceive = new HashMap<>();
     private ArrayList<Resource> depositState = new ArrayList<>();
-
-    // nuovo stato del deposito
-    public ArrayList<Resource> getDepositState(){
-        return depositState;
-    }
+    private ArrayList<Resource> addDepositType;
+    private boolean isAdditional;
 
     //risorse scartate dal market
 
-    public int getMarketResource(){
+    private int getMarketResource(){
         int num =0;
         for(String s : marketReceive.keySet()){
             if(!s.equals("nothing")){
@@ -58,9 +69,38 @@ public class NewDepositController implements GUIController, Initializable {
     }
 
 
-    public void drawDeposit(ArrayList<Resource> depositState, ArrayList<Resource> marketReceived, boolean isInitial){
+    public void drawDeposit(ArrayList<Resource> depositState, ArrayList<Resource> marketReceived, boolean isAdditional,
+                            ArrayList<Resource> addDepositType, ArrayList<Resource> addDepositState, ArrayList<LeaderCardToClient> leaderCards, boolean isInitial){
         this.isInitial = isInitial;
         this.depositState = depositState;
+        this.isAdditional = isAdditional;
+
+        if(isAdditional){
+            // draw leader
+            int i =0;
+            for(LeaderCardToClient leader : leaderCards){
+                if(leader.getEffect().equals("biggerDeposit")){
+                    this.leaderAdditional.get(i).setImage(gui.getLeaderCardsGraphic().get(leader.getNameCard()));
+                    i++;
+                }
+            }
+
+            this.addDepositType = addDepositType;
+            depositState.addAll(addDepositState);
+            if(addDepositType.size()==1){
+                System.out.println(addDepositState);
+                leaderDeposit0.forEach(img -> img.setDisable(false));
+                depositImg.addAll(leaderDeposit0);
+            }else{
+                System.out.println(addDepositState);
+                leaderDeposit0.forEach(img -> img.setDisable(false));
+                leaderDeposit1.forEach(img -> img.setDisable(false));
+                depositImg.addAll(leaderDeposit0);
+                depositImg.addAll(leaderDeposit1);
+
+            }
+
+        }
 
         for(int i=0; i<depositState.size(); i++){
             if(depositState.get(i)!=null){
@@ -81,7 +121,6 @@ public class NewDepositController implements GUIController, Initializable {
         numStone.setText("X " + marketReceive.get("stone"));
         numServant.setText("X " + marketReceive.get("servant"));
         numCoin.setText("X " + marketReceive.get("coin"));
-
 
         System.out.println(marketReceive.toString());
 
@@ -121,6 +160,19 @@ public class NewDepositController implements GUIController, Initializable {
             case "coinImg":
                 resourceClicked.add("coin");
                 break;
+            case "addDeposit00":
+                numDepositClicked.add(6);
+                break;
+            case "addDeposit01":
+                numDepositClicked.add(7);
+                break;
+            case "addDeposit10":
+                numDepositClicked.add(8);
+                break;
+            case "addDeposit11":
+                numDepositClicked.add(9);
+                break;
+            //TODO reduce code and add comment
 
         }
 
@@ -149,7 +201,7 @@ public class NewDepositController implements GUIController, Initializable {
         int num = i;
 
         //tolgo il materiale dalle risorse ottenute dal market da inserire in deposito
-        if(marketReceive.containsKey(s) && num>=0 && num<6){
+        if(marketReceive.containsKey(s) && num>=0 && num<depositState.size()){
             if(marketReceive.get(s)-1 > -1){
                 marketReceive.put(s, marketReceive.get(s) -1);
 
@@ -185,13 +237,29 @@ public class NewDepositController implements GUIController, Initializable {
     public void done(ActionEvent actionEvent) {
         numDepositClicked.clear();
         resourceClicked.clear();
+        leaderAdditional.forEach(leader -> leader.setImage(null));
+        leaderDeposit0.forEach(dep -> dep.setImage(null));
+        leaderDeposit1.forEach(dep -> dep.setImage(null));
+        leaderDeposit0.forEach(img -> img.setDisable(true));
+        leaderDeposit1.forEach(img -> img.setDisable(true));
+        depositImg = new ArrayList<>(depositImg.subList(0,6));
         gui.changeScene("playerView");
         PlayerViewController controller = (PlayerViewController) gui.getCurrentController();
         controller.tabTurnNotActive(true);
         if(isInitial){
-            gui.getConnectionToServer().sendInitialDepositState(getDepositState());
+            gui.getConnectionToServer().sendInitialDepositState(depositState);
+        }else if(isAdditional){
+            ArrayList<Resource> additionalDeposit;
+            if(addDepositType.size()==1){
+                additionalDeposit = new ArrayList<>(depositState.subList(6, 8)) ;
+            }else{
+                additionalDeposit = new ArrayList<>(depositState.subList(6,10));
+            }
+            depositState = new ArrayList<>(depositState.subList(0,6));
+
+            gui.getConnectionToServer().sendNewDepositState(depositState, getMarketResource(), true, additionalDeposit);
         }else{
-            gui.getConnectionToServer().sendNewDepositState(getDepositState(), getMarketResource(), false, new ArrayList<>()); // TODO additional
+            gui.getConnectionToServer().sendNewDepositState(depositState, getMarketResource(), false, new ArrayList<>());
         }
 
     }
@@ -199,6 +267,10 @@ public class NewDepositController implements GUIController, Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         depositImg = new ArrayList<>(List.of(deposit1, deposit2, deposit3, deposit4, deposit5, deposit6));
+        leaderDeposit0 = new ArrayList<>(List.of(addDeposit00, addDeposit01));
+        leaderDeposit1 = new ArrayList<>(List.of(addDeposit10, addDeposit11));
+        leaderAdditional = new ArrayList<>(List.of(leader0, leader1));
+        System.out.println("");
     }
 
     @Override

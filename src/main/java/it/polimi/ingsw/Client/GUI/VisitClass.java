@@ -50,7 +50,8 @@ public class VisitClass implements EventToClientVisitor {
     public void visit(SendReorganizeDepositToClient newResources) {
         changeSceneThread("newDepositView");
         NewDepositController controller = (NewDepositController) gui.getCurrentController();
-        Platform.runLater(new Thread(() -> controller.drawDeposit(newResources.getDepositResources(), newResources.getMarketResources(), false)));
+        Platform.runLater(new Thread(() -> controller.drawDeposit(newResources.getDepositResources(), newResources.getMarketResources(),
+                newResources.isAdditionalDeposit(), newResources.getType(), newResources.getAdditionalDepositState(), gui.getLastTurn().getPlayers().get(gui.getNamePlayer()).getLeaderCardActive(), false)) );
     }
 
     @Override

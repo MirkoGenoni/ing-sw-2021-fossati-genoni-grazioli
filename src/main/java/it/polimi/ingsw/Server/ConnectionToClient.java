@@ -70,8 +70,10 @@ public class ConnectionToClient implements Runnable, EventToClientNotifier {
                 Thread.sleep(10);
             }
         } catch (IOException e) {
+            closeConnection();
             setActive(false);
             disconnectionHandler.setNullConnection(namePlayer); //TODO specifico
+            e.printStackTrace();
         } catch (ClassNotFoundException | InterruptedException e) {
             e.printStackTrace();
         }
@@ -84,8 +86,10 @@ public class ConnectionToClient implements Runnable, EventToClientNotifier {
                 output.flush();              // send the event
                 output.reset();              // clean buffer
             } catch (IOException e) { //TODO specifico
+                closeConnection();
                 setActive(false);
                 disconnectionHandler.setNullConnection(namePlayer);
+                e.printStackTrace();
             }
         }
     }
