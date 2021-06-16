@@ -42,10 +42,12 @@ public class PlayerViewController implements GUIController, Initializable {
     private ArrayList<ImageView> devCard = new ArrayList<>();
     private ArrayList<ImageView> devCardPlayer;
     private ArrayList<ImageView> leaderCardPlayer;
+    private ArrayList<ImageView> addDeposit1;
+    private ArrayList<ImageView> addDeposit0;
     private ArrayList<Label> leaderText;
     private ArrayList<ImageView> popeFavorTiles;
 
-    @FXML Tab playerBoardView;
+    @FXML private Tab playerBoardView; //TODO fare così
 
     @FXML Label name;
     // deposit player
@@ -69,6 +71,12 @@ public class PlayerViewController implements GUIController, Initializable {
     @FXML ImageView leaderPlayer1;
     @FXML Label leaderText0;
     @FXML Label leaderText1;
+    //additional deposit resource
+    @FXML ImageView addDeposit00;
+    @FXML ImageView addDeposit01;
+    @FXML ImageView addDeposit10;
+    @FXML ImageView addDeposit11;
+
     // pope space
     @FXML ImageView pope0;
     @FXML ImageView pope1;
@@ -185,9 +193,32 @@ public class PlayerViewController implements GUIController, Initializable {
         leaderText.forEach(text -> text.setText(""));
         System.out.println(player.getLeaderCardActive().toString());
         if(player.getLeaderCardActive().size()!=0){
+            int z=0;
             for(int i=0; i<player.getLeaderCardActive().size(); i++){
                 leaderCardPlayer.get(1-i).setImage(gui.getLeaderCardsGraphic().get(player.getLeaderCardActive().get(i).getNameCard()));
                 leaderText.get(1-i).setText("ACTIVE");
+                // stampare risorse nei bigger deposit
+                if(player.getLeaderCardActive().get(i).getEffect().equals("biggerDeposit")){
+                    ArrayList<Resource> tmpR = new ArrayList<>(player.getAdditionalDeposit().subList(0+2*z, 2+2*z));
+                    for(int k=0; k< tmpR.size(); k++){
+                        if(i==0){
+                            if(tmpR.get(k)!=null){
+                                addDeposit1.get(k).setImage(gui.getResourcesGraphic().get(tmpR.get(k).name().toLowerCase()));
+                            }else{
+                                addDeposit1.get(k).setImage(null);
+                            }
+                        }else{
+                            if(tmpR.get(k)!=null){
+                                addDeposit0.get(k).setImage(gui.getResourcesGraphic().get(tmpR.get(k).name().toLowerCase()));
+                            }else{
+                                addDeposit1.get(k).setImage(null);
+                            }
+                        }
+
+
+                    }
+                    z++;
+                }
             }
         }
 
@@ -353,6 +384,8 @@ public class PlayerViewController implements GUIController, Initializable {
         deposit = new ArrayList<>(List.of(deposit1, deposit2, deposit3, deposit4, deposit5, deposit6));
         devCardPlayer = new ArrayList<>(List.of(devPlayer0, devPlayer1, devPlayer2));
         leaderCardPlayer = new ArrayList<>(List.of(leaderPlayer0, leaderPlayer1));
+        addDeposit0 = new ArrayList<>(List.of(addDeposit00, addDeposit01));
+        addDeposit1 = new ArrayList<>(List.of(addDeposit10, addDeposit11));
         leaderText = new ArrayList<>(List.of(leaderText0, leaderText1));
         popeFavorTiles = new ArrayList<>(List.of(pope0, pope1, pope2));
 

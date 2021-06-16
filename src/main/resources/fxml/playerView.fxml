@@ -109,6 +109,10 @@
                               <Font size="18.0" />
                            </font>
                         </Label>
+                        <ImageView fx:id="addDeposit10" fitHeight="60.0" fitWidth="60.0" layoutX="57.0" layoutY="688.0" pickOnBounds="true" preserveRatio="true" />
+                        <ImageView fx:id="addDeposit11" fitHeight="60.0" fitWidth="60.0" layoutX="136.0" layoutY="688.0" pickOnBounds="true" preserveRatio="true" />
+                        <ImageView fx:id="addDeposit00" fitHeight="60.0" fitWidth="60.0" layoutX="57.0" layoutY="315.0" pickOnBounds="true" preserveRatio="true" />
+                        <ImageView fx:id="addDeposit01" fitHeight="60.0" fitWidth="60.0" layoutX="136.0" layoutY="315.0" pickOnBounds="true" preserveRatio="true" />
                      </children>
                   </AnchorPane>
                   <Button fx:id="player0" layoutX="129.0" layoutY="838.0" mnemonicParsing="false" onAction="#player0View" prefHeight="41.0" prefWidth="142.0">
