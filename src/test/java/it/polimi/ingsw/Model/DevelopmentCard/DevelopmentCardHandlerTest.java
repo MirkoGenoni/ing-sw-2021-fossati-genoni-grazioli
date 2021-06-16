@@ -170,14 +170,17 @@ public class DevelopmentCardHandlerTest {
             handler.setActiveDevelopmentCard(cardCollection.get(5),1);//blue
             handler.setActiveDevelopmentCard(cardCollection.get(2), 1); //blue
             handler.setActiveDevelopmentCard(cardCollection.get(3),0); //yellow
+            //total: green 2 || blue 2 || purple 1 || yellow 1
 
             assertTrue(handler.checkCountDevelopmentCard(CardColor.GREEN,2));
+            assertTrue(handler.checkCountDevelopmentCard(CardColor.GREEN,1)); //true because has at least 1 card
             assertTrue(handler.checkCountDevelopmentCard(CardColor.BLUE,2));
+            assertTrue(handler.checkCountDevelopmentCard(CardColor.BLUE,1)); //true because has at least 1 card
             assertTrue(handler.checkCountDevelopmentCard(CardColor.PURPLE,1));
             assertTrue(handler.checkCountDevelopmentCard(CardColor.YELLOW,1));
             assertFalse(handler.checkCountDevelopmentCard(CardColor.YELLOW,2));
             assertFalse(handler.checkCountDevelopmentCard(CardColor.GREEN,3));
-            assertFalse(handler.checkCountDevelopmentCard(CardColor.BLUE,1));
+
 
         } catch (DevelopmentCardException e) {
             e.printStackTrace();
