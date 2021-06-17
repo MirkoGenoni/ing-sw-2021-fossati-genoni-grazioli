@@ -14,7 +14,7 @@ public class Server implements Runnable{
     private final ServerSocket serverSocket;
 
 
-    private Map<Integer, Room> rooms;
+    private final Map<Integer, Room> rooms;
 
     public Server() throws IOException {
         this.serverSocket = new ServerSocket(12345);
@@ -30,7 +30,7 @@ public class Server implements Runnable{
                 Socket clientSocket = serverSocket.accept();
                 System.out.println("playerConnesso");
                 ConnectionToClient connectionToClient = new ConnectionToClient(clientSocket);
-                RoomHandler roomHandler = new RoomHandler(rooms);
+                RoomHandler roomHandler = new RoomHandler(this);
                 roomHandler.setTmpConnection(connectionToClient);
                 new Thread(connectionToClient).start();
                 connectionToClient.setObserveConnectionToClient(roomHandler);
@@ -47,5 +47,7 @@ public class Server implements Runnable{
 
     }
 
-
+    public synchronized Map<Integer, Room> getRooms() {
+        return rooms;
+    }
 }

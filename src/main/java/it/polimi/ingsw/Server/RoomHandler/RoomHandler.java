@@ -7,19 +7,19 @@ import it.polimi.ingsw.Events.ClientToServer.InitialConnectionToServer.SendNumPl
 import it.polimi.ingsw.Events.ClientToServer.InitialConnectionToServer.SendPlayerNameToServer;
 import it.polimi.ingsw.Events.ClientToServer.InitialConnectionToServer.SendRoomToServer;
 import it.polimi.ingsw.Server.ConnectionToClient;
+import it.polimi.ingsw.Server.Server;
 
-import java.util.Map;
 
 public class RoomHandler implements EventToServerInitialVisitor, ObserveConnectionToClient{
-    private final Map<Integer, Room> multiGames;
+    private final Server server;
     private boolean active;
 
     private Room tmpRoom;
     private ConnectionToClient tmpConnection;
 
 
-    public RoomHandler(Map<Integer, Room> multiGames){
-        this.multiGames = multiGames;
+    public RoomHandler(Server server){
+        this.server = server;
     }
 
     public boolean isActive() {
@@ -39,8 +39,8 @@ public class RoomHandler implements EventToServerInitialVisitor, ObserveConnecti
     @Override
     public void visit(SendRoomToServer room) {
         if(room.isNewRoom() && !existRoom(room.getRoomNumber())){  // se la stanza è nuova e non esiste già la creo e proseguo
-            Room newRoom = new Room(room.getRoomNumber());
-            multiGames.put((Integer) newRoom.getRoomNumber(), newRoom);
+            Room newRoom = new Room(room.getRoomNumber(), server);
+            server.getRooms().put((Integer) newRoom.getRoomNumber(), newRoom);
             this.tmpRoom = newRoom;
             tmpConnection.sendNamePlayerRequest("write your nickname");
         }else if(room.isNewRoom() && existRoom(room.getRoomNumber())){ // se la stanza è nuova ma esiste gia mando errore
@@ -48,7 +48,7 @@ public class RoomHandler implements EventToServerInitialVisitor, ObserveConnecti
         }else if(!room.isNewRoom() && !existRoom(room.getRoomNumber())){ // se la stanza non è nuova e non esiste mando errore
             tmpConnection.sendRoomRequestToClient("this room doesn't exist");
         }else if(!room.isNewRoom() && existRoom(room.getRoomNumber())){ // se la stanza non è nuova ed esiste proseguo e non è iniziata
-            this.tmpRoom = multiGames.get((Integer) room.getRoomNumber());
+            this.tmpRoom = server.getRooms().get((Integer) room.getRoomNumber());
             if(!tmpRoom.isStart()){
                 tmpConnection.sendNamePlayerRequest("write your nickname");
             }else if(tmpRoom.isStart() && tmpRoom.isFullPlayer()){
@@ -129,7 +129,7 @@ public class RoomHandler implements EventToServerInitialVisitor, ObserveConnecti
 
 
     private boolean existRoom(int room){
-        if(multiGames.containsKey((Integer) room)){
+        if(server.getRooms().containsKey((Integer) room)){
             return true;
         }
         return false;

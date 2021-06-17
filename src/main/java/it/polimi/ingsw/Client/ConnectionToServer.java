@@ -71,7 +71,9 @@ public class ConnectionToServer implements Runnable, EventToServerNotifier {
                 }else{
                     cli.receiveEvent(event);
                 }
-            } catch (IOException | ClassNotFoundException e) {
+            } catch (IOException e) {
+                closeConnection();
+            } catch (ClassNotFoundException e) {
                 e.printStackTrace();
             }
         }
@@ -89,6 +91,7 @@ public class ConnectionToServer implements Runnable, EventToServerNotifier {
             output.reset();
         } catch (IOException e) {
             e.printStackTrace();
+            closeConnection();
         }
     }
 
@@ -97,6 +100,16 @@ public class ConnectionToServer implements Runnable, EventToServerNotifier {
         new Thread(() ->
                 sendEvent(event)
         ).start();
+    }
+
+    // close the connection
+    public void closeConnection(){
+        try{
+            socket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        setActive(false);
     }
 
     public boolean isActive() {

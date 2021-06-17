@@ -71,7 +71,6 @@ public class ConnectionToClient implements Runnable, EventToClientNotifier {
             }
         } catch (IOException e) {
             closeConnection();
-            setActive(false);
             disconnectionHandler.setNullConnection(namePlayer); //TODO specifico
             e.printStackTrace();
         } catch (ClassNotFoundException | InterruptedException e) {
@@ -87,7 +86,6 @@ public class ConnectionToClient implements Runnable, EventToClientNotifier {
                 output.reset();              // clean buffer
             } catch (IOException e) { //TODO specifico
                 closeConnection();
-                setActive(false);
                 disconnectionHandler.setNullConnection(namePlayer);
                 e.printStackTrace();
             }
@@ -201,6 +199,8 @@ public class ConnectionToClient implements Runnable, EventToClientNotifier {
     public void sendEndGame(String message, Map<String, Integer> playersPoint) {
         EndGameToClient endGameToClient = new EndGameToClient(message, playersPoint);
         asyncSendEvent(endGameToClient);
+        closeConnection();
+        disconnectionHandler.removeRoom();
     }
 
     @Override

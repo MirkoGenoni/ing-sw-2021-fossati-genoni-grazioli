@@ -207,7 +207,7 @@ public class CLI implements EventToClientVisitor {
     public void visit(EndGameToClient message) {
         Messages messageEnd = new Messages("GAME ENDED", false);
         messageEnd.printMessage();
-        connectionToServer.setActive(false);
+        connectionToServer.closeConnection();
     }
 
     @Override

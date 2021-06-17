@@ -5,11 +5,13 @@ import it.polimi.ingsw.Controller.ControllerToModel;
 import it.polimi.ingsw.Model.Exceptions.StartGameException;
 import it.polimi.ingsw.Server.ConnectionToClient;
 import it.polimi.ingsw.Server.DisconnectionHandler;
+import it.polimi.ingsw.Server.Server;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class Room {
+    private final Server server;
     private final int roomNumber;
     private final Map<String, ConnectionToClient> connections;
     private DisconnectionHandler disconnectionHandler;
@@ -17,18 +19,21 @@ public class Room {
     private boolean sendNumPlayer;
     private boolean start;
     private boolean fullPlayer;
+    private boolean finish;
     private int numPlayer;
 
 
     private final ControllerToModel controllerToModel;
     private final ControllerConnection controllerConnection;
 
-    public Room(int roomNumber) {
+    public Room(int roomNumber, Server server) {
+        this.server = server;
         this.roomNumber = roomNumber;
         this.connections = new HashMap<>();
         this.numPlayer = -1;
         this.start = false;
         this.sendNumPlayer = false;
+        this.finish = false;
         controllerToModel = new ControllerToModel(connections);
         controllerConnection = new ControllerConnection(controllerToModel);
     }
@@ -120,6 +125,14 @@ public class Room {
         } catch (StartGameException e) {
             e.printStackTrace();
         }
+    }
+
+    public synchronized void eliminateRoom(){
+        if(!finish){
+            finish = true;
+            server.getRooms().remove(roomNumber);
+        }
+        System.out.println(server.getRooms() + " mappa stanze");
     }
 
 

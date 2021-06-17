@@ -33,7 +33,7 @@ public class ControllerToModel {
     private int numPlayer;
     private int firstPlayer;
 
-    private int initialResourceArrive;
+    private final ArrayList<String> playerWithInitialResource;
 
     // type of turn
     private MarketTurn marketTurn;
@@ -51,7 +51,7 @@ public class ControllerToModel {
         this.playerDisconnected = new ArrayList<>();
         this.orderPlayerConnections = new ArrayList<>();
         numPlayer = 0;
-        initialResourceArrive =0;
+        playerWithInitialResource = new ArrayList<>();
     }
 
     public int getNumPlayer() {
@@ -82,6 +82,9 @@ public class ControllerToModel {
         return connections;
     }
 
+    public ArrayList<String> getPlayerWithInitialResource() {
+        return playerWithInitialResource;
+    }
 
     // -------------------------------------------------------
     // METHODS FOR THE START OF THE CONNECTION WITH THE CLIENT
@@ -135,8 +138,10 @@ public class ControllerToModel {
             turnNumber = 0;
             currentPlayerIndex --; // serve perchè il nextTurn incrementa il numero di giocatori
             // create classes of type of turn
-            createTurns(activePlayer);
+            createTurns();
             //newTurn();
+
+
 
         }else if(numPlayer == 1){
             players = new Player[numPlayer];
@@ -154,9 +159,9 @@ public class ControllerToModel {
             }
             this.activePlayer = players[0];
             turnNumber = 0;
-            createTurns(activePlayer);
+            createTurns();
             System.out.println("creo lorenzo");
-            lorenzoTurn = new LorenzoTurn(this, singleGame, 1);
+            lorenzoTurn = new LorenzoTurn(this, singleGame);
 
             //TODO PER CHEATTARE
             if(false) {
@@ -173,7 +178,7 @@ public class ControllerToModel {
     }
 
 
-    private void createTurns(Player activePlayer){
+    private void createTurns(){
         marketTurn = new MarketTurn(this);
         buyDevelopmentCardTurn = new BuyDevelopmentCardTurn(this);
         leaderCardTurn = new LeaderCardTurn(this);
@@ -217,9 +222,8 @@ public class ControllerToModel {
             }
             String message = winnerName + " ha vinto con " + winnerPoint + " punti";
             connections.forEach((k,v) -> v.sendEndGame(message, playersPoint));
-            connections.forEach((k,v) -> v.setActive(false));
-            System.out.println("il gioco è finito");
-            //TODO gestire fine partita
+            System.out.println("Game end");
+
         }else{
             connections.forEach((k,v) -> v.sendNotify("è il turno di " + activePlayer.getName()));
             try {
@@ -244,13 +248,18 @@ public class ControllerToModel {
                 }
             }
         }
-        initialResourceArrive++;
-        if(initialResourceArrive == numPlayer-1){
-            for(int i=0; i<connections.keySet().size(); i++){
-                try{
-                    connections.get(players[i].getName()).sendArrayLeaderCards(multiGame.getPlayers()[i].getPlayerBoard().getLeaderCardHandler().getLeaderCardsAvailable(), true, players[i]);
-                } catch (LeaderCardException e) {
-                    e.printStackTrace();
+        playerWithInitialResource.remove(playerName);
+        System.out.println(playerWithInitialResource + "  sggdfgdfd");
+        if(playerWithInitialResource.size()==0){
+            for(int i =0; i< players.length; i++){
+                if(!playerDisconnected.contains(players[i].getName())){
+                    try {
+                        connections.get(players[i].getName()).sendArrayLeaderCards(multiGame.getPlayers()[i].getPlayerBoard().getLeaderCardHandler().getLeaderCardsAvailable(), true, players[i]);
+                    } catch (LeaderCardException e) {
+                        e.printStackTrace();
+                    }
+                }else{
+                    discardInitialLeaderCards(players[i].getName(), 0, 1);
                 }
             }
         }
@@ -260,7 +269,7 @@ public class ControllerToModel {
         for(int i =0; i< players.length; i++){
             if(playerName.equals(players[i].getName())){
                 try{
-                    System.out.println("rimuovo le carte");
+                    System.out.println("rimuovo le carte di: " + playerName);
                     players[i].getPlayerBoard().getLeaderCardHandler().removeInitialLeaderCard(leaderCard1, leaderCard2);
                 } catch (LeaderCardException e) {
                     e.printStackTrace();
@@ -391,6 +400,10 @@ public class ControllerToModel {
                 }
                 connections.get(players[current].getName()).sendInitialResources(2, players[current].getPlayerBoard().getResourceHandler().getDepositState());
             }
+            if(i>0){
+                playerWithInitialResource.add(players[current].getName());
+            }
+
             if(current < players.length-1){
                 current ++;
             }else{
