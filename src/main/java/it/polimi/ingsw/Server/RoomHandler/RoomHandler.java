@@ -101,6 +101,7 @@ public class RoomHandler implements EventToServerInitialVisitor, ObserveConnecti
                 tmpConnection.sendRoomRequestToClient("the match in this room has already start: select another room");
             }else if(tmpRoom.isStart() && !tmpRoom.isFullPlayer()){
                 if(checkReconnection(playerName.getPlayerName())){
+                    System.out.println("try reconnection");
                     tmpRoom.addConnectionToClient(tmpConnection.getNamePlayer(), tmpConnection, true);
                 }else{
                     tmpConnection.sendNamePlayerRequest("This player is not disconnected, write the old nickname");

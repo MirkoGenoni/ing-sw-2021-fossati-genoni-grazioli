@@ -97,6 +97,7 @@ public class Room {
                 System.out.println(connection.getNamePlayer() + " errore");
             }
         }else{
+            System.out.println("reconnection " + name);
             disconnectionHandler.clientReconnected(connection.getNamePlayer());
             connections.put(name, connection);
             connection.setObserveConnectionToClient(controllerConnection);
@@ -104,8 +105,10 @@ public class Room {
             if(connections.size()==numPlayer){
                 fullPlayer = true;
             }
-            if(connections.size()==2){
+            if((numPlayer>1 && connections.size()==2) || (numPlayer==1 && connections.size()==1)){
                 controllerToModel.newTurn();
+            }else if(numPlayer>1 && connections.size()==1){
+                connection.sendNotify("other player are all disconnected, wait that they rejoin the match");
             }
         }
 

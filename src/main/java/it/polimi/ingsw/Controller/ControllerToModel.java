@@ -198,6 +198,9 @@ public class ControllerToModel {
         while(connections.get(activePlayer.getName())==null || connectedPlayer==numPlayer){
             activePlayer = nextPlayer();
             connectedPlayer++;
+            if(connections.size()==0){
+                return;
+            }
         }
 
         if(connections.size()<=1 && numPlayer>=2){
