@@ -124,6 +124,7 @@ public class ControllerToModel {
             firstPlayer=currentPlayerIndex;
             System.out.println("il primo giocatre ha indirizzo: " + currentPlayerIndex);
             initialResources(currentPlayerIndex);
+            activePlayer = players[currentPlayerIndex] ;
             /*
             for(int i=0; i<connectionsToClient.size(); i++){
                 try{
@@ -134,9 +135,7 @@ public class ControllerToModel {
             }
 
              */
-            this.activePlayer = players[0];
             turnNumber = 0;
-            currentPlayerIndex --; // serve perchè il nextTurn incrementa il numero di giocatori
             // create classes of type of turn
             createTurns();
             //newTurn();
@@ -190,9 +189,12 @@ public class ControllerToModel {
 
 
 
-    public void newTurn(){
+    public void newTurn(boolean nextPlayer){
         System.out.println("è iniziato un nuovo turno");
-        activePlayer = nextPlayer();
+        if(nextPlayer){
+            activePlayer = nextPlayer();
+        }
+
         int connectedPlayer=0;
         // quando si disconnettono tutti i giocatori tranne uno e poi si riconnettono il turno passa dal gioratore successivo in modo errato, al posto che di quello che è rimasto connesso
         while(connections.get(activePlayer.getName())==null || connectedPlayer==numPlayer){
@@ -291,7 +293,7 @@ public class ControllerToModel {
             }
         }
         if(playerDiscard==numPlayer){
-            newTurn();
+            newTurn(false);
         }
 
     }
@@ -310,7 +312,7 @@ public class ControllerToModel {
 
     public void saveNewDepositState(ArrayList<Resource> newDepositState, int discardResources, boolean isAdditional, ArrayList<Resource> additionalDepositState){
         if(marketTurn.saveNewDepositState(newDepositState, discardResources, isAdditional, additionalDepositState) && checkMultiplayer()){
-            newTurn();
+            newTurn(true);
         }
 
     }
@@ -324,7 +326,7 @@ public class ControllerToModel {
 
     public void spaceDevelopmentCard(int space){
         if(buyDevelopmentCardTurn.spaceDevelopmentCard(space) && checkMultiplayer()){
-            newTurn();
+            newTurn(true);
         }
     }
 
@@ -339,7 +341,7 @@ public class ControllerToModel {
         boolean tmpB = activateProductionTurn.productionsActivation(useBaseProduction, resourceRequested1, resourceRequested2, resourceGranted,
                                     useLeaders, materialLeaders, useDevelop);
         if(tmpB && checkMultiplayer()){  // vedi checklorenzo
-            newTurn();
+            newTurn(true);
         }
 
 

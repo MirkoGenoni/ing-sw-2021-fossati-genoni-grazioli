@@ -91,7 +91,7 @@ public class ControllerConnection implements EventToServerVisitor, ObserveConnec
     public void visit(TurnPlayedToServer turn) {
         System.out.println("mi è arrivato il messaggio di turno giocato");
         if(turn.getTurnType().equals("turn") && controllerToModel.checkMultiplayer()){
-            controllerToModel.newTurn();
+            controllerToModel.newTurn( true);
         }
     }
 
@@ -102,7 +102,7 @@ public class ControllerConnection implements EventToServerVisitor, ObserveConnec
 
     @Override
     public void visit(ReplayLorenzoActionToServer replayLorenzoAction) {
-        controllerToModel.newTurn();
+        controllerToModel.newTurn(true);
     }
 
 }

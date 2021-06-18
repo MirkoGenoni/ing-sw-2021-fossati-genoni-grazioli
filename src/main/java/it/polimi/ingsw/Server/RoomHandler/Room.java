@@ -106,7 +106,7 @@ public class Room {
                 fullPlayer = true;
             }
             if((numPlayer>1 && connections.size()==2) || (numPlayer==1 && connections.size()==1)){
-                controllerToModel.newTurn();
+                controllerToModel.newTurn(false);
             }else if(numPlayer>1 && connections.size()==1){
                 connection.sendNotify("other player are all disconnected, wait that they rejoin the match");
             }

@@ -6,7 +6,6 @@ import it.polimi.ingsw.Model.Resource.Resource;
 import it.polimi.ingsw.Server.RoomHandler.Room;
 
 import java.util.ArrayList;
-import java.util.Map;
 
 public class DisconnectionHandler {
     private final ControllerToModel controllerToModel;
@@ -48,7 +47,7 @@ public class DisconnectionHandler {
 
         System.out.println(name + " is disconnected");
         if(name.equals(controllerToModel.getActivePlayer().getName())){
-            controllerToModel.newTurn();
+            controllerToModel.newTurn(true);
         }
     }
 
