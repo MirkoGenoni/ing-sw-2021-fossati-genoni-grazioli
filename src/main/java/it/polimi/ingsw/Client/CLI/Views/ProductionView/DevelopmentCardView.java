@@ -327,6 +327,7 @@ public class DevelopmentCardView {
                 if (this.cards.get(tmp - 1).getCardNumber() != 0) {
                     confirmBoughtSpaceSelection(this.boughtCard, this.cards.get(tmp - 1));
                     tmpS = in.nextLine();
+                    tmpS = tmpS.toUpperCase();
                     if (tmpS.equals("YES"))
                         return tmp - 1;
                 } else {
@@ -334,6 +335,17 @@ public class DevelopmentCardView {
                 }
             }
         }
+    }
+
+    public void draw(){
+        String input = "";
+        do {
+            printDevelopmentCardGrid(0, "view");
+            Scanner in = new Scanner(System.in);
+            if (in.hasNext())
+                input = in.nextLine();
+
+        } while (!input.equals("quit"));
     }
 
     private void printDevelopmentCardGrid(int currentView, String type) {
@@ -389,6 +401,11 @@ public class DevelopmentCardView {
                     "                                                 ");
 
 
+        } else if(type.equals("view")){
+            System.out.print("┃                                                                                                                         ┃\n" +
+                    "┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛\n\n" +
+                    "                                  " + "\u001B[92m" + "type quit to return to view selection \n\n" + "\u001B[0m" +
+                    "                                                 ");
         }
     }
 
@@ -402,13 +419,13 @@ public class DevelopmentCardView {
                 "┃                                                                                                                         ┃\n" +
                 "┃                                                                                                                         ┃\n");
         for(int i=0; i<12; i++)
-            System.out.print("┃            " + bought.printCard(i) + "                                   " + substitute.printCard(i) + "            ┃\n");
+            System.out.print("┃            " + substitute.printCard(i) + "                                   " + bought.printCard(i) + "            ┃\n");
 
-        System.out.print("┃            " + bought.printCard(12) + "           ────────── ╲            " + substitute.printCard(12) + "            ┃\n");
-        System.out.print("┃            " + bought.printCard(13) + "           ────────── ╱            " + substitute.printCard(13) + "            ┃\n");
+        System.out.print("┃            " + substitute.printCard(12) + "           ────────── ╲            " + bought.printCard(12) + "            ┃\n");
+        System.out.print("┃            " + substitute.printCard(13) + "           ────────── ╱            " + bought.printCard(13) + "            ┃\n");
 
         for(int i=14; i<27; i++)
-            System.out.print("┃            " + bought.printCard(i) + "                                   " + substitute.printCard(i) + "            ┃\n");
+            System.out.print("┃            " + substitute.printCard(i) + "                                   " + bought.printCard(i) + "            ┃\n");
 
                 System.out.print("┃                                                                                                                         ┃\n" +
                 "┃                                                                                                                         ┃\n" +

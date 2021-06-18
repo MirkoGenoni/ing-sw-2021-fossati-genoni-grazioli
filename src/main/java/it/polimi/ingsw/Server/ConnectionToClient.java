@@ -290,17 +290,27 @@ public class ConnectionToClient implements Runnable, EventToClientNotifier {
 
     private  Map<String, PlayerInformationToClient> playerInformationToSend(Player[] players, FaithTrack faithTrack){
         Map<String, PlayerInformationToClient> playerInformation = new HashMap<>();
+
         for(int i=0; i<players.length; i++){
             Gameboard tmpGameBoard = players[i].getPlayerBoard();
+            ArrayList<Resource> additionalType = new ArrayList<>();
             try {
+                for(LeaderCard r: players[i].getPlayerBoard().getLeaderCardHandler().getLeaderCardsActive()){
+                    if(r!=null){
+                        if(r.getSpecialAbility().getEffect().equals("biggerDeposit")){
+                            additionalType.add(r.getSpecialAbility().getMaterialType());
+                        }
+                    }
+                }
+
                 PlayerInformationToClient tmp = new PlayerInformationToClient(players[i].getName(), tmpGameBoard.getResourceHandler().getDepositState(),
-                        tmpGameBoard.getResourceHandler().getStrongboxState(), tmpGameBoard.getResourceHandler().getAdditionalDeposit(), leaderCardToSend(tmpGameBoard.getLeaderCardHandler().getLeaderCardsActive()),
+                        tmpGameBoard.getResourceHandler().getStrongboxState(), additionalType, tmpGameBoard.getResourceHandler().getAdditionalDeposit(), leaderCardToSend(tmpGameBoard.getLeaderCardHandler().getLeaderCardsActive()),
                         developmentCardActiveToSend(tmpGameBoard.getDevelopmentCardHandler().getActiveDevelopmentCard()),
                         tmpGameBoard.getPopeFavorTilesState(), faithTrack.getPosition(i));
                 playerInformation.put(players[i].getName(),tmp);
             } catch (LeaderCardException e) {
                 PlayerInformationToClient tmp = new PlayerInformationToClient(players[i].getName(), tmpGameBoard.getResourceHandler().getDepositState(),
-                        tmpGameBoard.getResourceHandler().getStrongboxState(),tmpGameBoard.getResourceHandler().getAdditionalDeposit(), leaderCardToSend(null),
+                        tmpGameBoard.getResourceHandler().getStrongboxState(),additionalType, tmpGameBoard.getResourceHandler().getAdditionalDeposit(), leaderCardToSend(null),
                         developmentCardActiveToSend(tmpGameBoard.getDevelopmentCardHandler().getActiveDevelopmentCard()),
                         tmpGameBoard.getPopeFavorTilesState(), faithTrack.getPosition(i));
                 playerInformation.put(players[i].getName(),tmp);

@@ -23,6 +23,9 @@ public class NewTurnView {
 
                 case "turn":
                     return "turn";
+
+                case"viewboards":
+                    return "viewboard";
             }
         }
     }
@@ -50,7 +53,9 @@ public class NewTurnView {
                            "                                                     -> BUYDEVELOPMENT\n" +
                            "                                         "+ "\u001B[92m" + "Buy a development card from the available"  + "\u001B[0m" + "\n\n" +
                            "                                                     -> USEDEVELOPMENT \n" +
-                           "                                        "+ "\u001B[92m" + "Use a development between the ones you have" + "\u001B[0m" + "                                                                    \n\n\n");
+                           "                                        "+ "\u001B[92m" + "Use a development between the ones you have" + "\u001B[0m" + "\n\n" +
+                           "                                                       -> VIEWBOARDS \n" +
+                           "                                           " + "\u001B[92m" + "See yours or other players' gameboard" + "\u001B[0m" + "\n\n\n");
         System.out.print("                                       INSERT YOUR CHOICE: ");
     }
 }

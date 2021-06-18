@@ -10,15 +10,16 @@ public class PlayerInformationToClient implements Serializable {
     private final String playerNameSend;
     private final ArrayList<Resource> deposit;
     private final Map<Resource, Integer> strongBox;
+    private final ArrayList<Resource> additionalDepositType;
     private final ArrayList<Resource> additionalDeposit;
     private final ArrayList<LeaderCardToClient> leaderCardActive;
     private final ArrayList<DevelopmentCardToClient> developmentCardPlayer;
     private final ArrayList<Integer> popeFavorTiles;
     private final int faithMarkerPosition;
 
-    public PlayerInformationToClient(String playerNameSend, ArrayList<Resource> deposit, Map<Resource, Integer> strongBox, ArrayList<Resource> additionalDeposit,
-                                     ArrayList<LeaderCardToClient> leaderCardActive, ArrayList<DevelopmentCardToClient> developmentCardPlayer,
-                                     ArrayList<Integer> popeFavorTiles, int faithMarkerPosition) {
+    public PlayerInformationToClient(String playerNameSend, ArrayList<Resource> deposit, Map<Resource, Integer> strongBox, ArrayList<Resource> additionalDepositType,
+                                     ArrayList<Resource> additionalDeposit, ArrayList<LeaderCardToClient> leaderCardActive,
+                                     ArrayList<DevelopmentCardToClient> developmentCardPlayer, ArrayList<Integer> popeFavorTiles, int faithMarkerPosition) {
         this.playerNameSend = playerNameSend;
         this.deposit = deposit;
         this.strongBox = strongBox;
@@ -26,6 +27,7 @@ public class PlayerInformationToClient implements Serializable {
         this.developmentCardPlayer = developmentCardPlayer;
         this.popeFavorTiles = popeFavorTiles;
         this.faithMarkerPosition = faithMarkerPosition;
+        this.additionalDepositType = additionalDepositType;
         this.additionalDeposit = additionalDeposit;
     }
 
@@ -55,6 +57,10 @@ public class PlayerInformationToClient implements Serializable {
 
     public int getFaithMarkerPosition() {
         return faithMarkerPosition;
+    }
+
+    public ArrayList<Resource> getAdditionalDepositType() {
+        return additionalDepositType;
     }
 
     public ArrayList<Resource> getAdditionalDeposit() {

@@ -15,17 +15,18 @@ public class LeaderCardView {
         cards = new ArrayList<>();
 
         for(int i = 0; i < leaderCardArray.size(); i++) {
-            cards.add(new LeaderCardVisualization(leaderCardArray.get(i).getEffect(),
-                    leaderCardArray.get(i).getVictoryPoint(),
-                    leaderCardArray.get(i).getRequirement(),
-                    leaderCardArray.get(i).getResourceType()));
+            if(leaderCardArray.get(i)!=null)
+                cards.add(new LeaderCardVisualization(leaderCardArray.get(i).getEffect(),
+                        leaderCardArray.get(i).getVictoryPoint(),
+                        leaderCardArray.get(i).getRequirement(),
+                        leaderCardArray.get(i).getResourceType()));
         }
 
-        if (leaderCardArray.size() < 2) {
+        while(cards.size() < 2) {
             cards.add(new LeaderCardVisualization("nothing"));
         }
 
-        if(totalResource.size()>0){
+        if(totalResource!=null && totalResource.size()>0){
             this.totalResource = totalResource;
         }
     }
@@ -123,7 +124,7 @@ public class LeaderCardView {
 
         while(true){
             if(currentState.equals("leaderCard"))
-                printCardRack(this.cards, state);
+                printCardRack(state, "activation");
             if(currentState.equals("totalResource"))
                 printCurrentState();
 
@@ -185,7 +186,20 @@ public class LeaderCardView {
         }
     }
 
-    private void printCardRack(ArrayList<LeaderCardVisualization> cards, String[][] state){
+    public void draw(){
+        String input = "";
+        while(true) {
+            printCardRack(null, "view");
+            Scanner in = new Scanner(System.in);
+            if (in.hasNext())
+                input = in.nextLine();
+
+            if(input.equals("quit"))
+                break;
+        }
+    }
+
+    private void printCardRack(String[][] state, String type){
         System.out.print("\u001B[2J\u001B[3J\u001B[H");
 
         System.out.print("\u001B[0;00m" + "                                                      ╔══════════════════════╗\n" +
@@ -196,11 +210,12 @@ public class LeaderCardView {
                 "┃                                                                                                                         ┃\n");
 
         for(int i=0; i<22; i++)
-            System.out.println("┃                     " + cards.get(0).printCard(i) + "                     " + cards.get(1).printCard(i) + "                     ┃");
+            System.out.println("┃                     " + this.cards.get(0).printCard(i) + "                     " + this.cards.get(1).printCard(i) + "                     ┃");
 
         System.out.print("┃                                                                                                                         ┃\n" +
-                "┃                                  -1-                                               -2-                                  ┃\n" +
-                "┃                              " + state[0][0] + "                                       " + state[1][0] + "                              ┃\n" +
+                "┃                                  -1-                                               -2-                                  ┃\n");
+        if(type.equals("activation"))
+            System.out.print("┃                              " + state[0][0] + "                                       " + state[1][0] + "                              ┃\n" +
                 "┃                              " + state[0][1] + "                                       " + state[1][1] + "                              ┃\n" +
                 "┃                              " + state[0][2] + "                                       " + state[1][2] + "                              ┃\n" +
                 "┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛\n" +
@@ -213,6 +228,13 @@ public class LeaderCardView {
                 "                                                                                                                    \n" +
                 "                       " + "\u001B[92m" + "type totalResource to see the total amount of resources and development card"+ "\u001B[0;0m" + "\n\n" +
                 "                                                 ");
+
+        if(type.equals("view")){
+            System.out.print("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛\n" +
+                    "                                                                                                                           \n" +
+                    "                                                " + "\u001B[92m" + "type quit to exit this view" + "\u001B[0;0m" + "                                                \n\n" +
+                    "                                                           ");
+        }
     }
 
     private void printCurrentState(){

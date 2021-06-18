@@ -29,6 +29,8 @@ public class CLIHandler {
     private LeaderCardView leaderCardSelection;
     private DevelopmentCardVisualization currentBuying;
     private TotalResourceCounter totalResourceCounter;
+    AllPlayersView allPlayersView;
+    ArrayList<LeaderCardToClient> inactiveLeaders;
 
     private int tmpRoomNumber;
     private String newRoomText;
@@ -61,13 +63,26 @@ public class CLIHandler {
         this.totalResourceCounter = new TotalResourceCounter(currentPlayer.getStrongBox(), currentPlayer.getDeposit(), currentPlayer.getAdditionalDeposit());
 
         this.developmentCardForSale = new DevelopmentCardView(developmentCardToBuy, totalResourceCounter);
+
+        for(LeaderCardToClient l: players.get(namePlayer).getLeaderCardActive())
+            for(int i=0; i<inactiveLeaders.size();i++)
+                if(l.getNameCard().equals(inactiveLeaders.get(i).getNameCard()))
+                    inactiveLeaders.set(i, null);
+
+        this.allPlayersView = new AllPlayersView(this.players, this.namePlayer, this.inactiveLeaders);
     }
 
     public void leaderCardSelection(ArrayList<LeaderCardToClient> received, boolean initial, Map<String, Integer> totalReceived){
-            this.leaderCardSelection = new LeaderCardView(received, totalReceived);
+            this.leaderCardSelection = new LeaderCardView(new ArrayList<>(received), totalReceived);
+
             if(initial){
+                this.inactiveLeaders = new ArrayList<>();
                 int[] receive = leaderCardSelection.StartInitialLeaderCardView();
                 this.connection.sendDiscardInitialLeaderCards(receive[0], receive[1]);
+                for(int i=0; i<received.size(); i++) {
+                    if (i != receive[0] && i != receive[1])
+                        this.inactiveLeaders.add(received.get(i));
+                }
             } else {
                 ArrayList<Integer> receive = leaderCardSelection.StartCardView();
                 connection.sendLeaderCardTurn(receive);
@@ -114,8 +129,8 @@ public class CLIHandler {
                     this.turnEnd = true;
                     break;
 
-                case "viewBoard":
-                    //TODO: aggiungere scelta visualizzazione gameboard giocatore corrente e altri giocatori
+                case "viewboard":
+                    this.allPlayersView.test();
                     break;
             }
         }
@@ -156,7 +171,7 @@ public class CLIHandler {
                     throw new RuntimeException(); //attention Exception
             }
 
-            this.currentBuying = this.developmentCardForSale.getCard(colorForCard + num - 1);
+            this.currentBuying = this.developmentCardForSale.getCard(3*colorForCard + (num - 1));
             connection.sendSelectedDevelopmentCard(colorForCard, num - 1); //livello da 0 a 2
         }
     }

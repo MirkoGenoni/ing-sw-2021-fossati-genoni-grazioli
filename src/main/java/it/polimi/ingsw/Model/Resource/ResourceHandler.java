@@ -238,6 +238,10 @@ public class ResourceHandler {
      */
     private boolean checkCorrectNewDeposit(ArrayList<Resource> new_state) {
 
+        //checks that the deposit is not longer than expected
+        if(new_state.size()>6)
+            return false;
+
         //This checks if the two materials on the second shelf are of the same type or if one is empty
         if (new_state.get(1) != null && new_state.get(2) != null
                 &&!new_state.get(1).toString().equals(new_state.get(2).toString()))

@@ -7,14 +7,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
-import java.util.concurrent.TimeUnit;
 
 public class NewDepositView {
 
     ArrayList<ResourceIcon> depositState;
     ArrayList<ResourceIcon> additionalDepositState;
     ArrayList<ResourceIcon> type;
-    Map<String, Integer> marketReceived;
+    Map<String, Integer> informationReceived;
     boolean additionalDeposit;
 
     /*public static void main(String[] args) {
@@ -22,16 +21,16 @@ public class NewDepositView {
         for (int i = 0; i < 6; i++) {
             depositState.add(null);
         }
-        ArrayList<Resource> marketReceived = new ArrayList<>();
+        ArrayList<Resource> informationReceived = new ArrayList<>();
 
-        marketReceived.add(Resource.COIN);
-        marketReceived.add(Resource.COIN);
-        marketReceived.add(Resource.SHIELD);
-        marketReceived.add(Resource.SHIELD);
-        marketReceived.add(Resource.STONE);
-        marketReceived.add(Resource.STONE);
-        marketReceived.add(Resource.SERVANT);
-        marketReceived.add(Resource.SERVANT);
+        informationReceived.add(Resource.COIN);
+        informationReceived.add(Resource.COIN);
+        informationReceived.add(Resource.SHIELD);
+        informationReceived.add(Resource.SHIELD);
+        informationReceived.add(Resource.STONE);
+        informationReceived.add(Resource.STONE);
+        informationReceived.add(Resource.SERVANT);
+        informationReceived.add(Resource.SERVANT);
 
         boolean additionalDeposit = true;
         ArrayList<Resource> type = new ArrayList<>();
@@ -42,7 +41,7 @@ public class NewDepositView {
         additionalDepositState.add(null);
 
 
-        NewDepositView prova = new NewDepositView(depositState, marketReceived, additionalDeposit, type, additionalDepositState);
+        NewDepositView prova = new NewDepositView(depositState, informationReceived, additionalDeposit, type, additionalDepositState);
         prova.LaunchView();
 
         System.out.println(prova.getDepositState());
@@ -50,7 +49,11 @@ public class NewDepositView {
         System.out.println(prova.getAdditionalDepositState());
     }*/
 
-    public NewDepositView(ArrayList<Resource> depositState, ArrayList<Resource> marketReceived, boolean additionalDeposit, ArrayList<Resource> type, ArrayList<Resource> additionalDepositState) {
+
+    /**
+     * this constructor initializes the class for the turn after the market
+     */
+    public NewDepositView(ArrayList<Resource> depositState, ArrayList<Resource> informationReceived, boolean additionalDeposit, ArrayList<Resource> type, ArrayList<Resource> additionalDepositState) {
 
         this.depositState = new ArrayList<>();
         this.additionalDepositState = new ArrayList<>();
@@ -64,15 +67,15 @@ public class NewDepositView {
             }
         }
 
-        this.marketReceived = new HashMap<>();
+        this.informationReceived = new HashMap<>();
 
         for (ResourceIcon r : ResourceIcon.values())
-            this.marketReceived.put(r.toString(), 0);
+            this.informationReceived.put(r.toString(), 0);
 
-        this.marketReceived.put(ResourceIcon.NOTHING.toString(), 6);
+        this.informationReceived.put(ResourceIcon.NOTHING.toString(), 6);
 
-        for (Resource r : marketReceived) {
-            this.marketReceived.put(r.toString(), this.marketReceived.get(r.toString()) + 1);
+        for (Resource r : informationReceived) {
+            this.informationReceived.put(r.toString(), this.informationReceived.get(r.toString()) + 1);
         }
 
         this.additionalDeposit = additionalDeposit;
@@ -83,11 +86,56 @@ public class NewDepositView {
                 this.type.add(ResourceIcon.valueOf(r.toString()));
             }
 
-            for (Resource t : additionalDepositState)
+            for (Resource t : additionalDepositState) {
                 if (t != null)
                     this.additionalDepositState.add(ResourceIcon.valueOf(t.toString()));
                 else
                     this.additionalDepositState.add(ResourceIcon.NOTHING);
+            }
+        }
+    }
+
+
+    /**
+     * this constructor initializes the class for the view turn
+     */
+    public NewDepositView(ArrayList<Resource> depositState, Map<Resource, Integer> strongbox, ArrayList<Resource> additionalDepositType, ArrayList<Resource> additionalDepositState){
+        this.depositState = new ArrayList<>();
+        this.additionalDepositState = new ArrayList<>();
+        this.type = new ArrayList<>();
+
+        for (int i = 0; i < depositState.size(); i++) {
+            if (depositState.get(i) == null)
+                this.depositState.add(ResourceIcon.NOTHING);
+            else {
+                this.depositState.add(ResourceIcon.valueOf(depositState.get(i).toString()));
+            }
+        }
+
+        this.informationReceived = new HashMap<>();
+
+        for (ResourceIcon r : ResourceIcon.values())
+            this.informationReceived.put(r.toString(), 0);
+
+        for (Resource r : Resource.values()) {
+            if(strongbox.containsKey(r))
+                this.informationReceived.put(r.toString(), strongbox.get(r));
+        }
+
+        if(additionalDepositState!=null){
+            this.additionalDeposit = true;
+
+            for (Resource r : additionalDepositType) {
+                this.type.add(ResourceIcon.valueOf(r.toString()));
+                this.type.add(ResourceIcon.valueOf(r.toString()));
+            }
+
+            for (Resource t : additionalDepositState) {
+                if (t != null)
+                    this.additionalDepositState.add(ResourceIcon.valueOf(t.toString()));
+                else
+                    this.additionalDepositState.add(ResourceIcon.NOTHING);
+            }
         }
     }
 
@@ -112,7 +160,7 @@ public class NewDepositView {
 
         for (ResourceIcon r : ResourceIcon.values())
             if (!r.equals(ResourceIcon.NOTHING))
-                num = num + marketReceived.get(r.toString());
+                num = num + informationReceived.get(r.toString());
 
         return num;
     }
@@ -143,10 +191,10 @@ public class NewDepositView {
         while (true) {
 
             if (state.equals("deposit")) {
-                PrintDepositChoise(this.depositState, marketReceived);
+                printDepositChoise();
             }
             if (state.equals("additionalDeposit")) {
-                printAdditionalDeposit(additionalDepositState, marketReceived);
+                printAdditionalDeposit();
             }
 
             Scanner in = new Scanner(System.in);
@@ -196,7 +244,7 @@ public class NewDepositView {
 
                 if (state.equals("deposit")) {
                     //tolgo il materiale dalle risorse ottenute dal market da inserire in deposito
-                    if (marketReceived.containsKey(formatInput[0]) && num > 0 && num < 7)
+                    if (informationReceived.containsKey(formatInput[0]) && num > 0 && num < 7)
                         resourceHandle(this.depositState, formatInput[0], num);
                 }
 
@@ -209,7 +257,7 @@ public class NewDepositView {
                     }
 
                     if ((formatInput[0].equals("NOTHING") || formatInput[0].equals(type.get(num - 1).toString()))
-                            && marketReceived.containsKey(formatInput[0]) && num > 0 && num < additionalDepositState.size() + 1)
+                            && informationReceived.containsKey(formatInput[0]) && num > 0 && num < additionalDepositState.size() + 1)
                         resourceHandle(this.additionalDepositState, formatInput[0], num);
                 }
             }
@@ -218,16 +266,33 @@ public class NewDepositView {
 
     }
 
+    public void draw(){
+        String input = "deposit";
+        do {
+            if(input.equals("additionaldeposit") && this.additionalDeposit)
+                printAdditionalDeposit();
+            else if(input.equals("additionaldeposit"))
+                input="deposit";
+
+            if(input.equals("deposit"))
+                printDepositChoise();
+
+            Scanner in = new Scanner(System.in);
+            input = in.nextLine();
+            input = input.toLowerCase();
+        } while (!input.equals("quit"));
+    }
+
     private void resourceHandle(ArrayList<ResourceIcon> deposit, String formatInput, int num){
-        if (marketReceived.get(formatInput) - 1 > -1) {
-            marketReceived.put(formatInput, marketReceived.get(formatInput) - 1);
+        if (informationReceived.get(formatInput) - 1 > -1) {
+            informationReceived.put(formatInput, informationReceived.get(formatInput) - 1);
 
             //aggiungo il materiale tolto dal deposito ai materiali disponibili
-            if (marketReceived.containsKey(formatInput) && deposit.get(num - 1) != null)
-                marketReceived.put(deposit.get(num - 1).toString(), marketReceived.get(deposit.get(num - 1).toString()) + 1);
+            if (informationReceived.containsKey(formatInput) && deposit.get(num - 1) != null)
+                informationReceived.put(deposit.get(num - 1).toString(), informationReceived.get(deposit.get(num - 1).toString()) + 1);
 
             //aggiungo il materiale tolto dai materiali disponibili al deposito
-            if (marketReceived.containsKey(formatInput))
+            if (informationReceived.containsKey(formatInput))
                 deposit.set(num - 1, ResourceIcon.valueOf(formatInput));
         } else {
             Messages message = new Messages("INSERT A CORRECT INPUT PLEASE", true);
@@ -235,7 +300,7 @@ public class NewDepositView {
         }
     }
 
-    public void PrintDepositChoise(ArrayList<ResourceIcon> incoming, Map<String, Integer> acquired) {
+    private void printDepositChoise() {
 
         System.out.print("\u001B[2J\u001B[3J\u001B[H");
         System.out.println("\u001B[0;00m" + "                                                  ╔═══════════════════════╗ \n" +
@@ -276,10 +341,10 @@ public class NewDepositView {
                 " ┃                                                                                                                       ┃ \n" +
                 " ┃                                                       TO ORGANIZE                                                     ┃ \n" +
                 " ┃                                                                                                                       ┃ \n" +
-                " ┃                                                       Coin:     " + acquired.get(ResourceIcon.COIN.toString()) + "                                                     ┃ \n" +
-                " ┃                                                       Servant:  " + acquired.get(ResourceIcon.SERVANT.toString()) + "                                                     ┃ \n" +
-                " ┃                                                       Shield:   " + acquired.get(ResourceIcon.SHIELD.toString()) + "                                                     ┃ \n" +
-                " ┃                                                       Stone:    " + acquired.get(ResourceIcon.STONE.toString()) + "                                                     ┃ \n" +
+                " ┃                                                       Coin:     " + informationReceived.get(ResourceIcon.COIN.toString()) + "                                                     ┃ \n" +
+                " ┃                                                       Servant:  " + informationReceived.get(ResourceIcon.SERVANT.toString()) + "                                                     ┃ \n" +
+                " ┃                                                       Shield:   " + informationReceived.get(ResourceIcon.SHIELD.toString()) + "                                                     ┃ \n" +
+                " ┃                                                       Stone:    " + informationReceived.get(ResourceIcon.STONE.toString()) + "                                                     ┃ \n" +
                 " ┃                                                      ______________                                                   ┃ \n" +
                 " ┃                                                                                                                       ┃ \n" +
                 " ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛ \n" +
@@ -290,7 +355,7 @@ public class NewDepositView {
                 "                                                              " + "\u001B[0;00m");
     }
 
-    public void printAdditionalDeposit(ArrayList<ResourceIcon> additionalDepositState, Map<String, Integer> acquired) {
+    public void printAdditionalDeposit() {
         System.out.print("\u001B[2J\u001B[3J\u001B[H");
 
         System.out.println("\u001B[0;00m" +
@@ -313,7 +378,7 @@ public class NewDepositView {
                     " ┃                                         " + this.additionalDepositState.get(0).returnLine(1) + "                          " + this.additionalDepositState.get(1).returnLine(1) + "                          ┃ \n" +
                     " ┃        SPECIAL ABILITY                  " + this.additionalDepositState.get(0).returnLine(2) + "                          " + this.additionalDepositState.get(1).returnLine(2) + "                          ┃ \n" +
                     " ┃            DEPOSIT                      " + this.additionalDepositState.get(0).returnLine(3) + "                          " + this.additionalDepositState.get(1).returnLine(3) + "                          ┃ \n" +
-                    " ┃             ( "+colorSymbol(0) + " )                       " + this.additionalDepositState.get(0).returnLine(4) + "                          " + this.additionalDepositState.get(1).returnLine(4) + "                          ┃ \n" +
+                    " ┃             ( " + colorSymbol(0) + " )                       " + this.additionalDepositState.get(0).returnLine(4) + "                          " + this.additionalDepositState.get(1).returnLine(4) + "                          ┃ \n" +
                     " ┃                                         " + this.additionalDepositState.get(0).returnLine(5) + "                          " + this.additionalDepositState.get(1).returnLine(5) + "                          ┃ \n" +
                     " ┃                                              -1-                                    -2-                               ┃ \n" +
                     " ┃                                                                                                                       ┃ \n" +
@@ -337,10 +402,10 @@ public class NewDepositView {
                 " ┃                                                                                                                       ┃ \n" +
                 " ┃                                                       TO ORGANIZE                                                     ┃ \n" +
                 " ┃                                                                                                                       ┃ \n" +
-                " ┃                                                       Coin:     " + acquired.get(ResourceIcon.COIN.toString()) + "                                                     ┃ \n" +
-                " ┃                                                       Servant:  " + acquired.get(ResourceIcon.SERVANT.toString()) + "                                                     ┃ \n" +
-                " ┃                                                       Shield:   " + acquired.get(ResourceIcon.SHIELD.toString()) + "                                                     ┃ \n" +
-                " ┃                                                       Stone:    " + acquired.get(ResourceIcon.STONE.toString()) + "                                                     ┃ \n" +
+                " ┃                                                       Coin:     " + informationReceived.get(ResourceIcon.COIN.toString()) + "                                                     ┃ \n" +
+                " ┃                                                       Servant:  " + informationReceived.get(ResourceIcon.SERVANT.toString()) + "                                                     ┃ \n" +
+                " ┃                                                       Shield:   " + informationReceived.get(ResourceIcon.SHIELD.toString()) + "                                                     ┃ \n" +
+                " ┃                                                       Stone:    " + informationReceived.get(ResourceIcon.STONE.toString()) + "                                                     ┃ \n" +
                 " ┃                                                      ______________                                                   ┃ \n" +
                 " ┃                                                                                                                       ┃ \n" +
                 " ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛ \n" +
