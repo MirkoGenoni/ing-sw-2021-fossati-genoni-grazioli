@@ -75,8 +75,9 @@ public class CLIHandler {
     public void leaderCardSelection(ArrayList<LeaderCardToClient> received, boolean initial, Map<String, Integer> totalReceived){
             this.leaderCardSelection = new LeaderCardView(new ArrayList<>(received), totalReceived);
 
+            this.inactiveLeaders = new ArrayList<>();
+
             if(initial){
-                this.inactiveLeaders = new ArrayList<>();
                 int[] receive = leaderCardSelection.StartInitialLeaderCardView();
                 this.connection.sendDiscardInitialLeaderCards(receive[0], receive[1]);
                 for(int i=0; i<received.size(); i++) {
@@ -84,6 +85,7 @@ public class CLIHandler {
                         this.inactiveLeaders.add(received.get(i));
                 }
             } else {
+                this.inactiveLeaders = received;
                 ArrayList<Integer> receive = leaderCardSelection.StartCardView();
                 connection.sendLeaderCardTurn(receive);
             }
