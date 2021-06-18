@@ -16,11 +16,11 @@ public class LorenzoTurn {
     private final int lorenzoNumPlayer;
     private boolean lorenzoWin;
 
-    public LorenzoTurn(ControllerToModel controllerToModel, SinglePlayerGame singlePlayerGame, int lorenzoNumPlayer) {
+    public LorenzoTurn(ControllerToModel controllerToModel, SinglePlayerGame singlePlayerGame) {
         this.controllerToModel = controllerToModel;
         this.singlePlayerGame = singlePlayerGame;
         lorenzoIlMagnifico = singlePlayerGame.getLorenzoIlMagnifico();
-        this.lorenzoNumPlayer = lorenzoNumPlayer; //TODO CONTROLLO NUMERO LORENZO =1?
+        this.lorenzoNumPlayer = 1;
         lorenzoWin = false;
     }
 
