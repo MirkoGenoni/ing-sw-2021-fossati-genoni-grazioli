@@ -230,9 +230,15 @@ public class PlayerViewController implements GUIController, Initializable {
         //visualize pope favor tiles
         for (int i=0; i<player.getPopeFavorTiles().size(); i++){
             if(player.getPopeFavorTiles().get(i)!=0){
-                String input = "src/main/resources/graphics/pope/" + popeFavorTiles.get(i).getId() +".png";
-                Image tmpI = new Image(Objects.requireNonNull(getClass().getResourceAsStream(input)));
-                popeFavorTiles.get(i).setImage(tmpI);
+                String input = "/graphics/pope/" + popeFavorTiles.get(i).getId() +".png";
+                try{
+                    Image tmpI = new Image(Objects.requireNonNull(getClass().getResourceAsStream(input)));
+                    popeFavorTiles.get(i).setImage(tmpI);
+                }catch (NullPointerException e){
+                    System.out.println("pope space file not found, address " + input);
+                    e.printStackTrace();
+                }
+
             }else{
                 popeFavorTiles.get(i).setImage(null);
             }
