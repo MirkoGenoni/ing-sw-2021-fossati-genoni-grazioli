@@ -26,7 +26,6 @@ public class CLIHandler {
     private Map<String, PlayerInformationToClient> players;
     private MarketView market;
     private DevelopmentCardView developmentCardForSale;
-    private LeaderCardView leaderCardSelection;
     private DevelopmentCardVisualization currentBuying;
     private TotalResourceCounter totalResourceCounter;
     AllPlayersView allPlayersView;
@@ -37,7 +36,6 @@ public class CLIHandler {
     private boolean isNewRoomOrNot;
 
     private boolean turnEnd;
-    private int tmpNumPlayers;
 
     public CLIHandler(ConnectionToServer connection){
         this.connection = connection;
@@ -65,15 +63,16 @@ public class CLIHandler {
         this.developmentCardForSale = new DevelopmentCardView(developmentCardToBuy, totalResourceCounter);
 
         for(LeaderCardToClient l: players.get(namePlayer).getLeaderCardActive())
-            for(int i=0; i<inactiveLeaders.size();i++)
-                if(l.getNameCard().equals(inactiveLeaders.get(i).getNameCard()))
-                    inactiveLeaders.set(i, null);
+            if(inactiveLeaders!=null) //I need to check only when I've received the leaderCard selection turn
+                for(int i=0; i<inactiveLeaders.size();i++)
+                    if(l.getNameCard().equals(inactiveLeaders.get(i).getNameCard()))
+                        inactiveLeaders.set(i, null);
 
         this.allPlayersView = new AllPlayersView(this.players, this.namePlayer, this.inactiveLeaders);
     }
 
     public void leaderCardSelection(ArrayList<LeaderCardToClient> received, boolean initial, Map<String, Integer> totalReceived){
-            this.leaderCardSelection = new LeaderCardView(new ArrayList<>(received), totalReceived);
+        LeaderCardView leaderCardSelection = new LeaderCardView(new ArrayList<>(received), totalReceived);
 
             this.inactiveLeaders = new ArrayList<>();
 
@@ -87,6 +86,14 @@ public class CLIHandler {
             } else {
                 this.inactiveLeaders = received;
                 ArrayList<Integer> receive = leaderCardSelection.StartCardView();
+
+                int j=0;
+                for(Integer i: receive)
+                    if(i==2){ //if discarded they have been removed
+                        inactiveLeaders.set(j, null);
+                        j++;
+                    }
+
                 connection.sendLeaderCardTurn(receive);
             }
     }
@@ -322,6 +329,7 @@ public class CLIHandler {
                 isValid = true;
             }
             if (!isValid) {
+
                 Messages error = new Messages("Please select a correct option", true) ;
                 isValid = false;
             }
@@ -470,7 +478,7 @@ public class CLIHandler {
                     continue;
                 }
 
-                this.tmpNumPlayers = tmpNumPlayers;
+                int tmpNumPlayers1 = tmpNumPlayers;
                 notDone = false;
                 connection.sendNumPlayer(tmpNumPlayers);
             }

@@ -10,7 +10,7 @@ import java.util.concurrent.TimeUnit;
 
 public class ClientCLI {
     private String serverAddress;
-    private final int serverPort;
+    private int serverPort;
     private Socket socket;
 
     public static void main(String[] args) {
@@ -108,6 +108,23 @@ public class ClientCLI {
             Scanner userIn = new Scanner(System.in);
 
             serverAddress = userIn.nextLine();
+
+            System.out.print("                                    INSERT SERVER PORT: ");
+
+            while(true) {
+                String serverPortString = userIn.nextLine();
+
+                if (!serverPortString.equals("default")) {
+                    try {
+                        serverPort = Integer.parseInt(serverPortString);
+                        break;
+                    } catch (NumberFormatException e) {
+                        continue;
+                    }
+                } else {
+                    break;
+                }
+            }
 
             try {
                 socket = new Socket(serverAddress, serverPort);
