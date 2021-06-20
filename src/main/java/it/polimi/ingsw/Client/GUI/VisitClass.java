@@ -110,6 +110,11 @@ public class VisitClass implements EventToClientVisitor {
     }
 
     @Override
+    public void visit(PingToClient ping) {
+
+    }
+
+    @Override
     public void visit(SendRoomRequestToClient roomRequest) {
         changeSceneThread("playerName");
         PlayerNameController controller = (PlayerNameController) gui.getCurrentController();

@@ -228,6 +228,11 @@ public class CLI implements EventToClientVisitor {
     }
 
     @Override
+    public void visit(PingToClient ping) {
+
+    }
+
+    @Override
     public void visit(SendRoomRequestToClient roomRequest) {
         /*
         System.out.println(roomRequest.getMessage());

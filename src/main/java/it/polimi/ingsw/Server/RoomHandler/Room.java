@@ -9,6 +9,7 @@ import it.polimi.ingsw.Server.Server;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 public class Room {
     private final Server server;
@@ -21,6 +22,8 @@ public class Room {
     private boolean fullPlayer;
     private boolean finish;
     private int numPlayer;
+
+    private Thread ping;
 
 
     private final ControllerToModel controllerToModel;
@@ -36,6 +39,17 @@ public class Room {
         this.finish = false;
         controllerToModel = new ControllerToModel(connections);
         controllerConnection = new ControllerConnection(controllerToModel);
+        ping = new Thread(() -> {
+            while(!finish){
+                try {
+                    TimeUnit.SECONDS.sleep(40);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                connections.forEach((k,v) -> v.sendPing());
+            }
+        });
+        ping.start();
     }
 
 
@@ -134,6 +148,7 @@ public class Room {
         if(!finish){
             finish = true;
             server.getRooms().remove(roomNumber);
+            ping.interrupt();
         }
         System.out.println(server.getRooms() + " mappa stanze");
     }

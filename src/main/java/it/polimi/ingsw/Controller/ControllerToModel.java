@@ -230,7 +230,7 @@ public class ControllerToModel {
             System.out.println("Game end");
 
         }else{
-            connections.forEach((k,v) -> v.sendNotify("è il turno di " + activePlayer.getName()));
+            connections.forEach((k,v) -> v.sendNotify("è il turno di " + activePlayer.getName())); //TODO
             try {
                 connections.get(activePlayer.getName()).sendArrayLeaderCards(players[currentPlayerIndex].getPlayerBoard().getLeaderCardHandler().getLeaderCardsAvailable(),false, players[currentPlayerIndex]);
             } catch (LeaderCardException e) {

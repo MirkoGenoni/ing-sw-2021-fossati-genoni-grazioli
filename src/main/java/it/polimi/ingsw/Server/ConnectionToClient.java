@@ -216,6 +216,12 @@ public class ConnectionToClient implements Runnable, EventToClientNotifier {
     }
 
     @Override
+    public void sendPing() {
+        PingToClient pingToClient = new PingToClient();
+        asyncSendEvent(pingToClient);
+    }
+
+    @Override
     public void sendRoomRequestToClient(String message) {
         SendRoomRequestToClient sendRoomRequestToClient = new SendRoomRequestToClient(message);
         asyncSendEvent(sendRoomRequestToClient);

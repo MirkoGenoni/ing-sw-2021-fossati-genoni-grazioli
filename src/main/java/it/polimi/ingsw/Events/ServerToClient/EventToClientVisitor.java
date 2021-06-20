@@ -12,12 +12,24 @@ public interface EventToClientVisitor {
     // -------------------------------------------------------
     // EVENTS FOR THE START OF THE CONNECTION WITH THE CLIENT
     // -------------------------------------------------------
+    void visit(SendRoomRequestToClient roomRequest);
+    void visit(SendNamePlayerRequestToClient nameRequest);
+    void visit(SendNumPlayerRequestToClient numPlayer);
 
+    // ----------------------------------
+    // EVENT FOR THE INITIAL RESOURCES
+    // ----------------------------------
+    void visit(SendInitialResourcesToClient numResources);
 
     // -------------------------------------------
     // EVENTS THAT RECEIVE LEADER CARD INFORMATION
     // -------------------------------------------
     void visit(SendArrayLeaderCardsToClient leaderCardArray);
+
+    // -------------------------------------------------------------------
+    // EVENT FOR THE NEW TURN, THIS EVENT UPDATE THE CLIENT INFORMATION
+    // -------------------------------------------------------------------
+    void visit(NewTurnToClient newTurn);
 
     // ----------------------------------
     // EVENTS FOR THE MARKET TURN
@@ -31,15 +43,20 @@ public interface EventToClientVisitor {
     void visit(SendSpaceDevelopmentCardToClient developmentCardSpace);
 
     // ----------------------------------
-    // OTHER EVENTS
+    // EVENT FOR NOTIFY THE CLIENT
     // ----------------------------------
     void visit(NotifyToClient message);
-    void visit(NewTurnToClient newTurn);
+
+
+    // ----------------------------------
+    // FINAL EVENT
+    // ----------------------------------
     void visit(EndGameToClient message);
-    void visit(SendInitialResourcesToClient numResources);
+
+    // ----------------------------------
+    // EVENT FOR THE SINGLE GAME
+    // ----------------------------------
     void visit(LorenzoActionToClient lorenzoAction);
 
-    void visit(SendRoomRequestToClient roomRequest);
-    void visit(SendNamePlayerRequestToClient nameRequest);
-    void visit(SendNumPlayerRequestToClient numPlayer);
+    void visit(PingToClient ping);
 }

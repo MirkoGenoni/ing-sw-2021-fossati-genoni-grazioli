@@ -66,7 +66,7 @@ public class RoomHandler implements EventToServerInitialVisitor, ObserveConnecti
 
     @Override
     public void visit(SendPlayerNameToServer playerName) {
-        System.out.println("il nome è" + playerName.getPlayerName());
+        System.out.println("il nome è " + playerName.getPlayerName());
         if(checkDoublePlayerName(playerName.getPlayerName())){
             tmpConnection.setNamePlayer(playerName.getPlayerName());
 

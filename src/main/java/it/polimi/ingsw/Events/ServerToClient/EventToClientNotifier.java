@@ -47,4 +47,6 @@ public interface EventToClientNotifier {
     void sendRoomRequestToClient(String message);
     void sendNamePlayerRequest(String message);
     void sendNumPlayerRequest(String message);
+
+    void sendPing();
 }
