@@ -3,20 +3,19 @@ package it.polimi.ingsw.Client.GUI;
 import it.polimi.ingsw.Client.ConnectionToServer;
 import it.polimi.ingsw.Client.GUI.ControllerGUI.GUIController;
 import it.polimi.ingsw.Events.ServerToClient.NewTurnToClient;
-import it.polimi.ingsw.Events.ServerToClient.SupportClass.LeaderCardToClient;
-import it.polimi.ingsw.Events.ServerToClient.SupportClass.PlayerInformationToClient;
 import it.polimi.ingsw.Model.Market.Marble;
 import it.polimi.ingsw.Model.Resource.Resource;
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.*;
 
 public class GUI extends Application {
@@ -135,6 +134,12 @@ public class GUI extends Application {
             e.printStackTrace();
         }
 
+        this.stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+            @Override
+            public void handle(WindowEvent windowEvent) {
+                System.exit(0);
+            }
+        });
 
         currentScene = scenes.get("setup");
         currentController = controllers.get("setup");
@@ -142,6 +147,10 @@ public class GUI extends Application {
         stage.setScene(currentScene);
         stage.show();
         centerApplication();
+
+    }
+
+    public void provat(){
 
     }
 
