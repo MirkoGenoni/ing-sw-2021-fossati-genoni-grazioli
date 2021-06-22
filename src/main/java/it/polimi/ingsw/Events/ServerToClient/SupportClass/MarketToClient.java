@@ -1,26 +1,44 @@
 package it.polimi.ingsw.Events.ServerToClient.SupportClass;
 
-import it.polimi.ingsw.Events.ServerToClient.EventToClient;
-import it.polimi.ingsw.Events.ServerToClient.EventToClientVisitor;
 import it.polimi.ingsw.Model.Market.Marble;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 
-// this event send the structure of the market to the client. the client could visualize it
+/**
+ * This class contains the structure of the market to send to the client.
+ * This object could be only read from the client.
+ * @see it.polimi.ingsw.Model.Market.Market
+ * @see Serializable
+ *
+ * @author Stefano Fossati
+ */
 public class MarketToClient implements Serializable {
     private final ArrayList<Marble> grid;
     private final Marble outMarble;
 
+    /**
+     * Constructs the market structure.
+     * @param grid The grid of marble of the the market.
+     * @param outMarble The marble out of the market.
+     */
     public MarketToClient(ArrayList<Marble> grid, Marble outMarble) {
         this.grid = grid;
         this.outMarble = outMarble;
     }
 
+    /**
+     * Getter that returns the grid of marble of the the market.
+     * @return the grid of marble of the the market.
+     */
     public ArrayList<Marble> getGrid() {
         return grid;
     }
 
+    /**
+     * Getter that returns the marble out of the market.
+     * @return the marble out of the market.
+     */
     public Marble getOutMarble() {
         return outMarble;
     }
