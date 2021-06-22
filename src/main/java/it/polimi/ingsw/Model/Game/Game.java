@@ -62,7 +62,7 @@ public abstract class Game {
 
             }
         }
-        return developmentCardsAvailable;
+        return developmentCardsAvailable; //IT'S A COPY!!
     }
 
     /**
@@ -72,7 +72,7 @@ public abstract class Game {
      * @return The development card that the player has bought.
      */
     public DevelopmentCard buyDevelopmentCard(int color, int level) throws StartGameException {
-        if(developmentCards[color][level]!=null && developmentCards[color][level].size()!=0){
+        if(color < 4 && level < 3 && developmentCards[color][level]!=null && developmentCards[color][level].size()!=0){
             return (DevelopmentCard) developmentCards[color][level].remove(0);
         }else{
             throw new StartGameException("the card selected doesn't exist, Is not available");

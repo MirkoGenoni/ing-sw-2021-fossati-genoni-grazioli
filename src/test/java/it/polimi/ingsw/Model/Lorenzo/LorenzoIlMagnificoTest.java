@@ -23,36 +23,37 @@ public class LorenzoIlMagnificoTest {
 
     @Test
     public void getToken() {
-        ArrayList<SoloAction> actionList = lorenzo.getSoloActionTokens();
+
+        for (int i=0; i<6;i++) { //probability of 1/6^3 of three moveshuffle moves
+
+            ArrayList<SoloAction> actionList = lorenzo.getSoloActionTokens();
+            SoloAction action = lorenzo.getToken();
 
 
-        SoloAction action = lorenzo.getToken();
+            if (!action.name().equals(SoloAction.MOVESHUFFLE.name())) {
 
+                assertEquals(action.name(), lorenzo.getSoloActionTokens().get(actionList.size() - 1).name());
 
-        if (action.name() != SoloAction.MOVESHUFFLE.name()){
+            } else {
 
-            assertEquals(action.name(), lorenzo.getSoloActionTokens().get(actionList.size()-1).name());
+                assertTrue(lorenzo.getSoloActionTokens().size() == actionList.size()); //same size
+                //assertTrue(lorenzo.getSoloActionToken().size()==6);
 
-        }
-        else {
+                boolean finded = false;
+                for (int j = 0; j < actionList.size(); j++) {
 
-            assertTrue(lorenzo.getSoloActionTokens().size() == actionList.size()); //same size
-            //assertTrue(lorenzo.getSoloActionToken().size()==6);
-
-            boolean finded = false;
-            for (int i = 0; i < actionList.size(); i++) {
-
-                for (SoloAction soloAction : SoloAction.values()) {
-                    if (soloAction.name() == lorenzo.getSoloActionTokens().get(i).name()) { //same values at beginning and at the end
-                        finded = true;
-                        break;
+                    for (SoloAction soloAction : SoloAction.values()) {
+                        if (soloAction.name().equals(lorenzo.getSoloActionTokens().get(i).name())) { //same values at beginning and at the end
+                            finded = true;
+                            break;
+                        }
                     }
+                    assertTrue(finded);
+                    finded = false;
+
                 }
-                assertTrue(finded);
-                finded = false;
 
             }
-
         }
     }
 }

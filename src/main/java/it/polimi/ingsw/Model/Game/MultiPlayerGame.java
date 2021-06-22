@@ -13,7 +13,6 @@ import java.util.ArrayList;
  */
 public class MultiPlayerGame extends Game{
     private Player players[];
-    private int numberActivePlayer;
 
 
     public MultiPlayerGame(int numPlayer) {
@@ -25,7 +24,7 @@ public class MultiPlayerGame extends Game{
 
     public void addPlayer(Player player) throws StartGameException {
         int i=0;
-        while(players[i]!=null){
+        while(i!= players.length && players[i]!=null){
             i++;
         }
         if(i<players.length){
@@ -34,10 +33,6 @@ public class MultiPlayerGame extends Game{
             throw new StartGameException("players all initialized");
         }
 
-    }
-
-    public Player getActivePlayer(){
-        return players[numberActivePlayer];
     }
 
     public void startGame() throws StartGameException {

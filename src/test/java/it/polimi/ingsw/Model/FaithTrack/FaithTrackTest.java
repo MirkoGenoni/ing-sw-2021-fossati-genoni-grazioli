@@ -1,14 +1,27 @@
 package it.polimi.ingsw.Model.FaithTrack;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
 
 public class FaithTrackTest {
 
+    FaithTrack testTrack;
+
+    @Before
+    public void setUp() {
+        testTrack = new FaithTrack(4);
+    }
+
+    @Test
+    public void getTrack() {
+        assertEquals(testTrack.getTrack().length,25);
+    }
+
     @Test
     public void testForwardPos() {
-        FaithTrack testTrack = new FaithTrack(4);
+
 
         for (int i = 0; i<7; i++){
             testTrack.forwardPos(0);
@@ -35,7 +48,6 @@ public class FaithTrackTest {
 
     @Test
     public void testGetPosition() {
-        FaithTrack testTrack = new FaithTrack(4);
 
         assertEquals(0, testTrack.getPosition(0));
         assertEquals(0, testTrack.getPosition(1));
@@ -64,7 +76,6 @@ public class FaithTrackTest {
 
     @Test
     public void testCheckVaticanReportSection() {
-        FaithTrack testTrack = new FaithTrack(4);
 
         for (int i = 0; i<4; i++){
             testTrack.forwardPos(0);
@@ -85,7 +96,6 @@ public class FaithTrackTest {
 
     @Test
     public void getVaticanReportSection() {
-        FaithTrack testTrack = new FaithTrack(4);
 
         for (int i = 0; i<4; i++){
             testTrack.forwardPos(0);

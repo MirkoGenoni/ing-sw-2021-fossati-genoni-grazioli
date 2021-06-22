@@ -78,64 +78,94 @@ public class DevelopmentCardHandlerTest {
         try {
             handler.setActiveDevelopmentCard(cardCollection.get(2), 2);
             assertEquals(handler.getActiveDevelopmentCard().get(2), cardCollection.get(2));
+
+            handler.setActiveDevelopmentCard(cardCollection.get(3),4); //non valid position
         }
         catch (DevelopmentCardException e){
-            fail();
+            assertEquals(e.getMessage(), "Can't add a card out of gameboard spaces");
         }
     }
 
     @Test
-    public void CheckBoughtable() throws Exception{
+    public void CheckBoughtable(){
 
         ArrayList<Boolean> checkReturned = handler.checkBoughtable(cardCollection.get(2).getLevel()); //level = 1
         assertFalse(checkReturned.get(0));
         assertTrue(checkReturned.get(1)); //can put level 1 card only in the first position
         assertFalse(checkReturned.get(2));
 
-        handler.setActiveDevelopmentCard(cardCollection.get(2),1);
-        checkReturned= handler.checkBoughtable(cardCollection.get(3).getLevel()); //level = 1
-        for(Boolean condition : checkReturned)
-            assertFalse(condition); //can't buy an other level 1 card
+        try {
 
-        checkReturned = handler.checkBoughtable(cardCollection.get(4).getLevel()); //level = 2
-        for(Boolean condition : checkReturned)
-            assertTrue(condition); //can put a level 2 card everywhere
+            handler.setActiveDevelopmentCard(cardCollection.get(2), 1);
+            checkReturned = handler.checkBoughtable(cardCollection.get(3).getLevel()); //level = 1
+            for (Boolean condition : checkReturned)
+                assertFalse(condition); //can't buy an other level 1 card
+
+            checkReturned = handler.checkBoughtable(cardCollection.get(4).getLevel()); //level = 2
+            for (Boolean condition : checkReturned)
+                assertTrue(condition); //can put a level 2 card everywhere
 
 
-        handler.setActiveDevelopmentCard(cardCollection.get(4), 2); //set level 2 card active
-        checkReturned = handler.checkBoughtable(cardCollection.get(5).getLevel()); //level = 3
-        assertFalse(checkReturned.get(0));
-        assertFalse(checkReturned.get(1));
-        assertTrue(checkReturned.get(2));//can put level 3 card only in the third position
-
+            handler.setActiveDevelopmentCard(cardCollection.get(4), 2); //set level 2 card active
+            checkReturned = handler.checkBoughtable(cardCollection.get(5).getLevel()); //level = 3
+            assertFalse(checkReturned.get(0));
+            assertFalse(checkReturned.get(1));
+            assertTrue(checkReturned.get(2));//can put level 3 card only in the third position
+        }catch (DevelopmentCardException e){
+            fail();
+        }
 
     }
 
     @Test
-    public void checkDevelopmentCard() throws Exception{
+    public void checkDevelopmentCard(){
         ArrayList<CardColor> colors = new ArrayList<>();
         ArrayList<Integer> levels = new ArrayList<>();
-        colors.add(CardColor.GREEN);
-        colors.add(CardColor.PURPLE);
-        levels.add(1);
-        levels.add(1);
 
-        assertTrue(handler.checkDevelopmentCard(colors, levels));
+        try {
+            colors.add(CardColor.GREEN);
+            colors.add(CardColor.PURPLE);
+            levels.add(1);
+            levels.add(1);
 
-        colors.add(CardColor.BLUE);
-        levels.add(3);
-        assertFalse(handler.checkDevelopmentCard(colors,levels));
+            assertTrue(handler.checkDevelopmentCard(colors, levels));
 
-        handler.setActiveDevelopmentCard(cardCollection.get(5), 1);
-        assertTrue(handler.checkDevelopmentCard(colors,levels));
+            colors.add(CardColor.BLUE);
+            levels.add(3);
+            assertFalse(handler.checkDevelopmentCard(colors, levels));
 
-        colors.clear();
-        levels.clear();
-        colors.add(CardColor.GREEN);
-        colors.add(CardColor.GREEN);
-        levels.add(1);
-        levels.add(1);
-        assertFalse(handler.checkDevelopmentCard(colors,levels)); //duplicates doesn't count
+            handler.setActiveDevelopmentCard(cardCollection.get(5), 1);
+            assertTrue(handler.checkDevelopmentCard(colors, levels));
+
+            colors.clear();
+            levels.clear();
+            colors.add(CardColor.GREEN);
+            colors.add(CardColor.GREEN);
+            levels.add(1);
+            levels.add(1);
+            assertFalse(handler.checkDevelopmentCard(colors, levels)); //duplicates doesn't count
+
+        }catch (DevelopmentCardException e){
+            fail(); //impossible
+        }
+
+
+        try{
+            handler.checkDevelopmentCard(null,null);
+        }catch (DevelopmentCardException e){
+            assertEquals(e.getMessage(), "Can't process check because of formatting error");
+        }
+
+        try{
+            colors.clear();
+            levels.clear();
+            colors.add(CardColor.BLUE);
+            levels.add(1);
+            levels.add(2);
+            handler.checkDevelopmentCard(colors,levels);
+        }catch (DevelopmentCardException e){
+            assertEquals(e.getMessage(), "Can't process check because of formatting error");
+        }
 
     }
 
