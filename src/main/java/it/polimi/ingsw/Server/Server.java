@@ -10,6 +10,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
+/**
+ * This class represents the server.
+ * Implements Runnable interface.
+ * @see Runnable
+ *
+ * @author Stefano Fossati
+ */
 public class Server implements Runnable{
     private ServerSocket serverSocket;
 
@@ -17,6 +24,11 @@ public class Server implements Runnable{
 
     private final Map<Integer, Room> rooms;
 
+    /**
+     * Constructor of the server class.
+     *
+     * @author Stefano Fossati
+     */
     public Server(){
         port = 12345;  //TODO trovare porta piu intelligente
         rooms = new HashMap<>();
@@ -35,7 +47,7 @@ public class Server implements Runnable{
             System.out.println("the default port is: " + port);
 
         }
-
+        System.out.println("the server port is : " + port);
 
         try {
             this.serverSocket = new ServerSocket(port);
@@ -45,29 +57,36 @@ public class Server implements Runnable{
         System.out.println("server is running...");
 
         while(true){
-
             try {
                 Socket clientSocket = serverSocket.accept();
-                System.out.println("playerConnesso");
+                System.out.println("Client connected");
                 ConnectionToClient connectionToClient = new ConnectionToClient(clientSocket);
                 RoomHandler roomHandler = new RoomHandler(this);
                 roomHandler.setTmpConnection(connectionToClient);
                 new Thread(connectionToClient).start();
                 connectionToClient.setObserveConnectionToClient(roomHandler);
-
                 connectionToClient.sendRoomRequestToClient("write the number of the game room");
-                System.out.println("wait...");
-
-                // fa cose e la passa ad un nuovo room handler
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
-
-
     }
 
+    /**
+     * Getter of the map of the rooms.
+     * @return The map of the rooms.
+     */
     public synchronized Map<Integer, Room> getRooms() {
         return rooms;
     }
+
+    /**
+     * Main method to start the server.
+     * @param args The argument of the main.
+     */
+    public static void main(String[] args) {
+        Server server = new Server();
+        new Thread(server).start();
+    }
+
 }
