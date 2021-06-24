@@ -55,6 +55,7 @@
                     <include>**/*.json</include>
                     <include>**/*.fxml</include>
                     <include>**/*.png</include>
+                    <include>**/*.css</include>
                 </includes>
             </resource>
         </resources>

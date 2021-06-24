@@ -7,8 +7,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-import javafx.scene.effect.DropShadow;
-import javafx.scene.effect.Shadow;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 
@@ -17,7 +15,7 @@ import java.net.Socket;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class SetupController implements GUIController, Initializable {
+public class SetupController implements GUIController{
     private GUI gui;
 
     @FXML AnchorPane anchorPane;
@@ -39,10 +37,5 @@ public class SetupController implements GUIController, Initializable {
     @Override
     public void setGUI(GUI gui) {
         this.gui = gui;
-    }
-
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-
     }
 }

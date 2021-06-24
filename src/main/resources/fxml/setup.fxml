@@ -8,14 +8,14 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane fx:id="anchorPane" maxHeight="400.0" maxWidth="600.0" minHeight="400.0" minWidth="600.0" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.Client.GUI.ControllerGUI.SetupController">
+<AnchorPane fx:id="anchorPane" maxHeight="400.0" maxWidth="600.0" minHeight="400.0" minWidth="600.0" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.Client.GUI.ControllerGUI.SetupController" stylesheets="@../css/setup.css" styleClass="anchor">
    <children>
-      <TextField fx:id="IPaddress" layoutX="300.0" layoutY="83.0" />
-      <TextField fx:id="portNumber" layoutX="300.0" layoutY="145.0" />
-      <Label layoutX="158.0" layoutY="87.0" text="IP Address" />
-      <Label layoutX="158.0" layoutY="149.0" text="Port Number" />
+      <TextField fx:id="IPaddress" layoutX="300.0" layoutY="83.0" styleClass="text-field" stylesheets="@../css/setup.css"/>
+      <TextField fx:id="portNumber" layoutX="300.0" layoutY="145.0" styleClass="text-field" stylesheets="@../css/setup.css"/>
+      <Label layoutX="158.0" layoutY="87.0" text="IP Address" styleClass="label" stylesheets="@../css/setup.css"/>
+      <Label layoutX="158.0" layoutY="149.0" text="Port Number" styleClass="label" stylesheets="@../css/setup.css"/>
       <Label layoutX="152.0" layoutY="226.0" text="Insert IP address and port number, after click start" />
-      <Button fx:id="startButton" layoutX="268.0" layoutY="302.0" mnemonicParsing="false" onAction="#connect" text="START!" />
+      <Button fx:id="startButton" layoutX="268.0" layoutY="302.0" mnemonicParsing="false" onAction="#connect" styleClass="button" stylesheets="@../css/setup.css" text="START!" />
       <ImageView fx:id="image" fitHeight="140.0" fitWidth="123.0" layoutX="14.0" layoutY="50.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../graphics/icons/calamaio.png" />
