@@ -10,7 +10,7 @@
 }
 
 .button:hover {
-    -fx-background-color: #87553f; /* Green */
+    -fx-background-color: #87553f;
     -fx-text-fill: white;
 }
 

@@ -15,8 +15,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.net.URL;
 import java.util.*;
 
@@ -401,17 +399,31 @@ public class PlayerViewController implements GUIController, Initializable {
 
     public void player0View(ActionEvent actionEvent) {
         drawPlayerBoard(gui.getLastTurn().getPlayers().get(gui.getPlayersName().get(0)));
+        setPlayerButtonColor(actionEvent);
     }
 
     public void player1View(ActionEvent actionEvent) {
         drawPlayerBoard(gui.getLastTurn().getPlayers().get(gui.getPlayersName().get(1)));
+        setPlayerButtonColor(actionEvent);
     }
 
     public void player2View(ActionEvent actionEvent) {
         drawPlayerBoard(gui.getLastTurn().getPlayers().get(gui.getPlayersName().get(2)));
+        setPlayerButtonColor(actionEvent);
     }
 
     public void player3View(ActionEvent actionEvent) {
         drawPlayerBoard(gui.getLastTurn().getPlayers().get(gui.getPlayersName().get(3)));
+        setPlayerButtonColor(actionEvent);
+    }
+
+    private void setPlayerButtonColor(ActionEvent actionEvent){
+        Button tmp = (Button) actionEvent.getSource();
+        for(Button b : playerButtons){
+            if(tmp.equals(b)){
+                b.setStyle("-fx-background-color: #87553f; -fx-text-fill: white");
+            }else{
+                b.setStyle("-fx-background-color: white; -fx-text-fill: #87553f");            }
+        }
     }
 }

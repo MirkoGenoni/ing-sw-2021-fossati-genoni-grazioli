@@ -1,0 +1,124 @@
+@import url('https://fonts.googleapis.com/css2?family=Merienda&display=swap');
+
+.button{
+    -fx-background-color: white;
+    -fx-border-color: #87553f;
+    -fx-border-width: 2px;
+    -fx-border-style: solid;
+    -fx-font-family: 'Merienda';
+    -fx-transition-duration: 0.4s;
+    -fx-font-scale: 1;
+}
+
+.button:hover {
+    -fx-background-color: #87553f;
+    -fx-text-fill: white;
+}
+
+
+
+.button1{
+    -fx-background-color: white;
+    -fx-border-color: #87553f;
+    -fx-border-width: 2px;
+    -fx-border-style: solid;
+    -fx-font-size: 18px;
+    -fx-font-family: 'Merienda';
+    -fx-transition-duration: 0.4s;
+    -fx-font-scale: 1;
+}
+
+.button1:hover {
+    -fx-background-color: #87553f;
+    -fx-text-fill: white;
+}
+
+/*
+.button1:focused{
+    -fx-background-color: #87553f;
+    -fx-text-fill: white;
+}
+
+.button1:pressed{
+    -fx-background-color: #87553f;
+    -fx-text-fill: white;
+}
+
+ */
+
+.button2{
+    -fx-background-color: white;
+    -fx-border-color: #87553f;
+    -fx-border-width: 2px;
+    -fx-border-style: solid;
+    -fx-font-size: 18px;
+    -fx-font-family: 'Merienda';
+    -fx-transition-duration: 0.4s;
+    -fx-font-scale: 1;
+}
+
+.button2:hover {
+    -fx-background-color: #87553f;
+    -fx-text-fill: white;
+}
+
+.label{
+    -fx-font-family: 'Merienda';
+    -fx-text-fill: #87553f ;
+    -fx-font-weight: bolder;
+    -fx-effect: dropshadow(gaussian , white , 8 , 1.0 , 2 , 0);
+}
+
+
+
+.label1{
+    -fx-font-family: 'Merienda';
+    -fx-font-size: 15px;
+    -fx-text-fill: #87553f ;
+    -fx-font-weight: bolder;
+    -fx-effect: dropshadow(gaussian , white , 8 , 1.0 , 2 , 0);
+}
+
+.label2{
+    -fx-font-family: 'Merienda';
+    -fx-font-size: 31px;
+    -fx-text-alignment: center;
+    -fx-text-fill: #87553f ;
+    -fx-font-weight: bolder;
+    -fx-effect: dropshadow(gaussian , white , 8 , 1.0 , 2 , 0);
+}
+
+.label3{
+    -fx-font-family: 'Merienda';
+    -fx-text-fill: #87553f ;
+    -fx-font-size: 18px;
+    -fx-text-alignment: center;
+    -fx-font-weight: bolder;
+    -fx-effect: dropshadow(gaussian , white , 8 , 1.0 , 2 , 0);
+}
+
+
+
+.tab{
+    -fx-font-family: 'Merienda';
+}
+.tab-header-background{
+    -fx-background-image: url("../graphics/background/leonardo0.png");;
+}
+
+.tab:top{
+    -fx-background-color: white;
+    -fx-border-color: #87553f;
+    -fx-border-width: 2px;
+    -fx-border-style: solid;
+
+    -fx-font-family: 'Merienda';
+}
+
+.tab:selected:top{
+    -fx-background-color: #87553f;
+}
+
+.tab:selected:top > .font{
+    -fx-text-fill: white;
+}

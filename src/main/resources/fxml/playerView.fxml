@@ -12,11 +12,11 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="910.0" minWidth="1200.0" prefHeight="910.0" prefWidth="1200.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.Client.GUI.ControllerGUI.PlayerViewController">
+<TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="910.0" minWidth="1200.0" prefHeight="915.0" prefWidth="1200.0" stylesheets="@../css/mainStyle.css" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.Client.GUI.ControllerGUI.PlayerViewController">
   <tabs>
     <Tab fx:id="playerBoardView" text="PlayerBoard">
       <content>
-        <AnchorPane fx:id="playerBoardPane" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: #4C4537;">
+        <AnchorPane fx:id="playerBoardPane" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="1200.0" style="-fx-background-color: #4C4537;">
                <children>
                   <ImageView fitHeight="838.0" fitWidth="1200.0">
                      <image>
@@ -39,36 +39,36 @@
                         <Image url="@../graphics/resource/stone.png" />
                      </image>
                   </ImageView>
-                  <ImageView fitHeight="53.0" fitWidth="58.0" layoutX="171.0" layoutY="619.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="53.0" fitWidth="58.0" layoutX="168.0" layoutY="619.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../graphics/resource/shield.png" />
                      </image>
                   </ImageView>
-                  <ImageView fitHeight="53.0" fitWidth="58.0" layoutX="164.0" layoutY="685.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="53.0" fitWidth="58.0" layoutX="159.0" layoutY="685.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../graphics/resource/servant.png" />
                      </image>
                   </ImageView>
-                  <Label fx:id="coin" layoutX="105.0" layoutY="637.0" prefHeight="17.0" prefWidth="45.0" textFill="WHITE">
+                  <Label fx:id="coin" layoutX="106.0" layoutY="637.0" prefHeight="17.0" prefWidth="45.0" styleClass="label1" textFill="WHITE">
                      <font>
                         <Font size="15.0" />
                      </font></Label>
-                  <Label fx:id="stone" layoutX="105.0" layoutY="702.0" prefHeight="17.0" prefWidth="45.0" textFill="WHITE">
+                  <Label fx:id="stone" layoutX="106.0" layoutY="702.0" prefHeight="17.0" prefWidth="45.0" styleClass="label1" textFill="WHITE">
                      <font>
                         <Font size="15.0" />
                      </font></Label>
-                  <Label fx:id="shield" layoutX="223.0" layoutY="637.0" prefHeight="17.0" prefWidth="45.0" textFill="WHITE">
+                  <Label fx:id="shield" layoutX="221.0" layoutY="637.0" prefHeight="17.0" prefWidth="45.0" styleClass="label1" textFill="WHITE">
                      <font>
                         <Font size="15.0" />
                      </font></Label>
-                  <Label fx:id="servant" layoutX="223.0" layoutY="702.0" prefHeight="17.0" prefWidth="45.0" textFill="WHITE">
+                  <Label fx:id="servant" layoutX="223.0" layoutY="702.0" prefHeight="17.0" prefWidth="45.0" styleClass="label1" textFill="WHITE">
                      <font>
                         <Font size="15.0" />
                      </font></Label>
                   <ImageView fx:id="devPlayer0" fitHeight="323.0" fitWidth="210.0" layoutX="463.0" layoutY="419.0" pickOnBounds="true" preserveRatio="true" />
                   <ImageView fx:id="devPlayer1" fitHeight="323.0" fitWidth="210.0" layoutX="694.0" layoutY="419.0" pickOnBounds="true" preserveRatio="true" />
                   <ImageView fx:id="devPlayer2" fitHeight="323.0" fitWidth="210.0" layoutX="930.0" layoutY="419.0" pickOnBounds="true" preserveRatio="true" />
-                  <Button fx:id="showLeader" layoutX="62.0" layoutY="29.0" mnemonicParsing="false" onAction="#showLeader" prefHeight="26.0" prefWidth="64.0" text="Leader" />
+                  <Button fx:id="showLeader" layoutX="62.0" layoutY="29.0" mnemonicParsing="false" onAction="#showLeader" prefHeight="33.0" prefWidth="86.0" text="Leader" />
                   <ImageView fx:id="pope0" fitHeight="96.0" fitWidth="90.0" layoutX="292.0" layoutY="114.0" pickOnBounds="true" preserveRatio="true" />
                   <ImageView fx:id="pope1" fitHeight="96.0" fitWidth="90.0" layoutX="586.0" layoutY="56.0" pickOnBounds="true" preserveRatio="true" />
                   <ImageView fx:id="pope2" fitHeight="96.0" fitWidth="90.0" layoutX="939.0" layoutY="114.0" pickOnBounds="true" preserveRatio="true" />
@@ -96,15 +96,15 @@
                   </ImageView>
                   <AnchorPane fx:id="leaderPane" disable="true" layoutX="-2.0" prefHeight="830.0" prefWidth="250.0" style="-fx-background-color: #C9C09D;" visible="false">
                      <children>
-                        <Button fx:id="hideLeader" layoutX="70.0" layoutY="29.0" mnemonicParsing="false" onAction="#hideLeader" text="Hide" />
+                        <Button fx:id="hideLeader" layoutX="73.0" layoutY="31.0" mnemonicParsing="false" onAction="#hideLeader" prefHeight="29.0" prefWidth="67.0" text="Hide" />
                         <ImageView fx:id="leaderPlayer1" fitHeight="323.0" fitWidth="210.0" layoutX="20.0" layoutY="445.0" pickOnBounds="true" preserveRatio="true" />
                         <ImageView fx:id="leaderPlayer0" fitHeight="323.0" fitWidth="210.0" layoutX="20.0" layoutY="73.0" pickOnBounds="true" preserveRatio="true" />
-                        <Label fx:id="leaderText0" layoutX="20.0" layoutY="402.0" prefWidth="210.0" textAlignment="CENTER" textFill="WHITE">
+                        <Label fx:id="leaderText0" layoutX="20.0" layoutY="402.0" prefWidth="210.0" styleClass="label3" textAlignment="CENTER" textFill="WHITE">
                            <font>
                               <Font size="18.0" />
                            </font>
                         </Label>
-                        <Label fx:id="leaderText1" layoutX="20.0" layoutY="773.0" prefWidth="210.0" textFill="WHITE">
+                        <Label fx:id="leaderText1" layoutX="20.0" layoutY="773.0" prefWidth="210.0" styleClass="label3" textFill="WHITE">
                            <font>
                               <Font size="18.0" />
                            </font>
@@ -115,22 +115,22 @@
                         <ImageView fx:id="addDeposit01" fitHeight="60.0" fitWidth="60.0" layoutX="136.0" layoutY="315.0" pickOnBounds="true" preserveRatio="true" />
                      </children>
                   </AnchorPane>
-                  <Button fx:id="player0" layoutX="129.0" layoutY="838.0" mnemonicParsing="false" onAction="#player0View" prefHeight="41.0" prefWidth="142.0">
+                  <Button fx:id="player0" layoutX="129.0" layoutY="839.0" mnemonicParsing="false" onAction="#player0View" prefHeight="41.0" prefWidth="142.0" styleClass="button1">
                      <font>
                         <Font size="18.0" />
                      </font>
                   </Button>
-                  <Button fx:id="player1" layoutX="368.0" layoutY="838.0" mnemonicParsing="false" onAction="#player1View" prefHeight="41.0" prefWidth="142.0">
+                  <Button fx:id="player1" layoutX="368.0" layoutY="839.0" mnemonicParsing="false" onAction="#player1View" prefHeight="41.0" prefWidth="142.0" styleClass="button1">
                      <font>
                         <Font size="18.0" />
                      </font>
                   </Button>
-                  <Button fx:id="player2" layoutX="630.0" layoutY="838.0" mnemonicParsing="false" onAction="#player2View" prefHeight="41.0" prefWidth="142.0">
+                  <Button fx:id="player2" layoutX="630.0" layoutY="839.0" mnemonicParsing="false" onAction="#player2View" prefHeight="41.0" prefWidth="142.0" styleClass="button1">
                      <font>
                         <Font size="18.0" />
                      </font>
                   </Button>
-                  <Button fx:id="player3" layoutX="859.0" layoutY="838.0" mnemonicParsing="false" onAction="#player3View" prefHeight="41.0" prefWidth="142.0">
+                  <Button fx:id="player3" layoutX="859.0" layoutY="839.0" mnemonicParsing="false" onAction="#player3View" prefHeight="41.0" prefWidth="142.0" styleClass="button1">
                      <font>
                         <Font size="18.0" />
                      </font>
@@ -138,9 +138,9 @@
                </children></AnchorPane>
       </content>
     </Tab>
-      <Tab fx:id="table" text="Table">
+      <Tab text="Table">
          <content>
-            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-background-image: url('../graphics/background/leonardo0.png')">
                <children>
                   <ImageView fx:id="marbleOut" fitHeight="75.0" fitWidth="75.0" layoutX="317.0" layoutY="351.0" pickOnBounds="true" preserveRatio="true" />
                   <GridPane fx:id="developmentGrid" alignment="CENTER" hgap="10.0" layoutX="496.0" layoutY="58.0" prefHeight="713.0" prefWidth="638.0" vgap="10.0">
@@ -172,26 +172,26 @@
                </children></AnchorPane>
          </content>
       </Tab>
-      <Tab fx:id="developmentView1" text="Turn">
+      <Tab text="Turn">
          <content>
             <AnchorPane fx:id="tabTurn" disable="true" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
-                  <Button fx:id="marketTurn" layoutX="551.0" layoutY="263.0" mnemonicParsing="false" onAction="#marketTurn" prefHeight="34.0" prefWidth="96.0" text="Market">
+                  <Button layoutX="551.0" layoutY="263.0" mnemonicParsing="false" onAction="#marketTurn" prefHeight="39.0" prefWidth="96.0" styleClass="button2" text="Market">
                      <font>
                         <Font size="18.0" />
                      </font>
                   </Button>
-                  <Button fx:id="buyDevelopmentTurn" layoutX="486.0" layoutY="364.0" mnemonicParsing="false" onAction="#buyDevelopmentTurn" text="Buy Development Cards">
+                  <Button layoutX="486.0" layoutY="364.0" mnemonicParsing="false" onAction="#buyDevelopmentTurn" prefHeight="39.0" prefWidth="233.0" styleClass="button2" text="Buy Development Cards">
                      <font>
                         <Font size="18.0" />
                      </font>
                   </Button>
-                  <Button fx:id="activateProductionTurn" layoutX="505.0" layoutY="476.0" mnemonicParsing="false" onAction="#activateProductionTurn" text="Activate Production">
+                  <Button layoutX="505.0" layoutY="476.0" mnemonicParsing="false" onAction="#activateProductionTurn" prefHeight="39.0" prefWidth="196.0" styleClass="button2" text="Activate Production">
                      <font>
                         <Font size="18.0" />
                      </font>
                   </Button>
-                  <Label layoutX="389.0" layoutY="113.0" text="It's Yourn Turn, Choose One:">
+                  <Label contentDisplay="CENTER" layoutX="229.0" layoutY="114.0" prefHeight="52.0" prefWidth="749.0" styleClass="label2" text="It's Yourn Turn, Choose One:" textAlignment="CENTER">
                      <font>
                         <Font size="31.0" />
                      </font>
