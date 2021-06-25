@@ -16,6 +16,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
+/**
+ * This class represents the controller of the leader card scene of the GUI application. Implements GUIController and Initializable interface.
+ * @see GUIController
+ * @see Initializable
+ *
+ * @author Stefano Fossati
+ */
 public class LeaderCardController implements GUIController, Initializable {
     private GUI gui;
 
@@ -26,12 +33,15 @@ public class LeaderCardController implements GUIController, Initializable {
     private ArrayList<Integer> selectedLeaderToActivate = new ArrayList<>();
 
 
-    @FXML ImageView leader0;
-    @FXML ImageView leader1;
-    @FXML Label actionLeader0;
-    @FXML Label actionLeader1;
+    @FXML private ImageView leader0;
+    @FXML private ImageView leader1;
+    @FXML private Label actionLeader0;
+    @FXML private Label actionLeader1;
 
-
+    /**
+     * Draws the leader cards in the scene.
+     * @param leaderCardAvailable The leader cards.
+     */
     public void drawLeader(ArrayList<LeaderCardToClient> leaderCardAvailable){
         for(int i = 0; i< leaderCardAvailable.size(); i++){
             leaderCard.get(i).setImage(gui.getLeaderCardsGraphic().get(leaderCardAvailable.get(i).getNameCard()));
@@ -44,11 +54,13 @@ public class LeaderCardController implements GUIController, Initializable {
     }
 
 
-
+    /**
+     * Sends the action that done the user on the leader card to the connection with the server.
+     * @param actionEvent The event of the type ActionEvent.
+     */
     public void done(ActionEvent actionEvent) {
         ArrayList<Image> leaderCardToDraw = new ArrayList<>();
         ArrayList<Integer> sendSelectedLeaderCard = new ArrayList<>();
-
 
         for(int i =0; i<leaderCard.size(); i++){
             if(leaderCard.get(i).getImage()!=null){
@@ -70,18 +82,26 @@ public class LeaderCardController implements GUIController, Initializable {
         gui.changeScene("playerView");
         PlayerViewController controller = (PlayerViewController) gui.getCurrentController();
         controller.tabTurnNotActive(true);
-        /*
-        if(leaderCardToDraw.size()>0){
-            controller.drawLeaderCard(leaderCardToDraw);
-        }
-
-         */
         gui.setLeaderInHand(leaderCardToDraw);
-
-
         gui.getConnectionToServer().sendLeaderCardTurn(sendSelectedLeaderCard);
     }
 
+
+
+    @Override
+    public void setGUI(GUI gui) {
+        this.gui = gui;
+    }
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        leaderCard = new ArrayList<>(List.of(leader0, leader1));
+        actionLeader = new ArrayList<>(List.of(actionLeader0, actionLeader1));
+    }
+
+    /**
+     * Event for the managing of the leader card action.
+     */
     private EventHandler<MouseEvent> selectLeaderCard = new EventHandler<MouseEvent>() {
         @Override
         public void handle(MouseEvent mouseEvent) {
@@ -110,15 +130,4 @@ public class LeaderCardController implements GUIController, Initializable {
             }
         }
     };
-
-    @Override
-    public void setGUI(GUI gui) {
-        this.gui = gui;
-    }
-
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        leaderCard = new ArrayList<>(List.of(leader0, leader1));
-        actionLeader = new ArrayList<>(List.of(actionLeader0, actionLeader1));
-    }
 }

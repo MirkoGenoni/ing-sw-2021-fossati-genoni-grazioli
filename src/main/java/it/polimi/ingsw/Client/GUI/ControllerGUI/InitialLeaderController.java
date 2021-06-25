@@ -8,31 +8,37 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.effect.DropShadow;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
+
+/**
+ * This class represents the controller of the initial leader card scene of the GUI application. Implements GUIController and Initializable interface.
+ * @see GUIController
+ * @see Initializable
+ *
+ * @author Stefano Fossati
+ */
 public class InitialLeaderController implements GUIController, Initializable {
     private GUI gui;
     private ArrayList<ImageView> leader;
-
     private ArrayList<Integer> selectedLeader = new ArrayList<>();
 
+    @FXML private ImageView leader0;
+    @FXML private ImageView leader1;
+    @FXML private ImageView leader2;
+    @FXML private ImageView leader3;
+    @FXML private Button done;
 
-    @FXML ImageView leader0;
-    @FXML ImageView leader1;
-    @FXML ImageView leader2;
-    @FXML ImageView leader3;
-
-    @FXML Button done;
-
+    /**
+     * Draws the leader cards on the scene.
+     * @param leaderCard The leader cards
+     */
     public void drawLeader(ArrayList<LeaderCardToClient> leaderCard){
         for(int i=0; i<leaderCard.size(); i++){
             leader.get(i).setImage(gui.getLeaderCardsGraphic().get(leaderCard.get(i).getNameCard()));
@@ -40,16 +46,10 @@ public class InitialLeaderController implements GUIController, Initializable {
         }
     }
 
-    @Override
-    public void setGUI(GUI gui) {
-        this.gui = gui;
-    }
-
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        leader = new ArrayList<>(List.of(leader0, leader1, leader2, leader3));
-    }
-
+    /**
+     * Sends the leader card choose by the user to the connection with the server.
+     * @param actionEvent The event of the type ActionEvent.
+     */
     public void done(ActionEvent actionEvent) {
         if(selectedLeader.size()>2){
             //error TODO
@@ -63,8 +63,20 @@ public class InitialLeaderController implements GUIController, Initializable {
         }
     }
 
-    private EventHandler<MouseEvent> action = new EventHandler<MouseEvent>(){
+    @Override
+    public void setGUI(GUI gui) {
+        this.gui = gui;
+    }
 
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        leader = new ArrayList<>(List.of(leader0, leader1, leader2, leader3));
+    }
+
+    /**
+     * Event for the managing of the selection of the leader cards to discard.
+     */
+    private EventHandler<MouseEvent> action = new EventHandler<MouseEvent>(){
         @Override
         public void handle(MouseEvent mouseEvent) {
             Integer i = -1;

@@ -14,16 +14,30 @@ import javafx.scene.layout.GridPane;
 import java.net.URL;
 import java.util.*;
 
-public class MarketController implements GUIController, Initializable {
+
+/**
+ * This class represents the controller of the market scene of the GUI application. Implements GUIController interface.
+ * @see GUIController
+ *
+ * @author Stefano Fossati
+ */
+public class MarketController implements GUIController{
     private GUI gui;
     private Map<String, Image> marble = new HashMap<>();
-
-    @FXML GridPane gridMarble;
-    @FXML ImageView outMarble;
 
     //tmp
     private ArrayList<LeaderCardToClient> leaderCardsActive;
 
+    @FXML private GridPane gridMarble;
+    @FXML private ImageView outMarble;
+
+
+    /**
+     * Draws the structure of the market and manage the leader card active of the player.
+     * @param marketState The state of the grid of the market
+     * @param marbleOut The marble out of the market
+     * @param leaderCardActive The leader card active of the player.
+     */
     public void drawMarket(ArrayList<Marble> marketState, Marble marbleOut, ArrayList<LeaderCardToClient> leaderCardActive){
         this.leaderCardsActive = leaderCardActive;
         int k=0;
@@ -44,6 +58,25 @@ public class MarketController implements GUIController, Initializable {
         outMarble.setImage(marble.get(marbleOut.name().toLowerCase()));
     }
 
+    /**
+     * Turns back to the player view scene.
+     * @param actionEvent The event of the type ActionEvent.
+     */
+    public void back(ActionEvent actionEvent) {
+        gui.changeScene("playerView");
+    }
+
+    /**
+     * Selects the line choose by the user.
+     * @param mouseEvent The event of the type MouseEvent.
+     */
+    public void send(MouseEvent mouseEvent) {
+        for(int i=1; i<8; i++){
+            if(((ImageView)mouseEvent.getSource()).getId().equals("send"+i)){
+                sendChooseLine(i);
+            }
+        }
+    }
 
     @Override
     public void setGUI(GUI gui) {
@@ -51,39 +84,10 @@ public class MarketController implements GUIController, Initializable {
         marble = gui.getMarblesGraphic();
     }
 
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-
-    }
-
-    public void sendCol4(MouseEvent mouseEvent) {
-        sendChooseLine(4);
-    }
-
-    public void sendCol5(MouseEvent mouseEvent) {
-        sendChooseLine(5);
-    }
-
-    public void sendCol6(MouseEvent mouseEvent) {
-        sendChooseLine(6);
-    }
-
-    public void sendCol7(MouseEvent mouseEvent) {
-        sendChooseLine(7);
-    }
-
-    public void sendRow1(MouseEvent mouseEvent) {
-        sendChooseLine(1);
-    }
-
-    public void sendRow2(MouseEvent mouseEvent) {
-        sendChooseLine(2);
-    }
-
-    public void sendRow3(MouseEvent mouseEvent) {
-        sendChooseLine(3);
-    }
-
+    /**
+     * Sends the information to the connection with the server.
+     * @param line The number line choose by the user.
+     */
     private void sendChooseLine(int line){
         ArrayList<Boolean> tmp = new ArrayList<>();
         tmp.add(false);
@@ -100,7 +104,5 @@ public class MarketController implements GUIController, Initializable {
         }
     }
 
-    public void back(ActionEvent actionEvent) {
-        gui.changeScene("playerView");
-    }
+
 }

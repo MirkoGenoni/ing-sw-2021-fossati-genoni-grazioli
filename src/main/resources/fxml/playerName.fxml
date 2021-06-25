@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" styleClass="anchor" stylesheets="@../css/setup.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.Client.GUI.ControllerGUI.PlayerNameController">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" styleClass="anchor" stylesheets="@../css/setup.css" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.Client.GUI.ControllerGUI.PlayerNameController">
    <children>
       <TextField fx:id="textName" layoutX="300.0" layoutY="164.0" />
       <Button fx:id="buttonName" disable="true" layoutX="174.0" layoutY="164.0" mnemonicParsing="false" onAction="#sendName" opacity="0.0" text="OK" />
@@ -15,22 +15,22 @@
       <Button fx:id="buttonRoom" disable="true" layoutX="174.0" layoutY="164.0" mnemonicParsing="false" onAction="#chooseRoom" opacity="0.0" text="OK" />
       <Label fx:id="message" layoutX="170.0" layoutY="250.0" prefHeight="17.0" prefWidth="310.0" />
       <CheckBox fx:id="booleanRoom" disable="true" layoutX="299.0" layoutY="207.0" mnemonicParsing="false" onAction="#selected" opacity="0.0" text="New Room" />
-      <Button fx:id="numPlayer1" disable="true" layoutX="133.0" layoutY="132.0" mnemonicParsing="false" onAction="#sendOne" opacity="0.0" prefHeight="77.0" prefWidth="119.0" text="1">
+      <Button fx:id="numPlayer1" disable="true" layoutX="133.0" layoutY="132.0" mnemonicParsing="false" onAction="#sendNumPlayer" opacity="0.0" prefHeight="77.0" prefWidth="119.0" text="1">
          <font>
             <Font size="24.0" />
          </font>
       </Button>
-      <Button fx:id="numPlayer2" disable="true" layoutX="324.0" layoutY="132.0" mnemonicParsing="false" onAction="#sendTwo" opacity="0.0" prefHeight="77.0" prefWidth="119.0" text="2">
+      <Button fx:id="numPlayer2" disable="true" layoutX="324.0" layoutY="132.0" mnemonicParsing="false" onAction="#sendNumPlayer" opacity="0.0" prefHeight="77.0" prefWidth="119.0" text="2">
          <font>
             <Font size="24.0" />
          </font>
       </Button>
-      <Button fx:id="numPlayer3" disable="true" layoutX="133.0" layoutY="243.0" mnemonicParsing="false" onAction="#sendThree" opacity="0.0" prefHeight="77.0" prefWidth="119.0" text="3">
+      <Button fx:id="numPlayer3" disable="true" layoutX="133.0" layoutY="243.0" mnemonicParsing="false" onAction="#sendNumPlayer" opacity="0.0" prefHeight="77.0" prefWidth="119.0" text="3">
          <font>
             <Font size="24.0" />
          </font>
       </Button>
-      <Button fx:id="numPlayer4" disable="true" layoutX="324.0" layoutY="243.0" mnemonicParsing="false" onAction="#sendFour" opacity="0.0" prefHeight="77.0" prefWidth="119.0" text="4">
+      <Button fx:id="numPlayer4" disable="true" layoutX="324.0" layoutY="243.0" mnemonicParsing="false" onAction="#sendNumPlayer" opacity="0.0" prefHeight="77.0" prefWidth="119.0" text="4">
          <font>
             <Font size="24.0" />
          </font>

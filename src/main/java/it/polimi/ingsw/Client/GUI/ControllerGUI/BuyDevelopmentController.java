@@ -10,29 +10,24 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.effect.DropShadow;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.ResourceBundle;
 
+/**
+ * This class represents the controller of the buy development card scene of the GUI application. Implements GUIController and Initializable interface.
+ * @see GUIController
+ * @see Initializable
+ *
+ * @author Stefano Fossati
+ */
 public class BuyDevelopmentController implements GUIController, Initializable {
     private GUI gui;
-    
-    @FXML GridPane gridDev;
-    @FXML Button done;
-    @FXML Label coin;
-    @FXML Label shield;
-    @FXML Label stone;
-    @FXML Label servant;
-    @FXML Label error;
 
     private ArrayList<String> devSelected = new ArrayList<>();
     private Map<String, Integer> totalResources;
@@ -40,7 +35,23 @@ public class BuyDevelopmentController implements GUIController, Initializable {
 
     //tmp
     private DevelopmentCardToClient[][] gridDevelopment;
-    
+
+    @FXML private GridPane gridDev;
+    @FXML private Button done;
+    @FXML private Label coin;
+    @FXML private Label shield;
+    @FXML private Label stone;
+    @FXML private Label servant;
+    @FXML private Label error;
+
+
+    /**
+     * Draws the development cards that the user could buy. Also shows the information about all the resources that the player has.
+     * @param dev The development cards that the player could buy.
+     * @param deposit The deposit of the player.
+     * @param strongBox The strongbox of the player
+     */
+    //TODO add additional deposit
     public void drawDevelopment(DevelopmentCardToClient[][] dev, ArrayList<Resource> deposit, Map<Resource, Integer> strongBox){
         gridDevelopment = dev;
         for(int i=0; i< dev.length; i++){
@@ -64,18 +75,10 @@ public class BuyDevelopmentController implements GUIController, Initializable {
         servant.setText("X " + totalResources.get("servant"));
     }
 
-
-
-    @Override
-    public void setGUI(GUI gui) {
-        this.gui = gui;
-    }
-
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-
-    }
-
+    /**
+     * Sends the development card choose that the player choose to buy to the connection with the server.
+     * @param actionEvent The event of the type ActionEvent.
+     */
     public void done(ActionEvent actionEvent) {
         int devLevel = -1;
         int devColor = -1;
@@ -110,18 +113,32 @@ public class BuyDevelopmentController implements GUIController, Initializable {
             }
             clear();
             gui.getConnectionToServer().sendSelectedDevelopmentCard(devColor, developmentSelected.getLevel()-1);
-
-
-
         }
     }
 
+    /**
+     * Changes the scene into the player view scene.
+     * @param actionEvent The event of the type ActionEvent.
+     */
     public void back(ActionEvent actionEvent) {
         gui.changeScene("playerView");
         clear();
 
     }
 
+    @Override
+    public void setGUI(GUI gui) {
+        this.gui = gui;
+    }
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+
+    }
+
+    /**
+     * Clears all the temporary structure used to save information.
+     */
     private void clear(){
         totalResources.clear();
         devSelected.clear();
@@ -130,6 +147,9 @@ public class BuyDevelopmentController implements GUIController, Initializable {
         devImg.clear();
     }
 
+    /**
+     * Event for managing of the development card selection
+     */
     private EventHandler<MouseEvent> selectAction = new EventHandler<MouseEvent>() {
         @Override
         public void handle(MouseEvent mouseEvent) {

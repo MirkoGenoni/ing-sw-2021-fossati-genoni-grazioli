@@ -24,37 +24,37 @@
         </rowConstraints>
       </GridPane>
       <ImageView fx:id="outMarble" fitHeight="100.0" fitWidth="100.0" layoutX="648.0" layoutY="386.0" pickOnBounds="true" preserveRatio="true" />
-      <ImageView fx:id="col4" fitHeight="70.0" fitWidth="43.0" layoutX="228.0" layoutY="63.0" onMouseClicked="#sendCol4" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="send4" fitHeight="70.0" fitWidth="43.0" layoutX="228.0" layoutY="63.0" onMouseClicked="#send" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../graphics/icons/arrowV.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="col5" fitHeight="70.0" fitWidth="43.0" layoutX="332.0" layoutY="63.0" onMouseClicked="#sendCol5" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="send5" fitHeight="70.0" fitWidth="43.0" layoutX="332.0" layoutY="63.0" onMouseClicked="#send" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../graphics/icons/arrowV.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="col6" fitHeight="70.0" fitWidth="43.0" layoutX="440.0" layoutY="63.0" onMouseClicked="#sendCol6" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="send6" fitHeight="70.0" fitWidth="43.0" layoutX="440.0" layoutY="63.0" onMouseClicked="#send" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../graphics/icons/arrowV.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="col7" fitHeight="70.0" fitWidth="43.0" layoutX="549.0" layoutY="63.0" onMouseClicked="#sendCol7" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="send7" fitHeight="70.0" fitWidth="43.0" layoutX="549.0" layoutY="63.0" onMouseClicked="#send" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../graphics/icons/arrowV.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="row1" fitHeight="43.0" fitWidth="70.0" layoutX="73.0" layoutY="216.0" onMouseClicked="#sendRow1" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="send1" fitHeight="43.0" fitWidth="70.0" layoutX="73.0" layoutY="216.0" onMouseClicked="#send" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../graphics/icons/arrowO.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="row2" fitHeight="43.0" fitWidth="70.0" layoutX="73.0" layoutY="316.0" onMouseClicked="#sendRow2" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="send2" fitHeight="43.0" fitWidth="70.0" layoutX="73.0" layoutY="316.0" onMouseClicked="#send" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../graphics/icons/arrowO.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="row3" fitHeight="43.0" fitWidth="70.0" layoutX="73.0" layoutY="421.0" onMouseClicked="#sendRow3" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="send3" fitHeight="43.0" fitWidth="70.0" layoutX="73.0" layoutY="421.0" onMouseClicked="#send" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../graphics/icons/arrowO.png" />
          </image>

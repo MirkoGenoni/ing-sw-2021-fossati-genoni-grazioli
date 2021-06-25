@@ -18,12 +18,18 @@ import javafx.scene.layout.*;
 import java.net.URL;
 import java.util.*;
 
+/**
+ * This class represents the controller of the player view scene of the GUI application. Implements GUIController and Initializable interface.
+ * This class manage all the information to show to the user.
+ * @see GUIController
+ * @see Initializable
+ *
+ * @author Stefano Fossati
+ */
 public class PlayerViewController implements GUIController, Initializable {
     private GUI gui;
 
-    private int faithPosition;
     private int faithLorenzoPosition;
-
     private int initial = -1;
 
     private Map<String, Image> marketMarble;
@@ -45,66 +51,62 @@ public class PlayerViewController implements GUIController, Initializable {
     private ArrayList<Label> leaderText;
     private ArrayList<ImageView> popeFavorTiles;
 
-    @FXML private Tab playerBoardView; //TODO fare così
-
-    @FXML Label name;
     // deposit player
-    @FXML ImageView deposit1;
-    @FXML ImageView deposit2;
-    @FXML ImageView deposit3;
-    @FXML ImageView deposit4;
-    @FXML ImageView deposit5;
-    @FXML ImageView deposit6;
+    @FXML private ImageView deposit1;
+    @FXML private ImageView deposit2;
+    @FXML private ImageView deposit3;
+    @FXML private ImageView deposit4;
+    @FXML private ImageView deposit5;
+    @FXML private ImageView deposit6;
     // development of the player
-    @FXML ImageView devPlayer0;
-    @FXML ImageView devPlayer1;
-    @FXML ImageView devPlayer2;
+    @FXML private ImageView devPlayer0;
+    @FXML private ImageView devPlayer1;
+    @FXML private ImageView devPlayer2;
     // strongbox player
-    @FXML Label coin;
-    @FXML Label stone;
-    @FXML Label shield;
-    @FXML Label servant;
+    @FXML private Label coin;
+    @FXML private Label stone;
+    @FXML private Label shield;
+    @FXML private Label servant;
     // leader of the player
-    @FXML ImageView leaderPlayer0;
-    @FXML ImageView leaderPlayer1;
-    @FXML Label leaderText0;
-    @FXML Label leaderText1;
+    @FXML private ImageView leaderPlayer0;
+    @FXML private ImageView leaderPlayer1;
+    @FXML private Label leaderText0;
+    @FXML private Label leaderText1;
     //additional deposit resource
-    @FXML ImageView addDeposit00;
-    @FXML ImageView addDeposit01;
-    @FXML ImageView addDeposit10;
-    @FXML ImageView addDeposit11;
+    @FXML private ImageView addDeposit00;
+    @FXML private ImageView addDeposit01;
+    @FXML private ImageView addDeposit10;
+    @FXML private ImageView addDeposit11;
 
     // pope space
-    @FXML ImageView pope0;
-    @FXML ImageView pope1;
-    @FXML ImageView pope2;
+    @FXML private ImageView pope0;
+    @FXML private ImageView pope1;
+    @FXML private ImageView pope2;
     //faith
-    @FXML ImageView faith0;
-    @FXML ImageView faith1;
-    @FXML ImageView faith2;
-    @FXML ImageView faith3;
-    @FXML ImageView lorenzoFaith;
-
+    @FXML private ImageView faith0;
+    @FXML private ImageView faith1;
+    @FXML private ImageView faith2;
+    @FXML private ImageView faith3;
+    @FXML private ImageView lorenzoFaith;
 
     // table
-    @FXML GridPane gridMarket;
-    @FXML ImageView marbleOut;
-    @FXML GridPane developmentGrid;
-    @FXML AnchorPane playerBoardPane;
-    @FXML AnchorPane leaderPane;
-    @FXML Button showLeader;
-    @FXML Button hideLeader;
+    @FXML private GridPane gridMarket;
+    @FXML private ImageView marbleOut;
+    @FXML private GridPane developmentGrid;
+    @FXML private AnchorPane leaderPane;
+
+    //player button
+    @FXML private Button player0;
+    @FXML private Button player1;
+    @FXML private Button player2;
+    @FXML private Button player3;
+    @FXML private AnchorPane tabTurn;
 
 
-    @FXML Button player0;
-    @FXML Button player1;
-    @FXML Button player2;
-    @FXML Button player3;
-    @FXML AnchorPane tabTurn;
-
-
-
+    /**
+     * Updates all the information of all players of the match.
+     * @param players The map that contains the information of all players.
+     */
     public void updatePlayerBoard(Map<String, PlayerInformationToClient> players){
         turnTmp = gui.getLastTurn();
         if(initial==-1){
@@ -141,118 +143,14 @@ public class PlayerViewController implements GUIController, Initializable {
 
         //visualize player of the client
         drawPlayerBoard(players.get(gui.getNamePlayer()));
-
-
-
-
-
-
-
-
-
-
     }
 
-    private void drawPlayerBoard(PlayerInformationToClient player){
 
-
-        // visualize development card of the player
-        for(int i=0; i<player.getDevelopmentCardPlayer().size(); i++){
-            if(player.getDevelopmentCardPlayer().get(i)!=null){
-                devCardPlayer.get(i).setImage(gui.getDevelopmentCardsGraphic().get(player.getDevelopmentCardPlayer().get(i).getCardID()));
-                if(devCardPlayer.get(i).getEffect()==null){
-                    devCardPlayer.get(i).setEffect(new DropShadow());
-                }
-
-            }else{
-                devCardPlayer.get(i).setImage(null);
-                devCardPlayer.get(i).setEffect(null);
-            }
-        }
-        // visualize deposit
-        for(int i=0; i<player.getDeposit().size(); i++){
-            if(player.getDeposit().get(i)!=null){
-                deposit.get(i).setImage(resources.get(player.getDeposit().get(i).name().toLowerCase()));
-            }else{
-                deposit.get(i).setImage(null);
-            }
-        }
-        // visualize strongBox
-
-
-        coin.setText("X " + player.getStrongBox().get(Resource.COIN));
-        stone.setText("X " + player.getStrongBox().get(Resource.STONE));
-        shield.setText("X " + player.getStrongBox().get(Resource.SHIELD));
-        servant.setText("X " + player.getStrongBox().get(Resource.SERVANT));
-
-        //visualize leaderCard;
-        // active
-        leaderCardPlayer.forEach(lead -> lead.setImage(null));
-        leaderText.forEach(text -> text.setText(""));
-        System.out.println(player.getLeaderCardActive().toString());
-        if(player.getLeaderCardActive().size()!=0){
-            int z=0;
-            for(int i=0; i<player.getLeaderCardActive().size(); i++){
-                leaderCardPlayer.get(1-i).setImage(gui.getLeaderCardsGraphic().get(player.getLeaderCardActive().get(i).getNameCard()));
-                leaderText.get(1-i).setText("ACTIVE");
-                // stampare risorse nei bigger deposit
-                if(player.getLeaderCardActive().get(i).getEffect().equals("biggerDeposit")){
-                    ArrayList<Resource> tmpR = new ArrayList<>(player.getAdditionalDeposit().subList(0+2*z, 2+2*z));
-                    for(int k=0; k< tmpR.size(); k++){
-                        if(i==0){
-                            if(tmpR.get(k)!=null){
-                                addDeposit1.get(k).setImage(gui.getResourcesGraphic().get(tmpR.get(k).name().toLowerCase()));
-                            }else{
-                                addDeposit1.get(k).setImage(null);
-                            }
-                        }else{
-                            if(tmpR.get(k)!=null){
-                                addDeposit0.get(k).setImage(gui.getResourcesGraphic().get(tmpR.get(k).name().toLowerCase()));
-                            }else{
-                                addDeposit1.get(k).setImage(null);
-                            }
-                        }
-
-
-                    }
-                    z++;
-                }
-            }
-        }
-
-        //leader card in hand, only for the player of the client
-        if(player.getPlayerNameSend().equals(gui.getNamePlayer())){
-            drawLeaderCard(gui.getLeaderInHand());
-        }
-
-        //visualize pope favor tiles
-        for (int i=0; i<player.getPopeFavorTiles().size(); i++){
-            if(player.getPopeFavorTiles().get(i)!=0){
-                String input = "/graphics/pope/" + popeFavorTiles.get(i).getId() +".png";
-                try{
-                    Image tmpI = new Image(Objects.requireNonNull(getClass().getResourceAsStream(input)));
-                    popeFavorTiles.get(i).setImage(tmpI);
-                }catch (NullPointerException e){
-                    System.out.println("pope space file not found, address " + input);
-                    e.printStackTrace();
-                }
-
-            }else{
-                popeFavorTiles.get(i).setImage(null);
-            }
-        }
-
-        //visualize faith marker
-        for(String s: playerMarkerPosition.keySet()){
-            if(!s.equals(player.getPlayerNameSend())){
-                playerMarkerPosition.get(s).setOpacity(0);
-            }
-            else{
-                playerMarkerPosition.get(s).setOpacity(1);
-            }
-        }
-    }
-
+    /**
+     * Updates the information of the game.
+     * @param dev The development cards on the table to update.
+     * @param market The market structure to update.
+     */
     public void updateTable(DevelopmentCardToClient[][] dev, MarketToClient market){
         devCard.forEach(d -> d.setImage(null));
         // update development card view
@@ -292,6 +190,10 @@ public class PlayerViewController implements GUIController, Initializable {
         marbleOut.setImage(marketMarble.get(market.getOutMarble().name().toLowerCase()));
     }
 
+    /**
+     * Updates the stat of Lorenzo in the single player match.
+     * @param lorenzoPosition The position of Lorenzo in the faith track.
+     */
     public void lorenzoFaith(int lorenzoPosition){
         try{
             lorenzoFaith.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/graphics/icons/croce_lorenzo.png"))));
@@ -304,25 +206,55 @@ public class PlayerViewController implements GUIController, Initializable {
         faithLorenzoPosition = lorenzoPosition;
     }
 
+    /**
+     * Updates the leader card that the player has in hand.
+     * @param leaderInHand The leader card that the player has in hand.
+     */
+    public void drawLeaderCard(ArrayList<Image> leaderInHand){
+        if(leaderInHand!=null){
+            for(int i=0; i<leaderInHand.size(); i++){
+                leaderCardPlayer.get(i).setImage(leaderInHand.get(i));
+                leaderText.get(i).setText("IN HAND");
+            }
+        }
+    }
 
-
-
+    /**
+     * Sets the tab with the turn choice.
+     * @param b True to switch off the tub turn, false to switch it on.
+     */
     public void tabTurnNotActive(boolean b){
         tabTurn.setDisable(b);
     }
 
+
+    //------------------------------
+    // METHODS FOR GRAPHIC ELEMENTS
+    //------------------------------
+
+    /**
+     * Changes the scene into the market turn scene.
+     * @param actionEvent The event of the type ActionEvent.
+     */
     public void marketTurn(ActionEvent actionEvent) {
         gui.changeScene("marketView");
         MarketController controller = (MarketController) gui.getCurrentController();
         controller.drawMarket(turnTmp.getMarket().getGrid(), turnTmp.getMarket().getOutMarble(), turnTmp.getPlayers().get(gui.getNamePlayer()).getLeaderCardActive());
     }
 
+    /**
+     * Changes the scene into the buy development card scene.
+     * @param actionEvent The event of the type ActionEvent.
+     */
     public void buyDevelopmentTurn(ActionEvent actionEvent) {
         gui.changeScene("buyDevelopmentView");
         BuyDevelopmentController controller = (BuyDevelopmentController) gui.getCurrentController();
         controller.drawDevelopment(turnTmp.getDevelopmentCards(), turnTmp.getPlayers().get(gui.getNamePlayer()).getDeposit(), turnTmp.getPlayers().get(gui.getNamePlayer()).getStrongBox());
     }
-
+    /**
+     * Changes the scene into the activate production scene.
+     * @param actionEvent The event of the type ActionEvent.
+     */
     public void activateProductionTurn(ActionEvent actionEvent) {
         gui.changeScene("productionView");
         ActivateProductionController controller = (ActivateProductionController) gui.getCurrentController();
@@ -337,40 +269,22 @@ public class PlayerViewController implements GUIController, Initializable {
         controller.drawProduction(tmp, turnTmp.getPlayers().get(gui.getNamePlayer()).getDeposit(), turnTmp.getPlayers().get(gui.getNamePlayer()).getStrongBox(), turnTmp.getPlayers().get(gui.getNamePlayer()).getLeaderCardActive());
     }
 
-
-
-    public void drawLeaderCard(ArrayList<Image> leaderInHand){
-        if(leaderInHand!=null){
-            for(int i=0; i<leaderInHand.size(); i++){
-                leaderCardPlayer.get(i).setImage(leaderInHand.get(i));
-                leaderText.get(i).setText("IN HAND");
-            }
-        }
-    }
-
+    /**
+     * Displays the leader card of the player.
+     * @param actionEvent The event of the type ActionEvent.
+     */
     public void showLeader(ActionEvent actionEvent) {
         leaderPane.setDisable(false);
         leaderPane.setVisible(true);
-
     }
 
+    /**
+     * Hides the leader card of the player.
+     * @param actionEvent The event of the type ActionEvent.
+     */
     public void hideLeader(ActionEvent actionEvent) {
         leaderPane.setVisible(false);
         leaderPane.setDisable(true);
-    }
-
-    private void moveFaith(ImageView faith, int updateFaithPosition,int  oldPosition){
-        if(updateFaithPosition-oldPosition>0){
-            for(int k= oldPosition; k<updateFaithPosition; k++){
-                if(k<2 || k>=4 && k<9 || k>=11 && k<16 || k>=18 && k<=24){
-                    faith.setLayoutX(faith.getLayoutX() + 59);
-                }else if(k>=2 && k<4 || k>=16 && k<18){
-                    faith.setLayoutY(faith.getLayoutY() - 58);
-                }else if(k>=9 && k<11){
-                    faith.setLayoutY(faith.getLayoutY() + 58);
-                }
-            }
-        }
     }
 
     @Override
@@ -393,30 +307,127 @@ public class PlayerViewController implements GUIController, Initializable {
         playerButtons = new ArrayList<>(List.of(player0, player1, player2, player3));
         faiths = new ArrayList<>(List.of(faith0, faith1, faith2, faith3));
 
-        faithPosition = 0;
         faithLorenzoPosition = 0;
     }
 
-    public void player0View(ActionEvent actionEvent) {
-        drawPlayerBoard(gui.getLastTurn().getPlayers().get(gui.getPlayersName().get(0)));
+    /**
+     * Updates the scene with the information of another player.
+     * @param actionEvent The event of the type ActionEvent.
+     */
+    public void playerView(ActionEvent actionEvent) {
+        for(int i=0; i<4; i++){
+            if(((Button)actionEvent.getSource()).getId().equals("player" +i)){
+                drawPlayerBoard(gui.getLastTurn().getPlayers().get(gui.getPlayersName().get(i)));
+            }
+        }
         setPlayerButtonColor(actionEvent);
     }
 
-    public void player1View(ActionEvent actionEvent) {
-        drawPlayerBoard(gui.getLastTurn().getPlayers().get(gui.getPlayersName().get(1)));
-        setPlayerButtonColor(actionEvent);
+    //------------------------------
+    // PRIVATE METHODS
+    //------------------------------
+
+    /**
+     * Displays all the information of a specific player.
+     * @param player The player that were shown the information.
+     */
+    private void drawPlayerBoard(PlayerInformationToClient player){
+        // visualize development card of the player
+        for(int i=0; i<player.getDevelopmentCardPlayer().size(); i++){
+            if(player.getDevelopmentCardPlayer().get(i)!=null){
+                devCardPlayer.get(i).setImage(gui.getDevelopmentCardsGraphic().get(player.getDevelopmentCardPlayer().get(i).getCardID()));
+                if(devCardPlayer.get(i).getEffect()==null){
+                    devCardPlayer.get(i).setEffect(new DropShadow());
+                }
+
+            }else{
+                devCardPlayer.get(i).setImage(null);
+                devCardPlayer.get(i).setEffect(null);
+            }
+        }
+        // visualize deposit
+        for(int i=0; i<player.getDeposit().size(); i++){
+            if(player.getDeposit().get(i)!=null){
+                deposit.get(i).setImage(resources.get(player.getDeposit().get(i).name().toLowerCase()));
+            }else{
+                deposit.get(i).setImage(null);
+            }
+        }
+        // visualize strongBox
+        coin.setText("X " + player.getStrongBox().get(Resource.COIN));
+        stone.setText("X " + player.getStrongBox().get(Resource.STONE));
+        shield.setText("X " + player.getStrongBox().get(Resource.SHIELD));
+        servant.setText("X " + player.getStrongBox().get(Resource.SERVANT));
+
+        //visualize leaderCard;
+        // active
+        leaderCardPlayer.forEach(lead -> lead.setImage(null));
+        leaderText.forEach(text -> text.setText(""));
+        System.out.println(player.getLeaderCardActive().toString());
+        if(player.getLeaderCardActive().size()!=0){
+            int z=0;
+            for(int i=0; i<player.getLeaderCardActive().size(); i++){
+                leaderCardPlayer.get(1-i).setImage(gui.getLeaderCardsGraphic().get(player.getLeaderCardActive().get(i).getNameCard()));
+                leaderText.get(1-i).setText("ACTIVE");
+                // stampare risorse nei bigger deposit
+                if(player.getLeaderCardActive().get(i).getEffect().equals("biggerDeposit")){
+                    ArrayList<Resource> tmpR = new ArrayList<>(player.getAdditionalDeposit().subList(0+2*z, 2+2*z));
+                    for(int k=0; k< tmpR.size(); k++){
+                        if(i==0){
+                            if(tmpR.get(k)!=null){
+                                addDeposit1.get(k).setImage(gui.getResourcesGraphic().get(tmpR.get(k).name().toLowerCase()));
+                            }else{
+                                addDeposit1.get(k).setImage(null);
+                            }
+                        }else{
+                            if(tmpR.get(k)!=null){
+                                addDeposit0.get(k).setImage(gui.getResourcesGraphic().get(tmpR.get(k).name().toLowerCase()));
+                            }else{
+                                addDeposit1.get(k).setImage(null);
+                            }
+                        }
+                    }
+                    z++;
+                }
+            }
+        }
+
+        //leader card in hand, only for the player of the client
+        if(player.getPlayerNameSend().equals(gui.getNamePlayer())){
+            drawLeaderCard(gui.getLeaderInHand());
+        }
+
+        //visualize pope favor tiles
+        for (int i=0; i<player.getPopeFavorTiles().size(); i++){
+            if(player.getPopeFavorTiles().get(i)!=0){
+                String input = "/graphics/pope/" + popeFavorTiles.get(i).getId() +".png";
+                try{
+                    Image tmpI = new Image(Objects.requireNonNull(getClass().getResourceAsStream(input)));
+                    popeFavorTiles.get(i).setImage(tmpI);
+                }catch (NullPointerException e){
+                    System.out.println("pope space file not found, address " + input);
+                    e.printStackTrace();
+                }
+            }else{
+                popeFavorTiles.get(i).setImage(null);
+            }
+        }
+
+        //visualize faith marker
+        for(String s: playerMarkerPosition.keySet()){
+            if(!s.equals(player.getPlayerNameSend())){
+                playerMarkerPosition.get(s).setOpacity(0);
+            }
+            else{
+                playerMarkerPosition.get(s).setOpacity(1);
+            }
+        }
     }
 
-    public void player2View(ActionEvent actionEvent) {
-        drawPlayerBoard(gui.getLastTurn().getPlayers().get(gui.getPlayersName().get(2)));
-        setPlayerButtonColor(actionEvent);
-    }
-
-    public void player3View(ActionEvent actionEvent) {
-        drawPlayerBoard(gui.getLastTurn().getPlayers().get(gui.getPlayersName().get(3)));
-        setPlayerButtonColor(actionEvent);
-    }
-
+    /**
+     * Sets the color of the graphics element.
+     * @param actionEvent The event of the type ActionEvent.
+     */
     private void setPlayerButtonColor(ActionEvent actionEvent){
         Button tmp = (Button) actionEvent.getSource();
         for(Button b : playerButtons){
@@ -424,6 +435,26 @@ public class PlayerViewController implements GUIController, Initializable {
                 b.setStyle("-fx-background-color: #87553f; -fx-text-fill: white");
             }else{
                 b.setStyle("-fx-background-color: white; -fx-text-fill: #87553f");            }
+        }
+    }
+
+    /**
+     * Move the faith marker  position of the player from the old position to the new position.
+     * @param faith The faith marker.
+     * @param updateFaithPosition The old position.
+     * @param oldPosition The new position.
+     */
+    private void moveFaith(ImageView faith, int updateFaithPosition,int  oldPosition){
+        if(updateFaithPosition-oldPosition>0){
+            for(int k= oldPosition; k<updateFaithPosition; k++){
+                if(k<2 || k>=4 && k<9 || k>=11 && k<16 || k>=18 && k<=24){
+                    faith.setLayoutX(faith.getLayoutX() + 59);
+                }else if(k>=2 && k<4 || k>=16 && k<18){
+                    faith.setLayoutY(faith.getLayoutY() - 58);
+                }else if(k>=9 && k<11){
+                    faith.setLayoutY(faith.getLayoutY() + 58);
+                }
+            }
         }
     }
 }

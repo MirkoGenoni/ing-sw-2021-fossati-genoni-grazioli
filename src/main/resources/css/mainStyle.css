@@ -33,19 +33,6 @@
     -fx-text-fill: white;
 }
 
-/*
-.button1:focused{
-    -fx-background-color: #87553f;
-    -fx-text-fill: white;
-}
-
-.button1:pressed{
-    -fx-background-color: #87553f;
-    -fx-text-fill: white;
-}
-
- */
-
 .button2{
     -fx-background-color: white;
     -fx-border-color: #87553f;
@@ -103,7 +90,7 @@
     -fx-font-family: 'Merienda';
 }
 .tab-header-background{
-    -fx-background-image: url("../graphics/background/leonardo0.png");;
+    -fx-background-image: url("../graphics/background/leonardo0.png");
 }
 
 .tab:top{

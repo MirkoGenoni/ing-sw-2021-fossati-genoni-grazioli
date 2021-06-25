@@ -15,9 +15,15 @@ import java.net.URL;
 import java.util.*;
 
 
+/**
+ * This class represents the controller of the new deposit scene of the GUI application. Implements GUIController and Initializable interface.
+ * @see GUIController
+ * @see Initializable
+ *
+ * @author Stefano Fossati
+ */
 public class NewDepositController implements GUIController, Initializable {
     private GUI gui;
-
     private boolean isInitial;
 
     private Map<String, Image> resources;
@@ -28,47 +34,43 @@ public class NewDepositController implements GUIController, Initializable {
     private ArrayList<Integer> numDepositClicked = new ArrayList<>();
     private ArrayList<String> resourceClicked = new ArrayList<>();
 
-    @FXML ImageView deposit1;
-    @FXML ImageView deposit2;
-    @FXML ImageView deposit3;
-    @FXML ImageView deposit4;
-    @FXML ImageView deposit5;
-    @FXML ImageView deposit6;
-
-    //additional deposit leader
-    @FXML ImageView leader0;
-    @FXML ImageView leader1;
-
-    @FXML ImageView addDeposit00;
-    @FXML ImageView addDeposit01;
-    @FXML ImageView addDeposit10;
-    @FXML ImageView addDeposit11;
-
-
-    @FXML Label numCoin;
-    @FXML Label numStone;
-    @FXML Label numShield;
-    @FXML Label numServant;
-
     //tmp
     private Map<String, Integer> marketReceive = new HashMap<>();
     private ArrayList<Resource> depositState = new ArrayList<>();
     private ArrayList<Resource> addDepositType;
     private boolean isAdditional;
 
-    //risorse scartate dal market
+    @FXML private ImageView deposit1;
+    @FXML private ImageView deposit2;
+    @FXML private ImageView deposit3;
+    @FXML private ImageView deposit4;
+    @FXML private ImageView deposit5;
+    @FXML private ImageView deposit6;
 
-    private int getMarketResource(){
-        int num =0;
-        for(String s : marketReceive.keySet()){
-            if(!s.equals("nothing")){
-                num = num + marketReceive.get(s);
-            }
-        }
-        return num;
-    }
+    //additional deposit leader
+    @FXML private ImageView leader0;
+    @FXML private ImageView leader1;
 
+    @FXML private ImageView addDeposit00;
+    @FXML private ImageView addDeposit01;
+    @FXML private ImageView addDeposit10;
+    @FXML private ImageView addDeposit11;
 
+    @FXML private Label numCoin;
+    @FXML private Label numStone;
+    @FXML private Label numShield;
+    @FXML private Label numServant;
+
+    /**
+     * Draws the deposit state and additional deposit state of the player.
+     * @param depositState The deposit state of the player.
+     * @param marketReceived The resources received from the market that the user has to manage.
+     * @param isAdditional The boolean that indicate if there is an additional deposit active.
+     * @param addDepositType The type of the additional deposit.
+     * @param addDepositState The state of the additional deposit.
+     * @param leaderCards The leader cards of the player
+     * @param isInitial Indicates if the resources arrived are the resources choose in the set up of the match.
+     */
     public void drawDeposit(ArrayList<Resource> depositState, ArrayList<Resource> marketReceived, boolean isAdditional,
                             ArrayList<Resource> addDepositType, ArrayList<Resource> addDepositState, ArrayList<LeaderCardToClient> leaderCards, boolean isInitial){
         this.isInitial = isInitial;
@@ -84,7 +86,6 @@ public class NewDepositController implements GUIController, Initializable {
                     i++;
                 }
             }
-
             this.addDepositType = addDepositType;
             depositState.addAll(addDepositState);
             if(addDepositType.size()==1){
@@ -97,9 +98,7 @@ public class NewDepositController implements GUIController, Initializable {
                 leaderDeposit1.forEach(img -> img.setDisable(false));
                 depositImg.addAll(leaderDeposit0);
                 depositImg.addAll(leaderDeposit1);
-
             }
-
         }
 
         for(int i=0; i<depositState.size(); i++){
@@ -124,10 +123,12 @@ public class NewDepositController implements GUIController, Initializable {
 
         System.out.println(marketReceive.toString());
 
-
     }
 
-
+    /**
+     * Manages the shifts of resources that the user done in the deposit.
+     * @param mouseEvent The event of the type MouseEvent.
+     */
     public void save(MouseEvent mouseEvent) {
         switch (((ImageView) mouseEvent.getSource()).getId()){
             case "deposit1":
@@ -197,43 +198,11 @@ public class NewDepositController implements GUIController, Initializable {
         }
     }
 
-    private void modifyDeposit(String s, int i){
-        int num = i;
 
-        //tolgo il materiale dalle risorse ottenute dal market da inserire in deposito
-        if(marketReceive.containsKey(s) && num>=0 && num<depositState.size()){
-            if(marketReceive.get(s)-1 > -1){
-                marketReceive.put(s, marketReceive.get(s) -1);
-
-                //aggiungo il materiale tolto dal deposito ai materiali disponibili
-                if (marketReceive.containsKey(s)) {
-                    if(depositState.get(num) == null){
-                        marketReceive.put("nothing", marketReceive.get("nothing")+1);
-                    }else{
-                        marketReceive.put(depositState.get(num).toString().toLowerCase(), marketReceive.get(depositState.get(num).toString().toLowerCase()) + 1);
-                        depositState.set(num, null);
-                    }
-                }
-                //aggiungo il materiale tolto dai materiali disponibili al deposito
-                if (marketReceive.containsKey(s))
-                    if(!s.equals("nothing")){
-                        depositImg.get(num).setImage(resources.get(s));
-                        depositState.set(num, Resource.valueOf(s.toUpperCase()));
-                    }else{
-                        depositImg.get(num).setImage(null);
-                        depositState.set(num, null);
-                    }
-
-            }
-        }
-        numShield.setText("X " + marketReceive.get("shield"));
-        numStone.setText("X " + marketReceive.get("stone"));
-        numServant.setText("X " + marketReceive.get("servant"));
-        numCoin.setText("X " + marketReceive.get("coin"));
-    }
-
-
-
+    /**
+     * Sends the new deposit state to the connection with the server and resets the scene. Finally changes the scene into player view scene.
+     * @param actionEvent The event of the type ActionEvent.
+     */
     public void done(ActionEvent actionEvent) {
         numDepositClicked.clear();
         resourceClicked.clear();
@@ -270,12 +239,63 @@ public class NewDepositController implements GUIController, Initializable {
         leaderDeposit0 = new ArrayList<>(List.of(addDeposit00, addDeposit01));
         leaderDeposit1 = new ArrayList<>(List.of(addDeposit10, addDeposit11));
         leaderAdditional = new ArrayList<>(List.of(leader0, leader1));
-        System.out.println("");
     }
 
     @Override
     public void setGUI(GUI gui) {
         this.gui = gui;
         resources = gui.getResourcesGraphic();
+    }
+
+    /**
+     * Count the resources discarded from the market.
+     * @return The number of resources discarded from the market.
+     */
+    private int getMarketResource(){
+        int num =0;
+        for(String s : marketReceive.keySet()){
+            if(!s.equals("nothing")){
+                num = num + marketReceive.get(s);
+            }
+        }
+        return num;
+    }
+
+    /**
+     * Modifys the structures used to manage the user action in the deposit.
+     * @param s The string that represents the resource to manage.
+     * @param i The position of the resource.
+     */
+    private void modifyDeposit(String s, int i){
+        int num = i;
+        //Remove the material to put in the deposit from the resources taken from the market
+        if(marketReceive.containsKey(s) && num>=0 && num<depositState.size()){
+            if(marketReceive.get(s)-1 > -1){
+                marketReceive.put(s, marketReceive.get(s) -1);
+                //Add to available resources the material removed from the deposit
+                if (marketReceive.containsKey(s)) {
+                    if(depositState.get(num) == null){
+                        marketReceive.put("nothing", marketReceive.get("nothing")+1);
+                    }else{
+                        marketReceive.put(depositState.get(num).toString().toLowerCase(), marketReceive.get(depositState.get(num).toString().toLowerCase()) + 1);
+                        depositState.set(num, null);
+                    }
+                }
+                //Add the material removed from the deposit to the available resources
+                if (marketReceive.containsKey(s))
+                    if(!s.equals("nothing")){
+                        depositImg.get(num).setImage(resources.get(s));
+                        depositState.set(num, Resource.valueOf(s.toUpperCase()));
+                    }else{
+                        depositImg.get(num).setImage(null);
+                        depositState.set(num, null);
+                    }
+
+            }
+        }
+        numShield.setText("X " + marketReceive.get("shield"));
+        numStone.setText("X " + marketReceive.get("stone"));
+        numServant.setText("X " + marketReceive.get("servant"));
+        numCoin.setText("X " + marketReceive.get("coin"));
     }
 }

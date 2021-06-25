@@ -9,18 +9,28 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 
 import java.util.ArrayList;
-import java.util.List;
 
+
+/**
+ * This class represents the controller of the player name scene of the GUI application. Implements GUIController interface.
+ * @see GUIController
+ *
+ * @author Stefano Fossati
+ */
 public class InitialResourcesController implements GUIController{
     private GUI gui;
     private ArrayList<Resource> resourcesChoose = new ArrayList<>();
     private int numInitialResources;
 
-    @FXML Label coinLabel;
-    @FXML Label stoneLabel;
-    @FXML Label shieldLabel;
-    @FXML Label servantLabel;
+    @FXML private Label coinLabel;
+    @FXML private Label stoneLabel;
+    @FXML private Label shieldLabel;
+    @FXML private Label servantLabel;
 
+    /**
+     * Selects the number of initial resources that the player has to choose.
+     * @param num The number of resources that the payer has to choose.
+     */
     public void arriveInitialResources(int num){
         this.numInitialResources = num;
         coinLabel.setText("X 0");
@@ -29,6 +39,10 @@ public class InitialResourcesController implements GUIController{
         shieldLabel.setText("X 0");
     }
 
+    /**
+     * Changes scene into new deposit scene with the initial resources choose by the player.
+     * @param actionEvent The event of the type ActionEvent.
+     */
     public void orderInitialResources(ActionEvent actionEvent) {
         if(resourcesChoose.size()==numInitialResources){
             gui.changeScene("newDepositView");
@@ -44,6 +58,10 @@ public class InitialResourcesController implements GUIController{
         }
     }
 
+    /**
+     * Manages the selection of initial resources by the player.
+     * @param mouseEvent The event of the type MouseEvent.
+     */
     public void selected(MouseEvent mouseEvent) {
         String id = ((ImageView) mouseEvent.getSource()).getId();
         resourcesChoose.add(Resource.valueOf(id.toUpperCase()));
@@ -58,6 +76,9 @@ public class InitialResourcesController implements GUIController{
         this.gui = gui;
     }
 
+    /**
+     * Updates the number of resources choose by the player.
+     */
     private void updateLabel(){
         int coin = 0;
         int shield = 0;
@@ -78,9 +99,6 @@ public class InitialResourcesController implements GUIController{
         stoneLabel.setText("X " + stone);
         servantLabel.setText("X " + servant);
         shieldLabel.setText("X " + shield);
-
-
     }
-
 
 }
