@@ -1,6 +1,7 @@
 package it.polimi.ingsw.Client.GUI;
 
 import it.polimi.ingsw.Client.ConnectionToServer;
+import it.polimi.ingsw.Client.GUI.ControllerGUI.FirstWindowController;
 import it.polimi.ingsw.Client.GUI.ControllerGUI.GUIController;
 import it.polimi.ingsw.Events.ServerToClient.NewTurnToClient;
 import it.polimi.ingsw.Model.Market.Marble;
@@ -18,6 +19,15 @@ import javafx.stage.WindowEvent;
 import java.io.IOException;
 import java.util.*;
 
+
+/**
+ * Represents the GUI principal class.
+ * Extends Application abstract classes of javaFX library.
+ *
+ * @see Application
+ *
+ * @author Stefano Fossati
+ */
 public class GUI extends Application {
     private String namePlayer;
 
@@ -43,75 +53,135 @@ public class GUI extends Application {
     private ArrayList<Image> leaderInHand;
     private ArrayList<String> playersName = new ArrayList<>();
 
-
-
-
-    public void setLeaderInHand(ArrayList<Image> leaderInHand) {
-        this.leaderInHand = leaderInHand;
-    }
-
-    public ArrayList<Image> getLeaderInHand() {
-        return leaderInHand;
-    }
-
-    public NewTurnToClient getLastTurn() {
-        return lastTurn;
-    }
-
-    public ArrayList<String> getPlayersName() {
-        return playersName;
-    }
-
-    public void setLastTurn(NewTurnToClient lastTurn) {
-        this.lastTurn = lastTurn;
-    }
-
+    //---------------------------
+    //  SETTERS
+    //---------------------------
+    /**
+     * Sets the name of the player that uses this GUI.
+     * @param namePlayer The name of the player.
+     */
     public void setNamePlayer(String namePlayer) {
         this.namePlayer = namePlayer;
     }
 
+    /**
+     * Sets the connection of the GUI with the server.
+     * @param connectionToServer The connection with the server.
+     */
     public void setConnectionToServer(ConnectionToServer connectionToServer) {
         this.connectionToServer = connectionToServer;
-        connectionToServer.setGui(this);
         visit = new VisitClass(connectionToServer, this);
+        connectionToServer.setVisit(visit);
     }
 
-    public Map<String, Image> getResourcesGraphic() {
-        return resourcesGraphic;
+    /**
+     * Sets the pleader card image that the player has in hand.
+     * @param leaderInHand The leader card that the player has in hand.
+     */
+    public void setLeaderInHand(ArrayList<Image> leaderInHand) {
+        this.leaderInHand = leaderInHand;
     }
 
-    public Map<String, Image> getMarblesGraphic() {
-        return marblesGraphic;
+    /**
+     * Sets the information about the last turn of the game.
+     * @param lastTurn The last turn event of the game.
+     */
+    public void setLastTurn(NewTurnToClient lastTurn) {
+        this.lastTurn = lastTurn;
     }
 
-    public Map<String, Image> getLeaderCardsGraphic() {
-        return leaderCardsGraphic;
-    }
-
-    public Map<String, Image> getDevelopmentCardsGraphic() {
-        return developmentCardsGraphic;
-    }
-
+    //---------------------------
+    //  GETTERS
+    //---------------------------
+    /**
+     * Getter of the player name that use the GUI.
+     * @return The name of the player.
+     */
     public String getNamePlayer() {
         return namePlayer;
     }
 
+    /**
+     * Getter of the connection of the GUI with the server.
+     * @return The connection with the server.
+     */
     public ConnectionToServer getConnectionToServer() {
         return connectionToServer;
     }
 
-    public VisitClass getVisit() {
-        return visit;
-    }
-
+    /**
+     * Getter of the current controller of the current scene displayed by the GUI.
+     * @return The current controller of the scene displayed by the GUI.
+     */
     public GUIController getCurrentController() {
         return currentController;
     }
 
+    /**
+     * Getter of the leader card image that the player has in the hand.
+     * @return The leader card images that the player has in hand.
+     */
+    public ArrayList<Image> getLeaderInHand() {
+        return leaderInHand;
+    }
+
+    /**
+     * Getter of the last turn information of the match.
+     * @return The last turn information of the match.
+     */
+    public NewTurnToClient getLastTurn() {
+        return lastTurn;
+    }
+
+    /**
+     * Getter of the list of all player name of the match.
+     * @return The player names of the match.
+     */
+    public ArrayList<String> getPlayersName() {
+        return playersName;
+    }
+
+    //--------------------------------------
+    //  GETTERS OF THE GRAPHIC RESOURCES
+    //--------------------------------------
+    /**
+     * Getter of the map of the marble graphics.
+     * @return The marble graphics.
+     */
+    public Map<String, Image> getResourcesGraphic() {
+        return resourcesGraphic;
+    }
+
+    /**
+     * Getter of the map of the resource graphics.
+     * @return The resource graphics.
+     */
+    public Map<String, Image> getMarblesGraphic() {
+        return marblesGraphic;
+    }
+
+    /**
+     * Getter of the map of the leader card graphics.
+     * @return The leader card graphics.
+     */
+    public Map<String, Image> getLeaderCardsGraphic() {
+        return leaderCardsGraphic;
+    }
+
+    /**
+     * Getter of the map of the development card graphics.
+     * @return The development card graphics
+     */
+    public Map<String, Image> getDevelopmentCardsGraphic() {
+        return developmentCardsGraphic;
+    }
+
+
+
     @Override
     public void start(Stage stage) {
         loadGraphics();
-        ArrayList<String> nameScene = new ArrayList<String>(List.of("setup", "playerName", "initialResourcesView","initialLeaderView", "leaderCardView",
+        ArrayList<String> nameScene = new ArrayList<String>(List.of("firstWindow","setup", "playerName", "initialResourcesView","initialLeaderView", "leaderCardView",
                 "playerView", "newDepositView", "marketView", "buyDevelopmentView", "selectDevSpaceView", "productionView", "lorenzoView"));
         for (String s : nameScene) {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/" + s + ".fxml"));
@@ -141,35 +211,46 @@ public class GUI extends Application {
             }
         });
 
-        currentScene = scenes.get("setup");
-        currentController = controllers.get("setup");
+        currentScene = scenes.get("firstWindow");
+        currentController = controllers.get("firstWindow");
         stage.setResizable(false);
         stage.setScene(currentScene);
         stage.show();
         centerApplication();
+        FirstWindowController firstWindowController = (FirstWindowController) currentController;
+        firstWindowController.showPresentation();
 
     }
 
-    public void provat(){
-
-    }
-
+    /**
+     * Centers the windows of the game in the center of the principal display of the computer.
+     */
     public void centerApplication() {
         Rectangle2D screenSize = Screen.getPrimary().getVisualBounds();
         stage.setX((screenSize.getWidth() - currentScene.getWidth()) / 2);
         stage.setY((screenSize.getHeight() - currentScene.getHeight()) / 2);
     }
 
-    public void changeScene(String s){
+    /**
+     * Change the scene and the controller of the actual view of the GUI.
+     * @param scene The name of the scene that the GUI has to display.
+     */
+    public void changeScene(String scene){
         System.out.println("cambio scena");
-        currentController = controllers.get(s);
-        currentScene = scenes.get(s);
+        currentController = controllers.get(scene);
+        currentScene = scenes.get(scene);
         stage.setResizable(false);
         stage.setScene(currentScene);
         //centerApplication();
         stage.show();
     }
 
+    /**
+     * Calculates the total resources that a player has and returns a map.
+     * @param deposit The deposit of the resources.
+     * @param strongBox The strongbox of the resources.
+     * @return The map wwith the number of resources that the player have in the deposit and in the strongbox.
+     */
     public Map<String, Integer> calculateTotalResources(ArrayList<Resource> deposit, Map<Resource, Integer> strongBox){
         Map<String, Integer> totalResources = new HashMap<>();
         for(Resource r : strongBox.keySet()){
@@ -183,6 +264,9 @@ public class GUI extends Application {
         return totalResources;
     }
 
+    /**
+     * This method load the graphics that the GUI needed in specified structure save in this class.
+     */
     private void loadGraphics(){
         //load marble
         for(Marble m : Marble.values()){
@@ -225,7 +309,7 @@ public class GUI extends Application {
                     String input = "/graphics/developmentCard/Dev" + s + "_" + i + j + ".png";
                     try{
                         Image tmpI = new Image(Objects.requireNonNull(getClass().getResourceAsStream(input)));
-                        developmentCardsGraphic.put("Dev" + s +"_" + i + j, tmpI);
+                        developmentCardsGraphic.put("Dev" + s + "_" + i + j, tmpI);
                     }catch (NullPointerException e){
                         System.out.println("development card file not found, address " + input);
                         e.printStackTrace();
@@ -235,7 +319,10 @@ public class GUI extends Application {
         }
     }
 
-
+    /**
+     * Main method to start application GUI.
+     * @param args The args of the main.
+     */
     public static void main(String[] args) {
         launch(args);
     }
