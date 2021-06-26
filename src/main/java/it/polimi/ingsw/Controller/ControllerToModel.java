@@ -74,6 +74,10 @@ public class ControllerToModel {
         return playerDisconnected;
     }
 
+    public ArrayList<String> getOrderPlayerConnections() {
+        return orderPlayerConnections;
+    }
+
     public Game getGame() {
         return game;
     }

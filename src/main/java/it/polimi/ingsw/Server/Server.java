@@ -40,7 +40,7 @@ public class Server implements Runnable{
         Scanner input = new Scanner(System.in);
         try{
             String newPort = input.nextLine();
-            if(!newPort.toLowerCase().equals("default")){
+            if(newPort.length()!=0 && !newPort.toLowerCase().equals("default")){
                 port = Integer.parseInt(newPort);
             }
         }catch (IllegalStateException e){
@@ -54,6 +54,7 @@ public class Server implements Runnable{
         } catch (IOException e) {
             e.printStackTrace();
         }
+        //TODO
         System.out.println("server is running...");
 
         while(true){

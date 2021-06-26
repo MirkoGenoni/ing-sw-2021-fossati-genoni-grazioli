@@ -24,6 +24,8 @@ public class Room {
     private Thread ping;
 
     private boolean sendNumPlayer;
+    private String playerSendNumPlayer;
+
     private boolean start;
     private boolean fullPlayer;
     private boolean finish;
@@ -31,6 +33,14 @@ public class Room {
 
     private final ControllerToModel controllerToModel;
     private final ControllerConnection controllerConnection;
+
+    public String getPlayerSendNumPlayer() {
+        return playerSendNumPlayer;
+    }
+
+    public void setPlayerSendNumPlayer(String playerSendNumPlayer) {
+        this.playerSendNumPlayer = playerSendNumPlayer;
+    }
 
     /**
      * Constructs the room initialising default attributes and creates controllers of connection and of the game.
@@ -47,6 +57,7 @@ public class Room {
         this.finish = false;
         controllerToModel = new ControllerToModel(connections);
         controllerConnection = new ControllerConnection(controllerToModel);
+        disconnectionHandler = new DisconnectionHandler(controllerToModel, this);
         ping = new Thread(() -> {
             while(!finish){
                 try {
@@ -159,12 +170,13 @@ public class Room {
     }
 
     /**
-     * Adds the new connection with a client to the list of all the actualy connections with this room.
+     * Adds the new connection with a client to the list of all the actually connections with this room.
      * @param name The name of the player of the connection.
      * @param connection Teh connection with the client.
      * @param reconnection The boolean that indicates if the client has done a reconnection, or not.
      */
     public synchronized void addConnectionToClient(String name, ConnectionToClient connection, boolean reconnection){
+        connection.setDisconnectionHandler(disconnectionHandler);
         if(!reconnection){  // if is a reconnection in a room where there is a game already started
             if( connections.size()==0 || connections.size()<numPlayer){
                 System.out.println(connection.getNamePlayer() + " add connection");
@@ -197,10 +209,10 @@ public class Room {
      */
     public void startGame(){
         setFullPlayer(true);
-        disconnectionHandler = new DisconnectionHandler(controllerToModel, this);
+        //disconnectionHandler = new DisconnectionHandler(controllerToModel, this);
         controllerToModel.getConnections().forEach((k,v) -> v.setObserveConnectionToClient(controllerConnection));
-        controllerToModel.getConnections().forEach((k, v) -> v.setDisconnectionHandler(disconnectionHandler));
-        setDisconnectionHandler(disconnectionHandler);
+        //controllerToModel.getConnections().forEach((k, v) -> v.setDisconnectionHandler(disconnectionHandler));
+        //setDisconnectionHandler(disconnectionHandler);
         System.out.println("Start the game in room " + roomNumber);
         start = true;
         try {
@@ -208,6 +220,8 @@ public class Room {
         } catch (StartGameException e) {
             e.printStackTrace();
         }
+        System.out.println(controllerToModel.getOrderPlayerConnections());
+        System.out.println(connections);
     }
 
     /**

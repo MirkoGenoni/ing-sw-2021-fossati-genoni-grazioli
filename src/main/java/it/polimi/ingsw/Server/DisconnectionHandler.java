@@ -32,38 +32,53 @@ public class DisconnectionHandler {
      * @param name The name of the client/player that has disconnected.
      */
     public synchronized void setNullConnection(String name){
-        controllerToModel.getPlayerDisconnected().add(name);
         controllerToModel.getConnections().remove(name);
-        room.setFullPlayer(false);
+        if(room.isStart()){
+            controllerToModel.getPlayerDisconnected().add(name);
 
-        //check if the player have choose initial resource: true --> doesn't choose resources
-        if(controllerToModel.getPlayerWithInitialResource().contains(name)){
-            ArrayList<Resource> tmpR = new ArrayList();
-            for(int i=0; i<6; i++){
-                tmpR.add(null);
+            room.setFullPlayer(false);
+
+            //check if the player have choose initial resource: true --> doesn't choose resources
+            if(controllerToModel.getPlayerWithInitialResource().contains(name)){
+                ArrayList<Resource> tmpR = new ArrayList();
+                for(int i=0; i<6; i++){
+                    tmpR.add(null);
+                }
+                controllerToModel.initialResourcesChoose(tmpR ,name);
             }
-            controllerToModel.initialResourcesChoose(tmpR ,name);
+
+            // check if the player haven't discard the initial leader card: true --> discard random card
+            for(int i=0; i<controllerToModel.getPlayers().length; i++){
+                if(controllerToModel.getPlayers()[i].getName().equals(name)){
+                    try {
+                        if(controllerToModel.getPlayers()[i].getPlayerBoard().getLeaderCardHandler().getLeaderCardsAvailable().size()!=0 &&
+                                controllerToModel.getPlayers()[i].getPlayerBoard().getLeaderCardHandler().getLeaderCardsAvailable().size()>2){
+                            controllerToModel.discardInitialLeaderCards(name, 0, 1);
+                        }
+                    } catch (LeaderCardException e) {
+                        System.out.println(e.getMessage());
+                        continue;
+                    }
+                }
+            }
+            if(name.equals(controllerToModel.getActivePlayer().getName())){
+                controllerToModel.newTurn(true);
+            }
         }
 
-        // check if the player haven't discard the initial leader card: true --> discard random card
-        for(int i=0; i<controllerToModel.getPlayers().length; i++){
-            if(controllerToModel.getPlayers()[i].getName().equals(name)){
-                try {
-                    if(controllerToModel.getPlayers()[i].getPlayerBoard().getLeaderCardHandler().getLeaderCardsAvailable().size()!=0 &&
-                            controllerToModel.getPlayers()[i].getPlayerBoard().getLeaderCardHandler().getLeaderCardsAvailable().size()>2){
-                        controllerToModel.discardInitialLeaderCards(name, 0, 1);
-                    }
-                } catch (LeaderCardException e) {
-                    System.out.println(e.getMessage());
-                    continue;
-                }
+        if(room.isSendNumPlayer() && room.getNumPlayer()==-1 && room.getPlayerSendNumPlayer().equals(name)){
+            room.setPlayerSendNumPlayer(null);
+            room.setSendNumPlayer(false);
+        }
+
+        if(!room.isStart()){
+            controllerToModel.getOrderPlayerConnections().remove(name);
+            if(controllerToModel.getConnections().size()==0){
+                removeRoom();
             }
         }
 
         System.out.println(name + " is disconnected");
-        if(name.equals(controllerToModel.getActivePlayer().getName())){
-            controllerToModel.newTurn(true);
-        }
     }
 
     /**

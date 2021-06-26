@@ -127,7 +127,9 @@ public class ConnectionToClient implements Runnable, EventToClientNotifier {
                 output.reset();              // clean buffer
             } catch (IOException e) { //TODO specifico
                 closeConnection();
-                disconnectionHandler.setNullConnection(namePlayer);
+                if(namePlayer!=null){
+                    disconnectionHandler.setNullConnection(namePlayer); //TODO specifico
+                }
                 e.printStackTrace();
             }
         }
@@ -174,7 +176,9 @@ public class ConnectionToClient implements Runnable, EventToClientNotifier {
             }
         } catch (IOException e) {
             closeConnection();
-            disconnectionHandler.setNullConnection(namePlayer); //TODO specifico
+            if(namePlayer!=null){
+                disconnectionHandler.setNullConnection(namePlayer); //TODO specifico
+            }
             e.printStackTrace();
         } catch (ClassNotFoundException | InterruptedException e) {
             e.printStackTrace();
