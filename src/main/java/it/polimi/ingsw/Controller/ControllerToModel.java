@@ -226,7 +226,14 @@ public class ControllerToModel {
                 }
             }
             String message = winnerName + " ha vinto con " + winnerPoint + " punti";
-            connections.forEach((k,v) -> v.sendEndGame(message, playersPoint));
+            if(numPlayer==1){
+                connections.forEach((k,v) -> v.sendEndGame(message, playersPoint, players, game.getPlayersFaithTrack(), true,
+                        game.getPlayersFaithTrack().getPosition(1), game.getDevelopmentCardsAvailable(), game.getMarketBoard()));
+            }else{
+                connections.forEach((k,v) -> v.sendEndGame(message, playersPoint, players, game.getPlayersFaithTrack(), false,
+                        0, game.getDevelopmentCardsAvailable(), game.getMarketBoard()));
+            }
+
             System.out.println("Game end");
 
         }else{
@@ -381,7 +388,8 @@ public class ControllerToModel {
         //TODO metodo da mettere private dopo aver tolto il turn dalle opzioni di scelta!!!!!!
         if(turnNumber != 0 && players.length == 1){
             if(lorenzoTurn.playLorenzo()){
-                connections.get(players[currentPlayerIndex].getName()).sendEndGame("HAI PERSO, HA VINTO LORENZO!!", null );
+                connections.get(players[currentPlayerIndex].getName()).sendEndGame("HAI PERSO, HA VINTO LORENZO!!", null, players,
+                        game.getPlayersFaithTrack(), true, game.getPlayersFaithTrack().getPosition(1), game.getDevelopmentCardsAvailable(), game.getMarketBoard());
             }
             return false; // se è single game
         }else{

@@ -90,9 +90,9 @@ public interface EventToClientVisitor {
     /**
      * Visit method of the turn reselection event.
      * @param message The  turn reselection event that arrived to the client.
-     * @see TurnReselection
+     * @see TurnReselectionToClient
      */
-    void visit(TurnReselection message);
+    void visit(TurnReselectionToClient message);
 
     /**
      * Visit method of the development card space event.

@@ -6,7 +6,7 @@ import it.polimi.ingsw.Controller.ObserveConnectionToClient;
 import it.polimi.ingsw.Events.ServerToClient.InitialConnectionToClient.SendNamePlayerRequestToClient;
 import it.polimi.ingsw.Events.ServerToClient.InitialConnectionToClient.SendNumPlayerRequestToClient;
 import it.polimi.ingsw.Events.ServerToClient.InitialConnectionToClient.SendRoomRequestToClient;
-import it.polimi.ingsw.Events.ServerToClient.TurnReselection;
+import it.polimi.ingsw.Events.ServerToClient.TurnReselectionToClient;
 import it.polimi.ingsw.Events.ServerToClient.SupportClass.DevelopmentCardToClient;
 import it.polimi.ingsw.Events.ServerToClient.BuyDevelopmentCardTurnToClient.SendSpaceDevelopmentCardToClient;
 import it.polimi.ingsw.Events.ServerToClient.SupportClass.LeaderCardToClient;
@@ -249,8 +249,8 @@ public class ConnectionToClient implements Runnable, EventToClientNotifier {
 
     @Override
     public void sendTurnReselection(String message) {
-        TurnReselection turnReselection = new TurnReselection(message);
-        asyncSendEvent(turnReselection);
+        TurnReselectionToClient turnReselectionToClient = new TurnReselectionToClient(message);
+        asyncSendEvent(turnReselectionToClient);
     }
 
     @Override
@@ -272,8 +272,10 @@ public class ConnectionToClient implements Runnable, EventToClientNotifier {
     // FINAL EVENT
     // ----------------------------------
     @Override
-    public void sendEndGame(String message, Map<String, Integer> playersPoint) {
-        EndGameToClient endGameToClient = new EndGameToClient(message, playersPoint);
+    public void sendEndGame(String message, Map<String, Integer> playersPoint, Player[] players, FaithTrack faithTrack,
+                            boolean lorenzo, int lorenzoPosition, DevelopmentCard[][] devCard, Market market) {
+        EndGameToClient endGameToClient = new EndGameToClient(message, playersPoint, playerInformationToSend(players, faithTrack),
+                                            lorenzo, lorenzoPosition, developmentCardAvailableToSend(devCard), marketToSend(market));
         asyncSendEvent(endGameToClient);
         closeConnection();
         disconnectionHandler.removeRoom();

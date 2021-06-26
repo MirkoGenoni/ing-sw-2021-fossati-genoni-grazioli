@@ -9,14 +9,8 @@ import it.polimi.ingsw.Events.ServerToClient.InitialConnectionToClient.SendNumPl
 import it.polimi.ingsw.Events.ServerToClient.InitialConnectionToClient.SendRoomRequestToClient;
 import it.polimi.ingsw.Events.ServerToClient.BuyDevelopmentCardTurnToClient.SendSpaceDevelopmentCardToClient;
 import it.polimi.ingsw.Events.ServerToClient.MarketTurnToClient.SendReorganizeDepositToClient;
-import it.polimi.ingsw.Events.ServerToClient.SupportClass.PlayerInformationToClient;
-import it.polimi.ingsw.Events.ServerToClient.TurnReselection;
-import it.polimi.ingsw.Model.Resource.Resource;
+import it.polimi.ingsw.Events.ServerToClient.TurnReselectionToClient;
 
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
 public class CLI implements EventToClientVisitor {
@@ -158,7 +152,7 @@ public class CLI implements EventToClientVisitor {
     }
 
     @Override
-    public void visit(TurnReselection message) {
+    public void visit(TurnReselectionToClient message) {
         handler.newTurn();
     }
 

@@ -132,8 +132,13 @@ public interface EventToClientNotifier {
      * Send the notify that the game ended to the client.
      * @param message The massage to send to the client.
      * @param playersPoint The points of all players.
+     * @param faithTrack The faith track of the match.
+     * @param lorenzo Indicates if is a single player match.
+     * @param lorenzoPosition Lorenzo position if is a single player match.
+     * @param market The market of the match.
      */
-    void sendEndGame(String message, Map<String, Integer> playersPoint);
+    void sendEndGame(String message, Map<String, Integer> playersPoint, Player[] players, FaithTrack faithTrack,
+                     boolean lorenzo, int lorenzoPosition, DevelopmentCard[][] devCard, Market market);
 
     // ----------------------------------
     // EVENT FOR THE SINGLE GAME

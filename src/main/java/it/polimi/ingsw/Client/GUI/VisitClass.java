@@ -6,26 +6,39 @@ import it.polimi.ingsw.Events.ServerToClient.*;
 import it.polimi.ingsw.Events.ServerToClient.InitialConnectionToClient.SendNamePlayerRequestToClient;
 import it.polimi.ingsw.Events.ServerToClient.InitialConnectionToClient.SendNumPlayerRequestToClient;
 import it.polimi.ingsw.Events.ServerToClient.InitialConnectionToClient.SendRoomRequestToClient;
-import it.polimi.ingsw.Events.ServerToClient.TurnReselection;
+import it.polimi.ingsw.Events.ServerToClient.TurnReselectionToClient;
 import it.polimi.ingsw.Events.ServerToClient.BuyDevelopmentCardTurnToClient.SendSpaceDevelopmentCardToClient;
 import it.polimi.ingsw.Events.ServerToClient.MarketTurnToClient.SendReorganizeDepositToClient;
-import it.polimi.ingsw.Model.Resource.Resource;
 import javafx.application.Platform;
 
-import java.util.ArrayList;
 import java.util.concurrent.CountDownLatch;
 
+/**
+ * This class implements the EventToClientVisitor interface. This class parse the type of event that arrive from the connection with the server to do specific actions.
+ * @see EventToClientVisitor
+ *
+ * @author Stefano Fossati
+ */
 public class VisitClass implements EventToClientVisitor {
     private final ConnectionToServer connectionToServer;
     private final GUI gui;
 
 
+    /**
+     * Constructs the class with the connection with the server and the GUI application.
+     * @param connectionToServer The connection with the server.
+     * @param gui The GUI application.
+     */
     public VisitClass(ConnectionToServer connectionToServer, GUI gui) {
         this.connectionToServer = connectionToServer;
         new Thread(connectionToServer).start();
         this.gui = gui;
     }
 
+    /**
+     * This method permits to the connection with the server to pass the receive event to this class.
+     * @param event The event passed by the connection with the server.
+     */
     public void receiveEvent(EventToClient event){
         event.acceptVisitor(this);
     }
@@ -55,7 +68,7 @@ public class VisitClass implements EventToClientVisitor {
     }
 
     @Override
-    public void visit(TurnReselection message) {
+    public void visit(TurnReselectionToClient message) {
         changeSceneThread("playerView");
         PlayerViewController controller = (PlayerViewController) gui.getCurrentController();
         Platform.runLater(new Thread(() -> controller.tabTurnNotActive(false)));
@@ -91,7 +104,15 @@ public class VisitClass implements EventToClientVisitor {
     @Override
     public void visit(EndGameToClient message) {
         connectionToServer.setActive(false);
-        System.out.println(message.getMessage());
+        changeSceneThread("playerView");
+        PlayerViewController controller = (PlayerViewController) gui.getCurrentController();
+        controller.updatePlayerBoard(message.getPlayerInformation());
+        controller.updateTable(message.getDevCard(), message.getMarket());
+        if(message.isLorenzo()){
+            controller.lorenzoFaith(message.getLorenzoPosition());
+        }
+        //TODO allert
+        connectionToServer.closeConnection();
     }
 
     @Override
@@ -133,6 +154,10 @@ public class VisitClass implements EventToClientVisitor {
         Platform.runLater(new Thread(() -> controller.arriveNumPlayer(numPlayer.getMessage())));
     }
 
+    /**
+     * This method creates a thread to update scene od the GUI application. Alsa This method uses a semaphore to wait that the GUI finishes to change scene.
+     * @param scene The scene into GUI will change.
+     */
     private void changeSceneThread(String scene){
         CountDownLatch threadCount = new CountDownLatch(1);
         Platform.runLater(new Thread(() -> {
