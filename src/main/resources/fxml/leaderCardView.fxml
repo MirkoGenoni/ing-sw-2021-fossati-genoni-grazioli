@@ -6,8 +6,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-
-<AnchorPane fx:controller="it.polimi.ingsw.Client.GUI.ControllerGUI.LeaderCardController" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" stylesheets="@../css/mainStyle.css">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="600.0" style="-fx-background-color: #CEC3A1;" stylesheets="@../css/mainStyle.css" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.Client.GUI.ControllerGUI.LeaderCardController">
    <children>
       <ImageView fx:id="leader0" fitHeight="323.0" fitWidth="210.0" layoutX="59.0" layoutY="89.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="60.0" />
       <ImageView fx:id="leader1" fitHeight="323.0" fitWidth="210.0" layoutX="334.0" layoutY="89.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="60.0" />
@@ -22,7 +21,7 @@
          </font>
       </Label>
       <Button fx:id="done" layoutX="271.0" layoutY="452.0" mnemonicParsing="false" onAction="#done" text="Done" />
-      <Label layoutX="62.0" layoutY="29.0" prefHeight="17.0" prefWidth="480.0" text="Choose Choose Leader Card Action">
+      <Label layoutX="37.0" layoutY="30.0" prefHeight="29.0" prefWidth="540.0" text="Choose Choose Leader Card Action">
          <font>
             <Font size="24.0" />
          </font>

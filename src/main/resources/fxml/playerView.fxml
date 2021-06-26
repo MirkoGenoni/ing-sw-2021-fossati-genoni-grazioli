@@ -180,17 +180,17 @@
                         <Font size="18.0" />
                      </font>
                   </Button>
-                  <Button layoutX="486.0" layoutY="364.0" mnemonicParsing="false" onAction="#buyDevelopmentTurn" prefHeight="39.0" prefWidth="233.0" styleClass="button2" text="Buy Development Cards">
+                  <Button layoutX="434.0" layoutY="368.0" mnemonicParsing="false" onAction="#buyDevelopmentTurn" prefHeight="39.0" prefWidth="330.0" styleClass="button2" text="Buy Development Cards">
                      <font>
                         <Font size="18.0" />
                      </font>
                   </Button>
-                  <Button layoutX="505.0" layoutY="476.0" mnemonicParsing="false" onAction="#activateProductionTurn" prefHeight="39.0" prefWidth="196.0" styleClass="button2" text="Activate Production">
+                  <Button layoutX="480.0" layoutY="476.0" mnemonicParsing="false" onAction="#activateProductionTurn" prefHeight="39.0" prefWidth="241.0" styleClass="button2" text="Activate Production">
                      <font>
                         <Font size="18.0" />
                      </font>
                   </Button>
-                  <Label contentDisplay="CENTER" layoutX="229.0" layoutY="114.0" prefHeight="52.0" prefWidth="749.0" styleClass="label2" text="It's Yourn Turn, Choose One:" textAlignment="CENTER">
+                  <Label contentDisplay="CENTER" layoutX="297.0" layoutY="113.0" prefHeight="52.0" prefWidth="607.0" styleClass="label2" text="It's Yourn Turn, Choose One:" textAlignment="CENTER">
                      <font>
                         <Font size="31.0" />
                      </font>

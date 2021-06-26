@@ -14,6 +14,21 @@
     -fx-text-fill: white;
 }
 
+.button1{
+    -fx-background-color: white;
+    -fx-border-color: #87553f;
+    -fx-border-width: 2px;
+    -fx-border-style: solid;
+    -fx-font-family: 'Merienda';
+    -fx-font-size: 30px;
+    -fx-transition-duration: 0.4s;
+}
+
+.button1:hover {
+    -fx-background-color: #87553f;
+    -fx-text-fill: white;
+}
+
 .text-field{
     -fx-border-color: #87553f;
     -fx-border-style: solid;
