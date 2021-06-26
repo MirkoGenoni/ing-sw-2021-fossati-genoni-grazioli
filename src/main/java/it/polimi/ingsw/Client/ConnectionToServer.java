@@ -1,7 +1,7 @@
 package it.polimi.ingsw.Client;
 
 import it.polimi.ingsw.Client.CLI.CLI;
-import it.polimi.ingsw.Client.GUI.GUI;
+import it.polimi.ingsw.Client.GUI.VisitClass;
 import it.polimi.ingsw.Events.ClientToServer.*;
 import it.polimi.ingsw.Events.ClientToServer.BuyDevelopmentCardToServer.SelectedDevelopmentCardSpaceToServer;
 import it.polimi.ingsw.Events.ClientToServer.BuyDevelopmentCardToServer.SelectedDevelopmentCardToBuyToServer;
@@ -29,7 +29,7 @@ public class ConnectionToServer implements Runnable, EventToServerNotifier {
     private String playerName;
     private boolean activeGui = false;
     private CLI cli;
-    private GUI gui;
+    private VisitClass visit;
 
     // Input and Output steams
     private ObjectInputStream input;
@@ -49,8 +49,8 @@ public class ConnectionToServer implements Runnable, EventToServerNotifier {
         return this.address;
     }
 
-    public void setGui(GUI gui) {
-        this.gui = gui;
+    public void setVisit(VisitClass visit) {
+        this.visit = visit;
         activeGui = true;
     }
 
@@ -67,7 +67,7 @@ public class ConnectionToServer implements Runnable, EventToServerNotifier {
             try{
                 EventToClient event = receiveEvent();
                 if (activeGui){
-                    gui.getVisit().receiveEvent(event);
+                    visit.receiveEvent(event);
                 }else{
                     cli.receiveEvent(event);
                 }
@@ -124,7 +124,7 @@ public class ConnectionToServer implements Runnable, EventToServerNotifier {
         this.playerName = playerName;
     }
 
-    // event that the cli/gui calls to send event to the server
+    // event that the cli/visit calls to send event to the server
 
     // -------------------------------------------------------
     // EVENTS FOR THE START OF THE CONNECTION WITH THE SERVER
