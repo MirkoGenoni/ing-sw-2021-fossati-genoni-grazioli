@@ -7,11 +7,17 @@ import java.util.ArrayList;
 
 // list of the event that the client could send to the server
 public interface EventToServerNotifier {
-
     // -------------------------------------------------------
     // EVENTS FOR THE START OF THE CONNECTION WITH THE SERVER
     // -------------------------------------------------------
+    void sendRoom(int room, boolean newRoom);
+    void sendPlayerName(String playerName);
+    void sendNumPlayer(int num);
 
+    // -------------------------------------------
+    // EVENTS FOR THE INITIAL RESOURCES SELECTION
+    // -------------------------------------------
+    void sendInitialDepositState(ArrayList<Resource> newInitialDepositState);
 
     // -------------------------------------------
     // EVENTS FOR THE LEADER CARD INTERACTION
@@ -42,16 +48,16 @@ public interface EventToServerNotifier {
     // EVENT FOR NEW TURN INTERACTION
     // ------------------------------------------------------
     void sendTurnPlayed(String turnType);
-    void sendInitialDepositState(ArrayList<Resource> newInitialDepositState);
 
-    // ------------------------------------------------------
-    // EVENT FOR LORENZO TURN
-    // ------------------------------------------------------
+
+    // ----------------------------------
+    // EVENT FOR THE SINGLE GAME
+    // ----------------------------------
     void sendReplayLorenzoAction();
 
-    void sendRoom(int room, boolean newRoom);
-    void sendPlayerName(String playerName);
-    void sendNumPlayer(int num);
+    // ----------------------------------
+    // PING EVENT
+    // ----------------------------------
 
     void sendPing();
 

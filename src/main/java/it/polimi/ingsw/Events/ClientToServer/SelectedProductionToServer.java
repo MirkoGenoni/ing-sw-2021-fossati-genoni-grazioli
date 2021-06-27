@@ -5,7 +5,7 @@ import it.polimi.ingsw.Model.Resource.Resource;
 
 import java.util.ArrayList;
 
-public class SelectedProductionDevelopmentCardToServer extends EventToServer{
+public class SelectedProductionToServer extends EventToServer{
 
     private final boolean useBaseProduction;
     private final Resource resourceRequested1;
@@ -16,9 +16,9 @@ public class SelectedProductionDevelopmentCardToServer extends EventToServer{
     private final ArrayList<Boolean> useDevelop;
     private final String playerName;
 
-    public SelectedProductionDevelopmentCardToServer(boolean useBaseProduction, Resource resourceRequested1, Resource resourceRequested2,
-                                                     ProductedMaterials resourceGranted, ArrayList<Boolean> useLeaders, ArrayList<Resource> materialLeaders,
-                                                     ArrayList<Boolean> useDevelop, String playerName) {
+    public SelectedProductionToServer(boolean useBaseProduction, Resource resourceRequested1, Resource resourceRequested2,
+                                      ProductedMaterials resourceGranted, ArrayList<Boolean> useLeaders, ArrayList<Resource> materialLeaders,
+                                      ArrayList<Boolean> useDevelop, String playerName) {
         this.useBaseProduction = useBaseProduction;
         this.resourceRequested1 = resourceRequested1;
         this.resourceRequested2 = resourceRequested2;

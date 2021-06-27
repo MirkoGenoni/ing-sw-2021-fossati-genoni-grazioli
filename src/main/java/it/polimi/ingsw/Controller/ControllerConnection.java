@@ -36,7 +36,7 @@ public class ControllerConnection implements EventToServerVisitor, ObserveConnec
     }
 
     @Override
-    public void visit(SendLeaderCardTurnToServer leaderCardTurn) {
+    public void visit(SendLeaderCardToServer leaderCardTurn) {
         System.out.println("mi è arrivato il turno gioca-leader");
         controllerToModel.leaderCardTurn(leaderCardTurn.getPlayerName(), leaderCardTurn.getActions());
 
@@ -76,7 +76,7 @@ public class ControllerConnection implements EventToServerVisitor, ObserveConnec
     // EVENTS FOR THE USE DEVELOPMENT CARD
     // ------------------------------------------------------
     @Override
-    public void visit(SelectedProductionDevelopmentCardToServer sendProductionDevelopmentCard) {
+    public void visit(SelectedProductionToServer sendProductionDevelopmentCard) {
         System.out.println("ho ricevuto il turno di usare produzioni");
         controllerToModel.activateProduction(sendProductionDevelopmentCard.isUseBaseProduction(), sendProductionDevelopmentCard.getResourceRequested1(),
                                                 sendProductionDevelopmentCard.getResourceRequested2(), sendProductionDevelopmentCard.getResourceGranted(),

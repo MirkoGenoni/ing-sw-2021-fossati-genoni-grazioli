@@ -141,8 +141,8 @@ public class ConnectionToServer implements Runnable, EventToServerNotifier {
 
     @Override
     public void sendLeaderCardTurn(ArrayList<Integer> positions) {
-        SendLeaderCardTurnToServer sendLeaderCardTurnToServer = new SendLeaderCardTurnToServer(positions, this.playerName);
-        asyncSendEvent(sendLeaderCardTurnToServer);
+        SendLeaderCardToServer sendLeaderCardToServer = new SendLeaderCardToServer(positions, this.playerName);
+        asyncSendEvent(sendLeaderCardToServer);
     }
 
     // -------------------------------------------
@@ -180,8 +180,8 @@ public class ConnectionToServer implements Runnable, EventToServerNotifier {
     // ------------------------------------------------------
     @Override
     public void sendSelectedProductionDevelopmentCard(boolean useBaseProduction, Resource resourceRequested1, Resource resourceRequested2, ProductedMaterials resourceGranted, ArrayList<Boolean> useLeaders, ArrayList<Resource> materialLeaders, ArrayList<Boolean> useDevelop) {
-        SelectedProductionDevelopmentCardToServer selectedProductionDevelopmentCardToServer = new SelectedProductionDevelopmentCardToServer(useBaseProduction, resourceRequested1, resourceRequested2, resourceGranted, useLeaders, materialLeaders, useDevelop, this.playerName);
-        asyncSendEvent(selectedProductionDevelopmentCardToServer);
+        SelectedProductionToServer selectedProductionToServer = new SelectedProductionToServer(useBaseProduction, resourceRequested1, resourceRequested2, resourceGranted, useLeaders, materialLeaders, useDevelop, this.playerName);
+        asyncSendEvent(selectedProductionToServer);
     }
 
     // ------------------------------------------------------

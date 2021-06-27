@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
- * This class contains the structure of the market to send to the client.
+ * This class represents the structure of the market to send to the client.
  * This object could be only read from the client.
  * @see it.polimi.ingsw.Model.Market.Market
  * @see Serializable
@@ -29,7 +29,7 @@ public class MarketToClient implements Serializable {
 
     /**
      * Getter that returns the grid of marble of the the market.
-     * @return the grid of marble of the the market.
+     * @return The grid of marble of the the market.
      */
     public ArrayList<Marble> getGrid() {
         return grid;
@@ -37,7 +37,7 @@ public class MarketToClient implements Serializable {
 
     /**
      * Getter that returns the marble out of the market.
-     * @return the marble out of the market.
+     * @return The marble out of the market.
      */
     public Marble getOutMarble() {
         return outMarble;
