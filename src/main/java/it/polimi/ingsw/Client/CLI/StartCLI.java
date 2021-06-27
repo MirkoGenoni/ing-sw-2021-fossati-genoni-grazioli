@@ -13,11 +13,6 @@ public class StartCLI {
     private int serverPort;
     private Socket socket;
 
-    public static void main(String[] args) {
-        StartCLI startCLI = new StartCLI("localhost", 12345);
-        startCLI.startClient();
-    }
-
     public StartCLI(String serverAddress, int serverPort) {
         this.serverAddress = "";
         this.serverAddress = serverAddress;
