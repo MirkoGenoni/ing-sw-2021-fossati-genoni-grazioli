@@ -18,6 +18,7 @@ public class AllPlayersView {
     NewDepositView depositState;
     LeaderCardView activeLeaderCard;
     LeaderCardView inactiveLeaderCard;
+    FaithTrackView faithTrackView;
 
     AllPlayersView(Map<String, PlayerInformationToClient> information, String currentPlayer, ArrayList<LeaderCardToClient> inactiveLeaders){
         this.information = information;
@@ -54,12 +55,14 @@ public class AllPlayersView {
                 case"development":
                     this.developmentCardView.draw();
                     break;
-                case"leader":
+                case"leaders":
                     this.activeLeaderCard.draw();
                     break;
                 case"myinactiveleader":
                     this.inactiveLeaderCard.draw();
                     break;
+                case"faithtrack":
+                    this.faithTrackView.draw();
             }
         }
     }
@@ -69,6 +72,7 @@ public class AllPlayersView {
         this.depositState = new NewDepositView(player.getDeposit(), player.getStrongBox(), player.getAdditionalDepositType(), player.getAdditionalDeposit());
         this.activeLeaderCard = new LeaderCardView(player.getLeaderCardActive(), null);
         this.inactiveLeaderCard = new LeaderCardView(this.inactiveLeaders, null);
+        this.faithTrackView = new FaithTrackView(player.getPopeFavorTiles(), player.getFaithMarkerPosition());
     }
 
     private void printSelection(){
@@ -97,7 +101,8 @@ public class AllPlayersView {
         System.out.print("\n" +
                 "                                           \n" +
                 "\n" +
-                "                   -> Select one of the part from the board: [deposit, development, leader, myinactiveleader]\n" +
+                "                   -> Select one of the part from the board:\n\n" +
+                "                      [deposit, development, leaders, myinactiveleader, faithtrack]\n" +
                 "\n" +
                 "\n" +
                 "\n" +

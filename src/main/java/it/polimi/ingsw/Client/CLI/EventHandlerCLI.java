@@ -13,7 +13,7 @@ import it.polimi.ingsw.Events.ServerToClient.TurnReselectionToClient;
 
 import java.util.concurrent.TimeUnit;
 
-public class CLI implements EventToClientVisitor {
+public class EventHandlerCLI implements EventToClientVisitor {
     private final ConnectionToServer connectionToServer;
     private CLIHandler handler;
     private int index = -1;
@@ -48,7 +48,7 @@ public class CLI implements EventToClientVisitor {
         }});
 
 
-    public CLI(ConnectionToServer connectionToServer) {
+    public EventHandlerCLI(ConnectionToServer connectionToServer) {
         this.connectionToServer = connectionToServer;
         this.handler = new CLIHandler(this.connectionToServer);
     }
@@ -70,7 +70,7 @@ public class CLI implements EventToClientVisitor {
     // -------------------------------------------
     @Override
     public void visit(SendArrayLeaderCardsToClient leaderCardArray) {
-        handler.leaderCardSelection(leaderCardArray.getLeaderCardArray(), leaderCardArray.isInitialLeaderCards(), leaderCardArray.getNumberOfDevelopmentCards());
+        new Thread(() -> handler.leaderCardSelection(leaderCardArray.getLeaderCardArray(), leaderCardArray.isInitialLeaderCards(), leaderCardArray.getNumberOfDevelopmentCards())).start();
         /*
         if(leaderCardArray.isInitialLeaderCards()) {
             LeaderCardView leaderCardView = new LeaderCardView(leaderCardArray.getLeaderCardArray());
@@ -88,7 +88,7 @@ public class CLI implements EventToClientVisitor {
 
     @Override
     public void visit(SendReorganizeDepositToClient newResources) {
-        handler.selectNewDeposit(newResources.getDepositResources(), newResources.getMarketResources(), newResources.isAdditionalDeposit(), newResources.getType(), newResources.getAdditionalDepositState());
+        new Thread(() -> handler.selectNewDeposit(newResources.getDepositResources(), newResources.getMarketResources(), newResources.isAdditionalDeposit(), newResources.getType(), newResources.getAdditionalDepositState())).start();
         /*NewDepositView view = new NewDepositView(newResources.getDepositResources(), newResources.getMarketResources(), false, null, null);
         view.LaunchView();
         connectionToServer.sendNewDepositState(view.getDepositState(), view.getMarketReceived());*/
@@ -100,7 +100,7 @@ public class CLI implements EventToClientVisitor {
 
     @Override
     public void visit(SendSpaceDevelopmentCardToClient developmentCardSpace) {
-        handler.selectSpaceForDevelopment(developmentCardSpace.getDevelopmentCardSpace());
+        new Thread(() -> handler.selectSpaceForDevelopment(developmentCardSpace.getDevelopmentCardSpace())).start();
         /*boolean bought = true;
         System.out.println("You can put the bought card in these positions:");
         for (int i=0; i<developmentCardSpace.getDevelopmentCardSpace().size(); i++) {
@@ -127,40 +127,42 @@ public class CLI implements EventToClientVisitor {
     // ----------------------------------
     @Override
     public void visit(NotifyToClient message) {
+        new Thread(() -> {
+            switch (message.getMessage()) {
 
-        switch(message.getMessage()){
+                case "WaitForOtherPlayers":
+                    asyncPrint.start();
+                    break;
 
-            case "WaitForOtherPlayers":
-                asyncPrint.start();
-                break;
+                case "AllPlayersConnected":
+                    asyncPrint.interrupt();
+                    try {
+                        TimeUnit.SECONDS.sleep(1);
+                    } catch (InterruptedException e) {
+                        System.out.println("Error in sleep");
+                    }
 
-            case "AllPlayersConnected":
-                asyncPrint.interrupt();
-                try {
-                    TimeUnit.SECONDS.sleep(1);
-                } catch (InterruptedException e) {
-                    System.out.println("Error in sleep");
-                }
+                    break;
+            }
 
-                break;
-        }
-
-        if(!message.getMessage().equals("WaitForOtherPlayers") && !message.getMessage().equals("AllPlayersConnected")){
-            Messages messages = new Messages(message.getMessage(), false);
-            messages.printMessage();
-        }
+            if (!message.getMessage().equals("WaitForOtherPlayers") && !message.getMessage().equals("AllPlayersConnected")) {
+                Messages messages = new Messages(message.getMessage(), false);
+                messages.printMessage();
+            }
+        });
     }
 
     @Override
     public void visit(TurnReselectionToClient message) {
-        handler.newTurn();
+        new Thread(() -> handler.newTurn()).start();
     }
 
     @Override
     public void visit(NewTurnToClient newTurn) {
-        if (newTurn.isYourTurn()) {
-            handler.newState(newTurn.getPlayers(), newTurn.getMarket(), newTurn.getDevelopmentCards());
-            handler.newTurn();
+        new Thread(() -> {
+            if (newTurn.isYourTurn()) {
+                handler.newState(newTurn.getPlayers(), newTurn.getMarket(), newTurn.getDevelopmentCards());
+                handler.newTurn();
 
         /* FOR DEBUG! PRINTS THE CORRECT STATE OF THE CURRENT PLAYER WITHOUT THE USE OF THE CLI (check for visualization)
             for (int i = 0; i < newTurn.getPlayers().size(); i++) {
@@ -194,31 +196,36 @@ public class CLI implements EventToClientVisitor {
 
             System.out.println("i miei pope");
             System.out.println(player.getPopeFavorTiles().toString());*/
-        }
+            }
+        }).start();
     }
 
     @Override
     public void visit(EndGameToClient message) {
-        Messages messageEnd = new Messages("GAME ENDED", false);
-        messageEnd.printMessage();
-        connectionToServer.closeConnection();
+        new Thread(() -> {
+            Messages messageEnd = new Messages("GAME ENDED", false);
+            messageEnd.printMessage();
+            connectionToServer.closeConnection();
+        }).start();
     }
 
     @Override
     public void visit(SendInitialResourcesToClient numResources) {
-        handler.initialResourceSelection(numResources.getNumResources(), numResources.getDepositState());
+        new Thread(() -> handler.initialResourceSelection(numResources.getNumResources(), numResources.getDepositState())).start();
     }
 
     @Override
     public void visit(LorenzoActionToClient lorenzoAction) {
-        System.out.println("lorenzo ha pescato -> " + lorenzoAction.getLorenzoAction().toString());
-        System.out.println("lorenzo si trova " + lorenzoAction.getLorenzoPosition() + "/24");
-        try {
-            TimeUnit.SECONDS.sleep(3);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        connectionToServer.sendReplayLorenzoAction();
+        new Thread(() -> {
+            System.out.println("lorenzo ha pescato -> " + lorenzoAction.getLorenzoAction().toString());
+            System.out.println("lorenzo si trova " + lorenzoAction.getLorenzoPosition() + "/24");
+            try {
+                TimeUnit.SECONDS.sleep(3);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            connectionToServer.sendReplayLorenzoAction();
+        }).start();
     }
 
     @Override
@@ -243,10 +250,11 @@ public class CLI implements EventToClientVisitor {
             tmp=false;
         }
         System.out.println(tmp + " è il voolean");*/
-
-        handler.insertInitialData("isNewRoom");
-        handler.insertInitialData("roomNumber");
-        connectionToServer.sendRoom(handler.getTmpRoomNumber(), handler.isNewRoomOrNot());
+        new Thread(() -> {
+            handler.insertInitialData("isNewRoom");
+            handler.insertInitialData("roomNumber");
+            connectionToServer.sendRoom(handler.getTmpRoomNumber(), handler.isNewRoomOrNot());
+        }).start();
     }
 
     @Override
@@ -269,7 +277,7 @@ public class CLI implements EventToClientVisitor {
         connectionToServer.sendPlayerName(line);
         namePlayer = line;
         connectionToServer.setPlayerName(line);*/
-        handler.insertInitialData("namePlayer");
+        new Thread(() -> handler.insertInitialData("namePlayer")).start();
     }
 
     @Override
@@ -301,6 +309,6 @@ public class CLI implements EventToClientVisitor {
         int num = scanIn.nextInt();
         connectionToServer.sendNumPlayer(num);*/
 
-        handler.insertInitialData("numberOfPlayers");
+        new Thread(() -> handler.insertInitialData("numberOfPlayers")).start();
     }
 }

@@ -49,7 +49,7 @@ public class CLIHandler {
         return isNewRoomOrNot;
     }
 
-    public void newState(Map<String, PlayerInformationToClient> players,
+    public synchronized void newState(Map<String, PlayerInformationToClient> players,
                          MarketToClient market,
                          DevelopmentCardToClient[][] developmentCardToBuy){
 

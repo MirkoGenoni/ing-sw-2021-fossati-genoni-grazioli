@@ -1,6 +1,6 @@
 package it.polimi.ingsw.Client;
 
-import it.polimi.ingsw.Client.CLI.CLI;
+import it.polimi.ingsw.Client.CLI.EventHandlerCLI;
 import it.polimi.ingsw.Client.GUI.VisitClass;
 import it.polimi.ingsw.Events.ClientToServer.*;
 import it.polimi.ingsw.Events.ClientToServer.BuyDevelopmentCardToServer.SelectedDevelopmentCardSpaceToServer;
@@ -28,7 +28,7 @@ public class ConnectionToServer implements Runnable, EventToServerNotifier {
     private boolean active;
     private String playerName;
     private boolean activeGui = false;
-    private CLI cli;
+    private EventHandlerCLI eventHandlerCli;
     private VisitClass visit;
 
     // Input and Output steams
@@ -38,7 +38,7 @@ public class ConnectionToServer implements Runnable, EventToServerNotifier {
     public ConnectionToServer(Socket socket) {
         this.socket = socket;
         this.active = true;
-        cli = new CLI(this);
+        eventHandlerCli = new EventHandlerCLI(this);
     }
 
     public void setAddress(String address){
@@ -69,7 +69,7 @@ public class ConnectionToServer implements Runnable, EventToServerNotifier {
                 if (activeGui){
                     visit.receiveEvent(event);
                 }else{
-                    cli.receiveEvent(event);
+                    eventHandlerCli.receiveEvent(event);
                 }
             } catch (IOException e) {
                 closeConnection();

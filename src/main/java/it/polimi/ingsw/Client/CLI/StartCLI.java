@@ -8,17 +8,17 @@ import java.net.Socket;
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
-public class ClientCLI {
+public class StartCLI {
     private String serverAddress;
     private int serverPort;
     private Socket socket;
 
     public static void main(String[] args) {
-        ClientCLI clientCLI = new ClientCLI("localhost", 12345);
-        clientCLI.startClient();
+        StartCLI startCLI = new StartCLI("localhost", 12345);
+        startCLI.startClient();
     }
 
-    public ClientCLI(String serverAddress, int serverPort) {
+    public StartCLI(String serverAddress, int serverPort) {
         this.serverAddress = "";
         this.serverAddress = serverAddress;
         this.serverPort = serverPort;
