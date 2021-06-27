@@ -7,7 +7,9 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.effect.DropShadow;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 
@@ -34,6 +36,7 @@ public class InitialLeaderController implements GUIController, Initializable {
     @FXML private ImageView leader2;
     @FXML private ImageView leader3;
     @FXML private Button done;
+    @FXML private Label waitNotify;
 
     /**
      * Draws the leader cards on the scene.
@@ -58,8 +61,14 @@ public class InitialLeaderController implements GUIController, Initializable {
         }else if(selectedLeader.size()==2){
             gui.getConnectionToServer().sendDiscardInitialLeaderCards(selectedLeader.get(0), selectedLeader.get(1));
             done.setDisable(true);
-            done.setOpacity(0);
-            //wait other player
+            done.setVisible(false);
+            waitNotify.setVisible(true);
+            leader.forEach(leader -> leader.setDisable(true));
+            leader.remove((int)selectedLeader.get(0));
+            leader.remove((int)selectedLeader.get(0));
+            gui.setLeaderInHand(new ArrayList<Image>(List.of(leader.get(0).getImage(), leader.get(1).getImage())));
+
+
         }
     }
 

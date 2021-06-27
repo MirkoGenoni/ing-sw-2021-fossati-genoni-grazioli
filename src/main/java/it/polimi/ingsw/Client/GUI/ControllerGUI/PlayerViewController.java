@@ -217,6 +217,7 @@ public class PlayerViewController implements GUIController, Initializable {
                 leaderText.get(i).setText("IN HAND");
             }
         }
+
     }
 
     /**

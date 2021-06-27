@@ -121,7 +121,7 @@ public class PlayerNameController implements GUIController, Initializable {
 
 
     /**
-     * Sends the numbaer of player selected by the user to the connection with the server.
+     * Sends the number of player selected by the user to the connection with the server.
      * @param actionEvent The event of the type ActionEvent.
      */
     public void sendNumPlayer(ActionEvent actionEvent) {

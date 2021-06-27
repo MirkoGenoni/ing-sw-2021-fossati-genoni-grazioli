@@ -12,11 +12,12 @@
       <ImageView fx:id="leader1" fitHeight="323.0" fitWidth="210.0" layoutX="337.0" layoutY="77.0" pickOnBounds="true" preserveRatio="true" />
       <ImageView fx:id="leader2" fitHeight="323.0" fitWidth="210.0" layoutX="59.0" layoutY="447.0" pickOnBounds="true" preserveRatio="true" />
       <ImageView fx:id="leader3" fitHeight="323.0" fitWidth="210.0" layoutX="337.0" layoutY="447.0" pickOnBounds="true" preserveRatio="true" />
-      <Label layoutX="22.0" layoutY="30.0" prefHeight="29.0" prefWidth="556.0" text="Select Two Card That You Want To Discard" textAlignment="CENTER">
+      <Label layoutX="39.0" layoutY="31.0" prefHeight="29.0" prefWidth="530.0" text="Select Two Card That You Want To Discard" textAlignment="CENTER">
          <font>
             <Font size="24.0" />
          </font>
       </Label>
       <Button fx:id="done" layoutX="276.0" layoutY="411.0" mnemonicParsing="false" onAction="#done" text="Done" />
+      <Label fx:id="waitNotify" layoutX="232.0" layoutY="417.0" prefHeight="17.0" prefWidth="148.0" text="Wait Other Players" textAlignment="CENTER" visible="false" />
    </children>
 </AnchorPane>
