@@ -53,4 +53,6 @@ public interface EventToServerNotifier {
     void sendPlayerName(String playerName);
     void sendNumPlayer(int num);
 
+    void sendPing();
+
 }

@@ -27,9 +27,11 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 /**
  * This class is the remote view of the MVC patter.
@@ -43,6 +45,7 @@ import java.util.Map;
  */
 public class ConnectionToClient implements Runnable, EventToClientNotifier {
     private Socket clientSocket;
+    private Thread ping;
     private boolean active;
     private String namePlayer;
 
@@ -70,6 +73,25 @@ public class ConnectionToClient implements Runnable, EventToClientNotifier {
             e.printStackTrace();
 
         }
+        try {
+            clientSocket.setSoTimeout(21000);
+        } catch (SocketException e) {
+            e.printStackTrace();
+            closeConnection();
+            disconnectionHandler.setNullConnection(namePlayer);
+        }
+
+        ping = new Thread(() -> {
+            while(active){
+                try {
+                    TimeUnit.SECONDS.sleep(10);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                sendPing();
+            }
+        });
+        ping.start();
     }
 
     //---------------------
@@ -157,12 +179,13 @@ public class ConnectionToClient implements Runnable, EventToClientNotifier {
      * Close the connection and set the client like inactive
      */
     private void closeConnection(){
+        active = false;
         try{
             clientSocket.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        active = false;
+
     }
 
 
@@ -171,8 +194,13 @@ public class ConnectionToClient implements Runnable, EventToClientNotifier {
         try{
             while(active){
                 EventToServer event = receiveEvent();
-                observeConnectionToClient.observeEvent(event); // ControllerConnection or RoomHandler
-                Thread.sleep(10);
+                System.out.println(event.getClass().getSimpleName());
+                if(!event.getClass().getSimpleName().equals("PingToServer")){
+                    observeConnectionToClient.observeEvent(event); // ControllerConnection or RoomHandler
+                }else{
+                    System.out.println("Ping to Client");
+                }
+                //Thread.sleep(10);
             }
         } catch (IOException e) {
             closeConnection();
@@ -180,7 +208,7 @@ public class ConnectionToClient implements Runnable, EventToClientNotifier {
                 disconnectionHandler.setNullConnection(namePlayer); //TODO specifico
             }
             e.printStackTrace();
-        } catch (ClassNotFoundException | InterruptedException e) {
+        } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
     }

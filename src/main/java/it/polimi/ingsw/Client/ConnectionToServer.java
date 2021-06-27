@@ -1,7 +1,7 @@
 package it.polimi.ingsw.Client;
 
 import it.polimi.ingsw.Client.CLI.EventHandlerCLI;
-import it.polimi.ingsw.Client.GUI.VisitClass;
+import it.polimi.ingsw.Client.GUI.EventHandlerGUI;
 import it.polimi.ingsw.Events.ClientToServer.*;
 import it.polimi.ingsw.Events.ClientToServer.BuyDevelopmentCardToServer.SelectedDevelopmentCardSpaceToServer;
 import it.polimi.ingsw.Events.ClientToServer.BuyDevelopmentCardToServer.SelectedDevelopmentCardToBuyToServer;
@@ -29,7 +29,7 @@ public class ConnectionToServer implements Runnable, EventToServerNotifier {
     private String playerName;
     private boolean activeGui = false;
     private EventHandlerCLI eventHandlerCli;
-    private VisitClass visit;
+    private EventHandlerGUI visit;
 
     // Input and Output steams
     private ObjectInputStream input;
@@ -49,7 +49,7 @@ public class ConnectionToServer implements Runnable, EventToServerNotifier {
         return this.address;
     }
 
-    public void setVisit(VisitClass visit) {
+    public void setVisit(EventHandlerGUI visit) {
         this.visit = visit;
         activeGui = true;
     }
@@ -61,20 +61,27 @@ public class ConnectionToServer implements Runnable, EventToServerNotifier {
             input = new ObjectInputStream(socket.getInputStream());
         } catch (IOException e) {
             e.printStackTrace();
+            closeConnection();
         }
 
-        while(isActive()){
+        while(active){
             try{
                 EventToClient event = receiveEvent();
-                if (activeGui){
-                    visit.receiveEvent(event);
+                if(!event.getClass().getSimpleName().equals("PingToClient")){
+                    if (activeGui){
+                        visit.receiveEvent(event);
+                    }else{
+                        eventHandlerCli.receiveEvent(event);
+                    }
                 }else{
-                    eventHandlerCli.receiveEvent(event);
+                    sendPing();
                 }
+
             } catch (IOException e) {
                 closeConnection();
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
+                closeConnection();
             }
         }
     }
@@ -109,15 +116,7 @@ public class ConnectionToServer implements Runnable, EventToServerNotifier {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        setActive(false);
-    }
-
-    public boolean isActive() {
-        return active;
-    }
-
-    public void setActive(boolean active) {
-        this.active = active;
+        active = false;
     }
 
     public void setPlayerName(String playerName) {
@@ -222,6 +221,13 @@ public class ConnectionToServer implements Runnable, EventToServerNotifier {
     public void sendNumPlayer(int num) {
         SendNumPlayerToServer sendNumPlayerToServer = new SendNumPlayerToServer(num, this.playerName);
         asyncSendEvent(sendNumPlayerToServer);
+    }
+
+    @Override
+    public void sendPing() {
+        PingToServer pingToServer = new PingToServer();
+        asyncSendEvent(pingToServer);
+        //System.out.println("send ping to server");
     }
 
 

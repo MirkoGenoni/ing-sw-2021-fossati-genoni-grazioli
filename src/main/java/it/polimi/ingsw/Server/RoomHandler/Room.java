@@ -21,7 +21,7 @@ public class Room {
     private final int roomNumber;
     private final Map<String, ConnectionToClient> connections;
     private DisconnectionHandler disconnectionHandler;
-    private Thread ping;
+    //private Thread ping;
 
     private boolean sendNumPlayer;
     private String playerSendNumPlayer;
@@ -58,6 +58,7 @@ public class Room {
         controllerToModel = new ControllerToModel(connections);
         controllerConnection = new ControllerConnection(controllerToModel);
         disconnectionHandler = new DisconnectionHandler(controllerToModel, this);
+        /*
         ping = new Thread(() -> {
             while(!finish){
                 try {
@@ -69,6 +70,8 @@ public class Room {
             }
         });
         ping.start();
+
+         */
     }
 
 
@@ -231,7 +234,7 @@ public class Room {
         if(!finish){
             finish = true;
             server.getRooms().remove(roomNumber);
-            ping.interrupt();
+            //ping.interrupt();
         }
     }
 

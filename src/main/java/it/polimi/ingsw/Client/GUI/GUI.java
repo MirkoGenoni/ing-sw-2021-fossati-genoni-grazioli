@@ -31,7 +31,7 @@ import java.util.*;
 public class GUI extends Application {
     private String namePlayer;
 
-    private VisitClass visit;
+    private EventHandlerGUI visit;
     private ConnectionToServer connectionToServer;
 
     private Scene currentScene;
@@ -70,7 +70,7 @@ public class GUI extends Application {
      */
     public void setConnectionToServer(ConnectionToServer connectionToServer) {
         this.connectionToServer = connectionToServer;
-        visit = new VisitClass(connectionToServer, this);
+        visit = new EventHandlerGUI(connectionToServer, this);
         connectionToServer.setVisit(visit);
     }
 

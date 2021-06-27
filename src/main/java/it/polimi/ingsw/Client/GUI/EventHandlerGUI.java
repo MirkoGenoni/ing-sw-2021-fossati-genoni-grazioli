@@ -19,7 +19,7 @@ import java.util.concurrent.CountDownLatch;
  *
  * @author Stefano Fossati
  */
-public class VisitClass implements EventToClientVisitor {
+public class EventHandlerGUI implements EventToClientVisitor {
     private final ConnectionToServer connectionToServer;
     private final GUI gui;
 
@@ -29,7 +29,7 @@ public class VisitClass implements EventToClientVisitor {
      * @param connectionToServer The connection with the server.
      * @param gui The GUI application.
      */
-    public VisitClass(ConnectionToServer connectionToServer, GUI gui) {
+    public EventHandlerGUI(ConnectionToServer connectionToServer, GUI gui) {
         this.connectionToServer = connectionToServer;
         new Thread(connectionToServer).start();
         this.gui = gui;
@@ -103,7 +103,7 @@ public class VisitClass implements EventToClientVisitor {
 
     @Override
     public void visit(EndGameToClient message) {
-        connectionToServer.setActive(false);
+        connectionToServer.closeConnection();
         changeSceneThread("playerView");
         PlayerViewController controller = (PlayerViewController) gui.getCurrentController();
         controller.updatePlayerBoard(message.getPlayerInformation());
