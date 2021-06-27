@@ -24,19 +24,19 @@ public interface EventToClientNotifier {
     // -------------------------------------------------------
 
     /**
-     * Send the request to choose the room to the client.
+     * Sends the request to choose the room to the client.
      * @param message The message to sent to the client.
      */
     void sendRoomRequestToClient(String message);
 
     /**
-     * Send the request to choose the own nickname for the match to the client.
+     * Sends the request to choose the own nickname for the match to the client.
      * @param message The message to send to the client. It contains some instructions.
      */
     void sendNamePlayerRequest(String message);
 
     /**
-     * Send the request to choose the number of player for the match. Only the first player that access to the room could choose the number of player.
+     * Sends the request to choose the number of player for the match. Only the first player that access to the room could choose the number of player.
      * @param message The message to send to the client.
      */
     void sendNumPlayerRequest(String message);
@@ -46,7 +46,7 @@ public interface EventToClientNotifier {
     // ----------------------------------
 
     /**
-     * Send to the client/player the request to choose the initial resource of the match set up.
+     * Sends to the client/player the request to choose the initial resource of the match set up.
      * @param numResources The number of resources that the player have to choose.
      * @param depositState The initial deposit state of the player.
      */
@@ -57,7 +57,7 @@ public interface EventToClientNotifier {
     // ----------------------------------------
 
     /**
-     * Send to the client/player the information of the leader cards.
+     * Sends to the client/player the information of the leader cards.
      * @param leaderCards The leader cards of the player.
      * @param initialLeaderCards Indicates the phase of the match in which the leader card are send.
      *                          If is true the leader cards are to choose for the set up of the match.
@@ -71,7 +71,7 @@ public interface EventToClientNotifier {
     // -------------------------------------------------------------------
 
     /**
-     * Send all the needed information to the client.
+     * Sends all the needed information to the client.
      * @param turnNumber The number of the turn.
      * @param market The structure of the market.
      * @param developmentCards The structure of the development cards on the table with its information.
@@ -88,7 +88,7 @@ public interface EventToClientNotifier {
     // ----------------------------------
 
     /**
-     * Send the request to reorganize the deposit to the client.
+     * Sends the request to reorganize the deposit to the client.
      * @param marketResources The resources take from the market.
      * @param depositState The deposit state of the player that have to reorganize the deposit.
      * @param isAdditional Indicates if there is or there are additional deposits send.
@@ -103,13 +103,13 @@ public interface EventToClientNotifier {
     // ----------------------------------------
 
     /**
-     * Send the reselection of the turn to the client.
+     * Sends the reselection of the turn to the client.
      * @param message The information for which this event is send.
      */
     void sendTurnReselection(String message);
 
     /**
-     * Send the request to select the development card space in which the player want to position the development card bought.
+     * Sends the request to select the development card space in which the player want to position the development card bought.
      * @param developmentCardSpace The state of the development card space of the player.
      */
     void sendDevelopmentCardSpace(ArrayList<Boolean> developmentCardSpace);
@@ -119,7 +119,7 @@ public interface EventToClientNotifier {
     // ----------------------------------
 
     /**
-     * Send a notify to the client.
+     * Sends a notify to the client.
      * @param message The information of the notify.
      */
     void sendNotify(String message);
@@ -129,7 +129,7 @@ public interface EventToClientNotifier {
     // ----------------------------------
 
     /**
-     * Send the notify that the game ended to the client.
+     * Sends the notify that the game ended to the client.
      * @param message The massage to send to the client.
      * @param playersPoint The points of all players.
      * @param faithTrack The faith track of the match.
@@ -145,7 +145,7 @@ public interface EventToClientNotifier {
     // ----------------------------------
 
     /**
-     * Send the action that Lorenzo done in the single player match to the client.
+     * Sends the action that Lorenzo done in the single player match to the client.
      * @param lorenzoAction The type of action done by Lorenzo.
      * @param lorenzoPosition The position of lorenzo in the faith track.
      */
@@ -155,7 +155,7 @@ public interface EventToClientNotifier {
     // PING EVENT
     // ----------------------------------
     /**
-     * Send a ping to the client.
+     * Sends a ping to the client.
      */
     void sendPing();
 

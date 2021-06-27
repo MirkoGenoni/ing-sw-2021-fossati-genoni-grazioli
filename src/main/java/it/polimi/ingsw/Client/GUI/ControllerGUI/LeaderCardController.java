@@ -61,7 +61,7 @@ public class LeaderCardController implements GUIController, Initializable {
     public void done(ActionEvent actionEvent) {
         ArrayList<Image> leaderCardToDraw = new ArrayList<>();
         ArrayList<Integer> sendSelectedLeaderCard = new ArrayList<>();
-
+        //TODO dovrebbe essere da sistemare
         for(int i =0; i<leaderCard.size(); i++){
             if(leaderCard.get(i).getImage()!=null){
                 Integer k = i;
@@ -83,7 +83,7 @@ public class LeaderCardController implements GUIController, Initializable {
         PlayerViewController controller = (PlayerViewController) gui.getCurrentController();
         controller.tabTurnNotActive(true);
         gui.setLeaderInHand(leaderCardToDraw);
-        gui.getConnectionToServer().sendLeaderCardTurn(sendSelectedLeaderCard);
+        gui.getConnectionToServer().sendLeaderCardActions(sendSelectedLeaderCard);
     }
 
 

@@ -3,7 +3,7 @@ package it.polimi.ingsw.Events.ServerToClient;
 import java.io.Serializable;
 
 /**
- * This abstract class is used to generalize the event to sent to the client.
+ * This abstract class is used to generalize the event to sent from the server to the client.
  * @see Serializable
  *
  * @author Stefano Fossati

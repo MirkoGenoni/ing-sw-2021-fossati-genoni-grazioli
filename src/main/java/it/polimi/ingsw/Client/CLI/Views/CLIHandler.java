@@ -94,7 +94,7 @@ public class CLIHandler {
                         j++;
                     }
 
-                connection.sendLeaderCardTurn(receive);
+                connection.sendLeaderCardActions(receive);
             }
     }
 

@@ -140,8 +140,8 @@ public class ConnectionToServer implements Runnable, EventToServerNotifier {
     }
 
     @Override
-    public void sendLeaderCardTurn(ArrayList<Integer> positions) {
-        SendLeaderCardToServer sendLeaderCardToServer = new SendLeaderCardToServer(positions, this.playerName);
+    public void sendLeaderCardActions(ArrayList<Integer> actions) {
+        SendLeaderCardToServer sendLeaderCardToServer = new SendLeaderCardToServer(actions, this.playerName);
         asyncSendEvent(sendLeaderCardToServer);
     }
 
