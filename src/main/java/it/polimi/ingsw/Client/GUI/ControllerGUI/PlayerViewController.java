@@ -250,7 +250,8 @@ public class PlayerViewController implements GUIController, Initializable {
     public void buyDevelopmentTurn(ActionEvent actionEvent) {
         gui.changeScene("buyDevelopmentView");
         BuyDevelopmentController controller = (BuyDevelopmentController) gui.getCurrentController();
-        controller.drawDevelopment(turnTmp.getDevelopmentCards(), turnTmp.getPlayers().get(gui.getNamePlayer()).getDeposit(), turnTmp.getPlayers().get(gui.getNamePlayer()).getStrongBox());
+        controller.drawDevelopment(turnTmp.getDevelopmentCards(), turnTmp.getPlayers().get(gui.getNamePlayer()).getDeposit(), turnTmp.getPlayers().get(gui.getNamePlayer()).getStrongBox(),
+                turnTmp.getPlayers().get(gui.getNamePlayer()).getAdditionalDeposit(), turnTmp.getPlayers().get(gui.getNamePlayer()).getLeaderCardActive());
     }
     /**
      * Changes the scene into the activate production scene.
@@ -267,7 +268,8 @@ public class PlayerViewController implements GUIController, Initializable {
                 tmp.add(null);
             }
         }
-        controller.drawProduction(tmp, turnTmp.getPlayers().get(gui.getNamePlayer()).getDeposit(), turnTmp.getPlayers().get(gui.getNamePlayer()).getStrongBox(), turnTmp.getPlayers().get(gui.getNamePlayer()).getLeaderCardActive());
+        controller.drawProduction(tmp, turnTmp.getPlayers().get(gui.getNamePlayer()).getDeposit(), turnTmp.getPlayers().get(gui.getNamePlayer()).getStrongBox(),
+                turnTmp.getPlayers().get(gui.getNamePlayer()).getAdditionalDeposit(), turnTmp.getPlayers().get(gui.getNamePlayer()).getLeaderCardActive());
     }
 
     /**

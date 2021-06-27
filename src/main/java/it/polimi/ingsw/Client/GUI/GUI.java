@@ -249,9 +249,10 @@ public class GUI extends Application {
      * Calculates the total resources that a player has and returns a map.
      * @param deposit The deposit of the resources.
      * @param strongBox The strongbox of the resources.
-     * @return The map wwith the number of resources that the player have in the deposit and in the strongbox.
+     * @param additionalDeposit The additional deposit of the player.
+     * @return The map with the number of resources that the player have in the deposit and in the strongbox.
      */
-    public Map<String, Integer> calculateTotalResources(ArrayList<Resource> deposit, Map<Resource, Integer> strongBox){
+    public Map<String, Integer> calculateTotalResources(ArrayList<Resource> deposit, Map<Resource, Integer> strongBox, ArrayList<Resource> additionalDeposit){
         Map<String, Integer> totalResources = new HashMap<>();
         for(Resource r : strongBox.keySet()){
             totalResources.put(r.name().toLowerCase(), strongBox.get(r));
@@ -259,6 +260,14 @@ public class GUI extends Application {
         for(Resource r : deposit){
             if(r!=null){
                 totalResources.put(r.name().toLowerCase(), totalResources.get(r.name().toLowerCase()) + 1);
+            }
+        }
+
+        if(additionalDeposit.size()!=0){
+            for(Resource r : additionalDeposit){
+                if(r!=null){
+                    totalResources.put(r.name().toLowerCase(), totalResources.get(r.name().toLowerCase()) + 1);
+                }
             }
         }
         return totalResources;

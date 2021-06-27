@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<AnchorPane stylesheets="@../css/mainStyle.css" maxHeight="750.0" maxWidth="820.0" minHeight="750.0" minWidth="820.0" prefHeight="750.0" prefWidth="820.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.Client.GUI.ControllerGUI.BuyDevelopmentController" style="-fx-background-color: #CEC3A1;">
+<AnchorPane maxHeight="750.0" maxWidth="820.0" minHeight="750.0" minWidth="820.0" prefHeight="750.0" prefWidth="820.0" style="-fx-background-color: #CEC3A1;" stylesheets="@../css/mainStyle.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.Client.GUI.ControllerGUI.BuyDevelopmentController">
    <children>
       <GridPane fx:id="gridDev" hgap="10.0" layoutX="12.0" layoutY="15.0" maxHeight="713.0" maxWidth="638.0" minHeight="713.0" minWidth="638.0" prefHeight="713.0" prefWidth="638.0" vgap="10.0">
         <columnConstraints>
@@ -24,7 +24,7 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
       </GridPane>
-      <Button fx:id="done" layoutX="729.0" layoutY="545.0" mnemonicParsing="false" onAction="#done" text="Ok" />
+      <Button fx:id="done" layoutX="730.0" layoutY="521.0" mnemonicParsing="false" onAction="#done" text="Ok" />
       <Label layoutX="687.0" layoutY="100.0" text="Total Resources" />
       <ImageView fitHeight="73.0" fitWidth="82.0" layoutX="668.0" layoutY="144.0" pickOnBounds="true" preserveRatio="true">
          <image>
@@ -50,7 +50,8 @@
       <Label fx:id="stone" layoutX="763.0" layoutY="262.0" prefHeight="17.0" prefWidth="36.0" />
       <Label fx:id="shield" layoutX="763.0" layoutY="355.0" prefHeight="17.0" prefWidth="36.0" />
       <Label fx:id="servant" layoutX="763.0" layoutY="447.0" prefHeight="17.0" prefWidth="36.0" />
-      <Label fx:id="error" layoutX="668.0" layoutY="607.0" prefHeight="17.0" prefWidth="136.0" />
       <Button fx:id="back" layoutX="700.0" layoutY="33.0" mnemonicParsing="false" onAction="#back" text="Back" />
+      <ImageView fx:id="leaderCardEffect0" fitHeight="75.0" fitWidth="144.0" layoutX="664.0" layoutY="562.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="leaderCardEffect1" fitHeight="75.0" fitWidth="144.0" layoutX="665.0" layoutY="647.0" pickOnBounds="true" preserveRatio="true" />
    </children>
 </AnchorPane>

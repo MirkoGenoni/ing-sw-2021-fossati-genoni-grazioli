@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<AnchorPane stylesheets="@../css/mainStyle.css" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.Client.GUI.ControllerGUI.MarketController" style="-fx-background-color: #CEC3A1;">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="800.0" style="-fx-background-color: #CEC3A1;" stylesheets="@../css/mainStyle.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.Client.GUI.ControllerGUI.MarketController">
    <children>
       <GridPane fx:id="gridMarble" hgap="10.0" layoutX="189.0" layoutY="171.0" prefHeight="320.0" prefWidth="430.0" vgap="10.0">
         <columnConstraints>
@@ -65,5 +65,7 @@
          </image>
       </ImageView>
       <Button fx:id="back" layoutX="698.0" layoutY="63.0" mnemonicParsing="false" onAction="#back" text="Back" />
+      <ImageView fx:id="leaderCardEffect0" disable="true" fitHeight="60.0" fitWidth="150.0" layoutX="636.0" layoutY="171.0" onMouseClicked="#selectLeaderEffect" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="leaderCardEffect1" disable="true" fitHeight="60.0" fitWidth="150.0" layoutX="636.0" layoutY="247.0" onMouseClicked="#selectLeaderEffect" pickOnBounds="true" preserveRatio="true" />
    </children>
 </AnchorPane>

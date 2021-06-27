@@ -6,6 +6,7 @@ import it.polimi.ingsw.Model.Market.Marble;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -21,15 +22,20 @@ import java.util.*;
  *
  * @author Stefano Fossati
  */
-public class MarketController implements GUIController{
+public class MarketController implements GUIController, Initializable{
     private GUI gui;
     private Map<String, Image> marble = new HashMap<>();
+    private ArrayList<ImageView> leaderEffect;
 
-    //tmp
-    private ArrayList<LeaderCardToClient> leaderCardsActive;
+    private ArrayList<LeaderCardToClient> leaderCard;
+
+
 
     @FXML private GridPane gridMarble;
     @FXML private ImageView outMarble;
+    @FXML private ImageView leaderCardEffect0;
+    @FXML private ImageView leaderCardEffect1;
+
 
 
     /**
@@ -39,7 +45,7 @@ public class MarketController implements GUIController{
      * @param leaderCardActive The leader card active of the player.
      */
     public void drawMarket(ArrayList<Marble> marketState, Marble marbleOut, ArrayList<LeaderCardToClient> leaderCardActive){
-        this.leaderCardsActive = leaderCardActive;
+        this.leaderCard = new ArrayList<>(leaderCardActive);
         int k=0;
         int z=0;
         for(int i= 0; i<marketState.size(); i++){
@@ -56,6 +62,10 @@ public class MarketController implements GUIController{
         outMarble.setFitHeight(100);
         outMarble.setFitWidth(100);
         outMarble.setImage(marble.get(marbleOut.name().toLowerCase()));
+        if(leaderCardActive.size()!=0){
+            checkLeaderCardMarketWhiteChange(leaderCardActive);
+        }
+
     }
 
     /**
@@ -78,10 +88,27 @@ public class MarketController implements GUIController{
         }
     }
 
+    public void selectLeaderEffect(MouseEvent mouseEvent) {
+        for(int i=0; i<2; i++){
+            if(((ImageView)mouseEvent.getSource()).getId().equals("leaderCardEffect"+i)){
+                if(((ImageView)mouseEvent.getSource()).getEffect()==null){
+                    ((ImageView)mouseEvent.getSource()).setEffect(new DropShadow());
+                }else{
+                    ((ImageView)mouseEvent.getSource()).setEffect(null);
+                }
+            }
+        }
+    }
+
     @Override
     public void setGUI(GUI gui) {
         this.gui = gui;
         marble = gui.getMarblesGraphic();
+    }
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        leaderEffect = new ArrayList<>(List.of(leaderCardEffect0, leaderCardEffect1));
     }
 
     /**
@@ -89,20 +116,52 @@ public class MarketController implements GUIController{
      * @param line The number line choose by the user.
      */
     private void sendChooseLine(int line){
-        ArrayList<Boolean> tmp = new ArrayList<>();
-        tmp.add(false);
-        tmp.add(false);
-        gui.getConnectionToServer().sendChooseLine(line, tmp);
+        ArrayList<Boolean> tmpEffect = new ArrayList<>();
+        int z=0;
+        for(int i=0; i<leaderCard.size(); i++){
+            if(leaderCard.get(i).getEffect().equals("marketWhiteChange")){
+                if(leaderEffect.get(z).getEffect()==null){
+                    tmpEffect.add(false);
+                }else{
+                    tmpEffect.add(true);
+                }
+                z++;
+            }else{
+                tmpEffect.add(false);
+            }
+        }
+
+        if(tmpEffect.size()==leaderCard.size()){
+            System.out.println("OK");
+        }
+        //TODO controllare regolamento
+        gui.getConnectionToServer().sendChooseLine(line, tmpEffect);
+        leaderEffect.forEach(leader -> leader.setEffect(null));
+        leaderEffect.forEach(leader -> leader.setDisable(true));
+        leaderEffect.forEach(leader -> leader.setImage(null));
+        leaderCard.clear();
     }
 
-    //TODO da implementare controllo
-    private void checkLeaderCardMarketWhiteChange(){
+    /**
+     * Draws the leader cards market withe change that the player has active.
+     * @param leaderCardsActive The leader card active of the player.
+     */
+    private void checkLeaderCardMarketWhiteChange(ArrayList<LeaderCardToClient> leaderCardsActive){
+        int z=0;
         for(int i = 0; i< leaderCardsActive.size(); i++){
             if(leaderCardsActive.get(i).getEffect().equals("marketWhiteChange")){
-
+                String input = "/graphics/leaderCardEffect/" + leaderCardsActive.get(i).getNameCard() + ".png";
+                try{
+                    Image tmpI = new Image(Objects.requireNonNull(getClass().getResourceAsStream(input)));
+                    leaderEffect.get(z).setImage(tmpI);
+                } catch (NullPointerException e) {
+                    System.out.println("leader card file not found, address " + input);
+                    e.printStackTrace();
+                }
+                leaderEffect.get(z).setDisable(false);
+                z++;
             }
         }
     }
-
 
 }

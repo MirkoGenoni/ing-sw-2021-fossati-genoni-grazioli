@@ -2,6 +2,7 @@ package it.polimi.ingsw.Client.GUI.ControllerGUI;
 
 import it.polimi.ingsw.Client.GUI.GUI;
 import it.polimi.ingsw.Events.ServerToClient.SupportClass.DevelopmentCardToClient;
+import it.polimi.ingsw.Events.ServerToClient.SupportClass.LeaderCardToClient;
 import it.polimi.ingsw.Model.Resource.Resource;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -10,14 +11,13 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.effect.DropShadow;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.ResourceBundle;
+import java.util.*;
 
 /**
  * This class represents the controller of the buy development card scene of the GUI application. Implements GUIController and Initializable interface.
@@ -32,6 +32,7 @@ public class BuyDevelopmentController implements GUIController, Initializable {
     private ArrayList<String> devSelected = new ArrayList<>();
     private Map<String, Integer> totalResources;
     private ArrayList<ImageView> devImg = new ArrayList<>();
+    private ArrayList<ImageView> leaderCardEffect;
 
     //tmp
     private DevelopmentCardToClient[][] gridDevelopment;
@@ -42,7 +43,9 @@ public class BuyDevelopmentController implements GUIController, Initializable {
     @FXML private Label shield;
     @FXML private Label stone;
     @FXML private Label servant;
-    @FXML private Label error;
+    @FXML private ImageView leaderCardEffect0;
+    @FXML private ImageView leaderCardEffect1;
+
 
 
     /**
@@ -50,9 +53,12 @@ public class BuyDevelopmentController implements GUIController, Initializable {
      * @param dev The development cards that the player could buy.
      * @param deposit The deposit of the player.
      * @param strongBox The strongbox of the player
+     * @param additionalDeposit
+     * @param leaderCardActive
      */
-    //TODO add additional deposit
-    public void drawDevelopment(DevelopmentCardToClient[][] dev, ArrayList<Resource> deposit, Map<Resource, Integer> strongBox){
+
+    public void drawDevelopment(DevelopmentCardToClient[][] dev, ArrayList<Resource> deposit, Map<Resource, Integer> strongBox,
+                                ArrayList<Resource> additionalDeposit, ArrayList<LeaderCardToClient> leaderCardActive){
         gridDevelopment = dev;
         for(int i=0; i< dev.length; i++){
             for(int j=0; j<dev[i].length; j++){
@@ -67,12 +73,30 @@ public class BuyDevelopmentController implements GUIController, Initializable {
                 }
             }
         }
-        this.totalResources = gui.calculateTotalResources(deposit, strongBox);
+        this.totalResources = gui.calculateTotalResources(deposit, strongBox, additionalDeposit);
 
         coin.setText("X " + totalResources.get("coin"));
         stone.setText("X " + totalResources.get("stone"));
         shield.setText("X " + totalResources.get("shield"));
         servant.setText("X " + totalResources.get("servant"));
+
+        //leaderCardActive
+        if(leaderCardActive.size()!=0){
+            int z=0;
+            for(int i=0; i<leaderCardActive.size(); i++){
+                if(leaderCardActive.get(i).getEffect().equals("costLess")){
+                    String input = "/graphics/leaderCardEffect/" + leaderCardActive.get(i).getNameCard() + ".png";
+                    try{
+                        Image tmpI = new Image(Objects.requireNonNull(getClass().getResourceAsStream(input)));
+                        leaderCardEffect.get(z).setImage(tmpI);
+                        z++;
+                    } catch (NullPointerException e) {
+                        System.out.println("leader card file not found, address " + input);
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
     }
 
     /**
@@ -84,9 +108,9 @@ public class BuyDevelopmentController implements GUIController, Initializable {
         int devColor = -1;
         DevelopmentCardToClient developmentSelected = null;
         if(devSelected.size()>1){
-            error.setText("you must selected only one development card");
+            //error.setText("you must selected only one development card");
         }else if(devSelected.size()==0){
-            error.setText("you haven't selected a card");
+            //error.setText("you haven't selected a card");
         }else if(devSelected.size()==1){
             for(int i=0; i<gridDevelopment.length; i++){
                 for(int j=0; j<gridDevelopment[i].length; j++){
@@ -133,7 +157,7 @@ public class BuyDevelopmentController implements GUIController, Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
+        leaderCardEffect = new ArrayList<>(List.of(leaderCardEffect0, leaderCardEffect1));
     }
 
     /**
@@ -145,6 +169,7 @@ public class BuyDevelopmentController implements GUIController, Initializable {
         devImg.forEach(dev -> dev.setImage(null));
         devImg.forEach(dev -> dev.setEffect(null));
         devImg.clear();
+        leaderCardEffect.forEach(img -> img.setImage(null));
     }
 
     /**

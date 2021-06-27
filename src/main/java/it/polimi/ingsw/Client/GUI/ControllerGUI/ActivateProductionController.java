@@ -73,11 +73,13 @@ public class ActivateProductionController implements GUIController, Initializabl
      * @param devPlayer The developments card available of the player.
      * @param deposit The deposit of the player.
      * @param strongBox The strongbox of the player.
+     * @param additionalDeposit The additional deposit of the player
      * @param leaderCardsActive The leader cards active of the player.
      */
-    public void drawProduction(ArrayList<Image> devPlayer, ArrayList<Resource> deposit, Map<Resource, Integer> strongBox, ArrayList<LeaderCardToClient> leaderCardsActive){
+    public void drawProduction(ArrayList<Image> devPlayer, ArrayList<Resource> deposit, Map<Resource, Integer> strongBox,
+                               ArrayList<Resource> additionalDeposit ,ArrayList<LeaderCardToClient> leaderCardsActive){
 
-        this.totalResources = gui.calculateTotalResources(deposit, strongBox);
+        this.totalResources = gui.calculateTotalResources(deposit, strongBox, additionalDeposit);
 
         coin.setText("X " + totalResources.get("coin"));
         stone.setText("X " + totalResources.get("stone"));
