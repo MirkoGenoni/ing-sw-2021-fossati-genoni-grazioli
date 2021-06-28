@@ -1,6 +1,5 @@
 package it.polimi.ingsw.Client.GUI;
 
-import com.sun.javafx.css.StyleClassSet;
 import it.polimi.ingsw.Client.ConnectionToServer;
 import it.polimi.ingsw.Client.GUI.ControllerGUI.FirstWindowController;
 import it.polimi.ingsw.Client.GUI.ControllerGUI.GUIController;
@@ -8,18 +7,15 @@ import it.polimi.ingsw.Events.ServerToClient.NewTurnToClient;
 import it.polimi.ingsw.Model.Market.Marble;
 import it.polimi.ingsw.Model.Resource.Resource;
 import javafx.application.Application;
-import javafx.css.Stylesheet;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Rectangle2D;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import javafx.stage.WindowEvent;
 
 import java.io.IOException;
@@ -223,6 +219,8 @@ public class GUI extends Application {
                 Optional<ButtonType> result = alert.showAndWait();
                 if(result.get() == ButtonType.OK){
                     System.exit(0);
+                }else{
+                    windowEvent.consume();
                 }
 
             }

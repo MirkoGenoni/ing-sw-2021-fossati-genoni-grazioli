@@ -18,7 +18,7 @@ public class EndGame {
         this.controllerToModel = controllerToModel;
     }
 
-    public boolean endGameNotify(){
+    public boolean endGameCheck(){
         if(checkFaithTrackPosition() || checkDevelopmentCardNumber()){
             return true;
         }

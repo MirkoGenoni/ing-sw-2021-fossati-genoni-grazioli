@@ -30,7 +30,7 @@ public class Server implements Runnable{
      * @author Stefano Fossati
      */
     public Server(){
-        port = 12345;  //TODO trovare porta piu intelligente
+        port = 49521;  //TODO trovare porta piu intelligente
         rooms = new HashMap<>();
     }
 

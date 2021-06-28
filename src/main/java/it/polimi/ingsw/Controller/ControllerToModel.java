@@ -214,11 +214,10 @@ public class ControllerToModel {
             return;
         }
 
-        if(currentPlayerIndex == firstPlayer && endGame.endGameNotify()){
+        if((currentPlayerIndex == firstPlayer && endGame.endGameCheck() && connections.size()==numPlayer) || (connections.size()<numPlayer && endGame.endGameCheck())){
             Map<String, Integer> playersPoint = new HashMap<>();
             int winnerPoint=0;
             String winnerName="";
-            connections.forEach((k,v) -> v.sendNotify(" GAME ENDED "));
             for(int i=0; i<players.length-1; i++ ){
                 //String name = connectionsToClient.get(i).getNamePlayer();
                 String name = players[i].getName();
@@ -229,7 +228,7 @@ public class ControllerToModel {
                     winnerName = name;
                 }
             }
-            String message = winnerName + " ha vinto con " + winnerPoint + " punti";
+            String message = "GAME ENDED: " +winnerName + " wins with " + winnerPoint + " points";
             if(numPlayer==1){
                 connections.forEach((k,v) -> v.sendEndGame(message, playersPoint, players, game.getPlayersFaithTrack(), true,
                         game.getPlayersFaithTrack().getPosition(1), game.getDevelopmentCardsAvailable(), game.getMarketBoard()));

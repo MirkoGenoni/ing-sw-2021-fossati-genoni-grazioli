@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="910.0" minWidth="1200.0" prefHeight="915.0" prefWidth="1200.0" stylesheets="@../css/mainStyle.css" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.Client.GUI.ControllerGUI.PlayerViewController">
+<TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="910.0" minWidth="1200.0" prefHeight="915.0" prefWidth="1200.0" stylesheets="@../css/mainStyle.css" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.Client.GUI.ControllerGUI.PlayerViewController">
   <tabs>
     <Tab fx:id="playerBoardView" text="PlayerBoard">
       <content>
@@ -134,6 +134,7 @@
                         <Font size="18.0" />
                      </font>
                   </Button>
+                  <Label fx:id="points" layoutX="961.0" layoutY="220.0" prefHeight="36.0" prefWidth="208.0" visible="false" />
                </children></AnchorPane>
       </content>
     </Tab>

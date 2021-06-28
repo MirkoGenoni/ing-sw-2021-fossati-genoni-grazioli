@@ -36,6 +36,8 @@ public class PlayerViewController implements GUIController, Initializable {
     private Map<String, Image> resources;
     private ArrayList<ImageView> deposit;
     private NewTurnToClient turnTmp;
+    private boolean endGame;
+    private Map<String, Integer> playersPoints;
 
     private Map<String, Integer> playersFaithTrackPosition = new HashMap<>();
     private Map<String, ImageView> playerMarkerPosition = new HashMap<>();
@@ -88,6 +90,9 @@ public class PlayerViewController implements GUIController, Initializable {
     @FXML private ImageView faith2;
     @FXML private ImageView faith3;
     @FXML private ImageView lorenzoFaith;
+
+    //points
+    @FXML private Label points;
 
     // table
     @FXML private GridPane gridMarket;
@@ -143,6 +148,15 @@ public class PlayerViewController implements GUIController, Initializable {
 
         //visualize player of the client
         drawPlayerBoard(players.get(gui.getNamePlayer()));
+
+        //Select the right button
+        for(Button b : playerButtons){
+            if(b.getText().equals(gui.getNamePlayer())){
+                b.setStyle("-fx-background-color: #87553f; -fx-text-fill: white");
+            }else{
+                b.setStyle("-fx-background-color: white; -fx-text-fill: #87553f");
+            }
+        }
     }
 
 
@@ -290,6 +304,15 @@ public class PlayerViewController implements GUIController, Initializable {
         leaderPane.setDisable(true);
     }
 
+    /**
+     * Save the final points of all players.
+     * @param playersPoints The map that contains the points of all players.
+     */
+    public void saveFinalPoints(Map<String, Integer> playersPoints){
+        endGame = true;
+        this.playersPoints = playersPoints;
+    }
+
     @Override
     public void setGUI(GUI gui) {
         this.gui = gui;
@@ -311,6 +334,7 @@ public class PlayerViewController implements GUIController, Initializable {
         faiths = new ArrayList<>(List.of(faith0, faith1, faith2, faith3));
 
         faithLorenzoPosition = 0;
+        endGame = false;
     }
 
     /**
@@ -424,6 +448,13 @@ public class PlayerViewController implements GUIController, Initializable {
             else{
                 playerMarkerPosition.get(s).setOpacity(1);
             }
+        }
+
+        //print point
+        if(endGame){
+            points.setVisible(true);
+            int point = playersPoints.get(player.getPlayerNameSend());
+            points.setText("Points = " + point);
         }
     }
 
