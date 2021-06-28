@@ -154,7 +154,7 @@ public class DevelopmentCardView {
         return this.turnEnd;
     }
 
-    public void startCardForSaleSelection() {
+    public void startCardForSaleSelection(ArrayList<String> costLess) {
         int currentView = 0;
         int tmp;
         turnEnd = false;
@@ -162,7 +162,7 @@ public class DevelopmentCardView {
         num = -1;
         color = "";
 
-        printDevelopmentCardGrid(currentView, "market");
+        printDevelopmentCardGrid(currentView, "market", costLess);
 
         String input = "";
         while (true) {
@@ -217,7 +217,7 @@ public class DevelopmentCardView {
             if(currentView == -1)
                 break;
 
-            printDevelopmentCardGrid(currentView, "market");
+            printDevelopmentCardGrid(currentView, "market", costLess);
         }
     }
 
@@ -248,7 +248,7 @@ public class DevelopmentCardView {
         String input = "";
 
         while (true) {
-            printDevelopmentCardGrid(0, "activate");
+            printDevelopmentCardGrid(0, "activate",null);
 
             Scanner in = new Scanner(System.in);
             input = in.nextLine();
@@ -311,7 +311,7 @@ public class DevelopmentCardView {
         String tmpS;
 
         while(true){
-            printDevelopmentCardGrid(currentView, "insertion");
+            printDevelopmentCardGrid(currentView, "insertion", null);
 
             try {
                 tmpS  = in.nextLine();
@@ -340,7 +340,7 @@ public class DevelopmentCardView {
     public void draw(){
         String input = "";
         do {
-            printDevelopmentCardGrid(0, "view");
+            printDevelopmentCardGrid(0, "view", null);
             Scanner in = new Scanner(System.in);
             if (in.hasNext())
                 input = in.nextLine();
@@ -348,14 +348,12 @@ public class DevelopmentCardView {
         } while (!input.equals("quit"));
     }
 
-    private void printDevelopmentCardGrid(int currentView, String type) {
+    private void printDevelopmentCardGrid(int currentView, String type, ArrayList<String> costLess) {
         System.out.print("\u001B[2J\u001B[3J\u001B[H");
-        System.out.println(
-                "                                               ╔═══════════════════════════╗                                               \n" +
+        System.out.println("                                               ╔═══════════════════════════╗                                               \n" +
                         "                                               ║ DEVELOPMENT CARD RECEIVED ║                                               \n" +
                         "                                               ╚═══════════════════════════╝                                               \n" +
-                        "┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓\n" +
-                        "┃                                                                                                                         ┃");
+                        "┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓");
         for (int i = 0; i < 27; i++)
             System.out.println("┃    " + this.cards.get(currentView).printCard(i) + "          " + this.cards.get(currentView + 1).printCard(i) + "          " + this.cards.get(currentView + 2).printCard(i) + "    ┃");
 
@@ -371,7 +369,18 @@ public class DevelopmentCardView {
 
             System.out.println("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛");
 
-            System.out.print("                                              SELECT THE CARD YOU WANT TO BUY                                              \n\n" +
+            System.out.print("                                              SELECT THE CARD YOU WANT TO BUY                                              \n");
+
+            if(costLess.size()>0)
+                System.out.print("                                           (you pay one less of " + addColor(costLess.get(0)));
+            if (costLess.size()>1) {
+                System.out.print(" and ");
+                System.out.print(addColor(costLess.get(1)));
+            }
+
+            System.out.print(")");
+
+            System.out.print("\n\n" +
                     "                                  | Insert a color (green, yellow, blue, purple) to see |                                  \n" +
                     "                                  |   other cards or a number to buy the card you see   |\n" +
                     "                                           " + "\u001B[92m" + "type quit to return to turn selection         \n\n" + "\u001B[0m" +
@@ -433,5 +442,20 @@ public class DevelopmentCardView {
                 "┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛\n\n" +
                 "                                                      " + "\u001B[92m" + "type yes or no\n" + "\u001B[0m" +
                 "                                                            ");
+    }
+
+    private String addColor(String material){
+        switch(material.toLowerCase()){
+            case "stone":
+                return("\u001B[37m" + "stone" + "\u001B[0;0m");
+            case "coin":
+                return("\u001B[93m" + "coin" + "\u001B[0;0m");
+            case "servant":
+                return("\u001B[35m" + "servant" + "\u001B[0;0m");
+            case "shield":
+                return("\u001B[36m" + "shield" + "\u001B[0;0m");
+            default:
+                return "";
+        }
     }
 }

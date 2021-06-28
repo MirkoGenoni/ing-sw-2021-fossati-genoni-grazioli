@@ -4,6 +4,9 @@ package it.polimi.ingsw.Client.CLI.Views;
 import it.polimi.ingsw.Client.CLI.Views.LeaderCardView.LeaderCardView;
 import it.polimi.ingsw.Client.CLI.Views.MarketView.MarketView;
 import it.polimi.ingsw.Client.CLI.Views.MarketView.NewDepositView;
+import it.polimi.ingsw.Client.CLI.Views.OtherViews.AllPlayersView;
+import it.polimi.ingsw.Client.CLI.Views.OtherViews.InitialResourceView;
+import it.polimi.ingsw.Client.CLI.Views.OtherViews.NewTurnView;
 import it.polimi.ingsw.Client.CLI.Views.ProductionView.AdditionalProductionView;
 import it.polimi.ingsw.Client.CLI.Views.ProductionView.BaseProduction;
 import it.polimi.ingsw.Client.CLI.Views.ProductionView.DevelopmentCardView;
@@ -19,6 +22,7 @@ import it.polimi.ingsw.Model.Resource.Resource;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.concurrent.TimeUnit;
 
 public class CLIHandler {
     private final ConnectionToServer connection;
@@ -36,6 +40,36 @@ public class CLIHandler {
     private boolean isNewRoomOrNot;
 
     private boolean turnEnd;
+
+    private final Thread asyncPrint = new Thread(()->{
+        System.out.print("                                                                                                                          \n" +
+                "                                                                                                                          \n" +
+                "                                                                                                                          \n");
+        System.out.print("                                    WAITING FOR OTHER PLAYERS");
+
+        while(true) {
+            try {
+                TimeUnit.SECONDS.sleep(1);
+                System.out.print(". ");
+                TimeUnit.SECONDS.sleep(1);
+                System.out.print(". ");
+                TimeUnit.SECONDS.sleep(1);
+                System.out.print(".");
+                TimeUnit.SECONDS.sleep(1);
+            } catch (InterruptedException e) {
+                System.out.print("\u001B[2J\u001B[3J\u001B[H");
+                break;
+            }
+
+            for (int i = 0; i < 5; i++)
+                System.out.print("\b");
+
+            System.out.print("     ");
+
+            for (int i = 0; i < 5; i++)
+                System.out.print("\b");
+
+        }});
 
     public CLIHandler(ConnectionToServer connection){
         this.connection = connection;
@@ -65,7 +99,7 @@ public class CLIHandler {
         for(LeaderCardToClient l: players.get(namePlayer).getLeaderCardActive())
             if(inactiveLeaders!=null) //I need to check only when I've received the leaderCard selection turn
                 for(int i=0; i<inactiveLeaders.size();i++)
-                    if(l.getNameCard().equals(inactiveLeaders.get(i).getNameCard()))
+                    if(inactiveLeaders.get(i)!=null && l.getNameCard().equals(inactiveLeaders.get(i).getNameCard()))
                         inactiveLeaders.set(i, null);
 
         this.allPlayersView = new AllPlayersView(this.players, this.namePlayer, this.inactiveLeaders);
@@ -83,6 +117,8 @@ public class CLIHandler {
                     if (i != receive[0] && i != receive[1])
                         this.inactiveLeaders.add(received.get(i));
                 }
+                Messages messages = new Messages("Wait other player's discard choice", false);
+                messages.printMessage();
             } else {
                 this.inactiveLeaders = received;
                 ArrayList<Integer> receive = leaderCardSelection.StartCardView();
@@ -116,7 +152,8 @@ public class CLIHandler {
                     this.turnEnd = market.isTurnEnd();
                     break;
                 case "buydevelopment":
-                    selectedDevelopmentCard(this.developmentCardForSale);
+                    ArrayList<String> tmp2 = costLessCheck(players.get(this.namePlayer).getLeaderCardActive());
+                    selectedDevelopmentCard(this.developmentCardForSale, tmp2);
                     this.turnEnd = developmentCardForSale.isTurnEnd();
                     break;
                 case "usedevelopment":
@@ -153,8 +190,8 @@ public class CLIHandler {
         connection.sendNewDepositState(tmp.getDepositState(), tmp.getMarketReceived(), tmp.isAdditionalDeposit(),tmp.getAdditionalDepositState());
     }
 
-    private void selectedDevelopmentCard(DevelopmentCardView in){
-        in.startCardForSaleSelection();
+    private void selectedDevelopmentCard(DevelopmentCardView in, ArrayList<String> costLess){
+        in.startCardForSaleSelection(costLess);
 
         if(in.isTurnEnd()) {
             int num;
@@ -218,7 +255,6 @@ public class CLIHandler {
 
         answer = selectActivation("Do you want to Activate one of the LEADER Production? Y/N?");
 
-        ArrayList<String> leaderCardPower = new ArrayList<>();
         ArrayList<Boolean> activation = new ArrayList<>();
         ArrayList<Resource> materialLeader = new ArrayList<>();
 
@@ -284,14 +320,28 @@ public class CLIHandler {
 
         if(leaderCardActive.size()==2){ //due leader attivi
             if(leaderCardWhiteChange.get(0) && leaderCardWhiteChange.get(1)){ //ONLY IF YOU HAVE TWO WHITE-CHANGE
-              leaderCardWhiteChange = selectWitchWhiteChange(leaderCardActive); //torna array con un solo true e un solo false
+              leaderCardWhiteChange = selectWhichWhiteChange(leaderCardActive); //torna array con un solo true e un solo false
             }
+        }
+
+        int j=0;
+        String marbleOut = "";
+
+        for(boolean b: leaderCardWhiteChange){
+            if(b)
+                marbleOut = leaderCardActive.get(j).getResourceType();
+            j++;
+        }
+
+        if(leaderCardWhiteChange.size()!=0) {
+            Messages messages = new Messages("You changed the white marble into " + marbleOut, false);
+            messages.printMessage();
         }
         return leaderCardWhiteChange;
     }
 
 
-    private ArrayList<Boolean> selectWitchWhiteChange(ArrayList<LeaderCardToClient> leaderCardActive){ //CALLED ONLY IF THE PLAYER HAS 2 WHITE-CHANGE
+    private ArrayList<Boolean> selectWhichWhiteChange(ArrayList<LeaderCardToClient> leaderCardActive){ //CALLED ONLY IF THE PLAYER HAS 2 WHITE-CHANGE
         char answer;
         ArrayList<Boolean> leaderSelection = new ArrayList<>();
         leaderSelection.add(false);
@@ -309,6 +359,16 @@ public class CLIHandler {
         }while(leaderSelection.get(0) == leaderSelection.get(1)); //TODO FARE MESSAGGIO SE SCRIVE STUPIDAGGINI
 
         return leaderSelection;
+    }
+
+    private ArrayList<String> costLessCheck(ArrayList<LeaderCardToClient> leaderCardActive){
+        ArrayList<String> tmp = new ArrayList<>();
+
+        for(LeaderCardToClient l: leaderCardActive)
+            if(l.getEffect().equals("costLess"))
+                tmp.add(l.getResourceType());
+
+        return tmp;
     }
 
 
@@ -329,7 +389,6 @@ public class CLIHandler {
                 isValid = true;
             }
             if (!isValid) {
-
                 Messages error = new Messages("Please select a correct option", true) ;
                 isValid = false;
             }
@@ -353,6 +412,8 @@ public class CLIHandler {
         newDepositView.LaunchView();
 
         connection.sendInitialDepositState(newDepositView.getDepositState());
+        Messages messages = new Messages("Wait other player's initial material choice", false);
+        messages.printMessage();
     }
 
     public void selectSpaceForDevelopment(ArrayList<Boolean> space){
@@ -373,7 +434,7 @@ public class CLIHandler {
         connection.sendSelectedDevelopmentCardSpace(tmpPos);
     }
 
-    public void insertInitialData(String DataRequired){
+    public synchronized void insertInitialData(String DataRequired){
         Scanner in = new Scanner(System.in);
         boolean notDone = true;
 
@@ -402,7 +463,6 @@ public class CLIHandler {
             System.out.print("                                    INSERT SERVER ADDRESS: " + "\u001B[92m" + connection.getAddress() + "\u001B[0m" + "\n\n");
 
             if (DataRequired.equals("isNewRoom")) {
-
                 System.out.print("                                    IS YOUR ROOM NEW? ");
 
                 String tmpIn = in.nextLine();

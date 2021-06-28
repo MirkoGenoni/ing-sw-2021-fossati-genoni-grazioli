@@ -1,4 +1,4 @@
-package it.polimi.ingsw.Client.CLI.Views;
+package it.polimi.ingsw.Client.CLI.Views.OtherViews;
 
 import it.polimi.ingsw.Model.FaithTrack.Box;
 

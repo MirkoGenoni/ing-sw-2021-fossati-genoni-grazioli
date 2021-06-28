@@ -28,7 +28,7 @@ public class ConnectionToServer implements Runnable, EventToServerNotifier {
     private boolean active;
     private String playerName;
     private boolean activeGui = false;
-    private EventHandlerCLI eventHandlerCli;
+    private final EventHandlerCLI eventHandlerCli;
     private EventHandlerGUI visit;
 
     // Input and Output steams
@@ -38,7 +38,7 @@ public class ConnectionToServer implements Runnable, EventToServerNotifier {
     public ConnectionToServer(Socket socket) {
         this.socket = socket;
         this.active = true;
-        eventHandlerCli = new EventHandlerCLI(this);
+        this.eventHandlerCli = new EventHandlerCLI(this);
     }
 
     public void setAddress(String address){

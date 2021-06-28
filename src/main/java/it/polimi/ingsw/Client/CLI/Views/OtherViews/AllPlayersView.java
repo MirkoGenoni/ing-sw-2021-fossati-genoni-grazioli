@@ -1,4 +1,4 @@
-package it.polimi.ingsw.Client.CLI.Views;
+package it.polimi.ingsw.Client.CLI.Views.OtherViews;
 
 import it.polimi.ingsw.Client.CLI.Views.LeaderCardView.LeaderCardView;
 import it.polimi.ingsw.Client.CLI.Views.MarketView.NewDepositView;
@@ -20,7 +20,7 @@ public class AllPlayersView {
     LeaderCardView inactiveLeaderCard;
     FaithTrackView faithTrackView;
 
-    AllPlayersView(Map<String, PlayerInformationToClient> information, String currentPlayer, ArrayList<LeaderCardToClient> inactiveLeaders){
+    public AllPlayersView(Map<String, PlayerInformationToClient> information, String currentPlayer, ArrayList<LeaderCardToClient> inactiveLeaders){
         this.information = information;
         this.player = information.get(currentPlayer);
         this.inactiveLeaders = inactiveLeaders;
@@ -75,7 +75,7 @@ public class AllPlayersView {
         this.faithTrackView = new FaithTrackView(player.getPopeFavorTiles(), player.getFaithMarkerPosition());
     }
 
-    private void printSelection(){
+    private synchronized void printSelection(){
         System.out.print("\u001B[2J\u001B[3J\u001B[H");
 
         System.out.print("                                                  ╔═══════════════╗\n" +

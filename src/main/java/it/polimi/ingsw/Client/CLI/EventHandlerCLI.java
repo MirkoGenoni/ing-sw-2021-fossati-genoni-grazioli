@@ -11,12 +11,14 @@ import it.polimi.ingsw.Events.ServerToClient.BuyDevelopmentCardTurnToClient.Send
 import it.polimi.ingsw.Events.ServerToClient.MarketTurnToClient.SendReorganizeDepositToClient;
 import it.polimi.ingsw.Events.ServerToClient.TurnReselectionToClient;
 
+import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 
 public class EventHandlerCLI implements EventToClientVisitor {
+    boolean printing;
     private final ConnectionToServer connectionToServer;
-    private CLIHandler handler;
-    private int index = -1;
+    private final CLIHandler handler;
+    private final Semaphore available = new Semaphore(1, true);
     private final Thread asyncPrint = new Thread(()->{
         System.out.print("                                                                                                                          \n" +
                           "                                                                                                                          \n" +
@@ -51,10 +53,19 @@ public class EventHandlerCLI implements EventToClientVisitor {
     public EventHandlerCLI(ConnectionToServer connectionToServer) {
         this.connectionToServer = connectionToServer;
         this.handler = new CLIHandler(this.connectionToServer);
+        this.printing = false;
     }
 
     public void receiveEvent(EventToClient event){
         event.acceptVisitor(this);
+    }
+
+    public void acquire(){
+        try {
+            available.acquire();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     // Events that arrive from ConnectionToServer, so from the server
@@ -70,7 +81,11 @@ public class EventHandlerCLI implements EventToClientVisitor {
     // -------------------------------------------
     @Override
     public void visit(SendArrayLeaderCardsToClient leaderCardArray) {
-        new Thread(() -> handler.leaderCardSelection(leaderCardArray.getLeaderCardArray(), leaderCardArray.isInitialLeaderCards(), leaderCardArray.getNumberOfDevelopmentCards())).start();
+        new Thread(() -> {
+            acquire();
+            handler.leaderCardSelection(leaderCardArray.getLeaderCardArray(), leaderCardArray.isInitialLeaderCards(), leaderCardArray.getNumberOfDevelopmentCards());
+            available.release();
+        }).start();
         /*
         if(leaderCardArray.isInitialLeaderCards()) {
             LeaderCardView leaderCardView = new LeaderCardView(leaderCardArray.getLeaderCardArray());
@@ -88,7 +103,11 @@ public class EventHandlerCLI implements EventToClientVisitor {
 
     @Override
     public void visit(SendReorganizeDepositToClient newResources) {
-        new Thread(() -> handler.selectNewDeposit(newResources.getDepositResources(), newResources.getMarketResources(), newResources.isAdditionalDeposit(), newResources.getType(), newResources.getAdditionalDepositState())).start();
+        new Thread(() -> {
+            acquire();
+            handler.selectNewDeposit(newResources.getDepositResources(), newResources.getMarketResources(), newResources.isAdditionalDeposit(), newResources.getType(), newResources.getAdditionalDepositState());
+            available.release();
+        }).start();
         /*NewDepositView view = new NewDepositView(newResources.getDepositResources(), newResources.getMarketResources(), false, null, null);
         view.LaunchView();
         connectionToServer.sendNewDepositState(view.getDepositState(), view.getMarketReceived());*/
@@ -100,7 +119,11 @@ public class EventHandlerCLI implements EventToClientVisitor {
 
     @Override
     public void visit(SendSpaceDevelopmentCardToClient developmentCardSpace) {
-        new Thread(() -> handler.selectSpaceForDevelopment(developmentCardSpace.getDevelopmentCardSpace())).start();
+        new Thread(() -> {
+            acquire();
+            handler.selectSpaceForDevelopment(developmentCardSpace.getDevelopmentCardSpace());
+            available.release();
+        }).start();
         /*boolean bought = true;
         System.out.println("You can put the bought card in these positions:");
         for (int i=0; i<developmentCardSpace.getDevelopmentCardSpace().size(); i++) {
@@ -128,6 +151,7 @@ public class EventHandlerCLI implements EventToClientVisitor {
     @Override
     public void visit(NotifyToClient message) {
         new Thread(() -> {
+            acquire();
             switch (message.getMessage()) {
 
                 case "WaitForOtherPlayers":
@@ -149,17 +173,19 @@ public class EventHandlerCLI implements EventToClientVisitor {
                 Messages messages = new Messages(message.getMessage(), false);
                 messages.printMessage();
             }
-        });
+            available.release();
+        }).start();
     }
 
     @Override
     public void visit(TurnReselectionToClient message) {
-        new Thread(() -> handler.newTurn()).start();
+        new Thread(handler::newTurn).start();
     }
 
     @Override
     public void visit(NewTurnToClient newTurn) {
         new Thread(() -> {
+            acquire();
             if (newTurn.isYourTurn()) {
                 handler.newState(newTurn.getPlayers(), newTurn.getMarket(), newTurn.getDevelopmentCards());
                 handler.newTurn();
@@ -197,26 +223,34 @@ public class EventHandlerCLI implements EventToClientVisitor {
             System.out.println("i miei pope");
             System.out.println(player.getPopeFavorTiles().toString());*/
             }
+            available.release();
         }).start();
     }
 
     @Override
     public void visit(EndGameToClient message) {
         new Thread(() -> {
+            acquire();
             Messages messageEnd = new Messages("GAME ENDED", false);
             messageEnd.printMessage();
             connectionToServer.closeConnection();
+            available.release();
         }).start();
     }
 
     @Override
     public void visit(SendInitialResourcesToClient numResources) {
-        new Thread(() -> handler.initialResourceSelection(numResources.getNumResources(), numResources.getDepositState())).start();
+        new Thread(() -> {
+            acquire();
+            handler.initialResourceSelection(numResources.getNumResources(), numResources.getDepositState());
+            available.release();
+        }).start();
     }
 
     @Override
     public void visit(LorenzoActionToClient lorenzoAction) {
         new Thread(() -> {
+            acquire();
             System.out.println("lorenzo ha pescato -> " + lorenzoAction.getLorenzoAction().toString());
             System.out.println("lorenzo si trova " + lorenzoAction.getLorenzoPosition() + "/24");
             try {
@@ -225,6 +259,7 @@ public class EventHandlerCLI implements EventToClientVisitor {
                 e.printStackTrace();
             }
             connectionToServer.sendReplayLorenzoAction();
+            available.release();
         }).start();
     }
 
@@ -251,9 +286,11 @@ public class EventHandlerCLI implements EventToClientVisitor {
         }
         System.out.println(tmp + " è il voolean");*/
         new Thread(() -> {
+            acquire();
             handler.insertInitialData("isNewRoom");
             handler.insertInitialData("roomNumber");
             connectionToServer.sendRoom(handler.getTmpRoomNumber(), handler.isNewRoomOrNot());
+            available.release();
         }).start();
     }
 
@@ -277,7 +314,20 @@ public class EventHandlerCLI implements EventToClientVisitor {
         connectionToServer.sendPlayerName(line);
         namePlayer = line;
         connectionToServer.setPlayerName(line);*/
-        new Thread(() -> handler.insertInitialData("namePlayer")).start();
+        new Thread(() ->{
+            acquire();
+            if(!nameRequest.getRequest().equals("write your nickname")) {
+                Messages messages = new Messages(nameRequest.getRequest(), false);
+                messages.printMessage();
+                try {
+                    TimeUnit.SECONDS.sleep(2);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            handler.insertInitialData("namePlayer");
+            available.release();
+        }).start();
     }
 
     @Override
@@ -309,6 +359,10 @@ public class EventHandlerCLI implements EventToClientVisitor {
         int num = scanIn.nextInt();
         connectionToServer.sendNumPlayer(num);*/
 
-        new Thread(() -> handler.insertInitialData("numberOfPlayers")).start();
+        new Thread(() -> {
+            acquire();
+            handler.insertInitialData("numberOfPlayers");
+            available.release();
+        }).start();
     }
 }

@@ -1,4 +1,4 @@
-package it.polimi.ingsw.Client.CLI.Views;
+package it.polimi.ingsw.Client.CLI.Views.OtherViews;
 
 import it.polimi.ingsw.Client.CLI.Views.MarketView.ResourceIcon;
 import it.polimi.ingsw.Model.Resource.Resource;
@@ -14,7 +14,7 @@ public class InitialResourceView {
         System.out.println(prova.startChoosing());
     }*/
 
-    InitialResourceView(int numResources){
+    public InitialResourceView(int numResources){
         this.icons = new ArrayList<>();
         icons.add(ResourceIcon.SHIELD);
         icons.add(ResourceIcon.COIN);

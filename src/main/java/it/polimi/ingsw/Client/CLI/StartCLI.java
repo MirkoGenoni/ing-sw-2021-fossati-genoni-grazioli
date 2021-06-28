@@ -22,7 +22,6 @@ public class StartCLI {
     public void startClient() {
         System.out.print("\u001B[8;46;123t");
         System.out.print("\u001B[2J\u001B[3J\u001B[H");
-        //System.out.println("\u001B[48;5;234m");
         System.out.println("\n" +
                 "                   ┌───────────────────────────────────────────────────────────────────────────────────┐                   \n" +
                 "                   │      ╔═══╦═══╗ ╔═════╗ ╔═════╗ ╔═════╗ ╔═════╗ ╔═════╗       ╔═════╗ ╔═════╗      │                   \n" +
