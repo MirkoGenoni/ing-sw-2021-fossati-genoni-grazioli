@@ -10,6 +10,7 @@ import javafx.scene.image.ImageView;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.util.Objects;
 
 /**
  * This class represents the controller of the lorenzo scene of the GUI application. Implements GUIController interface.
@@ -30,10 +31,13 @@ public class LorenzoController implements GUIController{
      */
     public void drawSoloAction(SoloAction token, int lorenzoPosition){
         this.lorenzoPosition = lorenzoPosition;
+
+        String input = "/graphics/soloActionToken/"+ token.name().toLowerCase() + ".png";
         try{
-            FileInputStream input = new FileInputStream("src/main/resources/graphics/soloActionToken/" + token.name().toLowerCase() + ".png");
-            soloAction.setImage(new Image(input));
-        } catch (FileNotFoundException e) {
+            Image tmpI = new Image(Objects.requireNonNull(getClass().getResourceAsStream(input)));
+            soloAction.setImage(tmpI);
+        } catch (NullPointerException e) {
+            System.out.println("leader card file not found, address " + input);
             e.printStackTrace();
         }
     }

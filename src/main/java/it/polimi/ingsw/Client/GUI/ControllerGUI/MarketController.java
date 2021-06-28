@@ -118,37 +118,35 @@ public class MarketController implements GUIController, Initializable{
      */
     private void sendChooseLine(int line){
         ArrayList<Boolean> tmpEffect = new ArrayList<>();
-
-        if(leaderCard.size()!=0){
-            int k=0;
-            int z=0;
-            for(int i=0; i<leaderCard.size(); i++){
-                if(leaderCard.get(i).getEffect().equals("marketWhiteChange")){
-                    if(leaderEffect.get(z).getEffect()==null){
-                        tmpEffect.add(false);
-                    }else{
-                        tmpEffect.add(true);
-                        k++;
-                    }
-                    z++;
-                }else{
+        int k=0;
+        int z=0;
+        for(int i=0; i<leaderCard.size(); i++){
+            if(leaderCard.get(i).getEffect().equals("marketWhiteChange")){
+                if(leaderEffect.get(z).getEffect()==null){
                     tmpEffect.add(false);
+                }else{
+                    tmpEffect.add(true);
+                    k++;
                 }
-            }
-            if((z>=1 && k==1) || (z==0 && k==0)){
-                if(tmpEffect.size()==leaderCard.size()){
-                    System.out.println("OK");
-                }
-                gui.getConnectionToServer().sendChooseLine(line, tmpEffect);
-                leaderEffect.forEach(leader -> leader.setEffect(null));
-                leaderEffect.forEach(leader -> leader.setDisable(true));
-                leaderEffect.forEach(leader -> leader.setImage(null));
-                leaderCard.clear();
+                z++;
             }else{
-                gui.showAlert(Alert.AlertType.ERROR, "You have to choose one of the leader card market white change effect");
+                tmpEffect.add(false);
             }
-
         }
+        if((z>=1 && k==1) || (z==0 && k==0)){
+            if(tmpEffect.size()==leaderCard.size()){
+                System.out.println("OK");
+            }
+            gui.getConnectionToServer().sendChooseLine(line, tmpEffect);
+            leaderEffect.forEach(leader -> leader.setEffect(null));
+            leaderEffect.forEach(leader -> leader.setDisable(true));
+            leaderEffect.forEach(leader -> leader.setImage(null));
+            leaderCard.clear();
+        }else{
+            gui.showAlert(Alert.AlertType.ERROR, "You have to choose one of the leader card market white change effect");
+        }
+
+
     }
 
     /**

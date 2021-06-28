@@ -31,7 +31,7 @@ public class SetupController implements GUIController{
         try {
             Socket socket = new Socket(IPaddress.getText(), Integer.parseInt(portNumber.getText()));
             gui.setConnectionToServer(new ConnectionToServer(socket));
-        } catch (IOException e) {
+        } catch (IOException | NumberFormatException e) {
             gui.showAlert(Alert.AlertType.ERROR, "IP address or port not valid");
         }
 

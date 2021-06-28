@@ -4,10 +4,7 @@ import it.polimi.ingsw.Client.GUI.GUI;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -84,9 +81,14 @@ public class PlayerNameController implements GUIController, Initializable {
      * @param actionEvent The event of the type ActionEvent.
      */
     public void chooseRoom(ActionEvent actionEvent) {
-        int room = Integer.parseInt(textName.getText());
+        try{
+            int room = Integer.parseInt(textName.getText());
+            gui.getConnectionToServer().sendRoom(room, booleanRoom.isSelected());
+        }catch(NumberFormatException e){
+            gui.showAlert(Alert.AlertType.ERROR, "Invalid input");
+        }
+
         textName.clear();
-        gui.getConnectionToServer().sendRoom(room, booleanRoom.isSelected());
     }
 
     /**
