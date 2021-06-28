@@ -4,6 +4,7 @@ import it.polimi.ingsw.Client.ConnectionToServer;
 import it.polimi.ingsw.Client.GUI.GUI;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
 
 import java.io.IOException;
@@ -31,7 +32,7 @@ public class SetupController implements GUIController{
             Socket socket = new Socket(IPaddress.getText(), Integer.parseInt(portNumber.getText()));
             gui.setConnectionToServer(new ConnectionToServer(socket));
         } catch (IOException e) {
-            e.printStackTrace();
+            gui.showAlert(Alert.AlertType.ERROR, "IP address or port not valid");
         }
 
     }

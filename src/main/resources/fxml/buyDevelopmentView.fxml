@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<AnchorPane maxHeight="750.0" maxWidth="820.0" minHeight="750.0" minWidth="820.0" prefHeight="750.0" prefWidth="820.0" style="-fx-background-color: #CEC3A1;" stylesheets="@../css/mainStyle.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.Client.GUI.ControllerGUI.BuyDevelopmentController">
+<AnchorPane maxHeight="750.0" maxWidth="820.0" minHeight="750.0" minWidth="820.0" prefHeight="750.0" prefWidth="820.0" style="-fx-background-color: #CEC3A1;" stylesheets="@../css/mainStyle.css" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.Client.GUI.ControllerGUI.BuyDevelopmentController">
    <children>
       <GridPane fx:id="gridDev" hgap="10.0" layoutX="12.0" layoutY="15.0" maxHeight="713.0" maxWidth="638.0" minHeight="713.0" minWidth="638.0" prefHeight="713.0" prefWidth="638.0" vgap="10.0">
         <columnConstraints>

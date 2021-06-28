@@ -8,6 +8,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.effect.DropShadow;
@@ -108,9 +109,9 @@ public class BuyDevelopmentController implements GUIController, Initializable {
         int devColor = -1;
         DevelopmentCardToClient developmentSelected = null;
         if(devSelected.size()>1){
-            //error.setText("you must selected only one development card");
+            gui.showAlert(Alert.AlertType.ERROR, "you must selected only one development card");
         }else if(devSelected.size()==0){
-            //error.setText("you haven't selected a card");
+            gui.showAlert(Alert.AlertType.ERROR, "you haven't selected a card");
         }else if(devSelected.size()==1){
             for(int i=0; i<gridDevelopment.length; i++){
                 for(int j=0; j<gridDevelopment[i].length; j++){

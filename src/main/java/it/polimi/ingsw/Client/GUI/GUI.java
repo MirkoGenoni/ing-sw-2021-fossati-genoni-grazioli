@@ -1,5 +1,6 @@
 package it.polimi.ingsw.Client.GUI;
 
+import com.sun.javafx.css.StyleClassSet;
 import it.polimi.ingsw.Client.ConnectionToServer;
 import it.polimi.ingsw.Client.GUI.ControllerGUI.FirstWindowController;
 import it.polimi.ingsw.Client.GUI.ControllerGUI.GUIController;
@@ -7,13 +8,18 @@ import it.polimi.ingsw.Events.ServerToClient.NewTurnToClient;
 import it.polimi.ingsw.Model.Market.Marble;
 import it.polimi.ingsw.Model.Resource.Resource;
 import javafx.application.Application;
+import javafx.css.Stylesheet;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Rectangle2D;
+import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.stage.WindowEvent;
 
 import java.io.IOException;
@@ -37,6 +43,8 @@ public class GUI extends Application {
     private Scene currentScene;
     private GUIController currentController;
     private Stage stage;
+
+    private Alert alert;
 
     //Graphics
     private Map<String, Image> resourcesGraphic = new HashMap<>();
@@ -204,12 +212,22 @@ public class GUI extends Application {
             e.printStackTrace();
         }
 
+        alert = new Alert(Alert.AlertType.NONE);
+        alert.getDialogPane().getStylesheets().add(String.valueOf(getClass().getResource("/css/alertStyle.css")));
+
         this.stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
             @Override
             public void handle(WindowEvent windowEvent) {
-                System.exit(0);
+                alert.setAlertType(Alert.AlertType.CONFIRMATION);
+                alert.setHeaderText("Are you sure to exit from the match?");
+                Optional<ButtonType> result = alert.showAndWait();
+                if(result.get() == ButtonType.OK){
+                    System.exit(0);
+                }
+
             }
         });
+
 
         currentScene = scenes.get("firstWindow");
         currentController = controllers.get("firstWindow");
@@ -243,6 +261,17 @@ public class GUI extends Application {
         stage.setScene(currentScene);
         //centerApplication();
         stage.show();
+    }
+
+    /**
+     * Displays an alert.
+     * @param alertType The type of alert.
+     * @param message The message to write in the alert.
+     */
+    public void showAlert(Alert.AlertType alertType, String message){
+        alert.setAlertType(alertType);
+        alert.setHeaderText(message);
+        alert.show();
     }
 
     /**

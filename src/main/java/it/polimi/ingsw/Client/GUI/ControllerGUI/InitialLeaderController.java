@@ -6,6 +6,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.effect.DropShadow;
@@ -31,6 +32,8 @@ public class InitialLeaderController implements GUIController, Initializable {
     private ArrayList<ImageView> leader;
     private ArrayList<Integer> selectedLeader = new ArrayList<>();
 
+    private Alert alert = new Alert(Alert.AlertType.NONE);
+
     @FXML private ImageView leader0;
     @FXML private ImageView leader1;
     @FXML private ImageView leader2;
@@ -55,9 +58,9 @@ public class InitialLeaderController implements GUIController, Initializable {
      */
     public void done(ActionEvent actionEvent) {
         if(selectedLeader.size()>2){
-            //error TODO
+            gui.showAlert(Alert.AlertType.ERROR, "You selects more then two cards to discard");
         }else if(selectedLeader.size()<2){
-            // error TODO
+            gui.showAlert(Alert.AlertType.ERROR, "You selects less then two cards to discard");
         }else if(selectedLeader.size()==2){
             gui.getConnectionToServer().sendDiscardInitialLeaderCards(selectedLeader.get(0), selectedLeader.get(1));
             done.setDisable(true);

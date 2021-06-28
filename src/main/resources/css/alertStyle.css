@@ -1,0 +1,34 @@
+@import url('https://fonts.googleapis.com/css2?family=Merienda&display=swap');
+
+.button{
+    -fx-background-color: white;
+    -fx-border-color: #87553f;
+    -fx-border-width: 2px;
+    -fx-border-style: solid;
+    -fx-font-family: 'Merienda';
+    -fx-transition-duration: 0.4s;
+}
+
+.button:hover {
+    -fx-background-color: #87553f;
+    -fx-text-fill: white;
+}
+
+.label{
+    -fx-font-family: 'Merienda';
+    -fx-text-fill: #87553f ;
+    -fx-font-weight: bolder;
+    -fx-effect: dropshadow(gaussian , white , 10 , 1.0 , 2 , 0) ;
+}
+
+.dialog-pane{
+    -fx-background-color: #E0CBAE;
+}
+
+.dialog-pane > .header-panel {
+    -fx-background-color: #E0CBAE;
+}
+
+.dialog-pane > .button-bar > .container {
+    -fx-background-color: #E0CBAE;
+}

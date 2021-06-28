@@ -10,6 +10,7 @@ import it.polimi.ingsw.Events.ServerToClient.TurnReselectionToClient;
 import it.polimi.ingsw.Events.ServerToClient.BuyDevelopmentCardTurnToClient.SendSpaceDevelopmentCardToClient;
 import it.polimi.ingsw.Events.ServerToClient.MarketTurnToClient.SendReorganizeDepositToClient;
 import javafx.application.Platform;
+import javafx.scene.control.Alert;
 
 import java.util.concurrent.CountDownLatch;
 
@@ -22,6 +23,7 @@ import java.util.concurrent.CountDownLatch;
 public class EventHandlerGUI implements EventToClientVisitor {
     private final ConnectionToServer connectionToServer;
     private final GUI gui;
+
 
 
     /**
@@ -72,6 +74,7 @@ public class EventHandlerGUI implements EventToClientVisitor {
         changeSceneThread("playerView");
         PlayerViewController controller = (PlayerViewController) gui.getCurrentController();
         Platform.runLater(new Thread(() -> controller.tabTurnNotActive(false)));
+        Platform.runLater(new Thread(() -> gui.showAlert(Alert.AlertType.ERROR, message.getMessage())));
     }
 
     @Override
@@ -83,8 +86,7 @@ public class EventHandlerGUI implements EventToClientVisitor {
 
     @Override
     public void visit(NotifyToClient message) {
-        System.out.println(message.getMessage());
-        //TODO non implementato
+        Platform.runLater(new Thread(() -> gui.showAlert(Alert.AlertType.INFORMATION, message.getMessage())));
     }
 
     @Override
@@ -111,7 +113,7 @@ public class EventHandlerGUI implements EventToClientVisitor {
         if(message.isLorenzo()){
             controller.lorenzoFaith(message.getLorenzoPosition());
         }
-        //TODO allert
+        Platform.runLater(new Thread(() -> gui.showAlert(Alert.AlertType.INFORMATION, message.getMessage())));
         connectionToServer.closeConnection();
     }
 

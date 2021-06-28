@@ -7,6 +7,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.ImageView;
@@ -36,7 +37,6 @@ public class SelectDevelopmentSpaceController implements GUIController, Initiali
     @FXML private ImageView space0;
     @FXML private ImageView space1;
     @FXML private ImageView space2;
-    @FXML private AnchorPane anchorPane;
     @FXML private Label error;
     @FXML private ImageView selection1;
     @FXML private ImageView selection0;
@@ -66,8 +66,10 @@ public class SelectDevelopmentSpaceController implements GUIController, Initiali
      */
     public void sendSpaceDevelopment(ActionEvent actionEvent) {
         if(spaceSelected.size()>1){
+            gui.showAlert(Alert.AlertType.ERROR, "Select Only One Space");
             error.setText("Select Only One Space");
         }else if(spaceSelected.size()==0){
+            gui.showAlert(Alert.AlertType.ERROR, "Select One Space");
             error.setText("Select One Space");
         }else if(spaceSelected.size() == 1 && permittedSpace.get(spaceSelected.get(0))){
 
@@ -79,6 +81,7 @@ public class SelectDevelopmentSpaceController implements GUIController, Initiali
             developSpacePlayer.forEach(d -> d.setImage(null));
             selection.forEach(s -> s.setOpacity(0));
         }else{
+            gui.showAlert(Alert.AlertType.ERROR, "You can't put the card in this position");
             error.setText("You can't put the card in this position");
         }
     }
