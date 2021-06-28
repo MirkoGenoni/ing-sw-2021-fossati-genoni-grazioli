@@ -267,20 +267,30 @@ public class NewDepositView {
     }
 
     public void draw(){
-        String input = "deposit";
+        String state = "deposit";
+        Scanner in = new Scanner(System.in);
+        String input;
+
         do {
-            if(input.equals("additionaldeposit") && this.additionalDeposit)
-                printAdditionalDeposit();
-            else if(input.equals("additionaldeposit"))
-                input="deposit";
+            if (state.equals("deposit"))
+                this.printDepositChoise();
+            if (state.equals("additionalDeposit"))
+                this.printAdditionalDeposit();
 
-            if(input.equals("deposit"))
-                printDepositChoise();
-
-            Scanner in = new Scanner(System.in);
             input = in.nextLine();
-            input = input.toLowerCase();
-        } while (!input.equals("quit"));
+
+            switch (input.toLowerCase()) {
+                case "deposit":
+                    state = "deposit";
+                    break;
+                case "additionaldeposit":
+                    state = "additionalDeposit";
+                    break;
+                case "quit":
+                    state = "quit";
+            }
+
+        } while (!state.equals("quit"));
     }
 
     private void resourceHandle(ArrayList<ResourceIcon> deposit, String formatInput, int num){
@@ -341,10 +351,10 @@ public class NewDepositView {
                 " ┃                                                                                                                       ┃ \n" +
                 " ┃                                                       TO ORGANIZE                                                     ┃ \n" +
                 " ┃                                                                                                                       ┃ \n" +
-                " ┃                                                       Coin:     " + informationReceived.get(ResourceIcon.COIN.toString()) + "                                                     ┃ \n" +
-                " ┃                                                       Servant:  " + informationReceived.get(ResourceIcon.SERVANT.toString()) + "                                                     ┃ \n" +
-                " ┃                                                       Shield:   " + informationReceived.get(ResourceIcon.SHIELD.toString()) + "                                                     ┃ \n" +
-                " ┃                                                       Stone:    " + informationReceived.get(ResourceIcon.STONE.toString()) + "                                                     ┃ \n" +
+                " ┃                                                       Coin:     " + informationReceived.get(ResourceIcon.COIN.toString()) + "                                                     ┃\n" +
+                " ┃                                                       Servant:  " + informationReceived.get(ResourceIcon.SERVANT.toString()) + "                                                     ┃\n" +
+                " ┃                                                       Shield:   " + informationReceived.get(ResourceIcon.SHIELD.toString()) + "                                                     ┃\n" +
+                " ┃                                                       Stone:    " + informationReceived.get(ResourceIcon.STONE.toString()) + "                                                     ┃\n" +
                 " ┃                                                      ______________                                                   ┃ \n" +
                 " ┃                                                                                                                       ┃ \n" +
                 " ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛ \n" +
@@ -402,10 +412,10 @@ public class NewDepositView {
                 " ┃                                                                                                                       ┃ \n" +
                 " ┃                                                       TO ORGANIZE                                                     ┃ \n" +
                 " ┃                                                                                                                       ┃ \n" +
-                " ┃                                                       Coin:     " + informationReceived.get(ResourceIcon.COIN.toString()) + "                                                     ┃ \n" +
-                " ┃                                                       Servant:  " + informationReceived.get(ResourceIcon.SERVANT.toString()) + "                                                     ┃ \n" +
-                " ┃                                                       Shield:   " + informationReceived.get(ResourceIcon.SHIELD.toString()) + "                                                     ┃ \n" +
-                " ┃                                                       Stone:    " + informationReceived.get(ResourceIcon.STONE.toString()) + "                                                     ┃ \n" +
+                " ┃                                                       Coin:     " + informationReceived.get(ResourceIcon.COIN.toString()) + "                                                     ┃\n" +
+                " ┃                                                       Servant:  " + informationReceived.get(ResourceIcon.SERVANT.toString()) + "                                                     ┃\n" +
+                " ┃                                                       Shield:   " + informationReceived.get(ResourceIcon.SHIELD.toString()) + "                                                     ┃\n" +
+                " ┃                                                       Stone:    " + informationReceived.get(ResourceIcon.STONE.toString()) + "                                                     ┃\n" +
                 " ┃                                                      ______________                                                   ┃ \n" +
                 " ┃                                                                                                                       ┃ \n" +
                 " ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛ \n" +

@@ -19,35 +19,6 @@ public class EventHandlerCLI implements EventToClientVisitor {
     private final ConnectionToServer connectionToServer;
     private final CLIHandler handler;
     private final Semaphore available = new Semaphore(1, true);
-    private final Thread asyncPrint = new Thread(()->{
-        System.out.print("                                                                                                                          \n" +
-                          "                                                                                                                          \n" +
-                          "                                                                                                                          \n");
-        System.out.print("                                    WAITING FOR OTHER PLAYERS");
-
-        while(true) {
-            try {
-                TimeUnit.SECONDS.sleep(1);
-                System.out.print(". ");
-                TimeUnit.SECONDS.sleep(1);
-                System.out.print(". ");
-                TimeUnit.SECONDS.sleep(1);
-                System.out.print(".");
-                TimeUnit.SECONDS.sleep(1);
-            } catch (InterruptedException e) {
-                System.out.print("\u001B[2J\u001B[3J\u001B[H");
-                break;
-            }
-
-            for (int i = 0; i < 5; i++)
-                System.out.print("\b");
-
-            System.out.print("     ");
-
-            for (int i = 0; i < 5; i++)
-                System.out.print("\b");
-
-        }});
 
 
     public EventHandlerCLI(ConnectionToServer connectionToServer) {
@@ -152,26 +123,14 @@ public class EventHandlerCLI implements EventToClientVisitor {
     public void visit(NotifyToClient message) {
         new Thread(() -> {
             acquire();
-            switch (message.getMessage()) {
-
-                case "WaitForOtherPlayers":
-                    asyncPrint.start();
-                    break;
-
-                case "AllPlayersConnected":
-                    asyncPrint.interrupt();
-                    try {
-                        TimeUnit.SECONDS.sleep(1);
-                    } catch (InterruptedException e) {
-                        System.out.println("Error in sleep");
-                    }
-
-                    break;
-            }
-
             if (!message.getMessage().equals("WaitForOtherPlayers") && !message.getMessage().equals("AllPlayersConnected")) {
                 Messages messages = new Messages(message.getMessage(), false);
                 messages.printMessage();
+                try {
+                    TimeUnit.SECONDS.sleep(2);
+                } catch (InterruptedException e) {
+                    System.out.println("Error in sleep");
+                }
             }
             available.release();
         }).start();

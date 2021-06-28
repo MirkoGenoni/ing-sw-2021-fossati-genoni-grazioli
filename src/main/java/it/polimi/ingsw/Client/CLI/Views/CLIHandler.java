@@ -41,7 +41,37 @@ public class CLIHandler {
 
     private boolean turnEnd;
 
-    private final Thread asyncPrint = new Thread(()->{
+    private final Thread asyncPrintPre = new Thread(()->{
+        System.out.print("                                                                                                                          \n" +
+                "                                                                                                                          \n" +
+                "                                                                                                                          \n");
+        System.out.print("                                    WAITING FOR OTHER PLAYERS");
+
+        while(true) {
+            try {
+                TimeUnit.SECONDS.sleep(1);
+                System.out.print(". ");
+                TimeUnit.SECONDS.sleep(1);
+                System.out.print(". ");
+                TimeUnit.SECONDS.sleep(1);
+                System.out.print(".");
+                TimeUnit.SECONDS.sleep(1);
+            } catch (InterruptedException e) {
+                System.out.print("\u001B[2J\u001B[3J\u001B[H");
+                break;
+            }
+
+            for (int i = 0; i < 5; i++)
+                System.out.print("\b");
+
+            System.out.print("     ");
+
+            for (int i = 0; i < 5; i++)
+                System.out.print("\b");
+
+        }});
+
+    private final Thread asyncPrintPost = new Thread(()->{
         System.out.print("                                                                                                                          \n" +
                 "                                                                                                                          \n" +
                 "                                                                                                                          \n");
@@ -106,6 +136,11 @@ public class CLIHandler {
     }
 
     public void leaderCardSelection(ArrayList<LeaderCardToClient> received, boolean initial, Map<String, Integer> totalReceived){
+        if(asyncPrintPre.isAlive())
+            asyncPrintPre.interrupt();
+        if(asyncPrintPost.isAlive())
+            asyncPrintPost.interrupt();
+
         LeaderCardView leaderCardSelection = new LeaderCardView(new ArrayList<>(received), totalReceived);
 
             this.inactiveLeaders = new ArrayList<>();
@@ -135,7 +170,6 @@ public class CLIHandler {
     }
 
     public void newTurn(){
-        
         this.turnEnd = false;
         
         while(!this.turnEnd) {
@@ -222,11 +256,7 @@ public class CLIHandler {
         }
     }
 
-
-
-
     private boolean choseDevelopment(DevelopmentCardView developmentCardBoard, AdditionalProductionView additionalProductionView){
-
         boolean tmp = true;
 
         char answer = selectActivation("Do you want to Activate the BASE Production? Y/N?");
@@ -398,6 +428,11 @@ public class CLIHandler {
     }
 
     public void initialResourceSelection(int numResources, ArrayList<Resource> depositState){
+        if(asyncPrintPre.isAlive())
+            asyncPrintPre.interrupt();
+        if(asyncPrintPost.isAlive())
+            asyncPrintPost.interrupt();
+
         InitialResourceView selection= new InitialResourceView(numResources);
         Resource choosen = selection.startChoosing();
 
@@ -435,6 +470,10 @@ public class CLIHandler {
     }
 
     public synchronized void insertInitialData(String DataRequired){
+        //TODO add interrupt to the top of the initial data request
+        if(asyncPrintPre.isAlive())
+            asyncPrintPre.interrupt();
+
         Scanner in = new Scanner(System.in);
         boolean notDone = true;
 
@@ -516,6 +555,7 @@ public class CLIHandler {
                 connection.sendPlayerName(tmpName);
 
                 notDone = false;
+                asyncPrintPre.start();
             } else if (!DataRequired.equals("isNewRoom") && !DataRequired.equals("roomNumber")) {
                 System.out.println("                                    INSERT NAME: " + "\u001B[92m" + this.namePlayer + "\u001B[0m" + "\n");
             }
@@ -541,6 +581,7 @@ public class CLIHandler {
                 int tmpNumPlayers1 = tmpNumPlayers;
                 notDone = false;
                 connection.sendNumPlayer(tmpNumPlayers);
+                asyncPrintPost.start();
             }
         }
     }
