@@ -14,6 +14,9 @@ import it.polimi.ingsw.Model.Resource.Resource;
 import java.util.ArrayList;
 import java.util.Map;
 
+/**
+ * Class to manage the turn to buy development cards
+ */
 public class BuyDevelopmentCardTurn {
     private final ControllerToModel controllerToModel;
 
@@ -21,10 +24,19 @@ public class BuyDevelopmentCardTurn {
     private int color;
     private int level;
 
+    /**
+     * constructor of the class
+     * @param controllerToModel controller to model that manages the game for players
+     */
     public BuyDevelopmentCardTurn(ControllerToModel controllerToModel) {
         this.controllerToModel = controllerToModel;
     }
 
+    /**
+     * method to check if a player can buy a development card of a specified color and level from the development cards' market
+     * @param color color of development card a player want to buy
+     * @param level level of development card a player want to buy
+     */
     public void buyDevelopmentCard(int color, int level){
         Player activePlayer = controllerToModel.getActivePlayer();
         DevelopmentCard buyDevelopmentCard = controllerToModel.getGame().getDevelopmentCardsAvailable()[color][level];
@@ -54,6 +66,11 @@ public class BuyDevelopmentCardTurn {
 
     }
 
+    /**
+     * Method that activate the card taking the necessary resources and put in that in a specified space
+     * @param space the space where the player wants to put the development card
+     * @return TODO NON SO COSA SIA
+     */
     public boolean spaceDevelopmentCard(int space){
         Player activePlayer = controllerToModel.getActivePlayer();
         DevelopmentCard buyDevelopmentCard = controllerToModel.getGame().getDevelopmentCardsAvailable()[color][level];
@@ -78,6 +95,11 @@ public class BuyDevelopmentCardTurn {
 
     }
 
+    /**
+     * Private method to check if a player could have a discount from buy development cards
+     * @param requirements map of required resource to buy the development card
+     * @param leaderCardActive Array of the player's active leaders
+     */
     private void checkCostlessLeaderCard(Map<Resource, Integer> requirements, ArrayList<LeaderCard> leaderCardActive){
         for (LeaderCard card : leaderCardActive){          //control if there's an active LeaderCard costless
             if (card.getSpecialAbility().getEffect().equals("costLess")) {

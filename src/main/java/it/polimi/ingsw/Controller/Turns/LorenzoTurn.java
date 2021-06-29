@@ -8,7 +8,9 @@ import it.polimi.ingsw.Model.Game.SinglePlayerGame;
 import it.polimi.ingsw.Model.Lorenzo.LorenzoIlMagnifico;
 import it.polimi.ingsw.Model.Lorenzo.SoloAction;
 
-
+/**
+ * Class Lorenzo turn to manage the single player game against lorenzo
+ */
 public class LorenzoTurn {
     private final ControllerToModel controllerToModel;
     private final LorenzoIlMagnifico lorenzoIlMagnifico;
@@ -16,6 +18,11 @@ public class LorenzoTurn {
     private final int lorenzoNumPlayer;
     private boolean lorenzoWin;
 
+    /**
+     * constructor of the class
+     * @param controllerToModel controller to model that manages the game for the single player
+     * @param singlePlayerGame the game playing from the single player and lorenzo
+     */
     public LorenzoTurn(ControllerToModel controllerToModel, SinglePlayerGame singlePlayerGame) {
         this.controllerToModel = controllerToModel;
         this.singlePlayerGame = singlePlayerGame;
@@ -26,8 +33,8 @@ public class LorenzoTurn {
 
 
     /**
-     * Metod who permit Lorenzo to Play his turn
-     * @return if Lorenzo has win
+     * Metod who permit Lorenzo to perform his turn
+     * @return true if Lorenzo has win
      */
     public boolean playLorenzo(){
 
@@ -70,7 +77,7 @@ public class LorenzoTurn {
 
 
     /**
-     * method discard two development cards of a specified color setting true a parameter if Lorenzo wins
+     * method to discard two development cards of a specified color, setting true a parameter if Lorenzo wins
      * @param color specifies the color of the card to discard
      */
     private void discardCardColorForLorenzo(CardColor color){
@@ -120,7 +127,7 @@ public class LorenzoTurn {
     }
 
     /**
-     * control if lorenzo has reach the last position in faithtrack
+     * control if lorenzo has reached the last position in faith track
      */
     private void controlFaithTrackLorenzoWin(){
         if (controllerToModel.getGame().getPlayersFaithTrack().getPosition(lorenzoNumPlayer)==24){
