@@ -14,13 +14,34 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * class to manage the turn to activate productions
+ */
 public class ActivateProductionTurn {
     private final ControllerToModel controllerToModel;
 
+    /**
+     * constructor of the class
+     * @param controllerToModel controller to model that manages the game for players
+     */
     public ActivateProductionTurn(ControllerToModel controllerToModel) {
         this.controllerToModel = controllerToModel;
     }
 
+    /**
+     * Method that manage the production turn
+     * @param useBaseProduction boolean that specify if the player want to use the base production
+     * @param resourceRequested1 if the player want to use the base production indicates the first resource to use to develop
+     * @param resourceRequested2 if the player want to use the base production indicates the second resource to use to develop
+     * @param resourceGranted if the player want to use the base production indicates resource granted from the base production
+     * @param useLeaders Array of Boolean that specify if the player want to use leaders productions, the boolean is in the same
+     *                   position of the leader the player want to use
+     * @param materialLeaders The material the player want from the leader production, the resource is in the same
+     *      *                   position of the leader the player want to use
+     * @param useDevelop Array of Boolean that specify if the player want to use a production card, the boolean is in the same
+     *      *                   position of the production card the player want to use
+     * @return true if the played turn is consistent, so if the player produces something
+     */
     public boolean productionsActivation(boolean useBaseProduction, Resource resourceRequested1, Resource resourceRequested2,
                                     ProductedMaterials resourceGranted, ArrayList<Boolean> useLeaders, ArrayList<Resource> materialLeaders,
                                     ArrayList<Boolean> useDevelop){
@@ -97,6 +118,16 @@ public class ActivateProductionTurn {
         return true;
     }
 
+    /**
+     * private method to manage the production by the leader cards
+     * @param useLeaders Array of Boolean that specify if the player want to use leaders productions, the boolean is in the same
+     *      *                   position of the leader the player want to use
+     * @param materialLeaders The material the player want from the leader production, the resource is in the same
+     *      *                   position of the leader the player want to use
+     * @param materialRequested Map of the amount of resource the player must have to develop which the relative
+     * @param materialGranted Map of the amount of resource the player will have if is able to develop
+     * @param activePlayer The player who's playing the turn
+     */
     private void leaderCardProduction(ArrayList<Boolean> useLeaders, ArrayList<Resource> materialLeaders, Map<Resource,Integer> materialRequested,
                                       Map<ProductedMaterials, Integer> materialGranted, Player activePlayer){
 
@@ -135,6 +166,14 @@ public class ActivateProductionTurn {
 
     }
 
+    /**
+     * private method to manage the production by development cards
+     * @param useDevelop Array of Boolean that specify if the player want to use a production card, the boolean is in the same
+     *      *      *                 position of the production card the player want to use
+     * @param materialRequested Map of the amount of resource the player must have to develop which the relative
+     * @param materialGranted Map of the amount of resource the player will have if is able to develop
+     * @param activePlayer The player who's playing the turn
+     */
     private void developmentCardProduction(ArrayList<Boolean> useDevelop, Map<Resource,Integer> materialRequested, Map<ProductedMaterials,
                                             Integer> materialGranted, Player activePlayer){
         ArrayList<DevelopmentCard> activeDevelopment = activePlayer.getPlayerBoard().getDevelopmentCardHandler().getActiveDevelopmentCard();

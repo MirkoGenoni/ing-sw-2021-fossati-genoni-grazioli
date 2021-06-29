@@ -10,16 +10,31 @@ import it.polimi.ingsw.Model.Resource.Resource;
 
 import java.util.ArrayList;
 
+/**
+ * class to manage the turn to take resources from market
+ */
 public class MarketTurn {
     private final ControllerToModel controllerToModel;
 
     // tmp attributes
     private ArrayList<Resource> tmpMarketReturn;
 
+    /**
+     * constructor of the class
+     * @param controllerToModel controller to model that manages the game for players
+     */
     public MarketTurn(ControllerToModel controllerToModel) {
         this.controllerToModel = controllerToModel;
     }
 
+    /**
+     *
+     * @param namePlayer name of the player who is taking resources from the market
+     * @param line line choose from the player in the market
+     * @param leaderMarketWhiteChange Arraylist of boolean that specify if a player is using a market-white-change leader's
+     *                                power and in which position, the boolean is in the same position of the leader card
+     *                                the player want to use
+     */
     public void marketChooseLine(String namePlayer, int line, ArrayList<Boolean> leaderMarketWhiteChange){
         System.out.println("aggiungo al player");
         int currentPlayerIndex = controllerToModel.getCurrentPlayerIndex();
@@ -69,6 +84,15 @@ public class MarketTurn {
         sendMarketDepositData(activePlayer);
     }
 
+    /**
+     * method to check if the state of the reorganized deposit from a player is valid and manage
+     * the discarding of resource from the player
+     * @param newDepositState Arraylist that specify the state of the reorganized deposit
+     * @param discardResources the number of the discarded resources
+     * @param isAdditional boolean that specify if there's an aditional deposit
+     * @param additionalDepositState The Arraylist that specify the state of the additional deposit
+     * @return if a player has reorganised correctly its deposit
+     */
     public boolean saveNewDepositState(ArrayList<Resource> newDepositState, int discardResources, boolean isAdditional, ArrayList<Resource> additionalDepositState){
         Player activePlayer = controllerToModel.getActivePlayer();
         System.out.println(" riscorse scartate " +discardResources);
@@ -114,6 +138,10 @@ public class MarketTurn {
 
     }
 
+    /**
+     * method to send the state of the deposit of a specified player
+     * @param activePlayer the player who's playing the market turn
+     */
     private void sendMarketDepositData(Player activePlayer){
 
         boolean isAdditional = false;
