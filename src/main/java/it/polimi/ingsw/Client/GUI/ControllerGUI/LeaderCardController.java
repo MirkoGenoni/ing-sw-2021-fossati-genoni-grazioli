@@ -66,6 +66,7 @@ public class LeaderCardController implements GUIController, Initializable {
             if(leaderCard.get(i).getImage()!=null){
                 Integer k = i;
                 if(selectedLeaderToActivate.contains(k)){
+                    leaderCardToDraw.add(leaderCard.get(i).getImage());
                     sendSelectedLeaderCard.add(1);
                 }else if(selectedLeaderToDiscard.contains(k)){
                     sendSelectedLeaderCard.add(2);

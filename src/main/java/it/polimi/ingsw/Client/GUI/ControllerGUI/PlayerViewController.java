@@ -221,20 +221,6 @@ public class PlayerViewController implements GUIController, Initializable {
     }
 
     /**
-     * Updates the leader card that the player has in hand.
-     * @param leaderInHand The leader card that the player has in hand.
-     */
-    public void drawLeaderCard(ArrayList<Image> leaderInHand){
-        if(leaderInHand!=null){
-            for(int i=0; i<leaderInHand.size(); i++){
-                leaderCardPlayer.get(i).setImage(leaderInHand.get(i));
-                leaderText.get(i).setText("IN HAND");
-            }
-        }
-
-    }
-
-    /**
      * Sets the tab with the turn choice.
      * @param b True to switch off the tub turn, false to switch it on.
      */
@@ -396,7 +382,7 @@ public class PlayerViewController implements GUIController, Initializable {
             for(int i=0; i<player.getLeaderCardActive().size(); i++){
                 leaderCardPlayer.get(1-i).setImage(gui.getLeaderCardsGraphic().get(player.getLeaderCardActive().get(i).getNameCard()));
                 leaderText.get(1-i).setText("ACTIVE");
-                // stampare risorse nei bigger deposit
+                //draw the resources in the bigger deposit leader card
                 if(player.getLeaderCardActive().get(i).getEffect().equals("biggerDeposit")){
                     ArrayList<Resource> tmpR = new ArrayList<>(player.getAdditionalDeposit().subList(0+2*z, 2+2*z));
                     for(int k=0; k< tmpR.size(); k++){
@@ -456,6 +442,24 @@ public class PlayerViewController implements GUIController, Initializable {
             int point = playersPoints.get(player.getPlayerNameSend());
             points.setText("Points = " + point);
         }
+    }
+
+    /**
+     * Updates the leader card that the player has in hand.
+     * @param leaderInHand The leader card that the player has in hand.
+     */
+    private void drawLeaderCard(ArrayList<Image> leaderInHand){
+        int z=0;
+        if(leaderInHand!=null){
+            for(int i=0; i<leaderCardPlayer.size(); i++){
+                if(!leaderInHand.contains(leaderCardPlayer.get(i).getImage())){
+                    leaderCardPlayer.get(i).setImage(leaderInHand.get(z));
+                    leaderText.get(z).setText("IN HAND");
+                    z++;
+                }
+            }
+        }
+
     }
 
     /**

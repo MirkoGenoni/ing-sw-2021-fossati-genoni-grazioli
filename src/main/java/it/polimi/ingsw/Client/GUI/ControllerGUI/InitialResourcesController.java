@@ -27,6 +27,8 @@ public class InitialResourcesController implements GUIController{
     @FXML private Label shieldLabel;
     @FXML private Label servantLabel;
 
+    @FXML private Label textLabel;
+
     /**
      * Selects the number of initial resources that the player has to choose.
      * @param num The number of resources that the payer has to choose.
@@ -37,6 +39,8 @@ public class InitialResourcesController implements GUIController{
         stoneLabel.setText("X 0");
         servantLabel.setText("X 0");
         shieldLabel.setText("X 0");
+
+        textLabel.setText("Choose " + num + " initial resources");
     }
 
     /**

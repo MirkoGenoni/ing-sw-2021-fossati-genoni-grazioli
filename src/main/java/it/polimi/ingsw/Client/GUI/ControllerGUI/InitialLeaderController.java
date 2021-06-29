@@ -67,7 +67,7 @@ public class InitialLeaderController implements GUIController, Initializable {
             done.setVisible(false);
             waitNotify.setVisible(true);
             leader.forEach(leader -> leader.setDisable(true));
-            leader.remove((int)selectedLeader.get(0));
+            leader.remove((int)selectedLeader.get(1));
             leader.remove((int)selectedLeader.get(0));
             gui.setLeaderInHand(new ArrayList<Image>(List.of(leader.get(0).getImage(), leader.get(1).getImage())));
 

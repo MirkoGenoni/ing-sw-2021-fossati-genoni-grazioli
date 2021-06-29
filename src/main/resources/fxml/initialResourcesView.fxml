@@ -5,9 +5,9 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
 
-
-<AnchorPane fx:controller="it.polimi.ingsw.Client.GUI.ControllerGUI.InitialResourcesController" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" stylesheets="@../css/mainStyle.css" style="-fx-background-color: #CEC3A1;">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #CEC3A1;" stylesheets="@../css/mainStyle.css" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.Client.GUI.ControllerGUI.InitialResourcesController">
    <children>
       <ImageView fx:id="coin" fitHeight="125.0" fitWidth="125.0" layoutX="120.0" layoutY="90.0" onMouseClicked="#selected" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="120.0">
          <image>
@@ -29,7 +29,11 @@
             <Image url="@../graphics/resource/stone.png" />
          </image>
       </ImageView>
-      <Label fx:id="textLabel" layoutX="122.0" layoutY="38.0" prefHeight="17.0" prefWidth="356.0" />
+      <Label fx:id="textLabel" layoutX="155.0" layoutY="39.0" prefHeight="19.0" prefWidth="290.0" styleClass="label1" textAlignment="CENTER">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
       <Button fx:id="done" layoutX="282.0" layoutY="344.0" mnemonicParsing="false" onAction="#orderInitialResources" text="OK" />
       <Label fx:id="coinLabel" layoutX="39.0" layoutY="133.0" prefHeight="17.0" prefWidth="45.0" />
       <Label fx:id="stoneLabel" layoutX="39.0" layoutY="290.0" prefHeight="17.0" prefWidth="45.0" />
