@@ -57,7 +57,7 @@ public class EventHandlerGUI implements EventToClientVisitor {
         }else{
             changeSceneThread("leaderCardView");
             LeaderCardController controller = (LeaderCardController) gui.getCurrentController();
-            Platform.runLater(new Thread(() -> controller.drawLeader(leaderCardArray.getLeaderCardArray())));
+            Platform.runLater(new Thread(() -> controller.drawLeader(leaderCardArray.getLeaderCardArray(), leaderCardArray.isFinal())));
         }
     }
 
@@ -105,7 +105,6 @@ public class EventHandlerGUI implements EventToClientVisitor {
 
     @Override
     public void visit(EndGameToClient message) {
-        connectionToServer.closeConnection();
         changeSceneThread("playerView");
         PlayerViewController controller = (PlayerViewController) gui.getCurrentController();
         controller.updatePlayerBoard(message.getPlayerInformation());

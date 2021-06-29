@@ -59,8 +59,9 @@ public interface EventToServerNotifier {
     /**
      * Sends the actions on the leader cards choose by the player to the server.
      * @param actions The actions on the leader cards choose by the player.
+     * @param isFinal
      */
-    void sendLeaderCardActions(ArrayList<Integer> actions);
+    void sendLeaderCardActions(ArrayList<Integer> actions, boolean isFinal);
 
     // -------------------------------------------
     // EVENTS FOR THE MARKET TURN INTERACTION

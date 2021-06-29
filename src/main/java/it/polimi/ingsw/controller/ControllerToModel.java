@@ -156,7 +156,7 @@ public class ControllerToModel {
             game = singleGame;
             singleGame.startGame();
             try{
-                connections.get(activePlayer.getName()).sendArrayLeaderCards(singleGame.getPlayer().getPlayerBoard().getLeaderCardHandler().getLeaderCardsAvailable(), true, players[0]);
+                connections.get(activePlayer.getName()).sendArrayLeaderCards(singleGame.getPlayer().getPlayerBoard().getLeaderCardHandler().getLeaderCardsAvailable(), true, players[0], false);
             } catch (LeaderCardException e) {
                 e.printStackTrace();
             }
@@ -242,7 +242,7 @@ public class ControllerToModel {
         }else{
             connections.forEach((k,v) -> v.sendNotify("è il turno di " + activePlayer.getName())); //TODO
             try {
-                connections.get(activePlayer.getName()).sendArrayLeaderCards(players[currentPlayerIndex].getPlayerBoard().getLeaderCardHandler().getLeaderCardsAvailable(),false, players[currentPlayerIndex]);
+                connections.get(activePlayer.getName()).sendArrayLeaderCards(players[currentPlayerIndex].getPlayerBoard().getLeaderCardHandler().getLeaderCardsAvailable(),false, players[currentPlayerIndex], false);
             } catch (LeaderCardException e) {
                 turnToView();
             }
@@ -251,6 +251,8 @@ public class ControllerToModel {
 
 
     }
+
+
 
 
     public void initialResourcesChoose(ArrayList<Resource> initialDepositState, String playerName){
@@ -269,7 +271,7 @@ public class ControllerToModel {
             for(int i =0; i< players.length; i++){
                 if(!playerDisconnected.contains(players[i].getName())){
                     try {
-                        connections.get(players[i].getName()).sendArrayLeaderCards(multiGame.getPlayers()[i].getPlayerBoard().getLeaderCardHandler().getLeaderCardsAvailable(), true, players[i]);
+                        connections.get(players[i].getName()).sendArrayLeaderCards(multiGame.getPlayers()[i].getPlayerBoard().getLeaderCardHandler().getLeaderCardsAvailable(), true, players[i], false);
                     } catch (LeaderCardException e) {
                         e.printStackTrace();
                     }
@@ -308,9 +310,10 @@ public class ControllerToModel {
 
     }
 
-    public void leaderCardTurn(String playerName, ArrayList<Integer> actions){
-        leaderCardTurn.leaderTurns(playerName, actions);
+    public void leaderCardTurn(String playerName, ArrayList<Integer> actions, boolean isFinal){
+        leaderCardTurn.leaderTurns(playerName, actions, isFinal);
     }
+
 
 
     // -------------------------------------------
@@ -321,8 +324,9 @@ public class ControllerToModel {
     }
 
     public void saveNewDepositState(ArrayList<Resource> newDepositState, int discardResources, boolean isAdditional, ArrayList<Resource> additionalDepositState){
-        if(marketTurn.saveNewDepositState(newDepositState, discardResources, isAdditional, additionalDepositState) && checkMultiplayer()){
-            newTurn(true);
+        if(marketTurn.saveNewDepositState(newDepositState, discardResources, isAdditional, additionalDepositState)){
+            //newTurn(true);
+            sendLeaderCardTurnFinal(true);
         }
 
     }
@@ -335,8 +339,9 @@ public class ControllerToModel {
     }
 
     public void spaceDevelopmentCard(int space){
-        if(buyDevelopmentCardTurn.spaceDevelopmentCard(space) && checkMultiplayer()){
-            newTurn(true);
+        if(buyDevelopmentCardTurn.spaceDevelopmentCard(space)){
+            //newTurn(true);
+            sendLeaderCardTurnFinal(true);
         }
     }
 
@@ -350,8 +355,9 @@ public class ControllerToModel {
 
         boolean tmpB = activateProductionTurn.productionsActivation(useBaseProduction, resourceRequested1, resourceRequested2, resourceGranted,
                                     useLeaders, materialLeaders, useDevelop);
-        if(tmpB && checkMultiplayer()){  // vedi checklorenzo
-            newTurn(true);
+        if(tmpB){  // vedi checklorenzo
+            //newTurn(true);
+            sendLeaderCardTurnFinal(true);
         }
 
 
@@ -385,6 +391,17 @@ public class ControllerToModel {
             }
         }
 
+    }
+
+    private void sendLeaderCardTurnFinal(boolean isFinal){
+        try {
+            connections.get(activePlayer.getName()).sendArrayLeaderCards(activePlayer.getPlayerBoard().getLeaderCardHandler().getLeaderCardsAvailable(),false, activePlayer, isFinal);
+        } catch (LeaderCardException e) {
+            if(checkMultiplayer()){
+                newTurn(true);
+            }
+
+        }
     }
 
     public boolean checkMultiplayer(){

@@ -14,17 +14,20 @@ public class SendArrayLeaderCardsToClient extends EventToClient{
     private final ArrayList<LeaderCardToClient> leaderCardArray;
     private final Map<String, Integer> numberOfDevelopmentCards;
     private final boolean initialLeaderCards;
+    private final boolean isFinal;
 
     /**
      * Constructs the event.
      * @param leaderCardArray The leader cards of the player.
      * @param numberOfDevelopmentCards The total number of the development card of the player.
      * @param initialLeaderCards If the event is for the choice of the initial leader cards or not.
+     * @param isFinal
      */
-    public SendArrayLeaderCardsToClient(ArrayList<LeaderCardToClient> leaderCardArray, Map<String, Integer> numberOfDevelopmentCards, boolean initialLeaderCards) {
+    public SendArrayLeaderCardsToClient(ArrayList<LeaderCardToClient> leaderCardArray, Map<String, Integer> numberOfDevelopmentCards, boolean initialLeaderCards, boolean isFinal) {
         this.leaderCardArray = leaderCardArray;
         this.numberOfDevelopmentCards = numberOfDevelopmentCards;
         this.initialLeaderCards = initialLeaderCards;
+        this.isFinal = isFinal;
     }
 
 
@@ -48,6 +51,10 @@ public class SendArrayLeaderCardsToClient extends EventToClient{
      */
     public boolean isInitialLeaderCards() {
         return initialLeaderCards;
+    }
+
+    public boolean isFinal() {
+        return isFinal;
     }
 
     @Override

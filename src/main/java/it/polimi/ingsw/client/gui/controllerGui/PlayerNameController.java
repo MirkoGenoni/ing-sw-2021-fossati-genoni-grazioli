@@ -110,14 +110,20 @@ public class PlayerNameController implements GUIController, Initializable {
     public void sendName(ActionEvent actionEvent) {
         String playerName = textName.getText();
         textName.clear();
-        gui.setNamePlayer(playerName);
-        gui.getConnectionToServer().sendPlayerName(playerName);
-        gui.getConnectionToServer().setPlayerName(playerName);
-        text.setText("Wait other players");
-        textName.setOpacity(0);
-        textName.setDisable(true);
-        buttonName.setOpacity(0);
-        buttonName.setDisable(true);
+        if(playerName.length()<1){
+            gui.showAlert(Alert.AlertType.ERROR, "format name not valid");
+        }else{
+            gui.setNamePlayer(playerName);
+            gui.getConnectionToServer().sendPlayerName(playerName);
+            gui.getConnectionToServer().setPlayerName(playerName);
+            text.setText("Wait other players");
+            textName.setOpacity(0);
+            textName.setDisable(true);
+            buttonName.setOpacity(0);
+            buttonName.setDisable(true);
+        }
+
+
 
     }
 

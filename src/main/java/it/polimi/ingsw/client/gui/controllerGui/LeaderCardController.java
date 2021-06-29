@@ -32,6 +32,9 @@ public class LeaderCardController implements GUIController, Initializable {
     private ArrayList<Integer> selectedLeaderToDiscard = new ArrayList<>();
     private ArrayList<Integer> selectedLeaderToActivate = new ArrayList<>();
 
+    //tmp
+    private boolean isFinal;
+
 
     @FXML private ImageView leader0;
     @FXML private ImageView leader1;
@@ -42,7 +45,8 @@ public class LeaderCardController implements GUIController, Initializable {
      * Draws the leader cards in the scene.
      * @param leaderCardAvailable The leader cards.
      */
-    public void drawLeader(ArrayList<LeaderCardToClient> leaderCardAvailable){
+    public void drawLeader(ArrayList<LeaderCardToClient> leaderCardAvailable, boolean isFinal){
+        this.isFinal = isFinal;
         for(int i = 0; i< leaderCardAvailable.size(); i++){
             leaderCard.get(i).setImage(gui.getLeaderCardsGraphic().get(leaderCardAvailable.get(i).getNameCard()));
             leaderCard.get(i).setOnMouseClicked(selectLeaderCard);
@@ -84,7 +88,7 @@ public class LeaderCardController implements GUIController, Initializable {
         PlayerViewController controller = (PlayerViewController) gui.getCurrentController();
         controller.tabTurnNotActive(true);
         gui.setLeaderInHand(leaderCardToDraw);
-        gui.getConnectionToServer().sendLeaderCardActions(sendSelectedLeaderCard);
+        gui.getConnectionToServer().sendLeaderCardActions(sendSelectedLeaderCard, isFinal);
     }
 
 

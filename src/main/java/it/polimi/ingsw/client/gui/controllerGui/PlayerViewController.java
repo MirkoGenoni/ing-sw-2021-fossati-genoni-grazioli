@@ -328,7 +328,7 @@ public class PlayerViewController implements GUIController, Initializable {
      * @param actionEvent The event of the type ActionEvent.
      */
     public void playerView(ActionEvent actionEvent) {
-        for(int i=0; i<4; i++){
+        for(int i=0; i<gui.getPlayersName().size(); i++){
             if(((Button)actionEvent.getSource()).getId().equals("player" +i)){
                 drawPlayerBoard(gui.getLastTurn().getPlayers().get(gui.getPlayersName().get(i)));
             }
@@ -454,7 +454,7 @@ public class PlayerViewController implements GUIController, Initializable {
             for(int i=0; i<leaderCardPlayer.size(); i++){
                 if(!leaderInHand.contains(leaderCardPlayer.get(i).getImage())){
                     leaderCardPlayer.get(i).setImage(leaderInHand.get(z));
-                    leaderText.get(z).setText("IN HAND");
+                    leaderText.get(i).setText("IN HAND");
                     z++;
                 }
             }

@@ -63,8 +63,9 @@ public interface EventToClientNotifier {
      *                          If is true the leader cards are to choose for the set up of the match.
      *                          If is false the leader cards are to manage like in a normal turn.
      * @param currentPlayer The player send his own leader cards to.
+     * @param isFinal
      */
-    void sendArrayLeaderCards(ArrayList<LeaderCard> leaderCards, boolean initialLeaderCards, Player currentPlayer);
+    void sendArrayLeaderCards(ArrayList<LeaderCard> leaderCards, boolean initialLeaderCards, Player currentPlayer, boolean isFinal);
 
     // -------------------------------------------------------------------
     // EVENT FOR THE NEW TURN, THIS EVENT UPDATE THE CLIENT INFORMATION

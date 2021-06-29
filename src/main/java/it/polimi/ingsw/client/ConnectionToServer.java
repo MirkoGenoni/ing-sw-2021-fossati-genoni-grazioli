@@ -13,6 +13,7 @@ import it.polimi.ingsw.events.clientToServer.marketTurnToServer.NewDepositStateT
 import it.polimi.ingsw.events.clientToServer.startGameToServer.DiscardInitialLeaderCards;
 import it.polimi.ingsw.events.clientToServer.startGameToServer.InitialResourcesChoose;
 import it.polimi.ingsw.events.serverToClient.EventToClient;
+import it.polimi.ingsw.events.serverToClient.NotifyToClient;
 import it.polimi.ingsw.model.developmentCard.ProductedMaterials;
 import it.polimi.ingsw.model.resource.Resource;
 
@@ -29,7 +30,7 @@ public class ConnectionToServer implements Runnable, EventToServerNotifier {
     private String playerName;
     private boolean activeGui = false;
     private final EventHandlerCLI eventHandlerCli;
-    private EventHandlerGUI visit;
+    private EventHandlerGUI eventHandlerGUI;
 
     // Input and Output steams
     private ObjectInputStream input;
@@ -49,8 +50,8 @@ public class ConnectionToServer implements Runnable, EventToServerNotifier {
         return this.address;
     }
 
-    public void setVisit(EventHandlerGUI visit) {
-        this.visit = visit;
+    public void setEventHandlerGUI(EventHandlerGUI eventHandlerGUI) {
+        this.eventHandlerGUI = eventHandlerGUI;
         activeGui = true;
     }
 
@@ -69,7 +70,7 @@ public class ConnectionToServer implements Runnable, EventToServerNotifier {
                 EventToClient event = receiveEvent();
                 if(!event.getClass().getSimpleName().equals("PingToClient")){
                     if (activeGui){
-                        visit.receiveEvent(event);
+                        eventHandlerGUI.receiveEvent(event);
                     }else{
                         eventHandlerCli.receiveEvent(event);
                     }
@@ -123,7 +124,7 @@ public class ConnectionToServer implements Runnable, EventToServerNotifier {
         this.playerName = playerName;
     }
 
-    // event that the cli/visit calls to send event to the server
+    // event that the cli/eventHandlerGUI calls to send event to the server
 
     // -------------------------------------------------------
     // EVENTS FOR THE START OF THE CONNECTION WITH THE SERVER
@@ -140,8 +141,8 @@ public class ConnectionToServer implements Runnable, EventToServerNotifier {
     }
 
     @Override
-    public void sendLeaderCardActions(ArrayList<Integer> actions) {
-        SendLeaderCardToServer sendLeaderCardToServer = new SendLeaderCardToServer(actions, this.playerName);
+    public void sendLeaderCardActions(ArrayList<Integer> actions, boolean isFinal) {
+        SendLeaderCardToServer sendLeaderCardToServer = new SendLeaderCardToServer(actions, this.playerName, isFinal);
         asyncSendEvent(sendLeaderCardToServer);
     }
 
@@ -227,7 +228,6 @@ public class ConnectionToServer implements Runnable, EventToServerNotifier {
     public void sendPing() {
         PingToServer pingToServer = new PingToServer();
         asyncSendEvent(pingToServer);
-        //System.out.println("send ping to server");
     }
 
 

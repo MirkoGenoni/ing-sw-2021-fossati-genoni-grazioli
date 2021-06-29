@@ -38,7 +38,7 @@ public class ControllerConnection implements EventToServerVisitor, ObserveConnec
     @Override
     public void visit(SendLeaderCardToServer leaderCardTurn) {
         System.out.println("mi è arrivato il turno gioca-leader");
-        controllerToModel.leaderCardTurn(leaderCardTurn.getPlayerName(), leaderCardTurn.getActions());
+        controllerToModel.leaderCardTurn(leaderCardTurn.getPlayerName(), leaderCardTurn.getActions(), leaderCardTurn.isFinal());
 
     }
 

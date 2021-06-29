@@ -135,7 +135,7 @@ public class CLIHandler {
         this.allPlayersView = new AllPlayersView(this.players, this.namePlayer, this.inactiveLeaders);
     }
 
-    public void leaderCardSelection(ArrayList<LeaderCardToClient> received, boolean initial, Map<String, Integer> totalReceived){
+    public void leaderCardSelection(ArrayList<LeaderCardToClient> received, boolean initial, Map<String, Integer> totalReceived, boolean isFinal){
         if(asyncPrintPre.isAlive())
             asyncPrintPre.interrupt();
         if(asyncPrintPost.isAlive())
@@ -165,7 +165,7 @@ public class CLIHandler {
                         j++;
                     }
 
-                connection.sendLeaderCardActions(receive);
+                connection.sendLeaderCardActions(receive, isFinal);
             }
     }
 

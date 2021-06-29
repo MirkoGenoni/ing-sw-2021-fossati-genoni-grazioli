@@ -33,8 +33,9 @@ public class LeaderCardTurn {
      * method that manages the actions from a player for its leaders
      * @param playerName the name of the player who's playing the leader turn
      * @param positions the action to do for each leader (0 to do nothing, 1 to play, 2 to discard)
+     * @param isFinal
      */
-    public void leaderTurns(String playerName, ArrayList<Integer> positions) {
+    public void leaderTurns(String playerName, ArrayList<Integer> positions, boolean isFinal) {
         int currentPlayerIndex = controllerToModel.getCurrentPlayerIndex();
         Player activePlayer = controllerToModel.getActivePlayer();
         Game game = controllerToModel.getGame();
@@ -76,7 +77,14 @@ public class LeaderCardTurn {
             }
         }
 
-        controllerToModel.turnToView();
+        if(!isFinal){
+            controllerToModel.turnToView();
+        }else{
+            if(controllerToModel.checkMultiplayer()){
+                controllerToModel.newTurn(true);
+            }
+
+        }
     }
 
     /**

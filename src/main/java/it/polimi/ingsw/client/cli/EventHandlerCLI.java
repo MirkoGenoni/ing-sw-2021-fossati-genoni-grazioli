@@ -54,7 +54,7 @@ public class EventHandlerCLI implements EventToClientVisitor {
     public void visit(SendArrayLeaderCardsToClient leaderCardArray) {
         new Thread(() -> {
             acquire();
-            handler.leaderCardSelection(leaderCardArray.getLeaderCardArray(), leaderCardArray.isInitialLeaderCards(), leaderCardArray.getNumberOfDevelopmentCards());
+            handler.leaderCardSelection(leaderCardArray.getLeaderCardArray(), leaderCardArray.isInitialLeaderCards(), leaderCardArray.getNumberOfDevelopmentCards(), leaderCardArray.isFinal());
             available.release();
         }).start();
         /*

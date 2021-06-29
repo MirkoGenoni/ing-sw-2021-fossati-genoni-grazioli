@@ -75,7 +75,7 @@ public class GUI extends Application {
     public void setConnectionToServer(ConnectionToServer connectionToServer) {
         this.connectionToServer = connectionToServer;
         visit = new EventHandlerGUI(connectionToServer, this);
-        connectionToServer.setVisit(visit);
+        connectionToServer.setEventHandlerGUI(visit);
     }
 
     /**

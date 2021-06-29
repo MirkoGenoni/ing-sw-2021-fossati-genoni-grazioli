@@ -90,7 +90,7 @@ public class BuyDevelopmentCardTurn {
             e.printStackTrace();
         }
         //controllerToModel.getConnectionsToClient().get(currentPlayerIndex).sendNotify("Card correctly Activated");
-        controllerToModel.getConnections().get(activePlayer.getName()).sendNotify("Card correctly Activated");
+        //controllerToModel.getConnections().get(activePlayer.getName()).sendNotify("Card correctly Activated");
         return true;
 
     }

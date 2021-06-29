@@ -194,11 +194,8 @@ public class ConnectionToClient implements Runnable, EventToClientNotifier {
         try{
             while(active){
                 EventToServer event = receiveEvent();
-                System.out.println(event.getClass().getSimpleName());
                 if(!event.getClass().getSimpleName().equals("PingToServer")){
                     observeConnectionToClient.observeEvent(event); // ControllerConnection or RoomHandler
-                }else{
-                    System.out.println("Ping to Client");
                 }
                 //Thread.sleep(10);
             }
@@ -248,9 +245,9 @@ public class ConnectionToClient implements Runnable, EventToClientNotifier {
     // EVENTS THAT SEND LEADER CARD INFORMATION
     // ----------------------------------------
     @Override
-    public void sendArrayLeaderCards(ArrayList<LeaderCard> leaderCards, boolean initialLeaderCards, Player currentPlayer) {
+    public void sendArrayLeaderCards(ArrayList<LeaderCard> leaderCards, boolean initialLeaderCards, Player currentPlayer, boolean isFinal) {
         Map<String, Integer> countOfDevelopmentCards = countNumberOfDevelopmentCards(currentPlayer);
-        SendArrayLeaderCardsToClient sendArrayLeaderCardsToClient = new SendArrayLeaderCardsToClient(leaderCardToSend(leaderCards), countOfDevelopmentCards, initialLeaderCards);
+        SendArrayLeaderCardsToClient sendArrayLeaderCardsToClient = new SendArrayLeaderCardsToClient(leaderCardToSend(leaderCards), countOfDevelopmentCards, initialLeaderCards, isFinal);
         asyncSendEvent(sendArrayLeaderCardsToClient);
     }
 
