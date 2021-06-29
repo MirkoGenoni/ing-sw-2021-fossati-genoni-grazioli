@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="600.0" style="-fx-background-color: #CEC3A1;" stylesheets="@../css/mainStyle.css" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.Client.GUI.ControllerGUI.InitialLeaderController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="600.0" style="-fx-background-color: #CEC3A1;" stylesheets="@../css/mainStyle.css" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.gui.controllerGui.InitialLeaderController">
    <children>
       <ImageView fx:id="leader0" fitHeight="323.0" fitWidth="210.0" layoutX="59.0" layoutY="77.0" pickOnBounds="true" preserveRatio="true" />
       <ImageView fx:id="leader1" fitHeight="323.0" fitWidth="210.0" layoutX="337.0" layoutY="77.0" pickOnBounds="true" preserveRatio="true" />

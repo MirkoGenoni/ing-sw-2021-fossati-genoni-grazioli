@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #CEC3A1;" stylesheets="@../css/mainStyle.css" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.Client.GUI.ControllerGUI.InitialResourcesController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #CEC3A1;" stylesheets="@../css/mainStyle.css" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.gui.controllerGui.InitialResourcesController">
    <children>
       <ImageView fx:id="coin" fitHeight="125.0" fitWidth="125.0" layoutX="120.0" layoutY="90.0" onMouseClicked="#selected" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="120.0">
          <image>

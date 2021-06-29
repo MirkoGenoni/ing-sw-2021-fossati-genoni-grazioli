@@ -6,7 +6,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane stylesheets="@../css/mainStyle.css" minHeight="500.0" minWidth="770.0" prefHeight="500.0" prefWidth="770.0" style="-fx-background-color: #B1AE92;" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.Client.GUI.ControllerGUI.NewDepositController">
+<AnchorPane stylesheets="@../css/mainStyle.css" minHeight="500.0" minWidth="770.0" prefHeight="500.0" prefWidth="770.0" style="-fx-background-color: #B1AE92;" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.gui.controllerGui.NewDepositController">
    <children>
       <ImageView fitHeight="500.0" fitWidth="440.0" layoutX="177.0">
          <image>

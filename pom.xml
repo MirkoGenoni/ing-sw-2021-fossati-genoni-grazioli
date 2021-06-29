@@ -82,7 +82,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>it.polimi.ingsw.Server.LaunchServer</mainClass>
+                            <mainClass>it.polimi.ingsw.server.LaunchServer</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>
