@@ -71,26 +71,7 @@ public class Market {
         // this if manage the choose of a row
         if( line < 4){
             for(int i=0; i<4; i++){
-                switch (grid.get(i + (line - 1) * 4).getType()) {
-                    case "nothing":
-                        marbleLine.add(Marble.NOTHING);
-                        break;
-                    case "shield":
-                        marbleLine.add(Marble.SHIELD);
-                        break;
-                    case "servant":
-                        marbleLine.add(Marble.SERVANT);
-                        break;
-                    case "stone":
-                        marbleLine.add(Marble.STONE);
-                        break;
-                    case "coin":
-                        marbleLine.add(Marble.COIN);
-                        break;
-                    case "faith":
-                        marbleLine.add(Marble.FAITH);
-                        break;
-                }
+                marbleLine.add(Marble.valueOf((grid.get(i + (line - 1) * 4).getType()).toUpperCase()));
             }
             Marble tmpMarble =  grid.get(3+(line-1)*4);
             for(int i=3; i>0; i--){
@@ -103,26 +84,7 @@ public class Market {
         // this if manage the choose of a column
         else if(line >= 4 && line < 8){
             for(int i=0; i<3; i++){
-                switch (grid.get(i * 4 + k).getType()) {
-                    case "nothing":
-                        marbleLine.add(Marble.NOTHING);
-                        break;
-                    case "shield":
-                        marbleLine.add(Marble.SHIELD);
-                        break;
-                    case "servant":
-                        marbleLine.add(Marble.SERVANT);
-                        break;
-                    case "stone":
-                        marbleLine.add(Marble.STONE);
-                        break;
-                    case "coin":
-                        marbleLine.add(Marble.COIN);
-                        break;
-                    case "faith":
-                        marbleLine.add(Marble.FAITH);
-                        break;
-                }
+                marbleLine.add(Marble.valueOf((grid.get(i * 4 + k).getType()).toUpperCase()));
             }
             Marble tmpMarble = grid.get(8+k);
             for(int i=2; i>0; i--){
