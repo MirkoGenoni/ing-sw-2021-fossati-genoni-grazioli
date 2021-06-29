@@ -7,16 +7,12 @@ import it.polimi.ingsw.client.cli.views.marketView.NewDepositView;
 import it.polimi.ingsw.client.cli.views.otherViews.AllPlayersView;
 import it.polimi.ingsw.client.cli.views.otherViews.InitialResourceView;
 import it.polimi.ingsw.client.cli.views.otherViews.NewTurnView;
-import it.polimi.ingsw.client.cli.views.productionView.AdditionalProductionView;
-import it.polimi.ingsw.client.cli.views.productionView.BaseProduction;
-import it.polimi.ingsw.client.cli.views.productionView.DevelopmentCardView;
-import it.polimi.ingsw.client.cli.views.productionView.DevelopmentCardVisualization;
+import it.polimi.ingsw.client.cli.views.productionView.*;
 import it.polimi.ingsw.client.ConnectionToServer;
 import it.polimi.ingsw.events.serverToClient.supportClass.DevelopmentCardToClient;
 import it.polimi.ingsw.events.serverToClient.supportClass.LeaderCardToClient;
 import it.polimi.ingsw.events.serverToClient.supportClass.MarketToClient;
 import it.polimi.ingsw.events.serverToClient.supportClass.PlayerInformationToClient;
-import it.polimi.ingsw.model.developmentCard.ProductedMaterials;
 import it.polimi.ingsw.model.resource.Resource;
 
 import java.util.ArrayList;
@@ -257,63 +253,22 @@ public class CLIHandler {
     }
 
     private boolean choseDevelopment(DevelopmentCardView developmentCardBoard, AdditionalProductionView additionalProductionView){
-        boolean tmp = true;
+        boolean tmp;
 
-        char answer = selectActivation("Do you want to Activate the BASE Production? Y/N?");
+        ProductionSelectionView prod = new ProductionSelectionView(developmentCardBoard, additionalProductionView, this.totalResourceCounter);
+        tmp = prod.activationSelection("base");
 
-        boolean useBaseProduction = false;
-        ArrayList<Resource> input = new ArrayList<>();
-
-        ProductedMaterials prodottoBaseProd = null;
-        input.add(null);
-        input.add(null);
-        input.add(null);
-
-        if (answer == 'Y') {
-            useBaseProduction = true;
-            BaseProduction baseProduction = new BaseProduction();
-            baseProduction.startBaseProduction();
-            tmp = baseProduction.isTurnEnd();
-            if(tmp) {
-                input = baseProduction.getResources();
-                prodottoBaseProd = ProductedMaterials.valueOf(input.get(2).name());
-            }
-        }
-
-        if(answer == 'Y' && !tmp)
+        if(!tmp)
             return false;
 
-        answer = selectActivation("Do you want to Activate one of the LEADER Production? Y/N?");
+        tmp = prod.activationSelection("leader");
 
-        ArrayList<Boolean> activation = new ArrayList<>();
-        ArrayList<Resource> materialLeader = new ArrayList<>();
-
-        if (answer == 'Y') {
-            additionalProductionView.startAdditionalProductionView();
-            tmp = additionalProductionView.isTurnEnd();
-            if(tmp) {
-                activation = additionalProductionView.getActivation();
-                materialLeader = additionalProductionView.getRequested();
-            }
-        }
-
-        if(answer == 'Y' && !tmp)
+        if(!tmp)
             return false;
 
+        tmp = prod.activationSelection("development");
 
-        answer = selectActivation("Do you want to use any of yours DEVELOPMENT CARDS? Y/N?");
-        ArrayList<Boolean> useDevelop = new ArrayList<>();
-        for (int i=0; i<3; i++)
-            useDevelop.add(false);
-
-        if(answer == 'Y'){
-            developmentCardBoard.startProductionCardBoardView();
-            tmp = developmentCardBoard.isTurnEnd();
-            if(tmp)
-                useDevelop = developmentCardBoard.getActivation();
-        }
-
-        if(answer == 'Y' && !tmp)
+        if(!tmp)
             return false;
 
         /*DEBUG
@@ -329,8 +284,8 @@ public class CLIHandler {
 
         //MANDA EVENTO CON:  BOOL_USA_GAMEPROD,PROD1,PROD2,PRODCHOOSE//ARRAY_LEADERS-> MATERIAL 1ST LEADER/MATERIAL 2ND LEADER//ARRAY_DEVELOP
 
-        connection.sendSelectedProductionDevelopmentCard(useBaseProduction, input.get(0), input.get(1), prodottoBaseProd,
-                activation, materialLeader, useDevelop);
+        connection.sendSelectedProductionDevelopmentCard(prod.isUseBaseProduction(), prod.getInputBaseProduction().get(0), prod.getInputBaseProduction().get(1), prod.getProdottoBaseProd(),
+                prod.getLeaderActivation(), prod.getMaterialLeader(), prod.getSelectDevelopment());
 
         return true;
 
@@ -391,17 +346,6 @@ public class CLIHandler {
         return leaderSelection;
     }
 
-    private ArrayList<String> costLessCheck(ArrayList<LeaderCardToClient> leaderCardActive){
-        ArrayList<String> tmp = new ArrayList<>();
-
-        for(LeaderCardToClient l: leaderCardActive)
-            if(l.getEffect().equals("costLess"))
-                tmp.add(l.getResourceType());
-
-        return tmp;
-    }
-
-
     private char selectActivation (String message) {
         Scanner scan = new Scanner(System.in);
         char choose;
@@ -425,6 +369,16 @@ public class CLIHandler {
         } while (!isValid);
 
         return choose;
+    }
+
+    private ArrayList<String> costLessCheck(ArrayList<LeaderCardToClient> leaderCardActive){
+        ArrayList<String> tmp = new ArrayList<>();
+
+        for(LeaderCardToClient l: leaderCardActive)
+            if(l.getEffect().equals("costLess"))
+                tmp.add(l.getResourceType());
+
+        return tmp;
     }
 
     public void initialResourceSelection(int numResources, ArrayList<Resource> depositState){
