@@ -15,13 +15,25 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * class to manage the leader activation turn
+ */
 public class LeaderCardTurn {
     private final ControllerToModel controllerToModel;
 
+    /**
+     * constructor of the class
+     * @param controllerToModel controller to model that manages the game for players
+     */
     public LeaderCardTurn(ControllerToModel controllerToModel) {
         this.controllerToModel = controllerToModel;
     }
 
+    /**
+     * method that manages the actions from a player for its leaders
+     * @param playerName the name of the player who's playing the leader turn
+     * @param positions the action to do for each leader (0 to do nothing, 1 to play, 2 to discard)
+     */
     public void leaderTurns(String playerName, ArrayList<Integer> positions) {
         int currentPlayerIndex = controllerToModel.getCurrentPlayerIndex();
         Player activePlayer = controllerToModel.getActivePlayer();
@@ -67,6 +79,13 @@ public class LeaderCardTurn {
         controllerToModel.turnToView();
     }
 
+    /**
+     * private method to manage the activation of an additional-production leader type
+     * @param leaderToActivate the leader card to activate
+     * @param i the position of that leader card in the array of available leaders
+     * @throws DevelopmentCardException if there is a formatting error in the request of check leaders
+     * @throws LeaderCardException if a player hasn't got any leader to activate in that position
+     */
     private void additionalProductionLeaderCard(LeaderCard leaderToActivate, int i) throws DevelopmentCardException, LeaderCardException {
         Gameboard actualPlayerBoard = controllerToModel.getActivePlayer().getPlayerBoard();
         //cast
@@ -91,6 +110,12 @@ public class LeaderCardTurn {
         }
     }
 
+    /**
+     * private method to manage the activation of an additional-deposit leader type
+     * @param leaderToActivate the leader card to activate
+     * @param i the position of that leader card in the array of available leaders
+     * @throws LeaderCardException if a player hasn't got any leader to activate in that position
+     */
     private void biggerDepositLeaderCard(LeaderCard leaderToActivate, int i) throws LeaderCardException {
         Gameboard actualPlayerBoard = controllerToModel.getActivePlayer().getPlayerBoard();
         //cast
@@ -118,6 +143,12 @@ public class LeaderCardTurn {
         }
     }
 
+    /**
+     * private method to manage the activation of a costless leader type
+     * @param leaderToActivate the leader card to activate
+     * @param i the position of that leader card in the array of available leaders
+     * @throws LeaderCardException if a player hasn't got any leader to activate in that position
+     */
     private void costlessLeaderCard(LeaderCard leaderToActivate, int i) throws LeaderCardException {
         Gameboard actualPlayerBoard = controllerToModel.getActivePlayer().getPlayerBoard();
         //cast
@@ -143,8 +174,13 @@ public class LeaderCardTurn {
         }
     }
 
+    /**
+     * private method to manage the activation of a market-white-change leader type
+     * @param leaderToActivate the leader card to activate
+     * @param i the position of that leader card in the array of available leaders
+     * @throws LeaderCardException if a player hasn't got any leader to activate in that position
+     */
     private void marketWhiteChangeLeaderCard(LeaderCard leaderToActivate, int i) throws LeaderCardException {
-        ArrayList<String> requirements;
         Gameboard actualPlayerBoard = controllerToModel.getActivePlayer().getPlayerBoard();
         //cast
         MarketWhiteChange currentLeaderAbility = (MarketWhiteChange) leaderToActivate.getSpecialAbility();

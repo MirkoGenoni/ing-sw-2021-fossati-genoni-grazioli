@@ -11,13 +11,24 @@ import it.polimi.ingsw.model.resource.Resource;
 import java.util.ArrayList;
 import java.util.Map;
 
+/**
+ * Class to manage and control the end of the game
+ */
 public class EndGame {
     private final ControllerToModel controllerToModel;
 
+    /**
+     * constructor of the class
+     * @param controllerToModel controller to model that manages the game for players
+     */
     public EndGame(ControllerToModel controllerToModel) {
         this.controllerToModel = controllerToModel;
     }
 
+    /**
+     * method that check if the game is ended
+     * @return true if are present the condition to end the game
+     */
     public boolean endGameCheck(){
         if(checkFaithTrackPosition() || checkDevelopmentCardNumber()){
             return true;
@@ -27,6 +38,11 @@ public class EndGame {
         }
     }
 
+    /**
+     * Method that calculate the acquired points a specified player
+     * @param playerIndex The index of the player to calculate the total of points
+     * @return the amount of acquired points
+     */
     public int calculatePoints(int playerIndex){
         Player player = controllerToModel.getPlayers()[playerIndex];
         FaithTrack faithTrack = controllerToModel.getGame().getPlayersFaithTrack();
@@ -55,6 +71,10 @@ public class EndGame {
         return totalVictoryPoints;
     }
 
+    /**
+     * Private method that check if a player reach the last position of the faith track
+     * @return true if a player is on the twenty-fourth box on the faith track
+     */
     private boolean checkFaithTrackPosition(){
         boolean tmp = false;
         for(int i=0; i < controllerToModel.getPlayers().length; i++){
@@ -65,6 +85,10 @@ public class EndGame {
         return tmp;
     }
 
+    /**
+     * Private method that check if a player has bought the seventh development card
+     * @return true if a player has seven development cards
+     */
     private boolean checkDevelopmentCardNumber(){
         boolean tmp = false;
         for(int i=0; i < controllerToModel.getPlayers().length; i++){
@@ -75,6 +99,11 @@ public class EndGame {
         return tmp;
     }
 
+    /**
+     * Private method that calculate the amount of point from each resource a player has
+     * @param playerIndex The index of the player to calculate the points from the resources
+     * @return the amount of the point collected from the resources for a player  
+     */
     private int calculateResources(int playerIndex){
         ArrayList<Resource> depositResources = controllerToModel.getPlayers()[playerIndex].getPlayerBoard().getResourceHandler().getDepositState();
         ArrayList<Resource> additionalDepositResources = controllerToModel.getPlayers()[playerIndex].getPlayerBoard().getResourceHandler().getAdditionalDeposit();
