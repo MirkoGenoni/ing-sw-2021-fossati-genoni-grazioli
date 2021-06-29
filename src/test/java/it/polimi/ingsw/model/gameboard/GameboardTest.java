@@ -8,6 +8,11 @@ import java.util.ArrayList;
 import static org.junit.Assert.*;
 
 public class GameboardTest {
+    /**
+     * This test checks the correct handle of the pope favor tiles inside the gameBoard
+     * the other methods are not tested because are only getter method of classes that has been tested
+     * in other tests
+     */
     @Test
     public void TestGameboard() {
         ArrayList<Integer> popeTiles = new ArrayList<>();
