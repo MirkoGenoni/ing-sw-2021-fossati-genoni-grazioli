@@ -14,20 +14,22 @@ public class LeaderCardView {
 
         cards = new ArrayList<>();
 
-        for(int i = 0; i < leaderCardArray.size(); i++) {
-            if(leaderCardArray.get(i)!=null)
-                cards.add(new LeaderCardVisualization(leaderCardArray.get(i).getEffect(),
-                        leaderCardArray.get(i).getVictoryPoint(),
-                        leaderCardArray.get(i).getRequirement(),
-                        leaderCardArray.get(i).getResourceType()));
-        }
+        if(leaderCardArray!=null) {
+            for (int i = 0; i < leaderCardArray.size(); i++) {
+                if (leaderCardArray.get(i) != null)
+                    cards.add(new LeaderCardVisualization(leaderCardArray.get(i).getEffect(),
+                            leaderCardArray.get(i).getVictoryPoint(),
+                            leaderCardArray.get(i).getRequirement(),
+                            leaderCardArray.get(i).getResourceType()));
+            }
 
-        while(cards.size() < 2) {
-            cards.add(new LeaderCardVisualization("nothing"));
-        }
+            while (cards.size() < 2) {
+                cards.add(new LeaderCardVisualization("nothing"));
+            }
 
-        if(totalResource!=null && totalResource.size()>0){
-            this.totalResource = totalResource;
+            if (totalResource != null && totalResource.size() > 0) {
+                this.totalResource = totalResource;
+            }
         }
     }
 

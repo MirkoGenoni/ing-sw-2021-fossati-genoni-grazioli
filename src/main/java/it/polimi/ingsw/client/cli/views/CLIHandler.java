@@ -470,7 +470,6 @@ public class CLIHandler {
     }
 
     public synchronized void insertInitialData(String DataRequired){
-        //TODO add interrupt to the top of the initial data request
         if(asyncPrintPre.isAlive())
             asyncPrintPre.interrupt();
 
