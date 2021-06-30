@@ -134,9 +134,6 @@ public class MarketController implements GUIController, Initializable{
             }
         }
         if((z>=1 && k==1) || (z==0 && k==0)){
-            if(tmpEffect.size()==leaderCard.size()){
-                System.out.println("OK");
-            }
             gui.getConnectionToServer().sendChooseLine(line, tmpEffect);
             leaderEffect.forEach(leader -> leader.setEffect(null));
             leaderEffect.forEach(leader -> leader.setDisable(true));

@@ -62,6 +62,7 @@ public class ConnectionToServer implements Runnable, EventToServerNotifier {
         } catch (IOException e) {
             e.printStackTrace();
             closeConnection();
+            notifyDisconnection();
         }
 
         while(active){
@@ -79,10 +80,18 @@ public class ConnectionToServer implements Runnable, EventToServerNotifier {
 
             } catch (IOException e) {
                 closeConnection();
+                notifyDisconnection();
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
                 closeConnection();
+                notifyDisconnection();
             }
+        }
+    }
+
+    private void notifyDisconnection(){
+        if(activeGui){
+            eventHandlerGUI.closeConnectionAlert();
         }
     }
 
@@ -98,6 +107,7 @@ public class ConnectionToServer implements Runnable, EventToServerNotifier {
             output.reset();
         } catch (IOException e) {
             e.printStackTrace();
+            notifyDisconnection();
             closeConnection();
         }
     }
