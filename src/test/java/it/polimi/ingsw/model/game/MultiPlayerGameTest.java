@@ -9,7 +9,11 @@ import org.junit.Test;
 import java.util.*;
 
 import static org.junit.Assert.*;
-
+/**
+ * This class tests the MultiPlayerGame class.
+ * These tests test the correct initialization and the behaviour of the MultiPlayerGame
+ * @author davide grazioli
+ */
 public class MultiPlayerGameTest {
 
     MultiPlayerGame multiPlayerGame= new MultiPlayerGame(3);
@@ -39,26 +43,9 @@ public class MultiPlayerGameTest {
 
     }
 
-    //TODO CONTROLLARE SE OKAY
-    /*@Test
-    public void startGame() {
-        MultiPlayerGame testStartGameMultiPlayerGame = new MultiPlayerGame(3);
-        try {
-            testStartGameMultiPlayerGame.addPlayer(new Player("Stefano"));
-            testStartGameMultiPlayerGame.addPlayer(new Player("Davide"));
-            testStartGameMultiPlayerGame.addPlayer(new Player("Mirko"));
-            testStartGameMultiPlayerGame.startGame();
-        } catch (StartGameException e) {
-            fail();
-        }
-
-        assertNotNull(testStartGameMultiPlayerGame.getDevelopmentCards());
-        assertNotNull(testStartGameMultiPlayerGame.getPlayersFaithTrack());
-        assertNotNull(testStartGameMultiPlayerGame.getDevelopmentCardsAvailable());
-        assertNotNull(testStartGameMultiPlayerGame.getPlayers());
-        assertEquals(testStartGameMultiPlayerGame.getPlayers().length, 3);
-    }*/
-
+    /**
+     * This test checks the right behaviour of the getDevelopmentCards method returning all the development cards
+     */
     @Test
     public void getDevelopmentCards() {
         ArrayList [][] gettedArray = multiPlayerGame.getDevelopmentCards();
@@ -68,7 +55,10 @@ public class MultiPlayerGameTest {
             }
         }
     }
-
+    /**
+     * This test checks the right behaviour of the getDevelopmentCardsAvailable method returning the available
+     * development cards
+     */
     @Test
     public void getDevelopmentCardsAvailable() {
        DevelopmentCard[][] gettedAvailable = multiPlayerGame.getDevelopmentCardsAvailable();
@@ -80,7 +70,10 @@ public class MultiPlayerGameTest {
         }
 
     }
-
+    /**
+     * This test checks the right behaviour of the buyDevelopmentCard method verifying that the market
+     * releases the correct card and return null if there's not an available card
+     */
     @Test
     public void buyDevelopmentCard() {
         DevelopmentCard[][] beforeBuyAvailableCards;
@@ -116,7 +109,9 @@ public class MultiPlayerGameTest {
             assertEquals(e.getMessage(), "the card selected doesn't exist, Is not available");
         }
     }
-
+    /**
+     * This test checks the right behaviour of the getMarketBoard method.
+     */
     @Test
     public void getMarketBoard() {
        Market actualMarket = multiPlayerGame.getMarketBoard();

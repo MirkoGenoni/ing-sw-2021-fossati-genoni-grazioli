@@ -17,6 +17,12 @@ import java.util.Map;
 
 import static org.junit.Assert.*;
 
+/**
+ * This class tests the DevelopmentCard class.
+ * These test uses an ArrayList of DevelopmentCards created from the DevelopmentCardTest.json to create the DevelopmentCard.
+ * This tests check if the parsing of the card from Json happen correctly
+ * @author davide grazioli
+ */
 public class DevelopmentCardTest {
 
 DevelopmentCard testCard = null;
@@ -45,39 +51,53 @@ DevelopmentCard testCard = null;
         }
 
     }
-
+    /**
+     * This test checks the right behaviour of the getCardID method.
+     */
     @Test
     public void getCardID() {assertEquals("DevG_11", testCard.getCardID());
     }
-
+    /**
+     * This test checks the right behaviour of the getColor method.
+     */
     @Test
     public void getColor() {
         assertEquals(testCard.getColor(), CardColor.GREEN);
     }
-
+    /**
+     * This test checks the right behaviour of the getLevel method.
+     */
     @Test
     public void getLevel() {
         assertEquals(testCard.getLevel(), 1);
     }
-
+    /**
+     * This test checks the right behaviour of the getCost method.
+     */
     @Test
     public void getCost() {
         Map<Resource, Integer> testCost = testCard.getCost();
         assertEquals(testCost.toString(), "{SHIELD=2}");
     }
-
+    /**
+     * This test checks the right behaviour of the getVictorypoint method.
+     */
     @Test
     public void getVictorypoint() {
         assertEquals(testCard.getVictoryPoint(),1);
 
     }
-
+    /**
+     * This test checks the right behaviour of the getMaterialRequired method checking if the map it's correct
+     */
     @Test
     public void getMaterialRequired() {
         Map<Resource, Integer> testCost = testCard.getMaterialRequired();
         assertEquals(testCost.toString(), "{COIN=1}");
     }
-
+    /**
+     * This test checks the right behaviour of the getProductionResult method checking if the map it's correct
+     */
     @Test
     public void getProductionResult() {
 

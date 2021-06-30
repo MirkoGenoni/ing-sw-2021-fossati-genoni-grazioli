@@ -6,7 +6,10 @@ import org.junit.Test;
 import java.util.ArrayList;
 
 import static org.junit.Assert.*;
-
+/**
+ * This class tests the GameBoard class.
+ * @author Mirko Genoni
+ */
 public class GameboardTest {
     /**
      * This test checks the correct handle of the pope favor tiles inside the gameBoard

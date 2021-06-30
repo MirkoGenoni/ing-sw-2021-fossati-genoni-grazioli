@@ -8,7 +8,11 @@ import org.junit.Test;
 import java.util.ArrayList;
 
 import static org.junit.Assert.*;
-
+/**
+ * This class tests the SinglePlayerGame class.
+ * These tests test the correct initialization and the behaviour of the SinglePlayerGame
+ * @author davide grazioli
+ */
 public class SinglePlayerGameTest {
 
     Player davidePlayer = new Player("Davide");
@@ -28,17 +32,24 @@ public class SinglePlayerGameTest {
         assertNotNull(singlePlayerGame.getPlayer());
         assertNotNull(singlePlayerGame.getLorenzoIlMagnifico());
     }
-
+    /**
+     * This test checks the right behaviour of the getPlayer method returning the player
+     */
     @Test
     public void getPlayer() {
         assertEquals("Davide", singlePlayerGame.getPlayer().getName());
     }
-
+    /**
+     * This test checks the right behaviour of the getLorenzoIlMagnifico method returning the LorenzoIlMagnifico
+     */
     @Test
     public void getLorenzoIlMagnifico() {
         assertEquals(6,singlePlayerGame.getLorenzoIlMagnifico().getSoloActionTokens().size());
     }
-
+    /**
+     * This test checks the right behaviour of the getDevelopmentCards method returning all the
+     * DevelopmentCards
+     */
     @Test
     public void getDevelopmentCards() {
         ArrayList[][] gettedArray = singlePlayerGame.getDevelopmentCards();
@@ -48,7 +59,10 @@ public class SinglePlayerGameTest {
             }
         }
     }
-
+    /**
+     * This test checks the right behaviour of the getDevelopmentCardsAvailable method returning the
+     * available DevelopmentCards
+     */
     @Test
     public void getDevelopmentCardsAvailable() {
         DevelopmentCard[][] gettedAvailable = singlePlayerGame.getDevelopmentCardsAvailable();
@@ -59,7 +73,10 @@ public class SinglePlayerGameTest {
             }
         }
     }
-
+    /**
+     * This test checks the right behaviour of the buyDevelopmentCard method buying a random DevelopmentCards
+     * and testing if it's correct. This test also check the correct thrown of exceptions.
+     */
     @Test
     public void buyDevelopmentCard() {
         DevelopmentCard[][] beforeBuyAvailableCards = singlePlayerGame.getDevelopmentCardsAvailable();

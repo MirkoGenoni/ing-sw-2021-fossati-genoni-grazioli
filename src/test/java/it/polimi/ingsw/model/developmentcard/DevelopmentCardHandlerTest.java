@@ -18,6 +18,8 @@ import static org.junit.Assert.*;
 
 /**
  * this class tests the development card handler and its behaviour
+ * These test uses an ArrayList of DevelopmentCards created from the DevelopmentCardTest.json to create the DevelopmentCard.
+ * @author davide grazioli
  */
 public class DevelopmentCardHandlerTest {
 
@@ -55,7 +57,7 @@ public class DevelopmentCardHandlerTest {
 
     }
     /**
-     * This test checks the right working of the getActiveDevelopmentCard method.
+     * This test checks the right behaviour of the getActiveDevelopmentCard method.
      */
     @Test
     public void getActiveDevelopmentCard() {
@@ -68,7 +70,7 @@ public class DevelopmentCardHandlerTest {
 
     }
     /**
-     * This test checks the right working of the getDevelopmentCardCollection method.
+     * This test checks the right behaviour of the getDevelopmentCardCollection method.
      * It verifies also the exceptions of the method.
      */
     @Test
@@ -81,7 +83,7 @@ public class DevelopmentCardHandlerTest {
 
     }
     /**
-     * This test checks the right working of the setActiveDevelopmentCards method.
+     * This test checks the right behaviour of the setActiveDevelopmentCards method.
      * It verifies also the exceptions of the method.
      */
     @Test
@@ -98,7 +100,7 @@ public class DevelopmentCardHandlerTest {
     }
 
     /**
-     * This test checks the right working of the CheckBoughtable method verifing if a player could buy a card
+     * This test checks the right behaviour of the CheckBoughtable method verifing if a player could buy a card
      * It verifies also the exceptions of the method.
      */
     @Test
@@ -132,7 +134,7 @@ public class DevelopmentCardHandlerTest {
 
     }
     /**
-     * This test checks the right working of the checkDevelopmentCard method.
+     * This test checks the right behaviour of the checkDevelopmentCard method.
      * It verifies also the exceptions of the method.
      */
     @Test
@@ -187,7 +189,7 @@ public class DevelopmentCardHandlerTest {
 
     }
     /**
-     * This test checks the right working of the checkCountDevelopmentCard method verifing if return the correct
+     * This test checks the right behaviour of the checkCountDevelopmentCard method verifying if return the correct
      * amount of developmentCards
      */
     @Test
@@ -213,7 +215,7 @@ public class DevelopmentCardHandlerTest {
 
     }
     /**
-     * This test checks the right working of the checkCountDevelopmentCard method verifing the
+     * This test checks the right behaviour of the checkCountDevelopmentCard method verifying the
      * amount of developmentCards
      */
     @Test

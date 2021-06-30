@@ -4,7 +4,11 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
-
+/**
+ * This class tests the FaithTrack class.
+ * These tests test the correct initialize and the behaviour of the FaithTrack
+ * @author davide grazioli
+ */
 public class FaithTrackTest {
 
     FaithTrack testTrack;
@@ -13,12 +17,17 @@ public class FaithTrackTest {
     public void setUp() {
         testTrack = new FaithTrack(4);
     }
-
+    /**
+     * This test checks the right behaviour of the getTrack method.
+     */
     @Test
     public void getTrack() {
         assertEquals(testTrack.getTrack().length,25);
     }
-
+    /**
+     * This test checks the right behaviour of the testForwardPos method controlling if the method
+     * returns true when a player arrives on a pope space and next disable that space
+     */
     @Test
     public void testForwardPos() {
 
@@ -45,7 +54,10 @@ public class FaithTrackTest {
         assertEquals(16, testTrack.getPosition(3));
 
     }
-
+    /**
+     * This test checks the right behaviour of the testGetPosition method that returns the position on the faithTrack
+     * of a specified player
+     */
     @Test
     public void testGetPosition() {
 
@@ -73,7 +85,10 @@ public class FaithTrackTest {
         assertEquals(5, testTrack.getPosition(3));
 
     }
-
+    /**
+     * This test checks the right behaviour of the testCheckVaticanReportSection method that check if
+     * a player is in a specified vatican report section
+     */
     @Test
     public void testCheckVaticanReportSection() {
 
@@ -93,7 +108,9 @@ public class FaithTrackTest {
 
     }
 
-
+    /**
+     * This test checks the right behaviour of the getVaticanReportSection method.
+     */
     @Test
     public void getVaticanReportSection() {
 

@@ -15,7 +15,11 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 import static org.junit.Assert.*;
-
+/**
+ * This class tests the Player class.
+ * These tests test the correct initialization and the behaviour of the Player
+ * @author davide grazioli
+ */
 public class PlayerTest {
 
     Player davidePlayer = new Player("Davide");
@@ -70,7 +74,9 @@ public class PlayerTest {
         }
     }
 
-
+    /**
+     * This test checks the right behaviour of the getName method returning the players name
+     */
     @Test
     public void getName() {
         assertEquals(davidePlayer.getName(), "Davide");
@@ -78,6 +84,10 @@ public class PlayerTest {
         assertEquals(mirkoPlayer.getName(), "Mirko");
     }
 
+    /**
+     * This test checks the right behaviour of the getPlayerBoard method.
+     * These tests also check the correct throws of exceptions
+     */
     @Test
     public void getPlayerBoard() {
         try {
