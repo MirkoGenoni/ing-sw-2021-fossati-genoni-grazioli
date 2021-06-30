@@ -139,8 +139,8 @@ public class ActivateProductionTurn {
             int j=0;
 
             for(int i=0; i<activeLeaders.size(); i++) { //TRANSFORM MATERIAL LEADER --> RESOURCE IN PRODUCTEDMATERIALS
-                if(activeLeaders.get(i).getSpecialAbility().getEffect().equals("additionalProduction") && materialLeaders!=null &&
-                        materialLeaders.size() > j && materialLeaders.get(j)!=null){
+                if(activeLeaders.get(i).getSpecialAbility().getEffect().equals("additionalProduction") && useLeaders.get(i) &&
+                        materialLeaders!=null && materialLeaders.size() > j && materialLeaders.get(j)!=null){
                     productedByLeader.add(ProductedMaterials.valueOf(materialLeaders.get(j).name()));
                     j++;
                 } else{
