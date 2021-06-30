@@ -9,6 +9,7 @@ import java.util.ArrayList;
 
 /**
  * Class for the singlePlayer game
+ * @author davide grazioli, Stefano Fossati
  */
 public class SinglePlayerGame extends Game{
     Player player;
