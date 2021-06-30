@@ -5,7 +5,7 @@ import it.polimi.ingsw.model.resource.Resource;
 import java.util.ArrayList;
 
 /**
- * This class represents the event to send to the client for the choice of the initial resources in the set up of the game..
+ * This class represents the event to send to the client for the choice of the initial resources in the set up of the game.
  *
  * @author Stefano Fossati
  */

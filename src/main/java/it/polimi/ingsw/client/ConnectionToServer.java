@@ -129,6 +129,33 @@ public class ConnectionToServer implements Runnable, EventToServerNotifier {
     // EVENTS FOR THE START OF THE CONNECTION WITH THE SERVER
     // -------------------------------------------------------
 
+    @Override
+    public void sendRoom(int room, boolean newRoom) {
+        SendRoomToServer sendRoomToServer = new SendRoomToServer(room, newRoom);
+        asyncSendEvent(sendRoomToServer);
+    }
+
+    @Override
+    public void sendPlayerName(String playerName) {
+        SendPlayerNameToServer sendPlayerNameToServer = new SendPlayerNameToServer(playerName);
+        asyncSendEvent(sendPlayerNameToServer);
+    }
+
+    @Override
+    public void sendNumPlayer(int num) {
+        SendNumPlayerToServer sendNumPlayerToServer = new SendNumPlayerToServer(num, this.playerName);
+        asyncSendEvent(sendNumPlayerToServer);
+    }
+
+
+    // -------------------------------------------
+    // EVENTS FOR THE INITIAL RESOURCES SELECTION
+    // -------------------------------------------
+    @Override
+    public void sendInitialDepositState(ArrayList<Resource> newInitialDepositState) {
+        InitialResourcesChoose initialResourcesChoose = new InitialResourcesChoose(newInitialDepositState, this.playerName);
+        asyncSendEvent(initialResourcesChoose);
+    }
 
     // -------------------------------------------
     // EVENTS FOR THE LEADER CARD INTERACTION
@@ -193,36 +220,20 @@ public class ConnectionToServer implements Runnable, EventToServerNotifier {
         asyncSendEvent(turnPlayedToServer);
     }
 
-    @Override
-    public void sendInitialDepositState(ArrayList<Resource> newInitialDepositState) {
-        InitialResourcesChoose initialResourcesChoose = new InitialResourcesChoose(newInitialDepositState, this.playerName);
-        asyncSendEvent(initialResourcesChoose);
-    }
 
+
+    // ----------------------------------
+    // EVENT FOR THE SINGLE GAME
+    // ----------------------------------
     @Override
     public void sendReplayLorenzoAction() {
         ReplayLorenzoActionToServer replayLorenzoActionToServer = new ReplayLorenzoActionToServer(this.playerName);
         asyncSendEvent(replayLorenzoActionToServer);
     }
 
-    @Override
-    public void sendRoom(int room, boolean newRoom) {
-        SendRoomToServer sendRoomToServer = new SendRoomToServer(room, newRoom);
-        asyncSendEvent(sendRoomToServer);
-    }
-
-    @Override
-    public void sendPlayerName(String playerName) {
-        SendPlayerNameToServer sendPlayerNameToServer = new SendPlayerNameToServer(playerName);
-        asyncSendEvent(sendPlayerNameToServer);
-    }
-
-    @Override
-    public void sendNumPlayer(int num) {
-        SendNumPlayerToServer sendNumPlayerToServer = new SendNumPlayerToServer(num, this.playerName);
-        asyncSendEvent(sendNumPlayerToServer);
-    }
-
+    // ----------------------------------
+    // PING EVENT
+    // ----------------------------------
     @Override
     public void sendPing() {
         PingToServer pingToServer = new PingToServer();
