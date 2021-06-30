@@ -459,7 +459,7 @@ public class PlayerViewController implements GUIController, Initializable {
             for(int i=0; i<leaderCardPlayer.size(); i++){
                 if(leaderCardPlayer.get(i).getImage()!=null){
                     for(int z=0; z<leaderInHand.size(); z++){
-                        if(leaderInHand.get(z).equals(leaderCardPlayer.get(i).getImage())){
+                        if(leaderInHand.get(z)!=null && leaderInHand.get(z).equals(leaderCardPlayer.get(i).getImage())){
                             leaderInHand.set(z, null);
                         }
                     }
@@ -475,7 +475,6 @@ public class PlayerViewController implements GUIController, Initializable {
             }
 
         }
-        leaderCardInHand.clear();
 
     }
 
