@@ -133,17 +133,21 @@ public class ActivateProductionTurn {
 
         ArrayList<ProductedMaterials> productedByLeader = new ArrayList<>();
 
-        for (Resource r : materialLeaders) { //TRANSFORM MATERIAL LEADER --> RESOURCE IN PRODUCTEDMATERIALS
-            if (r != null) {
-                productedByLeader.add(ProductedMaterials.valueOf(r.name()));
-            }
-            else{
-                productedByLeader.add(null);
-            }
-        }
 
         try {
             ArrayList<LeaderCard> activeLeaders = activePlayer.getPlayerBoard().getLeaderCardHandler().getLeaderCardsActive();
+            int j=0;
+
+            for(int i=0; i<activeLeaders.size(); i++) { //TRANSFORM MATERIAL LEADER --> RESOURCE IN PRODUCTEDMATERIALS
+                if(activeLeaders.get(i).getSpecialAbility().getEffect().equals("additionalProduction") && materialLeaders!=null &&
+                        materialLeaders.size() > j && materialLeaders.get(j)!=null){
+                    productedByLeader.add(ProductedMaterials.valueOf(materialLeaders.get(j).name()));
+                    j++;
+                } else{
+                    productedByLeader.add(null);
+                }
+            }
+
 
             for (int i = 0; i < activeLeaders.size(); i++) {
                 if (useLeaders.get(i) && productedByLeader.get(i)!=null) {
