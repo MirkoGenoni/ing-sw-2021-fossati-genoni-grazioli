@@ -51,9 +51,9 @@ public enum DevelopmentCardSymbols {
                 break;
 
             case "anything":
-                this.rapresentation[0] = "\u001B[35m" + "┌───┐" + "\u001B[0;00m";
-                this.rapresentation[1] = "\u001B[35m" + "│ ? │" + "\u001B[0;00m";
-                this.rapresentation[2] = "\u001B[35m" + "└───┘" + "\u001B[0;00m";
+                this.rapresentation[0] ="┌───┐";
+                this.rapresentation[1] ="│ ? │";
+                this.rapresentation[2] ="└───┘";
                 break;
 
             case "1":

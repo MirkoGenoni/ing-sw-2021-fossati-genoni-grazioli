@@ -58,7 +58,7 @@ public class AdditionalProductionVisualization {
         this.additionalProduction[18] = "┃           PRODUCE           ┃";
         this.additionalProduction[19] = "┃                             ┃";
         this.additionalProduction[20] = "┃        " + production1.returnLine(0) + "     " + production2.returnLine(0) + "      ┃";
-        this.additionalProduction[21] = "┃      1x" + production1.returnLine(1) + "   2x" + production2.returnLine(1) + "      ┃";
+        this.additionalProduction[21] = "┃      1x" + production1.returnLine(1) + "   1x" + production2.returnLine(1) + "      ┃";
         this.additionalProduction[22] = "┃        " + production1.returnLine(2) + "     " + production2.returnLine(2) + "      ┃";
         this.additionalProduction[23] = "┃                             ┃";
         this.additionalProduction[24] = "┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛";

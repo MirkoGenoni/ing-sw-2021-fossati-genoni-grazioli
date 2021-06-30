@@ -195,9 +195,10 @@ public class CLIHandler {
                             leaderCardPower.add(players.get(this.namePlayer).getLeaderCardActive().get(j).getResourceType());
                         }
                     }
+                    int additionalNumber = leaderCardPower.size();
                     AdditionalProductionView additionalProductionView = new AdditionalProductionView(leaderCardPower);
 
-                    this.turnEnd = choseDevelopment(developmentBoard, additionalProductionView);
+                    this.turnEnd = choseDevelopment(developmentBoard, additionalProductionView, additionalNumber);
                     break;
 
                 case "turn":
@@ -252,7 +253,7 @@ public class CLIHandler {
         }
     }
 
-    private boolean choseDevelopment(DevelopmentCardView developmentCardBoard, AdditionalProductionView additionalProductionView){
+    private boolean choseDevelopment(DevelopmentCardView developmentCardBoard, AdditionalProductionView additionalProductionView, int additionalNumber){
         boolean tmp;
 
         ProductionSelectionView prod = new ProductionSelectionView(developmentCardBoard, additionalProductionView, this.totalResourceCounter);
@@ -283,9 +284,23 @@ public class CLIHandler {
         //VANNO MANDATE TUTTE COME PRODUCTION RESULT
 
         //MANDA EVENTO CON:  BOOL_USA_GAMEPROD,PROD1,PROD2,PRODCHOOSE//ARRAY_LEADERS-> MATERIAL 1ST LEADER/MATERIAL 2ND LEADER//ARRAY_DEVELOP
+        ArrayList<Boolean> tmpB = new ArrayList<>();
+
+        //insert the boolean in the correct position
+        if(additionalNumber==1) {
+            for (boolean b : prod.getLeaderActivation())
+                if (b)
+                    for (int j = 0; j < players.get(this.namePlayer).getLeaderCardActive().size(); j++) {          //control if there's an active LeaderCard additionalProd
+                        if (players.get(this.namePlayer).getLeaderCardActive().get(j).getEffect().equals("additionalProduction")) {
+                            tmpB.add(true);
+                        } else {
+                            tmpB.add(false);
+                        }
+                    }
+        }
 
         connection.sendSelectedProductionDevelopmentCard(prod.isUseBaseProduction(), prod.getInputBaseProduction().get(0), prod.getInputBaseProduction().get(1), prod.getProdottoBaseProd(),
-                prod.getLeaderActivation(), prod.getMaterialLeader(), prod.getSelectDevelopment());
+               tmpB, prod.getMaterialLeader(), prod.getSelectDevelopment());
 
         return true;
 
