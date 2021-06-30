@@ -4,11 +4,11 @@ import it.polimi.ingsw.client.cli.views.CLIHandler;
 import it.polimi.ingsw.client.cli.views.Messages;
 import it.polimi.ingsw.client.ConnectionToServer;
 import it.polimi.ingsw.events.serverToClient.*;
-import it.polimi.ingsw.events.serverToClient.initialConnectionToClient.SendNamePlayerRequestToClient;
-import it.polimi.ingsw.events.serverToClient.initialConnectionToClient.SendNumPlayerRequestToClient;
-import it.polimi.ingsw.events.serverToClient.initialConnectionToClient.SendRoomRequestToClient;
-import it.polimi.ingsw.events.serverToClient.buyDevelopmentCardTurnToClient.SendSpaceDevelopmentCardToClient;
-import it.polimi.ingsw.events.serverToClient.marketTurnToClient.SendReorganizeDepositToClient;
+import it.polimi.ingsw.events.serverToClient.initialconnectiontoclient.SendNamePlayerRequestToClient;
+import it.polimi.ingsw.events.serverToClient.initialconnectiontoclient.SendNumPlayerRequestToClient;
+import it.polimi.ingsw.events.serverToClient.initialconnectiontoclient.SendRoomRequestToClient;
+import it.polimi.ingsw.events.serverToClient.SendSpaceDevelopmentCardToClient;
+import it.polimi.ingsw.events.serverToClient.SendReorganizeDepositToClient;
 import it.polimi.ingsw.events.serverToClient.TurnReselectionToClient;
 
 import java.util.concurrent.Semaphore;

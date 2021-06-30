@@ -4,17 +4,17 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonStreamParser;
-import it.polimi.ingsw.model.developmentCard.DevelopmentCard;
+import it.polimi.ingsw.model.developmentcard.DevelopmentCard;
 import it.polimi.ingsw.model.exceptions.StartGameException;
-import it.polimi.ingsw.model.faithTrack.FaithTrack;
-import it.polimi.ingsw.model.leaderCard.*;
+import it.polimi.ingsw.model.faithtrack.FaithTrack;
+import it.polimi.ingsw.model.leadercard.*;
 import it.polimi.ingsw.model.market.Market;
 
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import static it.polimi.ingsw.model.developmentCard.CardColor.*;
+import static it.polimi.ingsw.model.developmentcard.CardColor.*;
 
 /**
  * This class represents the game.

@@ -1,6 +1,6 @@
 package it.polimi.ingsw.client.cli.views;
 
-import it.polimi.ingsw.client.cli.views.productionView.DevelopmentCardSymbols;
+import it.polimi.ingsw.client.cli.views.productionview.DevelopmentCardSymbols;
 import it.polimi.ingsw.model.resource.Resource;
 
 import java.util.ArrayList;

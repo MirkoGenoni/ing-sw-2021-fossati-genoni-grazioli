@@ -1,12 +1,12 @@
 package it.polimi.ingsw.controller;
 
-import it.polimi.ingsw.events.clientToServer.*;
-import it.polimi.ingsw.events.clientToServer.buyDevelopmentCardToServer.SelectedDevelopmentCardSpaceToServer;
-import it.polimi.ingsw.events.clientToServer.buyDevelopmentCardToServer.SelectedDevelopmentCardToBuyToServer;
-import it.polimi.ingsw.events.clientToServer.marketTurnToServer.ChooseLineToServer;
-import it.polimi.ingsw.events.clientToServer.marketTurnToServer.NewDepositStateToServer;
-import it.polimi.ingsw.events.clientToServer.startGameToServer.DiscardInitialLeaderCards;
-import it.polimi.ingsw.events.clientToServer.startGameToServer.InitialResourcesChoose;
+import it.polimi.ingsw.events.clienttoserver.*;
+import it.polimi.ingsw.events.clienttoserver.buydevelopmentcardtoserver.SelectedDevelopmentCardSpaceToServer;
+import it.polimi.ingsw.events.clienttoserver.buydevelopmentcardtoserver.SelectedDevelopmentCardToBuyToServer;
+import it.polimi.ingsw.events.clienttoserver.marketturntoserver.ChooseLineToServer;
+import it.polimi.ingsw.events.clienttoserver.marketturntoserver.NewDepositStateToServer;
+import it.polimi.ingsw.events.clienttoserver.startgametoserver.DiscardInitialLeaderCards;
+import it.polimi.ingsw.events.clienttoserver.startgametoserver.InitialResourcesChoose;
 
 public class ControllerConnection implements EventToServerVisitor, ObserveConnectionToClient {
     private final ControllerToModel controllerToModel;

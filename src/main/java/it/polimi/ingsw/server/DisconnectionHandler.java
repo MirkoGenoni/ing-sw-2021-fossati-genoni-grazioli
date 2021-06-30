@@ -3,7 +3,7 @@ package it.polimi.ingsw.server;
 import it.polimi.ingsw.controller.ControllerToModel;
 import it.polimi.ingsw.model.exceptions.LeaderCardException;
 import it.polimi.ingsw.model.resource.Resource;
-import it.polimi.ingsw.server.roomHandler.Room;
+import it.polimi.ingsw.server.roomhandler.Room;
 
 import java.util.ArrayList;
 

@@ -1,8 +1,8 @@
 package it.polimi.ingsw.events.serverToClient;
 
-import it.polimi.ingsw.events.serverToClient.supportClass.DevelopmentCardToClient;
-import it.polimi.ingsw.events.serverToClient.supportClass.MarketToClient;
-import it.polimi.ingsw.events.serverToClient.supportClass.PlayerInformationToClient;
+import it.polimi.ingsw.events.serverToClient.supportclass.DevelopmentCardToClient;
+import it.polimi.ingsw.events.serverToClient.supportclass.MarketToClient;
+import it.polimi.ingsw.events.serverToClient.supportclass.PlayerInformationToClient;
 
 import java.util.Map;
 

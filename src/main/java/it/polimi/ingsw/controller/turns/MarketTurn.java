@@ -4,7 +4,7 @@ import it.polimi.ingsw.controller.ControllerToModel;
 import it.polimi.ingsw.model.exceptions.LeaderCardException;
 import it.polimi.ingsw.model.exceptions.ResourceException;
 import it.polimi.ingsw.model.game.Player;
-import it.polimi.ingsw.model.leaderCard.LeaderCard;
+import it.polimi.ingsw.model.leadercard.LeaderCard;
 import it.polimi.ingsw.model.market.Marble;
 import it.polimi.ingsw.model.resource.Resource;
 

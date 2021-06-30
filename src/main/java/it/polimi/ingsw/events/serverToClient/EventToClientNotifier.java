@@ -1,9 +1,9 @@
 package it.polimi.ingsw.events.serverToClient;
 
-import it.polimi.ingsw.model.developmentCard.DevelopmentCard;
-import it.polimi.ingsw.model.faithTrack.FaithTrack;
+import it.polimi.ingsw.model.developmentcard.DevelopmentCard;
+import it.polimi.ingsw.model.faithtrack.FaithTrack;
 import it.polimi.ingsw.model.game.Player;
-import it.polimi.ingsw.model.leaderCard.LeaderCard;
+import it.polimi.ingsw.model.leadercard.LeaderCard;
 import it.polimi.ingsw.model.lorenzo.SoloAction;
 import it.polimi.ingsw.model.market.Market;
 import it.polimi.ingsw.model.resource.Resource;

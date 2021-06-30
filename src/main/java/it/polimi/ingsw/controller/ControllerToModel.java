@@ -1,7 +1,7 @@
 package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.controller.turns.*;
-import it.polimi.ingsw.model.developmentCard.ProductedMaterials;
+import it.polimi.ingsw.model.developmentcard.ProductedMaterials;
 import it.polimi.ingsw.model.exceptions.LeaderCardException;
 import it.polimi.ingsw.model.exceptions.ResourceException;
 import it.polimi.ingsw.model.exceptions.StartGameException;

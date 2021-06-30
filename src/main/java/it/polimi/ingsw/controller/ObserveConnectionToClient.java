@@ -1,6 +1,6 @@
 package it.polimi.ingsw.controller;
 
-import it.polimi.ingsw.events.clientToServer.EventToServer;
+import it.polimi.ingsw.events.clienttoserver.EventToServer;
 
 public interface ObserveConnectionToClient {
     void observeEvent(EventToServer event);

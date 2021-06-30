@@ -1,16 +1,12 @@
 package it.polimi.ingsw.model.gameboard;
 
-import it.polimi.ingsw.model.developmentCard.DevelopmentCardHandler;
+import it.polimi.ingsw.model.developmentcard.DevelopmentCardHandler;
 import it.polimi.ingsw.model.exceptions.LeaderCardException;
-import it.polimi.ingsw.model.exceptions.ResourceException;
-import it.polimi.ingsw.model.leaderCard.LeaderCard;
-import it.polimi.ingsw.model.leaderCard.LeaderCardHandler;
-import it.polimi.ingsw.model.resource.Resource;
+import it.polimi.ingsw.model.leadercard.LeaderCard;
+import it.polimi.ingsw.model.leadercard.LeaderCardHandler;
 import it.polimi.ingsw.model.resource.ResourceHandler;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 public class Gameboard {
     private ResourceHandler resourceHandler;

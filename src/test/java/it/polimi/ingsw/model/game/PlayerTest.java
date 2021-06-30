@@ -6,7 +6,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonStreamParser;
 import it.polimi.ingsw.model.exceptions.LeaderCardException;
 import it.polimi.ingsw.model.exceptions.StartGameException;
-import it.polimi.ingsw.model.leaderCard.*;
+import it.polimi.ingsw.model.leadercard.*;
 import org.junit.Before;
 import org.junit.Test;
 

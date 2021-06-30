@@ -1,18 +1,18 @@
 package it.polimi.ingsw.client.cli.views;
 
 
-import it.polimi.ingsw.client.cli.views.leaderCardView.LeaderCardView;
-import it.polimi.ingsw.client.cli.views.marketView.MarketView;
-import it.polimi.ingsw.client.cli.views.marketView.NewDepositView;
-import it.polimi.ingsw.client.cli.views.otherViews.AllPlayersView;
-import it.polimi.ingsw.client.cli.views.otherViews.InitialResourceView;
-import it.polimi.ingsw.client.cli.views.otherViews.NewTurnView;
-import it.polimi.ingsw.client.cli.views.productionView.*;
+import it.polimi.ingsw.client.cli.views.leadercardview.LeaderCardView;
+import it.polimi.ingsw.client.cli.views.marketview.MarketView;
+import it.polimi.ingsw.client.cli.views.marketview.NewDepositView;
+import it.polimi.ingsw.client.cli.views.otherviews.AllPlayersView;
+import it.polimi.ingsw.client.cli.views.otherviews.InitialResourceView;
+import it.polimi.ingsw.client.cli.views.otherviews.NewTurnView;
+import it.polimi.ingsw.client.cli.views.productionview.*;
 import it.polimi.ingsw.client.ConnectionToServer;
-import it.polimi.ingsw.events.serverToClient.supportClass.DevelopmentCardToClient;
-import it.polimi.ingsw.events.serverToClient.supportClass.LeaderCardToClient;
-import it.polimi.ingsw.events.serverToClient.supportClass.MarketToClient;
-import it.polimi.ingsw.events.serverToClient.supportClass.PlayerInformationToClient;
+import it.polimi.ingsw.events.serverToClient.supportclass.DevelopmentCardToClient;
+import it.polimi.ingsw.events.serverToClient.supportclass.LeaderCardToClient;
+import it.polimi.ingsw.events.serverToClient.supportclass.MarketToClient;
+import it.polimi.ingsw.events.serverToClient.supportclass.PlayerInformationToClient;
 import it.polimi.ingsw.model.resource.Resource;
 
 import java.util.ArrayList;

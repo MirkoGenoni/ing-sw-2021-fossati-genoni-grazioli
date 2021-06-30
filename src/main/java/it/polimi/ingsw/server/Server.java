@@ -1,7 +1,7 @@
 package it.polimi.ingsw.server;
 
-import it.polimi.ingsw.server.roomHandler.Room;
-import it.polimi.ingsw.server.roomHandler.RoomHandler;
+import it.polimi.ingsw.server.roomhandler.Room;
+import it.polimi.ingsw.server.roomhandler.RoomHandler;
 
 import java.io.IOException;
 import java.net.ServerSocket;

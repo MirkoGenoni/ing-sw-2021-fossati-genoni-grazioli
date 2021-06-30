@@ -1,8 +1,8 @@
 package it.polimi.ingsw.model.game;
 
-import it.polimi.ingsw.model.developmentCard.DevelopmentCard;
+import it.polimi.ingsw.model.developmentcard.DevelopmentCard;
 import it.polimi.ingsw.model.exceptions.StartGameException;
-import it.polimi.ingsw.model.leaderCard.LeaderCard;
+import it.polimi.ingsw.model.leadercard.LeaderCard;
 import it.polimi.ingsw.model.lorenzo.LorenzoIlMagnifico;
 
 import java.util.ArrayList;

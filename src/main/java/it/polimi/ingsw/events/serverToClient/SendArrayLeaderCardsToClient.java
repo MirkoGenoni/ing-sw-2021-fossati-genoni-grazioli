@@ -1,6 +1,6 @@
 package it.polimi.ingsw.events.serverToClient;
 
-import it.polimi.ingsw.events.serverToClient.supportClass.LeaderCardToClient;
+import it.polimi.ingsw.events.serverToClient.supportclass.LeaderCardToClient;
 
 import java.util.ArrayList;
 import java.util.Map;

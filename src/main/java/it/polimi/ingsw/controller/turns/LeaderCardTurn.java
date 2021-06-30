@@ -1,14 +1,14 @@
 package it.polimi.ingsw.controller.turns;
 
 import it.polimi.ingsw.controller.ControllerToModel;
-import it.polimi.ingsw.model.developmentCard.CardColor;
+import it.polimi.ingsw.model.developmentcard.CardColor;
 import it.polimi.ingsw.model.exceptions.DevelopmentCardException;
 import it.polimi.ingsw.model.exceptions.LeaderCardException;
 import it.polimi.ingsw.model.exceptions.ResourceException;
 import it.polimi.ingsw.model.game.Game;
 import it.polimi.ingsw.model.game.Player;
 import it.polimi.ingsw.model.gameboard.Gameboard;
-import it.polimi.ingsw.model.leaderCard.*;
+import it.polimi.ingsw.model.leadercard.*;
 import it.polimi.ingsw.model.resource.Resource;
 
 import java.util.ArrayList;

@@ -1,7 +1,7 @@
 package it.polimi.ingsw.controller.turns;
 
 import it.polimi.ingsw.controller.ControllerToModel;
-import it.polimi.ingsw.model.developmentCard.CardColor;
+import it.polimi.ingsw.model.developmentcard.CardColor;
 import it.polimi.ingsw.model.exceptions.StartGameException;
 import it.polimi.ingsw.model.game.Game;
 import it.polimi.ingsw.model.game.SinglePlayerGame;
