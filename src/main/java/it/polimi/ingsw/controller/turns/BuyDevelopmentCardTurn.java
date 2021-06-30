@@ -16,6 +16,7 @@ import java.util.Map;
 
 /**
  * Class to manage the turn to buy development cards
+ * @author davide grazioli
  */
 public class BuyDevelopmentCardTurn {
     private final ControllerToModel controllerToModel;

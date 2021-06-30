@@ -1,7 +1,7 @@
 package it.polimi.ingsw.model.faithtrack;
 /**
  * Class Box
- * @author Davide
+ * @author davide grazioli
  */
 public class Box {
 

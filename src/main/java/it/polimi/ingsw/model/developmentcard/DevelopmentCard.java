@@ -7,7 +7,7 @@ import java.util.Map;
 
 /**
  * DevelopmentCard is a class who represent a DevelopmentCard
- * @author Davide
+ * @author davide grazioli
  */
 
 public class DevelopmentCard {

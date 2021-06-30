@@ -2,7 +2,7 @@ package it.polimi.ingsw.model.resource;
 
 /**
  * Resource Enum Class
- * @author Mirko
+ * @author Mirko Genoni
  *
  * This enum collects a group of String costants necessary to identify different type of resources
  */

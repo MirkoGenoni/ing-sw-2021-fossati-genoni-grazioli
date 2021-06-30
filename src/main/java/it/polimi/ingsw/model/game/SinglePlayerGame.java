@@ -7,20 +7,35 @@ import it.polimi.ingsw.model.lorenzo.LorenzoIlMagnifico;
 
 import java.util.ArrayList;
 
+/**
+ * Class for the singlePlayer game
+ */
 public class SinglePlayerGame extends Game{
     Player player;
     LorenzoIlMagnifico lorenzoIlMagnifico;
 
+    /**
+     * constructor of the class
+     * @param player the player in the single player game
+     */
     public SinglePlayerGame(Player player) {
         super(2); //provide 2 faithTracks
         this.lorenzoIlMagnifico = new LorenzoIlMagnifico();
         this.player = player;
     }
 
+    /**
+     * getter of the player
+     * @return the player in the single player game
+     */
     public Player getPlayer() {
         return player;
     }
 
+    /**
+     * getter of lorenzo il magnifico
+     * @return lorenzo il magnifico for the single player game
+     */
     public LorenzoIlMagnifico getLorenzoIlMagnifico() {
         return lorenzoIlMagnifico;
     }

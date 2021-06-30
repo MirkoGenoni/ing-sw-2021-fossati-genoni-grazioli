@@ -16,6 +16,7 @@ import java.util.Map;
 
 /**
  * class to manage the turn to activate productions
+ * @author davide grazioli
  */
 public class ActivateProductionTurn {
     private final ControllerToModel controllerToModel;

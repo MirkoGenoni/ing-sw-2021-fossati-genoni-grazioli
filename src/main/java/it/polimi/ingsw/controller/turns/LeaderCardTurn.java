@@ -17,6 +17,7 @@ import java.util.Map;
 
 /**
  * class to manage the leader activation turn
+ * @author davide grazioli
  */
 public class LeaderCardTurn {
     private final ControllerToModel controllerToModel;

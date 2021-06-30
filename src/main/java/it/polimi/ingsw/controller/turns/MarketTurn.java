@@ -12,6 +12,7 @@ import java.util.ArrayList;
 
 /**
  * class to manage the turn to take resources from market
+ * @author davide grazioli, Stefano Fossati
  */
 public class MarketTurn {
     private final ControllerToModel controllerToModel;

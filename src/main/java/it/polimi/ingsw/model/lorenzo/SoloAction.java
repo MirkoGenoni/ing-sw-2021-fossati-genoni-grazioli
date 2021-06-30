@@ -2,7 +2,7 @@ package it.polimi.ingsw.model.lorenzo;
 
 /**
  * Enum class for SoloToken
- * @author davide
+ * @author davide grazioli
  */
 public enum SoloAction {
 

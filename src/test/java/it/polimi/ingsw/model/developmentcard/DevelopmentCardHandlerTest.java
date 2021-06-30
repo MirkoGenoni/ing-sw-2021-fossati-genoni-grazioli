@@ -16,6 +16,9 @@ import java.util.ArrayList;
 
 import static org.junit.Assert.*;
 
+/**
+ * this class tests the development card handler and its behaviour
+ */
 public class DevelopmentCardHandlerTest {
 
     DevelopmentCardHandler handler = new DevelopmentCardHandler();
@@ -51,7 +54,9 @@ public class DevelopmentCardHandlerTest {
         handler.setActiveDevelopmentCard(cardCollection.get(1),2);
 
     }
-
+    /**
+     * This test checks the right working of the getActiveDevelopmentCard method.
+     */
     @Test
     public void getActiveDevelopmentCard() {
         ArrayList <DevelopmentCard> actives = handler.getActiveDevelopmentCard();
@@ -62,7 +67,10 @@ public class DevelopmentCardHandlerTest {
         assertEquals(actives.size(),3);
 
     }
-
+    /**
+     * This test checks the right working of the getDevelopmentCardCollection method.
+     * It verifies also the exceptions of the method.
+     */
     @Test
     public void getDevelopmentCardColl() {
         ArrayList <DevelopmentCard> collection = handler.getDevelopmentCardColl();
@@ -72,7 +80,10 @@ public class DevelopmentCardHandlerTest {
         assertEquals(collection.get(1), cardCollection.get(1));
 
     }
-
+    /**
+     * This test checks the right working of the setActiveDevelopmentCards method.
+     * It verifies also the exceptions of the method.
+     */
     @Test
     public void setActiveDevelopmentCard() {
         try {
@@ -86,6 +97,10 @@ public class DevelopmentCardHandlerTest {
         }
     }
 
+    /**
+     * This test checks the right working of the CheckBoughtable method verifing if a player could buy a card
+     * It verifies also the exceptions of the method.
+     */
     @Test
     public void CheckBoughtable(){
 
@@ -116,7 +131,10 @@ public class DevelopmentCardHandlerTest {
         }
 
     }
-
+    /**
+     * This test checks the right working of the checkDevelopmentCard method.
+     * It verifies also the exceptions of the method.
+     */
     @Test
     public void checkDevelopmentCard(){
         ArrayList<CardColor> colors = new ArrayList<>();
@@ -168,7 +186,10 @@ public class DevelopmentCardHandlerTest {
         }
 
     }
-
+    /**
+     * This test checks the right working of the checkCountDevelopmentCard method verifing if return the correct
+     * amount of developmentCards
+     */
     @Test
     public void checkCountDevelopmentCard() {
         try {
@@ -191,7 +212,10 @@ public class DevelopmentCardHandlerTest {
         }
 
     }
-
+    /**
+     * This test checks the right working of the checkCountDevelopmentCard method verifing the
+     * amount of developmentCards
+     */
     @Test
     public void checkCountDevelopmentCard1() { //check with also quantity in input, return boolean
         try {

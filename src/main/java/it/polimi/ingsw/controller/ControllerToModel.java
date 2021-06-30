@@ -19,6 +19,11 @@ import java.util.Map;
 /*
    modifica direttamente il model
  */
+
+/**
+ * Class to control and manage the game
+ * @author Stefano Fossati
+ */
 public class ControllerToModel {
     private Player[] players;
     private final Map<String, ConnectionToClient> connections;
@@ -45,7 +50,10 @@ public class ControllerToModel {
     //Single Player turn
     private LorenzoTurn lorenzoTurn;
 
-
+    /**
+     * Constructor of the class
+     * @param connections map for player's name and each connections
+     */
     public ControllerToModel(Map<String, ConnectionToClient> connections) {
         this.connections = connections;
         this.playerDisconnected = new ArrayList<>();
@@ -54,38 +62,74 @@ public class ControllerToModel {
         playerWithInitialResource = new ArrayList<>();
     }
 
+    /**
+     * getter of the number of the playing client in the match
+     * @return the number of the players
+     */
     public int getNumPlayer() {
         return numPlayer;
     }
 
+    /**
+     * getter of the players
+     * @return the array of the players
+     */
     public Player[] getPlayers() {
         return players;
     }
 
+    /**
+     * getter the index of the current player
+     * @return the index of the current player
+     */
     public int getCurrentPlayerIndex() {
         return currentPlayerIndex;
     }
 
+    /**
+     * getter of the active player
+     * @return the player who's playing
+     */
     public Player getActivePlayer() {
         return activePlayer;
     }
 
+    /**
+     * getter of disconnected players
+     * @return  names of disconnected players
+     */
     public ArrayList<String> getPlayerDisconnected() {
         return playerDisconnected;
     }
 
+    /**
+     * getter of order player connections
+     * @return return the arraylist player's name in order of the first connection
+     */
     public ArrayList<String> getOrderPlayerConnections() {
         return orderPlayerConnections;
     }
 
+    /**
+     * getter of the game
+     * @return the current game
+     */
     public Game getGame() {
         return game;
     }
 
+    /**
+     * getter of connections to client
+     * @return a map with player name as a key and connection to client
+     */
     public Map<String, ConnectionToClient> getConnections() {
         return connections;
     }
 
+    /**
+     * manage and control if the player has chosen the initial resources
+     * @return the array with the players that hasn't already chosen the initial resources
+     */
     public ArrayList<String> getPlayerWithInitialResource() {
         return playerWithInitialResource;
     }
@@ -93,10 +137,19 @@ public class ControllerToModel {
     // -------------------------------------------------------
     // METHODS FOR THE START OF THE CONNECTION WITH THE CLIENT
     // -------------------------------------------------------
+
+    /**
+     * add a connected player
+     * @param name name of the player
+     */
     public void addPlayerNameOrder(String name){
         orderPlayerConnections.add(name);
     }
 
+    /**
+     * set the number of playing players
+     * @param numPlayer how many players are going to play
+     */
     public void setNumPlayer(int numPlayer) {
         System.out.println("ho settato il numero di giocatori");
         this.numPlayer = numPlayer;
@@ -109,6 +162,11 @@ public class ControllerToModel {
     // -------------------------------------------
     // METHODS FOR THE START OF THE MATCH
     // -------------------------------------------
+
+    /**
+     * start the match creating lorenzo if is a singleplayer game
+     * @throws StartGameException if there's any problem in starting game
+     */
     public void startMatch() throws StartGameException {
         connections.forEach((k,v) -> v.sendNotify("AllPlayersConnected"));
         //connectionsToClient.forEach(cc -> cc.sendNotify("AllPlayersConnected"));
@@ -180,7 +238,9 @@ public class ControllerToModel {
         }
     }
 
-
+    /**
+     * create the manager for each type of turns for the match
+     */
     private void createTurns(){
         marketTurn = new MarketTurn(this);
         buyDevelopmentCardTurn = new BuyDevelopmentCardTurn(this);
@@ -192,7 +252,10 @@ public class ControllerToModel {
     // questi metodi servono per il multiPlayer
 
 
-
+    /**
+     * check if the game is ended and send a new turn event to clients
+     * @param nextPlayer specify if the controller has to pass the turn to a new player
+     */
     public void newTurn(boolean nextPlayer){
         System.out.println("è iniziato un nuovo turno");
         if(nextPlayer){
@@ -262,15 +325,20 @@ public class ControllerToModel {
     }
 
 
-
-
+    /**
+     * put the initial resources choice in player's deposit
+     * @param initialDepositState the state of the initial deposit
+     * @param playerName the name of the player
+     */
     public void initialResourcesChoose(ArrayList<Resource> initialDepositState, String playerName){
         for(int i=0; i<players.length; i++){
             if(players[i].getName().equals(playerName)){
                 try {
                     players[i].getPlayerBoard().getResourceHandler().newDepositState(initialDepositState);
                 } catch (ResourceException e) {
-                    e.printStackTrace();
+                    //e.printStackTrace();
+                    connections.get(playerName).sendInitialResources(2, players[i].getPlayerBoard().getResourceHandler().getDepositState());
+                    return;
                 }
             }
         }
@@ -291,6 +359,12 @@ public class ControllerToModel {
         }
     }
 
+    /**
+     * discard two initial leader-cards from the started four
+     * @param playerName the player who's discarding the leaders
+     * @param leaderCard1 the first leader to discard
+     * @param leaderCard2 the second leader to discard
+     */
     public void discardInitialLeaderCards(String playerName, int leaderCard1, int leaderCard2){
         for(int i =0; i< players.length; i++){
             if(playerName.equals(players[i].getName())){
@@ -319,6 +393,12 @@ public class ControllerToModel {
 
     }
 
+    /**
+     * start the leader card turn
+     * @param playerName the player who's playing
+     * @param actions the action for each leader in order respect to the available ones
+     * @param isFinal if is the end of the turn
+     */
     public void leaderCardTurn(String playerName, ArrayList<Integer> actions, boolean isFinal){
         leaderCardTurn.leaderTurns(playerName, actions, isFinal);
     }
@@ -328,6 +408,14 @@ public class ControllerToModel {
     // -------------------------------------------
     // METHODS FOR THE MARKET TURN
     // -------------------------------------------
+
+    /**
+     *
+     * @param namePlayer the player who's playing the turn
+     * @param line the line to choice from the market
+     * @param leaderMarketWhiteChange the leader white-change to use, the position in the array specify the leader to use
+     *                                in order respect on active leaders
+     */
     public void marketChooseLine(String namePlayer, int line, ArrayList<Boolean> leaderMarketWhiteChange){
         marketTurn.marketChooseLine(namePlayer, line, leaderMarketWhiteChange);
     }
@@ -343,10 +431,20 @@ public class ControllerToModel {
     // -------------------------------------------
     // METHODS FOR THE BUY DEVELOPMENT CARD TURN
     // -------------------------------------------
+
+    /**
+     * start the turn buy-development-card
+     * @param color color of the development to buy
+     * @param level level of the development to buy
+     */
     public void buyDevelopmentCard(int color, int level){
         buyDevelopmentCardTurn.buyDevelopmentCard(color, level);
     }
 
+    /**
+     * Put a bought development card in an available space
+     * @param space the space where to put the bought card
+     */
     public void spaceDevelopmentCard(int space){
         if(buyDevelopmentCardTurn.spaceDevelopmentCard(space)){
             //newTurn(true);
@@ -358,6 +456,21 @@ public class ControllerToModel {
     // -------------------------------------------
     // METHODS FOR THE BUY DEVELOPMENT CARD TURN
     // -------------------------------------------
+
+    /**
+     *
+     * @param useBaseProduction boolean that specify if the player want to use the base production
+     * @param resourceRequested1 if the player want to use the base production indicates the first resource to use to develop
+     * @param resourceRequested2 if the player want to use the base production indicates the second resource to use to develop
+     * @param resourceGranted if the player want to use the base production indicates resource granted from the base production
+     * @param useLeaders Array of Boolean that specify if the player want to use leaders productions, the boolean is in the same
+     *      *                   position of the leader the player want to use
+     * @param materialLeaders The material the player want from the leader production, the resource is in the same
+     *      *      *                   position of the leader the player want to use
+     * @param useDevelop Array of Boolean that specify if the player want to use a production card, the boolean is in the same
+     *      *      *                   position of the production card the player want to use
+     * @param playerName the player who has chosen the development turn
+     */
     public void activateProduction(boolean useBaseProduction, Resource resourceRequested1, Resource resourceRequested2,
                                    ProductedMaterials resourceGranted, ArrayList<Boolean> useLeaders, ArrayList<Resource> materialLeaders,
                                    ArrayList<Boolean> useDevelop, String playerName){
@@ -375,6 +488,12 @@ public class ControllerToModel {
     // -------------------------------------------
     // METHODS FOR THE MANAGE OF THE FAITH TRACK
     // -------------------------------------------
+
+    /**
+     * control the other player's path if a player go on a pope-space
+     * @param numPlayer the player who activate the pope-space
+     * @param section the section in which the pope-space has been activated
+     */
     public void controlPlayerPath (int numPlayer, int section){
 
         //int section = game.getPlayersFaithTrack().getSection(numPlayer);
@@ -391,6 +510,9 @@ public class ControllerToModel {
         }
     }
 
+    /**
+     * send to each player the current status of the match
+     */
     public void turnToView(){
         for(String s : connections.keySet()){
             if(s.equals(activePlayer.getName())){
@@ -402,6 +524,10 @@ public class ControllerToModel {
 
     }
 
+    /**
+     * send the turn to activate or discard a leader from the available ones
+     * @param isFinal if it's the end of the turn
+     */
     private void sendLeaderCardTurnFinal(boolean isFinal){
         try {
             connections.get(activePlayer.getName()).sendArrayLeaderCards(activePlayer.getPlayerBoard().getLeaderCardHandler().getLeaderCardsAvailable(),false, activePlayer, isFinal);
@@ -413,6 +539,10 @@ public class ControllerToModel {
         }
     }
 
+    /**
+     * if a player is playing a match in single-game do lorenzo turn and return false otherwise return true
+     * @return true if there are more than one player
+     */
     public boolean checkMultiplayer(){
         //TODO metodo da mettere private dopo aver tolto il turn dalle opzioni di scelta!!!!!!
         if(turnNumber != 0 && players.length == 1){
@@ -426,6 +556,10 @@ public class ControllerToModel {
         }
     }
 
+    /**
+     * Grant to each player the initial amount of resources starting from the first player
+     * @param firstPlayer the player who start the match
+     */
     private void initialResources(int firstPlayer){
         int current = firstPlayer;
         for(int i=0; i<numPlayer; i++) {
@@ -455,6 +589,10 @@ public class ControllerToModel {
 
     }
 
+    /**
+     * update the turn giving the next player
+     * @return the player who has to play
+     */
     private Player nextPlayer(){
         if(currentPlayerIndex < players.length-1) {
             currentPlayerIndex++;

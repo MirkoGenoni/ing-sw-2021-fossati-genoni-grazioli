@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 /**
  * DevelopmentCardHandler manages the Player's DevelopmentCards during the play
- * @author davide
+ * @author davide grazioli
  */
 
 public class DevelopmentCardHandler {

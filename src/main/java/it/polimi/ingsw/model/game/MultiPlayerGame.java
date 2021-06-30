@@ -14,7 +14,10 @@ import java.util.ArrayList;
 public class MultiPlayerGame extends Game{
     private Player players[];
 
-
+    /**
+     * constructor of the class
+     * @param numPlayer how many player take part in the match
+     */
     public MultiPlayerGame(int numPlayer) {
         super(numPlayer);
         players = new Player[numPlayer];
@@ -22,6 +25,11 @@ public class MultiPlayerGame extends Game{
 
     }
 
+    /**
+     * add the player to the player's array
+     * @param player the player to add
+     * @throws StartGameException if all the players have already join
+     */
     public void addPlayer(Player player) throws StartGameException {
         int i=0;
         while(i!= players.length && players[i]!=null){
@@ -35,6 +43,10 @@ public class MultiPlayerGame extends Game{
 
     }
 
+    /**
+     * prepare the game to start
+     * @throws StartGameException if there's any problem in initialize the game
+     */
     public void startGame() throws StartGameException {
         super.startGame();
 
@@ -48,6 +60,10 @@ public class MultiPlayerGame extends Game{
         }
     }
 
+    /**
+     * getter of the array of the players
+     * @return the array of the players
+     */
     public Player[] getPlayers() {
         return players;
     }

@@ -10,6 +10,7 @@ import it.polimi.ingsw.model.lorenzo.SoloAction;
 
 /**
  * Class Lorenzo turn to manage the single player game against lorenzo
+ * @author davide grazioli
  */
 public class LorenzoTurn {
     private final ControllerToModel controllerToModel;

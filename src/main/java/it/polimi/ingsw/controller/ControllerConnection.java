@@ -8,9 +8,20 @@ import it.polimi.ingsw.events.clienttoserver.marketturntoserver.NewDepositStateT
 import it.polimi.ingsw.events.clienttoserver.startgametoserver.DiscardInitialLeaderCards;
 import it.polimi.ingsw.events.clienttoserver.startgametoserver.InitialResourcesChoose;
 
+/**
+ * This class implements the EventToServerVisitor and ObserveConnectionToClient interface. This class parse the type of event that
+ * arrive from the connection with the client to do specific actions.
+ * @see ObserveConnectionToClient
+ * @see EventToServerVisitor
+ * @author Stefano Fossati
+ */
 public class ControllerConnection implements EventToServerVisitor, ObserveConnectionToClient {
     private final ControllerToModel controllerToModel;
 
+    /**
+     * constructor of the class
+     * @param controllerToModel controller to model that manages the game for players
+     */
     public ControllerConnection(ControllerToModel controllerToModel) {
         this.controllerToModel = controllerToModel;
     }

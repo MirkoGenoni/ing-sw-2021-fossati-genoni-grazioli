@@ -2,7 +2,7 @@ package it.polimi.ingsw.model.faithtrack;
 
 /**
  * Class Faithtrack
- * @author Davide
+ * @author davide grazioli
  */
 public class FaithTrack {
 

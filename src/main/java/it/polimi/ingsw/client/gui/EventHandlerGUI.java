@@ -15,7 +15,8 @@ import javafx.scene.control.Alert;
 import java.util.concurrent.CountDownLatch;
 
 /**
- * This class implements the EventToClientVisitor interface. This class parse the type of event that arrive from the connection with the server to do specific actions.
+ * This class implements the EventToClientVisitor interface. This class parse the type of event that
+ * arrive from the connection with the server to do specific actions.
  * @see EventToClientVisitor
  *
  * @author Stefano Fossati

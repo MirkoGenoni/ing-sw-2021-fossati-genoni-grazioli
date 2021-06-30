@@ -5,7 +5,7 @@ import java.util.Collections;
 
 /**
  * Class Lorenzo il Magnifico to manage Lorenzo Player
- * @author davide
+ * @author davide grazioli
  */
 public class LorenzoIlMagnifico {
 

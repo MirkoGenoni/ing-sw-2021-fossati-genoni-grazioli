@@ -7,7 +7,7 @@ import java.util.ArrayList;
 /**
  * This class represents the special ability of leader cards of increment capacity of the deposit.
  *
- * @author Stefano Fossati
+ * @author Stefano Fossati, davide grazioli
  */
 
 public class BiggerDeposit implements SpecialAbility{
@@ -39,10 +39,18 @@ public class BiggerDeposit implements SpecialAbility{
         return materialBiggerDeposit;
     }
 
+    /**
+     * getter of the resource type required to activate the leader
+     * @return the resource type required to activate the leader
+     */
     public String getMaterialRequired() {
         return materialRequired1;
     }
 
+    /**
+     * getter of the quantity of the resource type to activate the leader
+     * @return the quantity of the resource type to activate the leader
+     */
     public int getQuantityRequired() {
         return quantityRequired1;
     }

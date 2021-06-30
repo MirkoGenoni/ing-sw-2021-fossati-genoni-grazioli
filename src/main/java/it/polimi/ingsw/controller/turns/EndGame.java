@@ -13,6 +13,7 @@ import java.util.Map;
 
 /**
  * Class to manage and control the end of the game
+ * @author davide grazioli
  */
 public class EndGame {
     private final ControllerToModel controllerToModel;

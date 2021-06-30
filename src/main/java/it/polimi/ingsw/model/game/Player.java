@@ -16,18 +16,35 @@ public class Player {
     final private String name;
     private Gameboard playerBoard;
 
+    /**
+     * constructor of the class
+     * @param name name of the player
+     */
     public Player(String name){
         this.name = name;
     }
 
+    /**
+     * getter of the name of the player
+     * @return the name of the player
+     */
     public String getName(){
         return name;
     }
 
+    /**
+     * getter of the playerBoard of the player
+     * @return the playerBoard of the player
+     */
     public Gameboard getPlayerBoard(){
         return playerBoard;
     }
 
+    /**
+     * create the gameBoard with the available leader
+     * @param leaderCardGiven the leader choose at the beginning of the game
+     * @throws StartGameException if there's any problem with the initial leaders
+     */
     public void createGameBoard(ArrayList<LeaderCard> leaderCardGiven) throws StartGameException {
       try{
             playerBoard = new Gameboard(leaderCardGiven);
