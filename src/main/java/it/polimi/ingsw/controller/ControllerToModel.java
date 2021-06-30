@@ -240,7 +240,16 @@ public class ControllerToModel {
             System.out.println("Game end");
 
         }else{
-            connections.forEach((k,v) -> v.sendNotify("è il turno di " + activePlayer.getName())); //TODO
+            if(numPlayer!=1){
+                for(String s : connections.keySet()){
+                    if(s.equals(activePlayer.getName())){
+                        connections.get(s).sendNotify("It's your turn");
+                    }else{
+                        connections.get(s).sendNotify("It's " + activePlayer.getName() + "'s turn");
+                    }
+                }
+            }
+
             try {
                 connections.get(activePlayer.getName()).sendArrayLeaderCards(players[currentPlayerIndex].getPlayerBoard().getLeaderCardHandler().getLeaderCardsAvailable(),false, players[currentPlayerIndex], false);
             } catch (LeaderCardException e) {
@@ -408,7 +417,7 @@ public class ControllerToModel {
         //TODO metodo da mettere private dopo aver tolto il turn dalle opzioni di scelta!!!!!!
         if(turnNumber != 0 && players.length == 1){
             if(lorenzoTurn.playLorenzo()){
-                connections.get(players[currentPlayerIndex].getName()).sendEndGame("HAI PERSO, HA VINTO LORENZO!!", null, players,
+                connections.get(players[currentPlayerIndex].getName()).sendEndGame("You lost, LORENZO WINS!!", null, players,
                         game.getPlayersFaithTrack(), true, game.getPlayersFaithTrack().getPosition(1), game.getDevelopmentCardsAvailable(), game.getMarketBoard());
             }
             return false; // se è single game

@@ -50,10 +50,13 @@ public class LeaderCardController implements GUIController, Initializable {
         for(int i = 0; i< leaderCardAvailable.size(); i++){
             leaderCard.get(i).setImage(gui.getLeaderCardsGraphic().get(leaderCardAvailable.get(i).getNameCard()));
             leaderCard.get(i).setOnMouseClicked(selectLeaderCard);
+            leaderCard.get(i).setEffect(null);
         }
 
         if(leaderCardAvailable.size()==1){
             leaderCard.get(1).setImage(null);
+            leaderCard.get(1).setDisable(true);
+            leaderCard.get(1).setEffect(null);
         }
     }
 

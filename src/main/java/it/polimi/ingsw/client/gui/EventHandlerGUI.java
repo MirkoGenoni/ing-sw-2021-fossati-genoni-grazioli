@@ -114,6 +114,7 @@ public class EventHandlerGUI implements EventToClientVisitor {
         }
         Platform.runLater(new Thread(() -> gui.showAlert(Alert.AlertType.INFORMATION, message.getMessage())));
         Platform.runLater(new Thread(()-> controller.saveFinalPoints(message.getPlayersPoint())));
+        Platform.runLater(new Thread(()->controller.updatePlayerBoard(message.getPlayerInformation())));
         connectionToServer.closeConnection();
     }
 

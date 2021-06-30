@@ -16,6 +16,7 @@ import javafx.scene.input.MouseEvent;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -67,6 +68,7 @@ public class InitialLeaderController implements GUIController, Initializable {
             done.setVisible(false);
             waitNotify.setVisible(true);
             leader.forEach(leader -> leader.setDisable(true));
+            Collections.sort(selectedLeader);
             leader.remove((int)selectedLeader.get(1));
             leader.remove((int)selectedLeader.get(0));
             gui.setLeaderInHand(new ArrayList<Image>(List.of(leader.get(0).getImage(), leader.get(1).getImage())));

@@ -43,6 +43,7 @@ public class PlayerViewController implements GUIController, Initializable {
     private Map<String, ImageView> playerMarkerPosition = new HashMap<>();
     private ArrayList<ImageView> faiths;
 
+    private ArrayList<Image> leaderCardInHand;
     private ArrayList<Button> playerButtons;
 
     private ArrayList<ImageView> devCard = new ArrayList<>();
@@ -114,6 +115,8 @@ public class PlayerViewController implements GUIController, Initializable {
      */
     public void updatePlayerBoard(Map<String, PlayerInformationToClient> players){
         turnTmp = gui.getLastTurn();
+        leaderCardInHand = new ArrayList<>(gui.getLeaderInHand());
+        gui.getLeaderInHand().clear();
         if(initial==-1){
             int buttonToHide = 4 - players.size();
             for(int i =0; i<buttonToHide; i++){
@@ -407,7 +410,7 @@ public class PlayerViewController implements GUIController, Initializable {
 
         //leader card in hand, only for the player of the client
         if(player.getPlayerNameSend().equals(gui.getNamePlayer())){
-            drawLeaderCard(gui.getLeaderInHand());
+            drawLeaderCard(leaderCardInHand);
         }
 
         //visualize pope favor tiles
@@ -449,16 +452,30 @@ public class PlayerViewController implements GUIController, Initializable {
      * @param leaderInHand The leader card that the player has in hand.
      */
     private void drawLeaderCard(ArrayList<Image> leaderInHand){
-        int z=0;
-        if(leaderInHand!=null){
+
+        System.out.println("leaderCardin hand "+  leaderInHand);
+        System.out.println("leaderCard hand gui "+ gui.getLeaderInHand());
+        if(leaderInHand.size()!=0){
             for(int i=0; i<leaderCardPlayer.size(); i++){
-                if(!leaderInHand.contains(leaderCardPlayer.get(i).getImage())){
-                    leaderCardPlayer.get(i).setImage(leaderInHand.get(z));
-                    leaderText.get(i).setText("IN HAND");
-                    z++;
+                if(leaderCardPlayer.get(i).getImage()!=null){
+                    for(int z=0; z<leaderInHand.size(); z++){
+                        if(leaderInHand.get(z).equals(leaderCardPlayer.get(i).getImage())){
+                            leaderInHand.set(z, null);
+                        }
+                    }
                 }
             }
+            int j=0;
+            for(int i=0; i<leaderInHand.size(); i++){
+                if(leaderInHand.get(i)!=null){
+                    leaderCardPlayer.get(j).setImage(leaderInHand.get(i));
+                    leaderText.get(i).setText("IN HAND");
+                    j++;
+                }
+            }
+
         }
+        leaderCardInHand.clear();
 
     }
 

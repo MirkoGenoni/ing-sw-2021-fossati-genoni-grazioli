@@ -8,6 +8,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
@@ -182,11 +183,26 @@ public class ActivateProductionController implements GUIController, Initializabl
             }
         }
 
-        gui.changeScene("playerView");
-        PlayerViewController controller = (PlayerViewController) gui.getCurrentController();
-        controller.tabTurnNotActive(true);
-        gui.getConnectionToServer().sendSelectedProductionDevelopmentCard(baseProduction, resourceChoose1, resourceChoose2, resourceGranted, leaderTmp, leaderRtmp, useDevelop);
-        clear();
+        int j=0;
+        for(int i=0; i<leaderTmp.size(); i++){
+            if(leaderTmp.get(i).equals(true)){
+                j++;
+            }
+        }
+
+        if(j!=leaderRtmp.size()){
+            gui.showAlert(Alert.AlertType.ERROR, "error in leader card selection");
+        }else{
+            gui.changeScene("playerView");
+            PlayerViewController controller = (PlayerViewController) gui.getCurrentController();
+            controller.tabTurnNotActive(true);
+            gui.getConnectionToServer().sendSelectedProductionDevelopmentCard(baseProduction, resourceChoose1, resourceChoose2, resourceGranted, leaderTmp, leaderRtmp, useDevelop);
+            clear();
+        }
+
+
+
+
     }
 
     /**
