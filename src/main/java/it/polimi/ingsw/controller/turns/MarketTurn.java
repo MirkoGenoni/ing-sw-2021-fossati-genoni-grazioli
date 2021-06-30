@@ -35,7 +35,7 @@ public class MarketTurn {
      *                                power and in which position, the boolean is in the same position of the leader card
      *                                the player want to use
      */
-    public void marketChooseLine(String namePlayer, int line, ArrayList<Boolean> leaderMarketWhiteChange){
+    public void marketChooseLine(String namePlayer, int line, ArrayList<Boolean> leaderMarketWhiteChange){ //TODO nameplayer
         System.out.println("aggiungo al player");
         int currentPlayerIndex = controllerToModel.getCurrentPlayerIndex();
         Player activePlayer = controllerToModel.getPlayers()[currentPlayerIndex];

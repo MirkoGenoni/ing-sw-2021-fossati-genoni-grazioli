@@ -154,10 +154,10 @@ public class DevelopmentCardHandler {
     }
 
     /**
-     * TODO SCRIVERE DOCUMENTAZIONE
-     * @param color
-     * @param quantity
-     * @return
+     * check if a player has at least a specified number of DevelopmentCard of a specified color
+     * @param color the color to check
+     * @param quantity the quantity to verify
+     * @return true if the player has at least the specified number of the specified color of DevelopmentCards
      */
     public boolean checkCountDevelopmentCard (CardColor color, int quantity){
         int count = 0;

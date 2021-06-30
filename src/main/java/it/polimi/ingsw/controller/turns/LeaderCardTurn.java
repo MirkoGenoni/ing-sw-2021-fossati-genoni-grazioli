@@ -35,7 +35,7 @@ public class LeaderCardTurn {
      * @param positions the action to do for each leader (0 to do nothing, 1 to play, 2 to discard)
      * @param isFinal
      */
-    public void leaderTurns(String playerName, ArrayList<Integer> positions, boolean isFinal) {
+    public void leaderTurns(String playerName, ArrayList<Integer> positions, boolean isFinal) { //TODO playername inutile
         int currentPlayerIndex = controllerToModel.getCurrentPlayerIndex();
         Player activePlayer = controllerToModel.getActivePlayer();
         Game game = controllerToModel.getGame();
