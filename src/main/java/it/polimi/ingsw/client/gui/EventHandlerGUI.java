@@ -48,97 +48,14 @@ public class EventHandlerGUI implements EventToClientVisitor {
 
 
 
-
-    @Override
-    public void visit(SendArrayLeaderCardsToClient leaderCardArray) {
-        if(leaderCardArray.isInitialLeaderCards()){
-            changeSceneThread("initialLeaderView");
-            InitialLeaderController controller = (InitialLeaderController) gui.getCurrentController();
-            Platform.runLater(new Thread(()-> controller.drawLeader(leaderCardArray.getLeaderCardArray())));
-        }else{
-            changeSceneThread("leaderCardView");
-            LeaderCardController controller = (LeaderCardController) gui.getCurrentController();
-            Platform.runLater(new Thread(() -> controller.drawLeader(leaderCardArray.getLeaderCardArray(), leaderCardArray.isFinal())));
-        }
-    }
-
-    @Override
-    public void visit(SendReorganizeDepositToClient newResources) {
-        changeSceneThread("newDepositView");
-        NewDepositController controller = (NewDepositController) gui.getCurrentController();
-        Platform.runLater(new Thread(() -> controller.drawDeposit(newResources.getDepositResources(), newResources.getMarketResources(),
-                newResources.isAdditionalDeposit(), newResources.getType(), newResources.getAdditionalDepositState(), gui.getLastTurn().getPlayers().get(gui.getNamePlayer()).getLeaderCardActive(), false)) );
-    }
-
-    @Override
-    public void visit(TurnReselectionToClient message) {
+    public void closeConnectionAlert(){
         changeSceneThread("playerView");
-        PlayerViewController controller = (PlayerViewController) gui.getCurrentController();
-        Platform.runLater(new Thread(() -> controller.tabTurnNotActive(false)));
-        Platform.runLater(new Thread(() -> gui.showAlert(Alert.AlertType.ERROR, message.getMessage())));
+        Platform.runLater(new Thread(()-> gui.showAlert(Alert.AlertType.INFORMATION, "You are disconnected from the server")));
     }
 
-    @Override
-    public void visit(SendSpaceDevelopmentCardToClient developmentCardSpace) {
-        changeSceneThread("selectDevSpaceView");
-        SelectDevelopmentSpaceController controller = (SelectDevelopmentSpaceController) gui.getCurrentController();
-        Platform.runLater(new Thread(() -> controller.drawDevPlayer(developmentCardSpace.getDevelopmentCardSpace())));
-    }
-
-    @Override
-    public void visit(NotifyToClient message) {
-        Platform.runLater(new Thread(() -> gui.showAlert(Alert.AlertType.INFORMATION, message.getMessage())));
-    }
-
-    @Override
-    public void visit(NewTurnToClient newTurn) {
-        changeSceneThread("playerView");
-        gui.setLastTurn(newTurn);
-        PlayerViewController controller = (PlayerViewController) gui.getCurrentController();
-        if(newTurn.isYourTurn()){
-            Platform.runLater(new Thread(() -> controller.tabTurnNotActive(false)));
-        }else{
-            Platform.runLater(new Thread(() -> controller.tabTurnNotActive(true)));
-        }
-        Platform.runLater(new Thread(() -> controller.updateTable(newTurn.getDevelopmentCards(), newTurn.getMarket())));
-        Platform.runLater(new Thread(()-> controller.updatePlayerBoard(newTurn.getPlayers())));
-    }
-
-    @Override
-    public void visit(EndGameToClient message) {
-        changeSceneThread("playerView");
-        PlayerViewController controller = (PlayerViewController) gui.getCurrentController();
-        controller.updatePlayerBoard(message.getPlayerInformation());
-        controller.updateTable(message.getDevCard(), message.getMarket());
-        if(message.isLorenzo()){
-            controller.lorenzoFaith(message.getLorenzoPosition());
-        }
-        Platform.runLater(new Thread(() -> gui.showAlert(Alert.AlertType.INFORMATION, message.getMessage())));
-        Platform.runLater(new Thread(()-> controller.saveFinalPoints(message.getPlayersPoint())));
-        Platform.runLater(new Thread(()->controller.updatePlayerBoard(message.getPlayerInformation())));
-        connectionToServer.closeConnection();
-    }
-
-    @Override
-    public void visit(SendInitialResourcesToClient numResources) {
-        changeSceneThread("initialResourcesView");
-        InitialResourcesController controller = (InitialResourcesController) gui.getCurrentController();
-        Platform.runLater(new Thread(() -> controller.arriveInitialResources(numResources.getNumResources())));
-    }
-
-    @Override
-    public void visit(LorenzoActionToClient lorenzoAction) {
-        changeSceneThread("lorenzoView");
-        LorenzoController controller = (LorenzoController) gui.getCurrentController();
-        Platform.runLater(new Thread(() -> controller.drawSoloAction(lorenzoAction.getLorenzoAction(), lorenzoAction.getLorenzoPosition())));
-
-    }
-
-    @Override
-    public void visit(PingToClient ping) {
-
-    }
-
+    // -------------------------------------------------------
+    // EVENTS FOR THE START OF THE CONNECTION WITH THE CLIENT
+    // -------------------------------------------------------
     @Override
     public void visit(SendRoomRequestToClient roomRequest) {
         changeSceneThread("playerName");
@@ -157,6 +74,125 @@ public class EventHandlerGUI implements EventToClientVisitor {
         PlayerNameController controller = (PlayerNameController) gui.getCurrentController();
         Platform.runLater(new Thread(() -> controller.arriveNumPlayer(numPlayer.getMessage())));
     }
+
+    // ----------------------------------
+    // EVENT FOR THE INITIAL RESOURCES
+    // ----------------------------------
+    @Override
+    public void visit(SendInitialResourcesToClient numResources) {
+        changeSceneThread("initialResourcesView");
+        InitialResourcesController controller = (InitialResourcesController) gui.getCurrentController();
+        Platform.runLater(new Thread(() -> controller.arriveInitialResources(numResources.getNumResources())));
+    }
+
+    // -------------------------------------------
+    // EVENTS THAT RECEIVE LEADER CARD INFORMATION
+    // -------------------------------------------
+    @Override
+    public void visit(SendArrayLeaderCardsToClient leaderCardArray) {
+        if(leaderCardArray.isInitialLeaderCards()){
+            changeSceneThread("initialLeaderView");
+            InitialLeaderController controller = (InitialLeaderController) gui.getCurrentController();
+            Platform.runLater(new Thread(()-> controller.drawLeader(leaderCardArray.getLeaderCardArray())));
+        }else{
+            changeSceneThread("leaderCardView");
+            LeaderCardController controller = (LeaderCardController) gui.getCurrentController();
+            Platform.runLater(new Thread(() -> controller.drawLeader(leaderCardArray.getLeaderCardArray(), leaderCardArray.isFinal())));
+        }
+    }
+
+    // -------------------------------------------------------------------
+    // EVENT FOR THE NEW TURN, THIS EVENT UPDATE THE CLIENT INFORMATION
+    // -------------------------------------------------------------------
+
+    @Override
+    public void visit(NewTurnToClient newTurn) {
+        changeSceneThread("playerView");
+        gui.setLastTurn(newTurn);
+        PlayerViewController controller = (PlayerViewController) gui.getCurrentController();
+        if(newTurn.isYourTurn()){
+            Platform.runLater(new Thread(() -> controller.tabTurnNotActive(false)));
+        }else{
+            Platform.runLater(new Thread(() -> controller.tabTurnNotActive(true)));
+        }
+        Platform.runLater(new Thread(() -> controller.updateTable(newTurn.getDevelopmentCards(), newTurn.getMarket())));
+        Platform.runLater(new Thread(()-> controller.updatePlayerBoard(newTurn.getPlayers())));
+    }
+
+    // ----------------------------------
+    // EVENTS FOR THE MARKET TURN
+    // ----------------------------------
+    @Override
+    public void visit(SendReorganizeDepositToClient newResources) {
+        changeSceneThread("newDepositView");
+        NewDepositController controller = (NewDepositController) gui.getCurrentController();
+        Platform.runLater(new Thread(() -> controller.drawDeposit(newResources.getDepositResources(), newResources.getMarketResources(),
+                newResources.isAdditionalDeposit(), newResources.getType(), newResources.getAdditionalDepositState(), gui.getLastTurn().getPlayers().get(gui.getNamePlayer()).getLeaderCardActive(), false)) );
+    }
+
+    // ----------------------------------------
+    // EVENTS FOR THE BUY DEVELOPMENT CARD TURN
+    // ----------------------------------------
+    @Override
+    public void visit(TurnReselectionToClient message) {
+        changeSceneThread("playerView");
+        PlayerViewController controller = (PlayerViewController) gui.getCurrentController();
+        Platform.runLater(new Thread(() -> controller.tabTurnNotActive(false)));
+        Platform.runLater(new Thread(() -> gui.showAlert(Alert.AlertType.ERROR, message.getMessage())));
+    }
+
+    @Override
+    public void visit(SendSpaceDevelopmentCardToClient developmentCardSpace) {
+        changeSceneThread("selectDevSpaceView");
+        SelectDevelopmentSpaceController controller = (SelectDevelopmentSpaceController) gui.getCurrentController();
+        Platform.runLater(new Thread(() -> controller.drawDevPlayer(developmentCardSpace.getDevelopmentCardSpace())));
+    }
+
+    // ----------------------------------
+    // EVENT FOR NOTIFY THE CLIENT
+    // ----------------------------------
+    @Override
+    public void visit(NotifyToClient message) {
+        Platform.runLater(new Thread(() -> gui.showAlert(Alert.AlertType.INFORMATION, message.getMessage())));
+    }
+
+    // ----------------------------------
+    // FINAL EVENT
+    // ----------------------------------
+    @Override
+    public void visit(EndGameToClient message) {
+        changeSceneThread("playerView");
+        PlayerViewController controller = (PlayerViewController) gui.getCurrentController();
+        controller.updatePlayerBoard(message.getPlayerInformation());
+        controller.updateTable(message.getDevCard(), message.getMarket());
+        if(message.isLorenzo()){
+            controller.lorenzoFaith(message.getLorenzoPosition());
+        }
+        Platform.runLater(new Thread(() -> gui.showAlert(Alert.AlertType.INFORMATION, message.getMessage())));
+        Platform.runLater(new Thread(()-> controller.saveFinalPoints(message.getPlayersPoint())));
+        Platform.runLater(new Thread(()->controller.updatePlayerBoard(message.getPlayerInformation())));
+        connectionToServer.closeConnection();
+    }
+
+    // ----------------------------------
+    // EVENT FOR THE SINGLE GAME
+    // ----------------------------------
+    @Override
+    public void visit(LorenzoActionToClient lorenzoAction) {
+        changeSceneThread("lorenzoView");
+        LorenzoController controller = (LorenzoController) gui.getCurrentController();
+        Platform.runLater(new Thread(() -> controller.drawSoloAction(lorenzoAction.getLorenzoAction(), lorenzoAction.getLorenzoPosition())));
+
+    }
+
+    // ----------------------------------
+    // PING EVENT
+    // ----------------------------------
+    @Override
+    public void visit(PingToClient ping) {
+    }
+
+
 
     /**
      * This method creates a thread to update scene od the GUI application. Alsa This method uses a semaphore to wait that the GUI finishes to change scene.

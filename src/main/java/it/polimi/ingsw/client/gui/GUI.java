@@ -252,7 +252,6 @@ public class GUI extends Application {
      * @param scene The name of the scene that the GUI has to display.
      */
     public void changeScene(String scene){
-        System.out.println("cambio scena");
         currentController = controllers.get(scene);
         currentScene = scenes.get(scene);
         stage.setResizable(false);

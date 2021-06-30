@@ -138,7 +138,7 @@ public class PlayerViewController implements GUIController, Initializable {
                 playerMarkerPosition.put(s, faiths.get(i));
                 i++;
             }
-            System.out.println("array: " + gui.getPlayersName());
+
 
             initial=0;
         }
@@ -379,7 +379,6 @@ public class PlayerViewController implements GUIController, Initializable {
         // active
         leaderCardPlayer.forEach(lead -> lead.setImage(null));
         leaderText.forEach(text -> text.setText(""));
-        System.out.println(player.getLeaderCardActive().toString());
         if(player.getLeaderCardActive().size()!=0){
             int z=0;
             for(int i=0; i<player.getLeaderCardActive().size(); i++){
@@ -452,9 +451,6 @@ public class PlayerViewController implements GUIController, Initializable {
      * @param leaderInHand The leader card that the player has in hand.
      */
     private void drawLeaderCard(ArrayList<Image> leaderInHand){
-
-        System.out.println("leaderCardin hand "+  leaderInHand);
-        System.out.println("leaderCard hand gui "+ gui.getLeaderInHand());
         if(leaderInHand.size()!=0){
             for(int i=0; i<leaderCardPlayer.size(); i++){
                 if(leaderCardPlayer.get(i).getImage()!=null){

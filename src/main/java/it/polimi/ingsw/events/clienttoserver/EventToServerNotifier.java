@@ -59,7 +59,7 @@ public interface EventToServerNotifier {
     /**
      * Sends the actions on the leader cards choose by the player to the server.
      * @param actions The actions on the leader cards choose by the player.
-     * @param isFinal
+     * @param isFinal Is true if the event is sent at the final stage of the turn, is false if the event is sent at the initial stage of the turn.
      */
     void sendLeaderCardActions(ArrayList<Integer> actions, boolean isFinal);
 
@@ -77,7 +77,7 @@ public interface EventToServerNotifier {
     /**
      * Sends to the server the new deposit state and the discarded resources from the market that the player has managed in the market turn.
      * @param newDepositState The new deposit state choose by the player.
-     * @param discardResources The resources from the market that the player has discarded.
+     * @param discardResources The number of resources from the market that the player has discarded.
      * @param isAdditional Indicates if the player has some active additional deposit.
      * @param additionalDepositState The new state of the active additional deposit of the player.
      */
@@ -110,8 +110,8 @@ public interface EventToServerNotifier {
      * @param resourceRequested1 The first material choose by the player to use for the base production power.
      * @param resourceRequested2 The second material choose by the player to use for the base production power.
      * @param resourceGranted The resource that the player wants to generate from the base production power.
-     * @param useLeaders Is true if the player wants to use a leader card additional production, else false.
-     * @param materialLeaders The material choose by the player to use for the additional production power of the leader card.
+     * @param useLeaders The position of the leader card is true if the player wants to use a leader card additional production, else false. All the leader card that are not additional production are set on false in this ArrayList.
+     * @param materialLeaders The material chooses by the player to use for the additional production power of the leader cards.
      * @param useDevelop The development card that the player decides to activate.
      */
     void sendSelectedProductionDevelopmentCard(boolean useBaseProduction, Resource resourceRequested1, Resource resourceRequested2,

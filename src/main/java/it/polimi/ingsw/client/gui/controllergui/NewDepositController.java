@@ -89,11 +89,9 @@ public class NewDepositController implements GUIController, Initializable {
             this.addDepositType = addDepositType;
             depositState.addAll(addDepositState);
             if(addDepositType.size()==1){
-                System.out.println(addDepositState);
                 leaderDeposit0.forEach(img -> img.setDisable(false));
                 depositImg.addAll(leaderDeposit0);
             }else{
-                System.out.println(addDepositState);
                 leaderDeposit0.forEach(img -> img.setDisable(false));
                 leaderDeposit1.forEach(img -> img.setDisable(false));
                 depositImg.addAll(leaderDeposit0);
@@ -120,8 +118,6 @@ public class NewDepositController implements GUIController, Initializable {
         numStone.setText("X " + marketReceive.get("stone"));
         numServant.setText("X " + marketReceive.get("servant"));
         numCoin.setText("X " + marketReceive.get("coin"));
-
-        System.out.println(marketReceive.toString());
 
     }
 

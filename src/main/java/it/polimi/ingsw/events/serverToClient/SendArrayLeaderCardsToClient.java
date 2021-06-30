@@ -21,7 +21,7 @@ public class SendArrayLeaderCardsToClient extends EventToClient{
      * @param leaderCardArray The leader cards of the player.
      * @param numberOfDevelopmentCards The total number of the development card of the player.
      * @param initialLeaderCards If the event is for the choice of the initial leader cards or not.
-     * @param isFinal
+     * @param isFinal Is true if the event is sent at the final stage of the turn, is false if the event is sent at the initial stage of the turn.
      */
     public SendArrayLeaderCardsToClient(ArrayList<LeaderCardToClient> leaderCardArray, Map<String, Integer> numberOfDevelopmentCards, boolean initialLeaderCards, boolean isFinal) {
         this.leaderCardArray = leaderCardArray;
@@ -53,6 +53,10 @@ public class SendArrayLeaderCardsToClient extends EventToClient{
         return initialLeaderCards;
     }
 
+    /**
+     * Getter that returns the boolean that indicates if the event is sent from the server at the final stage or the initial stage of the turn.
+     * @return The boolean that indicates if the event is sent from the server at the final stage or the initial stage of the turn.
+     */
     public boolean isFinal() {
         return isFinal;
     }
