@@ -57,6 +57,8 @@ public class PlayerNameController implements GUIController, Initializable {
         booleanRoom.setDisable(true);
         buttonRoom.setDisable(true);
         text.setText(message);
+        textName.setOpacity(1);
+        textName.setDisable(false);
         buttonName.setOpacity(1);
         buttonName.setDisable(false);
     }
