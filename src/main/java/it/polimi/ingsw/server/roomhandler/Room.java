@@ -27,7 +27,7 @@ public class Room {
 
     private boolean start;
     private boolean fullPlayer;
-    private boolean finish;
+    private int numPlayerFinish = 0;
     private int numPlayer;
 
     private final Controller controller;
@@ -53,24 +53,9 @@ public class Room {
         this.numPlayer = -1;
         this.start = false;
         this.sendNumPlayer = false;
-        this.finish = false;
         controller = new Controller(connections);
         controllerConnection = new ControllerConnection(controller);
         disconnectionHandler = new DisconnectionHandler(controller, this);
-        /*
-        ping = new Thread(() -> {
-            while(!finish){
-                try {
-                    TimeUnit.SECONDS.sleep(10);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                connections.forEach((k,v) -> v.sendPing());
-            }
-        });
-        ping.start();
-
-         */
     }
 
 
@@ -230,10 +215,11 @@ public class Room {
      * Eliminates the room from the map of all the rooms in the server.
      */
     public synchronized void eliminateRoom(){
-        if(!finish){
-            finish = true;
+        numPlayerFinish++;
+        if(numPlayerFinish==numPlayer){
             server.getRooms().remove(roomNumber);
-            //ping.interrupt();
+
+            //connections.forEach((k,v) -> v.closeConnection());
         }
     }
 

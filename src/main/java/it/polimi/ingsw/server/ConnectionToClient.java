@@ -77,8 +77,8 @@ public class ConnectionToClient implements Runnable, EventToClientNotifier {
             clientSocket.setSoTimeout(21000);
         } catch (SocketException e) {
             e.printStackTrace();
-            closeConnection();
             disconnectionHandler.setNullConnection(namePlayer);
+            closeConnection();
         }
 
         ping = new Thread(() -> {
@@ -147,12 +147,12 @@ public class ConnectionToClient implements Runnable, EventToClientNotifier {
                 output.writeObject(event);   // write the event
                 output.flush();              // send the event
                 output.reset();              // clean buffer
-            } catch (IOException e) { //TODO specifico
+            } catch (IOException e) {
                 closeConnection();
                 if(namePlayer!=null){
-                    disconnectionHandler.setNullConnection(namePlayer); //TODO specifico
+                    disconnectionHandler.setNullConnection(namePlayer);
                 }
-                e.printStackTrace();
+                //e.printStackTrace();
             }
         }
     }
@@ -202,9 +202,9 @@ public class ConnectionToClient implements Runnable, EventToClientNotifier {
         } catch (IOException e) {
             closeConnection();
             if(namePlayer!=null){
-                disconnectionHandler.setNullConnection(namePlayer); //TODO specifico
+                disconnectionHandler.setNullConnection(namePlayer);
             }
-            e.printStackTrace();
+            //e.printStackTrace();
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
@@ -306,7 +306,6 @@ public class ConnectionToClient implements Runnable, EventToClientNotifier {
         EndGameToClient endGameToClient = new EndGameToClient(message, playersPoint, playerInformationToSend(players, faithTrack),
                                             lorenzo, lorenzoPosition, developmentCardAvailableToSend(devCard), marketToSend(market));
         asyncSendEvent(endGameToClient);
-        closeConnection();
         disconnectionHandler.removeRoom();
     }
 

@@ -66,7 +66,7 @@ public class RoomHandler implements EventToServerInitialVisitor, ObserveConnecti
 
     @Override
     public void visit(SendPlayerNameToServer playerName) {
-        System.out.println("il nome è " + playerName.getPlayerName());
+        //System.out.println("the name is " + playerName.getPlayerName());
         if(checkDoublePlayerName(playerName.getPlayerName())){ // if the room doesn't have another player with the same name of the player that try to reconnected.
             tmpConnection.setNamePlayer(playerName.getPlayerName());
 
@@ -88,7 +88,7 @@ public class RoomHandler implements EventToServerInitialVisitor, ObserveConnecti
                 }
             }else if(!tmpRoom.isSendNumPlayer()){   // if is the first player that is connected in the room he has to insert the number of player of the match.
                 tmpRoom.addConnectionToClient(tmpConnection.getNamePlayer(), tmpConnection, false);
-                System.out.println("send number of player request to room " + tmpRoom.getRoomNumber());
+                //System.out.println("send number of player request to room " + tmpRoom.getRoomNumber());
                 tmpConnection.sendNumPlayerRequest("You are the first, write number of player");
                 tmpRoom.setSendNumPlayer(true);
                 // TODO dovrei salvarmi anche il nome di chi lo ha mandato per poterlo rimandare in caso che non mi risponde
@@ -102,7 +102,7 @@ public class RoomHandler implements EventToServerInitialVisitor, ObserveConnecti
                 tmpConnection.sendRoomRequestToClient("the match in this room has already start: select another room");
             }else if(tmpRoom.isStart() && !tmpRoom.isFullPlayer()){ // if the match is start but is not full of player --> player that try to rejoin the match.
                 if(checkReconnection(playerName.getPlayerName())){
-                    System.out.println("try reconnection of player: " +playerName.getPlayerName() + " to room: " + tmpRoom.getRoomNumber());
+                    //System.out.println("try reconnection of player: " +playerName.getPlayerName() + " to room: " + tmpRoom.getRoomNumber());
                     tmpRoom.addConnectionToClient(tmpConnection.getNamePlayer(), tmpConnection, true);
                 }else{
                     tmpConnection.sendNamePlayerRequest("This player is not disconnected, write the old nickname");

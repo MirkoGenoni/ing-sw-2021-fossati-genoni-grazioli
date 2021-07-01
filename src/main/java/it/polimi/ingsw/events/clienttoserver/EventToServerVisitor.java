@@ -94,7 +94,13 @@ public interface EventToServerVisitor {
     // ------------------------------------------------------
     // EVENTS FOR NEW TURN INTERACTION
     // ------------------------------------------------------
-    //TODO sitemare non necessario
+
+    /**
+     * Visit method for the choose of the type of the turn that the player choose. This method is used only for the debug and test.
+     * If the player on the CLI types 'turn' the player skip the turn.
+     * @param turn The type of turn choose by the player.
+     * @see TurnPlayedToServer
+     */
     void visit(TurnPlayedToServer turn);
 
 

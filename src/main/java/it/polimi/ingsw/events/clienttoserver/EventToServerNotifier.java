@@ -121,7 +121,13 @@ public interface EventToServerNotifier {
     // ------------------------------------------------------
     // EVENT FOR NEW TURN INTERACTION
     // ------------------------------------------------------
-    void sendTurnPlayed(String turnType);//TODO remove
+
+    /**
+     * Sends to the server the type of the turn that the player choose. This method is used only for the debug and test.
+     * If the player on the CLI types 'turn' the player skip the turn.
+     * @param turnType The type of turn choose by the player.
+     */
+    void sendTurnPlayed(String turnType);
 
 
     // ----------------------------------

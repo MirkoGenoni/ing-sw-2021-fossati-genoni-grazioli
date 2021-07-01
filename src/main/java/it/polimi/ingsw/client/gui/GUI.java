@@ -54,7 +54,7 @@ public class GUI extends Application {
 
     //tmp
     private NewTurnToClient lastTurn;
-    private ArrayList<Image> leaderInHand;
+    private ArrayList<Image> leaderInHand = new ArrayList<>();
     private ArrayList<String> playersName = new ArrayList<>();
 
     //---------------------------

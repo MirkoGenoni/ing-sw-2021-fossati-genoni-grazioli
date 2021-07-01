@@ -42,13 +42,13 @@ public class ControllerConnection implements EventToServerVisitor, ObserveConnec
     // -------------------------------------------
     @Override
     public void visit(DiscardInitialLeaderCards leaderCards) {
-        System.out.println("scarto le leaderCard di " + leaderCards.getPlayerName());
+        //System.out.println("discard the leader card of " + leaderCards.getPlayerName());
         controller.discardInitialLeaderCards(leaderCards.getPlayerName(), leaderCards.getLeaderCard1(), leaderCards.getLeaderCard2());
     }
 
     @Override
     public void visit(SendLeaderCardToServer leaderCardTurn) {
-        System.out.println("mi è arrivato il turno gioca-leader");
+        //System.out.println("arrives played leader turn");
         controller.leaderCardTurn(leaderCardTurn.getPlayerName(), leaderCardTurn.getActions(), leaderCardTurn.isFinal());
 
     }
@@ -58,13 +58,13 @@ public class ControllerConnection implements EventToServerVisitor, ObserveConnec
     // -------------------------------------------
     @Override
     public void visit(ChooseLineToServer numLine) {
-        System.out.println("mi è arrivato il turno chooseline");
+        //System.out.println("arrived market turn choose line");
         controller.marketChooseLine(numLine.getPlayerName() ,numLine.getNumLine(), numLine.getMarketWhiteChangeActivation());
     }
 
     @Override
     public void visit(NewDepositStateToServer newDepositState) {
-        System.out.println("ho ricevuto il nuovo stato del deposito");
+        //System.out.println("received the new deposit");
         controller.saveNewDepositState(newDepositState.getNewDepositState(), newDepositState.getDiscardResources(), newDepositState.isAdditional(), newDepositState.getAdditionalDepositState());
     }
 
@@ -73,13 +73,13 @@ public class ControllerConnection implements EventToServerVisitor, ObserveConnec
     // ------------------------------------------------------
     @Override
     public void visit(SelectedDevelopmentCardToBuyToServer selectedDevelopmentCard) {
-        System.out.println("ho ricevuto la carta da acquistare");
+        //System.out.println("received the development card selected");
         controller.buyDevelopmentCard(selectedDevelopmentCard.getColor(), selectedDevelopmentCard.getLevel());
     }
 
     @Override
     public void visit(SelectedDevelopmentCardSpaceToServer selectedDevelopmentCardSpace) {
-        System.out.println("ho ricevuto lo spazio development card");
+        //System.out.println("arrived selected space development");
         controller.spaceDevelopmentCard(selectedDevelopmentCardSpace.getSpace());
     }
 
@@ -88,7 +88,7 @@ public class ControllerConnection implements EventToServerVisitor, ObserveConnec
     // ------------------------------------------------------
     @Override
     public void visit(SelectedProductionToServer sendProductionDevelopmentCard) {
-        System.out.println("ho ricevuto il turno di usare produzioni");
+        //System.out.println("arrived activate production turn");
         controller.activateProduction(sendProductionDevelopmentCard.isUseBaseProduction(), sendProductionDevelopmentCard.getResourceRequested1(),
                                                 sendProductionDevelopmentCard.getResourceRequested2(), sendProductionDevelopmentCard.getResourceGranted(),
                                                 sendProductionDevelopmentCard.getUseLeaders(), sendProductionDevelopmentCard.getMaterialLeaders(),
@@ -100,7 +100,7 @@ public class ControllerConnection implements EventToServerVisitor, ObserveConnec
     // ------------------------------------------------------
     @Override
     public void visit(TurnPlayedToServer turn) {
-        System.out.println("mi è arrivato il messaggio di turno giocato");
+        //System.out.println("turn skipped for testing");
         if(turn.getTurnType().equals("turn") && controller.checkMultiplayer()){
             controller.newTurn( true);
         }

@@ -37,11 +37,10 @@ public class MarketTurn {
      *                                the player want to use
      */
     public void marketChooseLine(String namePlayer, int line, ArrayList<Boolean> leaderMarketWhiteChange){ //TODO nameplayer
-        System.out.println("aggiungo al player");
+
         int currentPlayerIndex = controller.getCurrentPlayerIndex();
         Player activePlayer = controller.getPlayers()[currentPlayerIndex];
         ArrayList<Marble> tmpM =  controller.getGame().getMarketBoard().chooseLine(line);
-        System.out.println(tmpM);
         int section = controller.getGame().getPlayersFaithTrack().getSection(controller.getCurrentPlayerIndex());
 
         if(tmpM.contains(Marble.FAITH)){    // se ci sono marble di tipo faith incrementa direttamente la pedina del giocatore sul tracciato fede
@@ -71,7 +70,6 @@ public class MarketTurn {
                 System.out.println(activePlayer.getName() + e.getMessage());
             }
         }
-        System.out.println(tmpM);
         while(tmpM.contains(Marble.NOTHING)){           // toglie le marble nothing in eccesso
             tmpM.remove(Marble.NOTHING);
         }
@@ -96,7 +94,7 @@ public class MarketTurn {
      */
     public boolean saveNewDepositState(ArrayList<Resource> newDepositState, int discardResources, boolean isAdditional, ArrayList<Resource> additionalDepositState){
         Player activePlayer = controller.getActivePlayer();
-        System.out.println(" riscorse scartate " +discardResources);
+        //System.out.println(" discarded " +discardResources + "resources");
         boolean tmp = false;
         int savePlayer = -1;
         int section=0;

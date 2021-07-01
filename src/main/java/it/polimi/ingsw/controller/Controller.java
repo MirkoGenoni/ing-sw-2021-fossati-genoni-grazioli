@@ -151,7 +151,7 @@ public class Controller {
      * @param numPlayer how many players are going to play
      */
     public void setNumPlayer(int numPlayer) {
-        System.out.println("ho settato il numero di giocatori");
+        //System.out.println("Sets the numebr of player");
         this.numPlayer = numPlayer;
     }
 
@@ -168,8 +168,9 @@ public class Controller {
      * @throws StartGameException if there's any problem in starting game
      */
     public void startMatch() throws StartGameException {
-        connections.forEach((k,v) -> v.sendNotify("AllPlayersConnected"));
-        //connectionsToClient.forEach(cc -> cc.sendNotify("AllPlayersConnected"));
+        if(numPlayer!=1){
+            connections.forEach((k,v) -> v.sendNotify("AllPlayersConnected"));
+        }
         currentPlayerIndex = connections.keySet().size();
         if(numPlayer > 1){
             multiGame = new MultiPlayerGame(numPlayer);
@@ -179,12 +180,11 @@ public class Controller {
                 players[i] = tmpP;
                 multiGame.addPlayer(tmpP);
             }
-            game = multiGame; // riguardo
+            game = multiGame;
             multiGame.startGame();
-            // per barare
             currentPlayerIndex = (int) (Math.random()*numPlayer);
             firstPlayer=currentPlayerIndex;
-            System.out.println("il primo giocatre ha indirizzo: " + currentPlayerIndex);
+            //System.out.println("The first player address is: " + currentPlayerIndex);
             initialResources(currentPlayerIndex);
             activePlayer = players[currentPlayerIndex] ;
             /*
@@ -221,20 +221,18 @@ public class Controller {
             this.activePlayer = players[0];
             turnNumber = 0;
             createTurns();
-            System.out.println("creo lorenzo");
+            //System.out.println("create lorenzo");
             lorenzoTurn = new LorenzoTurn(this, singleGame);
 
-            //TODO PER CHEATTARE
+            // -------------------------------------------
+            // CHEATING SINGLE PLAYER
+            // -------------------------------------------
             if(false) {
                 Map<Resource, Integer> cheatMap = new HashMap<>();
                 for (Resource r : Resource.values())
                     cheatMap.put(r, 99);
                 players[0].getPlayerBoard().getResourceHandler().addMaterialStrongbox(cheatMap);
             }
-
-
-            // nuovo turno da rivedere
-            //newTurn();
         }
     }
 
@@ -257,7 +255,7 @@ public class Controller {
      * @param nextPlayer specify if the controller has to pass the turn to a new player
      */
     public void newTurn(boolean nextPlayer){
-        System.out.println("è iniziato un nuovo turno");
+        //System.out.println("new turn starts");
         if(nextPlayer){
             activePlayer = nextPlayer();
         }
@@ -282,7 +280,6 @@ public class Controller {
             int winnerPoint=0;
             String winnerName="";
             for(int i=0; i<players.length; i++ ){
-                //String name = connectionsToClient.get(i).getNamePlayer();
                 String name = players[i].getName();
                 int playerPoints = endGame.calculatePoints(i);
                 playersPoint.put(name, playerPoints);
@@ -343,7 +340,6 @@ public class Controller {
             }
         }
         playerWithInitialResource.remove(playerName);
-        System.out.println(playerWithInitialResource + "  sggdfgdfd");
         if(playerWithInitialResource.size()==0){
             for(int i =0; i< players.length; i++){
                 if(!playerDisconnected.contains(players[i].getName())){
@@ -369,14 +365,14 @@ public class Controller {
         for(int i =0; i< players.length; i++){
             if(playerName.equals(players[i].getName())){
                 try{
-                    System.out.println("rimuovo le carte di: " + playerName);
+                    //System.out.println("remove the leader card of" + playerName);
                     players[i].getPlayerBoard().getLeaderCardHandler().removeInitialLeaderCard(leaderCard1, leaderCard2);
                 } catch (LeaderCardException e) {
                     e.printStackTrace();
                 }
             }
         }
-        // il gioco parte solo quando tutti i giocatori hanno scartato le carte leader iniziali
+        // The game start only when all the player have discarded the initial leader card
         int playerDiscard = 0;
         for(int i=0; i<players.length; i++){
             try {
@@ -549,9 +545,9 @@ public class Controller {
                 connections.get(players[currentPlayerIndex].getName()).sendEndGame("You lost, LORENZO WINS!!!", null, players,
                         game.getPlayersFaithTrack(), true, game.getPlayersFaithTrack().getPosition(1), game.getDevelopmentCardsAvailable(), game.getMarketBoard());
             }
-            return false; // se è single game
+            return false; // if is single game
         }else{
-            return true; // se è multiplayer
+            return true; // if is multiplayer
         }
     }
 
