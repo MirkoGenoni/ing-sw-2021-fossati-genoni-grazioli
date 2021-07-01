@@ -21,7 +21,6 @@ The game has been realized by the group 27 formed by:
 | Resilience to disconnection | ![GREEN](https://github.com/MirkoGenoni/ing-sw-2021-fossati-genoni-grazioli/blob/main/githubresources/Tick.png)
 | Persistence | [![RED](https://github.com/MirkoGenoni/ing-sw-2021-fossati-genoni-grazioli/blob/main/githubresources/Cross.png)]() |
 | Parameter Editor | [![RED](https://github.com/MirkoGenoni/ing-sw-2021-fossati-genoni-grazioli/blob/main/githubresources/Cross.png)]() |
-| Resilience to disconnections | [![RED](https://github.com/MirkoGenoni/ing-sw-2021-fossati-genoni-grazioli/blob/main/githubresources/Cross.png)]() |
 
 ## How to run
 In the [derivable](https://github.com/MirkoGenoni/ing-sw-2021-fossati-genoni-grazioli/tree/main/deliverables) folder, inside the jar folder there will be two .jar files that needs to be downloaded:
@@ -99,7 +98,7 @@ To run this file you need to install the **java sdk v.16** downloadable from [he
 - #### **CLI/GUI**
 
 The program has been tested on debian using **x-term** and **mate-terminal**, on gnome desktop ambient there seems to be no problems, exactly as with the mac os x terminal, using kde it seems to be problems due to the system lock on terminal resizing, so it can be necessary  to manually resize the window. All the cli pages are 123x46 characters.
-- You can now run the jar using:
+You can now run the jar using:
 
 ```shell
 > /path-where-you-extracted/java -jar /path-to-executable/MasterOfRenaissance-Server.jar
