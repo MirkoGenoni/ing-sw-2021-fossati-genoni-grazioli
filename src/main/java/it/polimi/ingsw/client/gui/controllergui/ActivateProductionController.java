@@ -26,6 +26,7 @@ import java.util.*;
  */
 public class ActivateProductionController implements GUIController, Initializable {
     private GUI gui;
+    private boolean firstUse;
 
     private Map <String,Image> resources;
 
@@ -113,6 +114,16 @@ public class ActivateProductionController implements GUIController, Initializabl
                 leaderSelected[i] = false;
             }
 
+        }
+
+        if(firstUse){
+            Alert alert =  new Alert(Alert.AlertType.INFORMATION);
+            alert.getDialogPane().getStylesheets().add(String.valueOf(getClass().getResource("/css/alertStyle.css")));
+            alert.setHeaderText("How select resources to choose:");
+            alert.setContentText(" (For the base production power and leader card additional production) \n" +
+                    "Click on  the unknown resource and continue to click until there isn't the resource want");
+            alert.show();
+            firstUse = false;
         }
     }
 
@@ -235,6 +246,7 @@ public class ActivateProductionController implements GUIController, Initializabl
         leadAdditionalProduction = new ArrayList<>(List.of(leader0, leader1));
         selectionLead = new ArrayList<>(List.of(lead0sel, lead1sel));
         resourceLead = new ArrayList<>(List.of(resourceLead0, resourceLead1));
+        firstUse = true;
     }
 
     /**

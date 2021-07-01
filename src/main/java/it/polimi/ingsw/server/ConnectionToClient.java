@@ -36,7 +36,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * This class is the remote view of the MVC patter.
  * It is used to manage the connection with the client.
- * It communicate with che controller to send information to the client and to send information from the client to the controller
+ * It communicates with che controller to send information to the client and to send information from the client to the controller
  * Implements EventToClientNotifier interface and Runnable interface.
  * @see EventToClientNotifier
  * @see Runnable

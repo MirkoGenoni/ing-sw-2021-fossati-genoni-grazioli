@@ -25,8 +25,6 @@ public class EventHandlerGUI implements EventToClientVisitor {
     private final ConnectionToServer connectionToServer;
     private final GUI gui;
 
-
-
     /**
      * Constructs the class with the connection with the server and the GUI application.
      * @param connectionToServer The connection with the server.
@@ -47,7 +45,9 @@ public class EventHandlerGUI implements EventToClientVisitor {
     }
 
 
-
+    /**
+     * This method notify to the user the disconnection from server with an alert.
+     */
     public void closeConnectionAlert(){
         changeSceneThread("playerView");
         Platform.runLater(new Thread(()-> gui.showAlert(Alert.AlertType.INFORMATION, "You are disconnected from the server")));
@@ -163,15 +163,22 @@ public class EventHandlerGUI implements EventToClientVisitor {
     public void visit(EndGameToClient message) {
         changeSceneThread("playerView");
         PlayerViewController controller = (PlayerViewController) gui.getCurrentController();
-        controller.updatePlayerBoard(message.getPlayerInformation());
-        controller.updateTable(message.getDevCard(), message.getMarket());
-        if(message.isLorenzo()){
-            controller.lorenzoFaith(message.getLorenzoPosition());
+        Platform.runLater(new Thread(() -> gui.showAlert(Alert.AlertType.INFORMATION, message.getMessage() + " -> You are disconnected from the server")));
+        if(message.getPlayersPoint()!=null){
+            Platform.runLater(new Thread(()-> controller.saveFinalPoints(message.getPlayersPoint())));
         }
-        Platform.runLater(new Thread(() -> gui.showAlert(Alert.AlertType.INFORMATION, message.getMessage())));
-        Platform.runLater(new Thread(()-> controller.saveFinalPoints(message.getPlayersPoint())));
+
         Platform.runLater(new Thread(()->controller.updatePlayerBoard(message.getPlayerInformation())));
+        Platform.runLater(new Thread(() -> controller.updateTable(message.getDevCard(), message.getMarket())));
+        if(message.isLorenzo()){
+            Platform.runLater(new Thread(() -> controller.lorenzoFaith(message.getLorenzoPosition())));
+        }
+        System.out.println("\u001B[92m" + message.getMessage() + "\u001B[0;0m");
+        System.out.println("\u001B[92m" + "GAME ENDED" + "\u001B[0;0m");
+        System.out.println("\u001B[92m" +   "You are disconnected from the server" + "\u001B[0;0m");
+
         connectionToServer.closeConnection();
+
     }
 
     // ----------------------------------

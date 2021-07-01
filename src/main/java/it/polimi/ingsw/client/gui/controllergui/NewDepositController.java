@@ -6,6 +6,7 @@ import it.polimi.ingsw.model.resource.Resource;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -25,6 +26,7 @@ import java.util.*;
 public class NewDepositController implements GUIController, Initializable {
     private GUI gui;
     private boolean isInitial;
+    private boolean firstUse;
 
     private Map<String, Image> resources;
     private ArrayList<ImageView> depositImg;
@@ -119,6 +121,16 @@ public class NewDepositController implements GUIController, Initializable {
         numServant.setText("X " + marketReceive.get("servant"));
         numCoin.setText("X " + marketReceive.get("coin"));
 
+        if(firstUse){
+            Alert alert =  new Alert(Alert.AlertType.INFORMATION);
+            alert.getDialogPane().getStylesheets().add(String.valueOf(getClass().getResource("/css/alertStyle.css")));
+            alert.setHeaderText("Use of the deposit:");
+            alert.setContentText("Click on a resource in the column of the total resource and after click on a deposit space to move the resources into the deposit;\n" +
+                    "Click two time to remove the resources from the deposit;\n" +
+                    "Click on a resources in the deposit and on another resources in the deposit or on a deposit space to move the resources.");
+            alert.show();
+            firstUse = false;
+        }
     }
 
     /**
@@ -235,6 +247,7 @@ public class NewDepositController implements GUIController, Initializable {
         leaderDeposit0 = new ArrayList<>(List.of(addDeposit00, addDeposit01));
         leaderDeposit1 = new ArrayList<>(List.of(addDeposit10, addDeposit11));
         leaderAdditional = new ArrayList<>(List.of(leader0, leader1));
+        firstUse = true;
     }
 
     @Override

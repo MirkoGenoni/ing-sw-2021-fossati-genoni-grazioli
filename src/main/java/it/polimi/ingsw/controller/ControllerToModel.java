@@ -281,7 +281,7 @@ public class ControllerToModel {
             Map<String, Integer> playersPoint = new HashMap<>();
             int winnerPoint=0;
             String winnerName="";
-            for(int i=0; i<players.length-1; i++ ){
+            for(int i=0; i<players.length; i++ ){
                 //String name = connectionsToClient.get(i).getNamePlayer();
                 String name = players[i].getName();
                 int playerPoints = endGame.calculatePoints(i);
@@ -544,10 +544,9 @@ public class ControllerToModel {
      * @return true if there are more than one player
      */
     public boolean checkMultiplayer(){
-        //TODO metodo da mettere private dopo aver tolto il turn dalle opzioni di scelta!!!!!!
         if(turnNumber != 0 && players.length == 1){
             if(lorenzoTurn.playLorenzo()){
-                connections.get(players[currentPlayerIndex].getName()).sendEndGame("You lost, LORENZO WINS!!", null, players,
+                connections.get(players[currentPlayerIndex].getName()).sendEndGame("You lost, LORENZO WINS!!!", null, players,
                         game.getPlayersFaithTrack(), true, game.getPlayersFaithTrack().getPosition(1), game.getDevelopmentCardsAvailable(), game.getMarketBoard());
             }
             return false; // se è single game

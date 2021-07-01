@@ -191,7 +191,7 @@
                         <Font size="18.0" />
                      </font>
                   </Button>
-                  <Label contentDisplay="CENTER" layoutX="297.0" layoutY="113.0" prefHeight="52.0" prefWidth="607.0" styleClass="label2" text="It's Yourn Turn, Choose One:" textAlignment="CENTER">
+                  <Label contentDisplay="CENTER" layoutX="297.0" layoutY="113.0" prefHeight="52.0" prefWidth="607.0" styleClass="label2" text="It's Your Turn, Choose One:" textAlignment="CENTER">
                      <font>
                         <Font size="31.0" />
                      </font>
