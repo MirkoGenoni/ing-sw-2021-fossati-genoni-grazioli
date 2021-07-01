@@ -132,10 +132,7 @@ public class CLIHandler {
     }
 
     public void leaderCardSelection(ArrayList<LeaderCardToClient> received, boolean initial, Map<String, Integer> totalReceived, boolean isFinal){
-        if(asyncPrintPre.isAlive())
-            asyncPrintPre.interrupt();
-        if(asyncPrintPost.isAlive())
-            asyncPrintPost.interrupt();
+        stopAsyncPrint();
 
         LeaderCardView leaderCardSelection = new LeaderCardView(new ArrayList<>(received), totalReceived);
 
@@ -552,5 +549,12 @@ public class CLIHandler {
                 asyncPrintPost.start();
             }
         }
+    }
+
+    public void stopAsyncPrint(){
+        if(asyncPrintPre.isAlive())
+            asyncPrintPre.interrupt();
+        if(asyncPrintPost.isAlive())
+            asyncPrintPost.interrupt();
     }
 }
