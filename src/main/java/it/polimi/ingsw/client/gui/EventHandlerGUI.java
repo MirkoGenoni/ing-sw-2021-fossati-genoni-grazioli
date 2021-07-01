@@ -163,7 +163,7 @@ public class EventHandlerGUI implements EventToClientVisitor {
     public void visit(EndGameToClient message) {
         changeSceneThread("playerView");
         PlayerViewController controller = (PlayerViewController) gui.getCurrentController();
-        Platform.runLater(new Thread(() -> gui.showAlert(Alert.AlertType.INFORMATION, message.getMessage() + " -> You are disconnected from the server")));
+        Platform.runLater(new Thread(() -> gui.showAlert(Alert.AlertType.INFORMATION, message.getMessage())));
         if(message.getPlayersPoint()!=null){
             Platform.runLater(new Thread(()-> controller.saveFinalPoints(message.getPlayersPoint())));
         }
@@ -175,7 +175,6 @@ public class EventHandlerGUI implements EventToClientVisitor {
         }
         System.out.println("\u001B[92m" + message.getMessage() + "\u001B[0;0m");
         System.out.println("\u001B[92m" + "GAME ENDED" + "\u001B[0;0m");
-        System.out.println("\u001B[92m" +   "You are disconnected from the server" + "\u001B[0;0m");
 
         //connectionToServer.closeConnection();
 
