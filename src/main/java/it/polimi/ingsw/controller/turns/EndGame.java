@@ -1,6 +1,6 @@
 package it.polimi.ingsw.controller.turns;
 
-import it.polimi.ingsw.controller.ControllerToModel;
+import it.polimi.ingsw.controller.Controller;
 import it.polimi.ingsw.model.developmentcard.DevelopmentCard;
 import it.polimi.ingsw.model.exceptions.LeaderCardException;
 import it.polimi.ingsw.model.faithtrack.FaithTrack;
@@ -16,14 +16,14 @@ import java.util.Map;
  * @author davide grazioli
  */
 public class EndGame {
-    private final ControllerToModel controllerToModel;
+    private final Controller controller;
 
     /**
      * constructor of the class
-     * @param controllerToModel controller to model that manages the game for players
+     * @param controller controller to model that manages the game for players
      */
-    public EndGame(ControllerToModel controllerToModel) {
-        this.controllerToModel = controllerToModel;
+    public EndGame(Controller controller) {
+        this.controller = controller;
     }
 
     /**
@@ -45,8 +45,8 @@ public class EndGame {
      * @return the amount of acquired points
      */
     public int calculatePoints(int playerIndex){
-        Player player = controllerToModel.getPlayers()[playerIndex];
-        FaithTrack faithTrack = controllerToModel.getGame().getPlayersFaithTrack();
+        Player player = controller.getPlayers()[playerIndex];
+        FaithTrack faithTrack = controller.getGame().getPlayersFaithTrack();
 
         int totalVictoryPoints = 0;
         // victory point of development cards
@@ -78,8 +78,8 @@ public class EndGame {
      */
     private boolean checkFaithTrackPosition(){
         boolean tmp = false;
-        for(int i=0; i < controllerToModel.getPlayers().length; i++){
-            if(controllerToModel.getGame().getPlayersFaithTrack().getPosition(i) == 24){
+        for(int i = 0; i < controller.getPlayers().length; i++){
+            if(controller.getGame().getPlayersFaithTrack().getPosition(i) == 24){
                 tmp = true;
             }
         }
@@ -92,8 +92,8 @@ public class EndGame {
      */
     private boolean checkDevelopmentCardNumber(){
         boolean tmp = false;
-        for(int i=0; i < controllerToModel.getPlayers().length; i++){
-            if(controllerToModel.getPlayers()[i].getPlayerBoard().getDevelopmentCardHandler().getDevelopmentCardColl().size()==7){
+        for(int i = 0; i < controller.getPlayers().length; i++){
+            if(controller.getPlayers()[i].getPlayerBoard().getDevelopmentCardHandler().getDevelopmentCardColl().size()==7){
                 tmp = true;
             }
         }
@@ -106,9 +106,9 @@ public class EndGame {
      * @return the amount of the point collected from the resources for a player  
      */
     private int calculateResources(int playerIndex){
-        ArrayList<Resource> depositResources = controllerToModel.getPlayers()[playerIndex].getPlayerBoard().getResourceHandler().getDepositState();
-        ArrayList<Resource> additionalDepositResources = controllerToModel.getPlayers()[playerIndex].getPlayerBoard().getResourceHandler().getAdditionalDeposit();
-        Map<Resource, Integer> strongboxResources = controllerToModel.getPlayers()[playerIndex].getPlayerBoard().getResourceHandler().getStrongboxState();
+        ArrayList<Resource> depositResources = controller.getPlayers()[playerIndex].getPlayerBoard().getResourceHandler().getDepositState();
+        ArrayList<Resource> additionalDepositResources = controller.getPlayers()[playerIndex].getPlayerBoard().getResourceHandler().getAdditionalDeposit();
+        Map<Resource, Integer> strongboxResources = controller.getPlayers()[playerIndex].getPlayerBoard().getResourceHandler().getStrongboxState();
         int resources = 0;
         // resources from deposit
         for(int i = 0; i< depositResources.size(); i++){

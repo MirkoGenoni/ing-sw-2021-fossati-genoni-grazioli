@@ -1,6 +1,6 @@
 package it.polimi.ingsw.server;
 
-import it.polimi.ingsw.controller.ControllerToModel;
+import it.polimi.ingsw.controller.Controller;
 import it.polimi.ingsw.model.exceptions.LeaderCardException;
 import it.polimi.ingsw.model.resource.Resource;
 import it.polimi.ingsw.server.roomhandler.Room;
@@ -13,16 +13,16 @@ import java.util.ArrayList;
  * @author Stefano Fossati.
  */
 public class DisconnectionHandler {
-    private final ControllerToModel controllerToModel;
+    private final Controller controller;
     private final Room room;
 
     /**
      * Constructs the class with the room and it controller.
-     * @param controllerToModel The controller of the room.
+     * @param controller The controller of the room.
      * @param room The room of the match.
      */
-    public DisconnectionHandler(ControllerToModel controllerToModel, Room room) {
-        this.controllerToModel = controllerToModel;
+    public DisconnectionHandler(Controller controller, Room room) {
+        this.controller = controller;
         this.room = room;
     }
 
@@ -32,28 +32,28 @@ public class DisconnectionHandler {
      * @param name The name of the client/player that has disconnected.
      */
     public synchronized void setNullConnection(String name){
-        controllerToModel.getConnections().remove(name);
+        controller.getConnections().remove(name);
         if(room.isStart()){
-            controllerToModel.getPlayerDisconnected().add(name);
+            controller.getPlayerDisconnected().add(name);
 
             room.setFullPlayer(false);
 
             //check if the player have choose initial resource: true --> doesn't choose resources
-            if(controllerToModel.getPlayerWithInitialResource().contains(name)){
+            if(controller.getPlayerWithInitialResource().contains(name)){
                 ArrayList<Resource> tmpR = new ArrayList();
                 for(int i=0; i<6; i++){
                     tmpR.add(null);
                 }
-                controllerToModel.initialResourcesChoose(tmpR ,name);
+                controller.initialResourcesChoose(tmpR ,name);
             }
 
             // check if the player haven't discard the initial leader card: true --> discard random card
-            for(int i=0; i<controllerToModel.getPlayers().length; i++){
-                if(controllerToModel.getPlayers()[i].getName().equals(name)){
+            for(int i = 0; i< controller.getPlayers().length; i++){
+                if(controller.getPlayers()[i].getName().equals(name)){
                     try {
-                        if(controllerToModel.getPlayers()[i].getPlayerBoard().getLeaderCardHandler().getLeaderCardsAvailable().size()!=0 &&
-                                controllerToModel.getPlayers()[i].getPlayerBoard().getLeaderCardHandler().getLeaderCardsAvailable().size()>2){
-                            controllerToModel.discardInitialLeaderCards(name, 0, 1);
+                        if(controller.getPlayers()[i].getPlayerBoard().getLeaderCardHandler().getLeaderCardsAvailable().size()!=0 &&
+                                controller.getPlayers()[i].getPlayerBoard().getLeaderCardHandler().getLeaderCardsAvailable().size()>2){
+                            controller.discardInitialLeaderCards(name, 0, 1);
                         }
                     } catch (LeaderCardException e) {
                         System.out.println(e.getMessage());
@@ -61,8 +61,8 @@ public class DisconnectionHandler {
                     }
                 }
             }
-            if(name.equals(controllerToModel.getActivePlayer().getName())){
-                controllerToModel.newTurn(true);
+            if(name.equals(controller.getActivePlayer().getName())){
+                controller.newTurn(true);
             }
         }
 
@@ -72,8 +72,8 @@ public class DisconnectionHandler {
         }
 
         if(!room.isStart()){
-            controllerToModel.getOrderPlayerConnections().remove(name);
-            if(controllerToModel.getConnections().size()==0){
+            controller.getOrderPlayerConnections().remove(name);
+            if(controller.getConnections().size()==0){
                 removeRoom();
             }
         }
@@ -87,7 +87,7 @@ public class DisconnectionHandler {
      * @return True if the name of the player is the list of disconnected players, else return false.
      */
     public synchronized boolean checkReconnection(String playerName){
-        if(controllerToModel.getPlayerDisconnected().contains(playerName)){
+        if(controller.getPlayerDisconnected().contains(playerName)){
             return true;
         }else{
             return false;
@@ -100,7 +100,7 @@ public class DisconnectionHandler {
      */
 
     public synchronized void clientReconnected(String name){
-        controllerToModel.getPlayerDisconnected().remove(name);
+        controller.getPlayerDisconnected().remove(name);
     }
 
     /**

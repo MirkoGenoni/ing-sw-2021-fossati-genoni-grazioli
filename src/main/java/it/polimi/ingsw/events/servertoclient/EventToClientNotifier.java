@@ -1,4 +1,4 @@
-package it.polimi.ingsw.events.serverToClient;
+package it.polimi.ingsw.events.servertoclient;
 
 import it.polimi.ingsw.model.developmentcard.DevelopmentCard;
 import it.polimi.ingsw.model.faithtrack.FaithTrack;

@@ -2,13 +2,13 @@ package it.polimi.ingsw.client.gui;
 
 import it.polimi.ingsw.client.ConnectionToServer;
 import it.polimi.ingsw.client.gui.controllergui.*;
-import it.polimi.ingsw.events.serverToClient.*;
-import it.polimi.ingsw.events.serverToClient.initialconnectiontoclient.SendNamePlayerRequestToClient;
-import it.polimi.ingsw.events.serverToClient.initialconnectiontoclient.SendNumPlayerRequestToClient;
-import it.polimi.ingsw.events.serverToClient.initialconnectiontoclient.SendRoomRequestToClient;
-import it.polimi.ingsw.events.serverToClient.TurnReselectionToClient;
-import it.polimi.ingsw.events.serverToClient.SendSpaceDevelopmentCardToClient;
-import it.polimi.ingsw.events.serverToClient.SendReorganizeDepositToClient;
+import it.polimi.ingsw.events.servertoclient.*;
+import it.polimi.ingsw.events.servertoclient.initialconnectiontoclient.SendNamePlayerRequestToClient;
+import it.polimi.ingsw.events.servertoclient.initialconnectiontoclient.SendNumPlayerRequestToClient;
+import it.polimi.ingsw.events.servertoclient.initialconnectiontoclient.SendRoomRequestToClient;
+import it.polimi.ingsw.events.servertoclient.TurnReselectionToClient;
+import it.polimi.ingsw.events.servertoclient.SendSpaceDevelopmentCardToClient;
+import it.polimi.ingsw.events.servertoclient.SendReorganizeDepositToClient;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
 

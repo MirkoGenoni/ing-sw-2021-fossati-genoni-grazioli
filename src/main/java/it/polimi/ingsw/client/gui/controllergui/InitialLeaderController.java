@@ -1,7 +1,7 @@
 package it.polimi.ingsw.client.gui.controllergui;
 
 import it.polimi.ingsw.client.gui.GUI;
-import it.polimi.ingsw.events.serverToClient.supportclass.LeaderCardToClient;
+import it.polimi.ingsw.events.servertoclient.supportclass.LeaderCardToClient;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;

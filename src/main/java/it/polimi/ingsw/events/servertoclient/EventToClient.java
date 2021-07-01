@@ -1,4 +1,4 @@
-package it.polimi.ingsw.events.serverToClient;
+package it.polimi.ingsw.events.servertoclient;
 
 import java.io.Serializable;
 

@@ -1,8 +1,8 @@
-package it.polimi.ingsw.events.serverToClient;
+package it.polimi.ingsw.events.servertoclient;
 
-import it.polimi.ingsw.events.serverToClient.initialconnectiontoclient.SendNamePlayerRequestToClient;
-import it.polimi.ingsw.events.serverToClient.initialconnectiontoclient.SendNumPlayerRequestToClient;
-import it.polimi.ingsw.events.serverToClient.initialconnectiontoclient.SendRoomRequestToClient;
+import it.polimi.ingsw.events.servertoclient.initialconnectiontoclient.SendNamePlayerRequestToClient;
+import it.polimi.ingsw.events.servertoclient.initialconnectiontoclient.SendNumPlayerRequestToClient;
+import it.polimi.ingsw.events.servertoclient.initialconnectiontoclient.SendRoomRequestToClient;
 
 /**
  * This interface contains the list of the event that the client could receive from the server.

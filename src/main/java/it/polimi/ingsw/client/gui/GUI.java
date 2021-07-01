@@ -3,7 +3,7 @@ package it.polimi.ingsw.client.gui;
 import it.polimi.ingsw.client.ConnectionToServer;
 import it.polimi.ingsw.client.gui.controllergui.FirstWindowController;
 import it.polimi.ingsw.client.gui.controllergui.GUIController;
-import it.polimi.ingsw.events.serverToClient.NewTurnToClient;
+import it.polimi.ingsw.events.servertoclient.NewTurnToClient;
 import it.polimi.ingsw.model.market.Marble;
 import it.polimi.ingsw.model.resource.Resource;
 import javafx.application.Application;

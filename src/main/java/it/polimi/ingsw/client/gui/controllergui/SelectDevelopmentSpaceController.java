@@ -1,8 +1,8 @@
 package it.polimi.ingsw.client.gui.controllergui;
 
 import it.polimi.ingsw.client.gui.GUI;
-import it.polimi.ingsw.events.serverToClient.supportclass.DevelopmentCardToClient;
-import it.polimi.ingsw.events.serverToClient.supportclass.PlayerInformationToClient;
+import it.polimi.ingsw.events.servertoclient.supportclass.DevelopmentCardToClient;
+import it.polimi.ingsw.events.servertoclient.supportclass.PlayerInformationToClient;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;

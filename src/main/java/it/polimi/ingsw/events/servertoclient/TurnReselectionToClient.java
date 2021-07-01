@@ -1,4 +1,4 @@
-package it.polimi.ingsw.events.serverToClient;
+package it.polimi.ingsw.events.servertoclient;
 
 /**
  * This class represents the event to send to the client for the reselection of the turn.

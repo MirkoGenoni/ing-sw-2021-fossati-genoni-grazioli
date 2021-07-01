@@ -1,7 +1,7 @@
 package it.polimi.ingsw.client.cli.views.productionview;
 
 import it.polimi.ingsw.client.cli.views.TotalResourceCounter;
-import it.polimi.ingsw.events.serverToClient.supportclass.DevelopmentCardToClient;
+import it.polimi.ingsw.events.servertoclient.supportclass.DevelopmentCardToClient;
 
 import java.util.ArrayList;
 import java.util.Scanner;

@@ -1,7 +1,7 @@
 package it.polimi.ingsw.server.roomhandler;
 
 import it.polimi.ingsw.controller.ControllerConnection;
-import it.polimi.ingsw.controller.ControllerToModel;
+import it.polimi.ingsw.controller.Controller;
 import it.polimi.ingsw.model.exceptions.StartGameException;
 import it.polimi.ingsw.server.ConnectionToClient;
 import it.polimi.ingsw.server.DisconnectionHandler;
@@ -30,7 +30,7 @@ public class Room {
     private boolean finish;
     private int numPlayer;
 
-    private final ControllerToModel controllerToModel;
+    private final Controller controller;
     private final ControllerConnection controllerConnection;
 
     public String getPlayerSendNumPlayer() {
@@ -54,9 +54,9 @@ public class Room {
         this.start = false;
         this.sendNumPlayer = false;
         this.finish = false;
-        controllerToModel = new ControllerToModel(connections);
-        controllerConnection = new ControllerConnection(controllerToModel);
-        disconnectionHandler = new DisconnectionHandler(controllerToModel, this);
+        controller = new Controller(connections);
+        controllerConnection = new ControllerConnection(controller);
+        disconnectionHandler = new DisconnectionHandler(controller, this);
         /*
         ping = new Thread(() -> {
             while(!finish){
@@ -84,7 +84,7 @@ public class Room {
      */
     public synchronized void setNumPlayer(int numPlayer) {
         this.numPlayer = numPlayer;
-        controllerToModel.setNumPlayer(numPlayer);
+        controller.setNumPlayer(numPlayer);
     }
 
     /**
@@ -183,7 +183,7 @@ public class Room {
             if( connections.size()==0 || connections.size()<numPlayer){
                 System.out.println(connection.getNamePlayer() + " add connection");
                 connections.put(name, connection);
-                controllerToModel.addPlayerNameOrder(connection.getNamePlayer());
+                controller.addPlayerNameOrder(connection.getNamePlayer());
             }else{
                 System.out.println(connection.getNamePlayer() + " errore");
             }
@@ -197,7 +197,7 @@ public class Room {
                 fullPlayer = true;
             }
             if((numPlayer>1 && connections.size()==2) || (numPlayer==1 && connections.size()==1)){
-                controllerToModel.newTurn(false);
+                controller.newTurn(false);
             }else if(numPlayer>1 && connections.size()==1){
                 connection.sendNotify("other player are all disconnected, wait that they rejoin the match");
             }
@@ -212,17 +212,17 @@ public class Room {
     public void startGame(){
         setFullPlayer(true);
         //disconnectionHandler = new DisconnectionHandler(controllerToModel, this);
-        controllerToModel.getConnections().forEach((k,v) -> v.setObserveConnectionToClient(controllerConnection));
+        controller.getConnections().forEach((k, v) -> v.setObserveConnectionToClient(controllerConnection));
         //controllerToModel.getConnections().forEach((k, v) -> v.setDisconnectionHandler(disconnectionHandler));
         //setDisconnectionHandler(disconnectionHandler);
         System.out.println("Start the game in room " + roomNumber);
         start = true;
         try {
-            controllerToModel.startMatch();
+            controller.startMatch();
         } catch (StartGameException e) {
             e.printStackTrace();
         }
-        System.out.println(controllerToModel.getOrderPlayerConnections());
+        System.out.println(controller.getOrderPlayerConnections());
         System.out.println(connections);
     }
 

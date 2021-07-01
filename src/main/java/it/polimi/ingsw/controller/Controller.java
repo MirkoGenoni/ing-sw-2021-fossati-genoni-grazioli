@@ -24,7 +24,7 @@ import java.util.Map;
  * Class to control and manage the game
  * @author Stefano Fossati
  */
-public class ControllerToModel {
+public class Controller {
     private Player[] players;
     private final Map<String, ConnectionToClient> connections;
     private final ArrayList<String> playerDisconnected;
@@ -54,7 +54,7 @@ public class ControllerToModel {
      * Constructor of the class
      * @param connections map for player's name and each connections
      */
-    public ControllerToModel(Map<String, ConnectionToClient> connections) {
+    public Controller(Map<String, ConnectionToClient> connections) {
         this.connections = connections;
         this.playerDisconnected = new ArrayList<>();
         this.orderPlayerConnections = new ArrayList<>();

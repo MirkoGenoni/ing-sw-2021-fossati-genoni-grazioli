@@ -1,7 +1,5 @@
-package it.polimi.ingsw.events.serverToClient;
+package it.polimi.ingsw.events.servertoclient;
 
-import it.polimi.ingsw.events.serverToClient.EventToClient;
-import it.polimi.ingsw.events.serverToClient.EventToClientVisitor;
 import it.polimi.ingsw.model.resource.Resource;
 
 import java.util.ArrayList;

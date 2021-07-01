@@ -1,6 +1,6 @@
 package it.polimi.ingsw.controller.turns;
 
-import it.polimi.ingsw.controller.ControllerToModel;
+import it.polimi.ingsw.controller.Controller;
 import it.polimi.ingsw.model.exceptions.LeaderCardException;
 import it.polimi.ingsw.model.exceptions.ResourceException;
 import it.polimi.ingsw.model.game.Player;
@@ -15,17 +15,17 @@ import java.util.ArrayList;
  * @author davide grazioli, Stefano Fossati
  */
 public class MarketTurn {
-    private final ControllerToModel controllerToModel;
+    private final Controller controller;
 
     // tmp attributes
     private ArrayList<Resource> tmpMarketReturn;
 
     /**
      * constructor of the class
-     * @param controllerToModel controller to model that manages the game for players
+     * @param controller controller to model that manages the game for players
      */
-    public MarketTurn(ControllerToModel controllerToModel) {
-        this.controllerToModel = controllerToModel;
+    public MarketTurn(Controller controller) {
+        this.controller = controller;
     }
 
     /**
@@ -38,15 +38,15 @@ public class MarketTurn {
      */
     public void marketChooseLine(String namePlayer, int line, ArrayList<Boolean> leaderMarketWhiteChange){ //TODO nameplayer
         System.out.println("aggiungo al player");
-        int currentPlayerIndex = controllerToModel.getCurrentPlayerIndex();
-        Player activePlayer = controllerToModel.getPlayers()[currentPlayerIndex];
-        ArrayList<Marble> tmpM =  controllerToModel.getGame().getMarketBoard().chooseLine(line);
+        int currentPlayerIndex = controller.getCurrentPlayerIndex();
+        Player activePlayer = controller.getPlayers()[currentPlayerIndex];
+        ArrayList<Marble> tmpM =  controller.getGame().getMarketBoard().chooseLine(line);
         System.out.println(tmpM);
-        int section = controllerToModel.getGame().getPlayersFaithTrack().getSection(controllerToModel.getCurrentPlayerIndex());
+        int section = controller.getGame().getPlayersFaithTrack().getSection(controller.getCurrentPlayerIndex());
 
         if(tmpM.contains(Marble.FAITH)){    // se ci sono marble di tipo faith incrementa direttamente la pedina del giocatore sul tracciato fede
-            if(controllerToModel.getGame().getPlayersFaithTrack().forwardPos(currentPlayerIndex)){
-                controllerToModel.controlPlayerPath(currentPlayerIndex,section);
+            if(controller.getGame().getPlayersFaithTrack().forwardPos(currentPlayerIndex)){
+                controller.controlPlayerPath(currentPlayerIndex,section);
             }
             tmpM.remove(Marble.FAITH);
         }
@@ -95,7 +95,7 @@ public class MarketTurn {
      * @return if a player has reorganised correctly its deposit
      */
     public boolean saveNewDepositState(ArrayList<Resource> newDepositState, int discardResources, boolean isAdditional, ArrayList<Resource> additionalDepositState){
-        Player activePlayer = controllerToModel.getActivePlayer();
+        Player activePlayer = controller.getActivePlayer();
         System.out.println(" riscorse scartate " +discardResources);
         boolean tmp = false;
         int savePlayer = -1;
@@ -108,22 +108,22 @@ public class MarketTurn {
             activePlayer.getPlayerBoard().getResourceHandler().newDepositState(newDepositState);
 
             for(int i=0; i<discardResources; i++){
-                for( int j=0; j<controllerToModel.getPlayers().length; j++){
-                    if(!controllerToModel.getPlayers()[j].equals(activePlayer)){
-                        if(controllerToModel.getGame().getPlayersFaithTrack().forwardPos(j)){
+                for(int j = 0; j< controller.getPlayers().length; j++){
+                    if(!controller.getPlayers()[j].equals(activePlayer)){
+                        if(controller.getGame().getPlayersFaithTrack().forwardPos(j)){
                             tmp = true;
                             savePlayer = j;
-                            section = controllerToModel.getGame().getPlayersFaithTrack().getSection(j);
+                            section = controller.getGame().getPlayersFaithTrack().getSection(j);
                         }
                     }
                 }
                 if(tmp && savePlayer != -1 && section!=0){
-                    controllerToModel.controlPlayerPath(savePlayer,section);
+                    controller.controlPlayerPath(savePlayer,section);
                 }
-                if(controllerToModel.getPlayers().length==1){
-                    if(controllerToModel.getGame().getPlayersFaithTrack().forwardPos(1)){ //avanza lorenzo
-                        section = controllerToModel.getGame().getPlayersFaithTrack().getSection(1); //Lorenzo's section
-                        controllerToModel.controlPlayerPath(1,section); //controllo rispetto a lorenzo
+                if(controller.getPlayers().length==1){
+                    if(controller.getGame().getPlayersFaithTrack().forwardPos(1)){ //avanza lorenzo
+                        section = controller.getGame().getPlayersFaithTrack().getSection(1); //Lorenzo's section
+                        controller.controlPlayerPath(1,section); //controllo rispetto a lorenzo
                     }
 
                 }
@@ -132,7 +132,7 @@ public class MarketTurn {
             return true;
         } catch (ResourceException e) {
             //controllerToModel.getConnectionsToClient().get(currentPlayerIndex).sendNotify(e.getMessage());
-            controllerToModel.getConnections().get(activePlayer.getName()).sendNotify(e.getMessage());
+            controller.getConnections().get(activePlayer.getName()).sendNotify(e.getMessage());
             sendMarketDepositData(activePlayer);
             return false;
         }
@@ -163,7 +163,7 @@ public class MarketTurn {
 
         }
         //controllerToModel.getConnectionsToClient().get(currentPlayerIndex).sendReorganizeDeposit(new ArrayList<>(this.tmpMarketReturn), controllerToModel.getPlayers()[currentPlayerIndex].getPlayerBoard().getResourceHandler().getDepositState(), isAdditional, additionalType, additionalState);
-        controllerToModel.getConnections().get(activePlayer.getName()).sendReorganizeDeposit(new ArrayList<>(this.tmpMarketReturn),
+        controller.getConnections().get(activePlayer.getName()).sendReorganizeDeposit(new ArrayList<>(this.tmpMarketReturn),
                              activePlayer.getPlayerBoard().getResourceHandler().getDepositState(), isAdditional, additionalType, additionalState);
     }
 

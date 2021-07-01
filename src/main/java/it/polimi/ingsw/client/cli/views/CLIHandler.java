@@ -9,10 +9,10 @@ import it.polimi.ingsw.client.cli.views.otherviews.InitialResourceView;
 import it.polimi.ingsw.client.cli.views.otherviews.NewTurnView;
 import it.polimi.ingsw.client.cli.views.productionview.*;
 import it.polimi.ingsw.client.ConnectionToServer;
-import it.polimi.ingsw.events.serverToClient.supportclass.DevelopmentCardToClient;
-import it.polimi.ingsw.events.serverToClient.supportclass.LeaderCardToClient;
-import it.polimi.ingsw.events.serverToClient.supportclass.MarketToClient;
-import it.polimi.ingsw.events.serverToClient.supportclass.PlayerInformationToClient;
+import it.polimi.ingsw.events.servertoclient.supportclass.DevelopmentCardToClient;
+import it.polimi.ingsw.events.servertoclient.supportclass.LeaderCardToClient;
+import it.polimi.ingsw.events.servertoclient.supportclass.MarketToClient;
+import it.polimi.ingsw.events.servertoclient.supportclass.PlayerInformationToClient;
 import it.polimi.ingsw.model.resource.Resource;
 
 import java.util.ArrayList;

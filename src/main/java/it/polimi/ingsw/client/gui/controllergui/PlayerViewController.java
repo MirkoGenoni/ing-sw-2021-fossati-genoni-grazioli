@@ -1,10 +1,10 @@
 package it.polimi.ingsw.client.gui.controllergui;
 
 import it.polimi.ingsw.client.gui.GUI;
-import it.polimi.ingsw.events.serverToClient.NewTurnToClient;
-import it.polimi.ingsw.events.serverToClient.supportclass.DevelopmentCardToClient;
-import it.polimi.ingsw.events.serverToClient.supportclass.MarketToClient;
-import it.polimi.ingsw.events.serverToClient.supportclass.PlayerInformationToClient;
+import it.polimi.ingsw.events.servertoclient.NewTurnToClient;
+import it.polimi.ingsw.events.servertoclient.supportclass.DevelopmentCardToClient;
+import it.polimi.ingsw.events.servertoclient.supportclass.MarketToClient;
+import it.polimi.ingsw.events.servertoclient.supportclass.PlayerInformationToClient;
 import it.polimi.ingsw.model.resource.Resource;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

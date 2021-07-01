@@ -12,7 +12,7 @@ import it.polimi.ingsw.events.clienttoserver.marketturntoserver.ChooseLineToServ
 import it.polimi.ingsw.events.clienttoserver.marketturntoserver.NewDepositStateToServer;
 import it.polimi.ingsw.events.clienttoserver.startgametoserver.DiscardInitialLeaderCards;
 import it.polimi.ingsw.events.clienttoserver.startgametoserver.InitialResourcesChoose;
-import it.polimi.ingsw.events.serverToClient.EventToClient;
+import it.polimi.ingsw.events.servertoclient.EventToClient;
 import it.polimi.ingsw.model.developmentcard.ProductedMaterials;
 import it.polimi.ingsw.model.resource.Resource;
 

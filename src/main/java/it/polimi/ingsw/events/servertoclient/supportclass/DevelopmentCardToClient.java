@@ -1,4 +1,4 @@
-package it.polimi.ingsw.events.serverToClient.supportclass;
+package it.polimi.ingsw.events.servertoclient.supportclass;
 
 import it.polimi.ingsw.model.developmentcard.ProductedMaterials;
 import it.polimi.ingsw.model.resource.Resource;

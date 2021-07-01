@@ -1,4 +1,4 @@
-package it.polimi.ingsw.events.serverToClient.supportclass;
+package it.polimi.ingsw.events.servertoclient.supportclass;
 
 import java.io.Serializable;
 import java.util.ArrayList;

@@ -1,4 +1,4 @@
-package it.polimi.ingsw.events.serverToClient;
+package it.polimi.ingsw.events.servertoclient;
 
 /**
  * This event represents the ping that verifies that the client is connected.

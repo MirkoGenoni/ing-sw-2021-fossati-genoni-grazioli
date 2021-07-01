@@ -1,7 +1,7 @@
-package it.polimi.ingsw.events.serverToClient.initialconnectiontoclient;
+package it.polimi.ingsw.events.servertoclient.initialconnectiontoclient;
 
-import it.polimi.ingsw.events.serverToClient.EventToClient;
-import it.polimi.ingsw.events.serverToClient.EventToClientVisitor;
+import it.polimi.ingsw.events.servertoclient.EventToClient;
+import it.polimi.ingsw.events.servertoclient.EventToClientVisitor;
 
 /**
  * This class represents the event to send to the client for the initial connection. In particular this event is the player name request send to the client.

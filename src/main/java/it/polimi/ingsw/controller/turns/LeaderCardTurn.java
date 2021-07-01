@@ -1,6 +1,6 @@
 package it.polimi.ingsw.controller.turns;
 
-import it.polimi.ingsw.controller.ControllerToModel;
+import it.polimi.ingsw.controller.Controller;
 import it.polimi.ingsw.model.developmentcard.CardColor;
 import it.polimi.ingsw.model.exceptions.DevelopmentCardException;
 import it.polimi.ingsw.model.exceptions.LeaderCardException;
@@ -20,14 +20,14 @@ import java.util.Map;
  * @author davide grazioli
  */
 public class LeaderCardTurn {
-    private final ControllerToModel controllerToModel;
+    private final Controller controller;
 
     /**
      * constructor of the class
-     * @param controllerToModel controller to model that manages the game for players
+     * @param controller controller to model that manages the game for players
      */
-    public LeaderCardTurn(ControllerToModel controllerToModel) {
-        this.controllerToModel = controllerToModel;
+    public LeaderCardTurn(Controller controller) {
+        this.controller = controller;
     }
 
     /**
@@ -37,16 +37,16 @@ public class LeaderCardTurn {
      * @param isFinal
      */
     public void leaderTurns(String playerName, ArrayList<Integer> positions, boolean isFinal) { //TODO playername inutile
-        int currentPlayerIndex = controllerToModel.getCurrentPlayerIndex();
-        Player activePlayer = controllerToModel.getActivePlayer();
-        Game game = controllerToModel.getGame();
+        int currentPlayerIndex = controller.getCurrentPlayerIndex();
+        Player activePlayer = controller.getActivePlayer();
+        Game game = controller.getGame();
         for(int i=positions.size()-1; i>=0; i--){
             switch (positions.get(i)){
                 case 2:
                     try {
                         activePlayer.getPlayerBoard().getLeaderCardHandler().discardLeaderCard(i);
                         if(game.getPlayersFaithTrack().forwardPos(currentPlayerIndex)){
-                            controllerToModel.controlPlayerPath(currentPlayerIndex, controllerToModel.getGame().getPlayersFaithTrack().getSection(currentPlayerIndex));
+                            controller.controlPlayerPath(currentPlayerIndex, controller.getGame().getPlayersFaithTrack().getSection(currentPlayerIndex));
                         }
                     } catch (LeaderCardException e) {
                         e.printStackTrace();
@@ -79,10 +79,10 @@ public class LeaderCardTurn {
         }
 
         if(!isFinal){
-            controllerToModel.turnToView();
+            controller.turnToView();
         }else{
-            if(controllerToModel.checkMultiplayer()){
-                controllerToModel.newTurn(true);
+            if(controller.checkMultiplayer()){
+                controller.newTurn(true);
             }
 
         }
@@ -96,7 +96,7 @@ public class LeaderCardTurn {
      * @throws LeaderCardException if a player hasn't got any leader to activate in that position
      */
     private void additionalProductionLeaderCard(LeaderCard leaderToActivate, int i) throws DevelopmentCardException, LeaderCardException {
-        Gameboard actualPlayerBoard = controllerToModel.getActivePlayer().getPlayerBoard();
+        Gameboard actualPlayerBoard = controller.getActivePlayer().getPlayerBoard();
         //cast
         AdditionalProduction currentLeaderAbility = (AdditionalProduction) leaderToActivate.getSpecialAbility();
         System.out.println("additionalProduction");
@@ -111,10 +111,10 @@ public class LeaderCardTurn {
             actualPlayerBoard.getLeaderCardHandler().activateLeaderCard(i);
             System.out.println("Activated!");
             //controllerToModel.getConnectionsToClient().get(currentPlayerIndex).sendNotify("Activate the "+ i + " leader");
-            controllerToModel.getConnections().get(controllerToModel.getActivePlayer().getName()).sendNotify("Activate the "+ i + " leader");
+            controller.getConnections().get(controller.getActivePlayer().getName()).sendNotify("Activate the "+ i + " leader");
         } else {
             //controllerToModel.getConnectionsToClient().get(currentPlayerIndex).sendNotify("Cannot Activate the "+ i + " leader");
-            controllerToModel.getConnections().get(controllerToModel.getActivePlayer().getName()).sendNotify("Cannot Activate the "+ i + " leader");
+            controller.getConnections().get(controller.getActivePlayer().getName()).sendNotify("Cannot Activate the "+ i + " leader");
             System.out.println("Cannot Activate the selected leader");
         }
     }
@@ -126,7 +126,7 @@ public class LeaderCardTurn {
      * @throws LeaderCardException if a player hasn't got any leader to activate in that position
      */
     private void biggerDepositLeaderCard(LeaderCard leaderToActivate, int i) throws LeaderCardException {
-        Gameboard actualPlayerBoard = controllerToModel.getActivePlayer().getPlayerBoard();
+        Gameboard actualPlayerBoard = controller.getActivePlayer().getPlayerBoard();
         //cast
         BiggerDeposit currentLeaderAbility = (BiggerDeposit) leaderToActivate.getSpecialAbility();
         System.out.println("biggerDeposit");
@@ -145,10 +145,10 @@ public class LeaderCardTurn {
             }
             System.out.println("Activated!");
             //controllerToModel.getConnectionsToClient().get(currentPlayerIndex).sendNotify("Activate the "+ i + " leader");
-            controllerToModel.getConnections().get(controllerToModel.getActivePlayer().getName()).sendNotify("Activate the "+ i + " leader");
+            controller.getConnections().get(controller.getActivePlayer().getName()).sendNotify("Activate the "+ i + " leader");
         } else {
             //controllerToModel.getConnectionsToClient().get(currentPlayerIndex).sendNotify("Cannot Activate the "+ i + " leader");
-            controllerToModel.getConnections().get(controllerToModel.getActivePlayer().getName()).sendNotify("Cannot Activate the "+ i + " leader");
+            controller.getConnections().get(controller.getActivePlayer().getName()).sendNotify("Cannot Activate the "+ i + " leader");
         }
     }
 
@@ -159,7 +159,7 @@ public class LeaderCardTurn {
      * @throws LeaderCardException if a player hasn't got any leader to activate in that position
      */
     private void costlessLeaderCard(LeaderCard leaderToActivate, int i) throws LeaderCardException {
-        Gameboard actualPlayerBoard = controllerToModel.getActivePlayer().getPlayerBoard();
+        Gameboard actualPlayerBoard = controller.getActivePlayer().getPlayerBoard();
         //cast
         CostLess currentLeaderAbility = (CostLess) leaderToActivate.getSpecialAbility();
         System.out.println("costLess");
@@ -176,10 +176,10 @@ public class LeaderCardTurn {
             actualPlayerBoard.getLeaderCardHandler().activateLeaderCard(i);
             System.out.println("Card Activated!");
             //controllerToModel.getConnectionsToClient().get(currentPlayerIndex).sendNotify("Activate the "+ i + " leader");
-            controllerToModel.getConnections().get(controllerToModel.getActivePlayer().getName()).sendNotify("Activate the "+ i + " leader");
+            controller.getConnections().get(controller.getActivePlayer().getName()).sendNotify("Activate the "+ i + " leader");
         } else {
             //controllerToModel.getConnectionsToClient().get(currentPlayerIndex).sendNotify("Cannot Activate the "+ i + " leader");
-            controllerToModel.getConnections().get(controllerToModel.getActivePlayer().getName()).sendNotify("Cannot Activate the "+ i + " leader");
+            controller.getConnections().get(controller.getActivePlayer().getName()).sendNotify("Cannot Activate the "+ i + " leader");
         }
     }
 
@@ -190,7 +190,7 @@ public class LeaderCardTurn {
      * @throws LeaderCardException if a player hasn't got any leader to activate in that position
      */
     private void marketWhiteChangeLeaderCard(LeaderCard leaderToActivate, int i) throws LeaderCardException {
-        Gameboard actualPlayerBoard = controllerToModel.getActivePlayer().getPlayerBoard();
+        Gameboard actualPlayerBoard = controller.getActivePlayer().getPlayerBoard();
         //cast
         MarketWhiteChange currentLeaderAbility = (MarketWhiteChange) leaderToActivate.getSpecialAbility();
         System.out.println("marketWhiteChange");
@@ -206,10 +206,10 @@ public class LeaderCardTurn {
             actualPlayerBoard.getLeaderCardHandler().activateLeaderCard(i);
             System.out.println("Card Activated!");
             //controllerToModel.getConnectionsToClient().get(currentPlayerIndex).sendNotify("Activate the "+ i + " leader");
-            controllerToModel.getConnections().get(controllerToModel.getActivePlayer().getName()).sendNotify("Activate the "+ i + " leader");
+            controller.getConnections().get(controller.getActivePlayer().getName()).sendNotify("Activate the "+ i + " leader");
         } else {
             //controllerToModel.getConnectionsToClient().get(currentPlayerIndex).sendNotify("Cannot Activate the "+ i + " leader");
-            controllerToModel.getConnections().get(controllerToModel.getActivePlayer().getName()).sendNotify("Cannot Activate the "+ i + " leader");
+            controller.getConnections().get(controller.getActivePlayer().getName()).sendNotify("Cannot Activate the "+ i + " leader");
         }
     }
 }

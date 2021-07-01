@@ -1,6 +1,6 @@
 package it.polimi.ingsw.client.cli.views.marketview;
 
-import it.polimi.ingsw.events.serverToClient.supportclass.MarketToClient;
+import it.polimi.ingsw.events.servertoclient.supportclass.MarketToClient;
 import it.polimi.ingsw.model.market.Marble;
 
 import java.util.ArrayList;

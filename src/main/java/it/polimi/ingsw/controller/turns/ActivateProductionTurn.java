@@ -1,6 +1,6 @@
 package it.polimi.ingsw.controller.turns;
 
-import it.polimi.ingsw.controller.ControllerToModel;
+import it.polimi.ingsw.controller.Controller;
 import it.polimi.ingsw.model.developmentcard.DevelopmentCard;
 import it.polimi.ingsw.model.developmentcard.ProductedMaterials;
 import it.polimi.ingsw.model.exceptions.LeaderCardException;
@@ -19,14 +19,14 @@ import java.util.Map;
  * @author davide grazioli
  */
 public class ActivateProductionTurn {
-    private final ControllerToModel controllerToModel;
+    private final Controller controller;
 
     /**
      * constructor of the class
-     * @param controllerToModel controller to model that manages the game for players
+     * @param controller controller to model that manages the game for players
      */
-    public ActivateProductionTurn(ControllerToModel controllerToModel) {
-        this.controllerToModel = controllerToModel;
+    public ActivateProductionTurn(Controller controller) {
+        this.controller = controller;
     }
 
     /**
@@ -46,8 +46,8 @@ public class ActivateProductionTurn {
     public boolean productionsActivation(boolean useBaseProduction, Resource resourceRequested1, Resource resourceRequested2,
                                     ProductedMaterials resourceGranted, ArrayList<Boolean> useLeaders, ArrayList<Resource> materialLeaders,
                                     ArrayList<Boolean> useDevelop){
-        int currentPlayerIndex = controllerToModel.getCurrentPlayerIndex();
-        Player activePlayer = controllerToModel.getPlayers()[currentPlayerIndex];
+        int currentPlayerIndex = controller.getCurrentPlayerIndex();
+        Player activePlayer = controller.getPlayers()[currentPlayerIndex];
         Gameboard actualPlayerBoard = activePlayer.getPlayerBoard();
 
         Map<Resource,Integer> materialRequested = new HashMap<>();
@@ -94,26 +94,26 @@ public class ActivateProductionTurn {
             actualPlayerBoard.getResourceHandler().addMaterialStrongbox(materialForStrongBox);
             int faithPoints = materialGranted.get(ProductedMaterials.FAITHPOINT);
             for(int i=0; i<faithPoints; i++){
-                if(controllerToModel.getGame().getPlayersFaithTrack().forwardPos(currentPlayerIndex)){
-                    controllerToModel.controlPlayerPath(currentPlayerIndex, controllerToModel.getGame().getPlayersFaithTrack().getSection(currentPlayerIndex));
+                if(controller.getGame().getPlayersFaithTrack().forwardPos(currentPlayerIndex)){
+                    controller.controlPlayerPath(currentPlayerIndex, controller.getGame().getPlayersFaithTrack().getSection(currentPlayerIndex));
                 }
             }
             System.out.println("Risorse aggiunte correttamente alla strongbox");
-            System.out.println(controllerToModel.getPlayers()[currentPlayerIndex].getName()+ " avanza di "+ faithPoints+ " punti fede");
+            System.out.println(controller.getPlayers()[currentPlayerIndex].getName()+ " avanza di "+ faithPoints+ " punti fede");
 
             //controllerToModel.getConnectionsToClient().get(currentPlayerIndex).sendNotify("Risorse aggiunte correttamente alla strongbox");
-            controllerToModel.getConnections().get(activePlayer.getName()).sendNotify("Risorse aggiunte correttamente alla strongbox");
+            controller.getConnections().get(activePlayer.getName()).sendNotify("Risorse aggiunte correttamente alla strongbox");
             //controllerToModel.getConnectionsToClient().get(currentPlayerIndex).sendNotify("Avanzi di "+ faithPoints + " punti fede");
-            controllerToModel.getConnections().get(activePlayer.getName()).sendNotify("Avanzi di "+ faithPoints + " punti fede");
+            controller.getConnections().get(activePlayer.getName()).sendNotify("Avanzi di "+ faithPoints + " punti fede");
         }else if(!actualPlayerBoard.getResourceHandler().checkMaterials(materialRequested)){
             System.out.println("non ci sono abbastanza risorse");
             //controllerToModel.getConnectionsToClient().get(currentPlayerIndex).sendTurnReselection("Not enough resources");
-            controllerToModel.getConnections().get(activePlayer.getName()).sendTurnReselection("Not enough resources");
+            controller.getConnections().get(activePlayer.getName()).sendTurnReselection("Not enough resources");
             return false;
         }else if(!valid){
             System.out.println("non hai selezionato nulla");
             //controllerToModel.getConnectionsToClient().get(currentPlayerIndex).sendTurnReselection("No productions selected");
-            controllerToModel.getConnections().get(activePlayer.getName()).sendTurnReselection("No productions selected");
+            controller.getConnections().get(activePlayer.getName()).sendTurnReselection("No productions selected");
             return false;
         }
         return true;

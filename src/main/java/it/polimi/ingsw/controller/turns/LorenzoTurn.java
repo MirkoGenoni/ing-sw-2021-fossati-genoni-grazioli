@@ -1,6 +1,6 @@
 package it.polimi.ingsw.controller.turns;
 
-import it.polimi.ingsw.controller.ControllerToModel;
+import it.polimi.ingsw.controller.Controller;
 import it.polimi.ingsw.model.developmentcard.CardColor;
 import it.polimi.ingsw.model.exceptions.StartGameException;
 import it.polimi.ingsw.model.game.Game;
@@ -13,7 +13,7 @@ import it.polimi.ingsw.model.lorenzo.SoloAction;
  * @author davide grazioli
  */
 public class LorenzoTurn {
-    private final ControllerToModel controllerToModel;
+    private final Controller controller;
     private final LorenzoIlMagnifico lorenzoIlMagnifico;
     private final SinglePlayerGame singlePlayerGame;
     private final int lorenzoNumPlayer;
@@ -21,11 +21,11 @@ public class LorenzoTurn {
 
     /**
      * constructor of the class
-     * @param controllerToModel controller to model that manages the game for the single player
+     * @param controller controller to model that manages the game for the single player
      * @param singlePlayerGame the game playing from the single player and lorenzo
      */
-    public LorenzoTurn(ControllerToModel controllerToModel, SinglePlayerGame singlePlayerGame) {
-        this.controllerToModel = controllerToModel;
+    public LorenzoTurn(Controller controller, SinglePlayerGame singlePlayerGame) {
+        this.controller = controller;
         this.singlePlayerGame = singlePlayerGame;
         lorenzoIlMagnifico = singlePlayerGame.getLorenzoIlMagnifico();
         this.lorenzoNumPlayer = 1;
@@ -46,14 +46,14 @@ public class LorenzoTurn {
 
         switch (action) {
             case MOVESHUFFLE:
-                if(controllerToModel.getGame().getPlayersFaithTrack().forwardPos(lorenzoNumPlayer))
-                    controllerToModel.controlPlayerPath(lorenzoNumPlayer, controllerToModel.getGame().getPlayersFaithTrack().getSection(lorenzoNumPlayer));
+                if(controller.getGame().getPlayersFaithTrack().forwardPos(lorenzoNumPlayer))
+                    controller.controlPlayerPath(lorenzoNumPlayer, controller.getGame().getPlayersFaithTrack().getSection(lorenzoNumPlayer));
                 controlFaithTrackLorenzoWin();
                 break;
             case ONLYMOVE:
                 for(int i=0; i<2;i++){
-                    if(controllerToModel.getGame().getPlayersFaithTrack().forwardPos(lorenzoNumPlayer))
-                        controllerToModel.controlPlayerPath(lorenzoNumPlayer, controllerToModel.getGame().getPlayersFaithTrack().getSection(lorenzoNumPlayer));
+                    if(controller.getGame().getPlayersFaithTrack().forwardPos(lorenzoNumPlayer))
+                        controller.controlPlayerPath(lorenzoNumPlayer, controller.getGame().getPlayersFaithTrack().getSection(lorenzoNumPlayer));
                 }
                 controlFaithTrackLorenzoWin();
                 break;
@@ -72,7 +72,7 @@ public class LorenzoTurn {
 
         }
         //controllerToModel.getConnectionsToClient().get(controllerToModel.getCurrentPlayerIndex()).sendLorenzoTurn(action, controllerToModel.getGame().getPlayersFaithTrack().getPosition(1));
-        controllerToModel.getConnections().get(controllerToModel.getActivePlayer().getName()).sendLorenzoTurn(action, controllerToModel.getGame().getPlayersFaithTrack().getPosition(1));
+        controller.getConnections().get(controller.getActivePlayer().getName()).sendLorenzoTurn(action, controller.getGame().getPlayersFaithTrack().getPosition(1));
         return lorenzoWin;
     }
 
@@ -82,7 +82,7 @@ public class LorenzoTurn {
      * @param color specifies the color of the card to discard
      */
     private void discardCardColorForLorenzo(CardColor color){
-        Game game = controllerToModel.getGame();
+        Game game = controller.getGame();
         int colorForCard;
 
         switch (color) {
@@ -131,7 +131,7 @@ public class LorenzoTurn {
      * control if lorenzo has reached the last position in faith track
      */
     private void controlFaithTrackLorenzoWin(){
-        if (controllerToModel.getGame().getPlayersFaithTrack().getPosition(lorenzoNumPlayer)==24){
+        if (controller.getGame().getPlayersFaithTrack().getPosition(lorenzoNumPlayer)==24){
             lorenzoWin = true;
         }
     }

@@ -1,4 +1,4 @@
-package it.polimi.ingsw.events.serverToClient;
+package it.polimi.ingsw.events.servertoclient;
 
 /**
  * This class represents the event to send to client used for a notify.

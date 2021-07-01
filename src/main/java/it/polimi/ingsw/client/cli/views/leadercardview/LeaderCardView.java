@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.Scanner;
 
-import it.polimi.ingsw.events.serverToClient.supportclass.LeaderCardToClient;
+import it.polimi.ingsw.events.servertoclient.supportclass.LeaderCardToClient;
 
 public class LeaderCardView {
     ArrayList<LeaderCardVisualization> cards;

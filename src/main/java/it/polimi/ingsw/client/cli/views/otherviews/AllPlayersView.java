@@ -3,8 +3,8 @@ package it.polimi.ingsw.client.cli.views.otherviews;
 import it.polimi.ingsw.client.cli.views.leadercardview.LeaderCardView;
 import it.polimi.ingsw.client.cli.views.marketview.NewDepositView;
 import it.polimi.ingsw.client.cli.views.productionview.DevelopmentCardView;
-import it.polimi.ingsw.events.serverToClient.supportclass.LeaderCardToClient;
-import it.polimi.ingsw.events.serverToClient.supportclass.PlayerInformationToClient;
+import it.polimi.ingsw.events.servertoclient.supportclass.LeaderCardToClient;
+import it.polimi.ingsw.events.servertoclient.supportclass.PlayerInformationToClient;
 
 import java.util.ArrayList;
 import java.util.Map;
