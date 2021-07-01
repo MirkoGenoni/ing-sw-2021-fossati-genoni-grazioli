@@ -59,7 +59,7 @@ public class LeaderCardView {
                     System.out.println("Insert a number");
                 }
 
-                if(num1>0 && num1<5 && num2>0 && num2<5){
+                if(num1>0 && num1<5 && num2>0 && num2<5 && num1 != num2){
                     int[] send = new int[2];
                     send[0] = num1-1;
                     send[1] = num2-1;

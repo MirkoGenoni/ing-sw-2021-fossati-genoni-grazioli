@@ -448,11 +448,17 @@ public class CLIHandler {
 
             if (DataRequired.equals("namePlayer")) {
                 WaitingOtherPlayers animation = new WaitingOtherPlayers();
-                String tmpName;
+                String tmpName = "";
 
                 System.out.print("                                    INSERT NAME: ");
 
                 tmpName = in.nextLine();
+
+                if(tmpName.length() == 0) {
+                    notDone = true;
+                    continue;
+                }
+
                 this.namePlayer = tmpName;
 
                 connection.setPlayerName(tmpName);
