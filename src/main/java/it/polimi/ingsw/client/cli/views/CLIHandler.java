@@ -522,7 +522,7 @@ public class CLIHandler {
                 connection.sendPlayerName(tmpName);
 
                 notDone = false;
-                if(!asyncPrintPre.isAlive())
+                if(!asyncPrintPre.getState().toString().equals("TERMINATED"))
                     asyncPrintPre.start();
             } else if (!DataRequired.equals("isNewRoom") && !DataRequired.equals("roomNumber")) {
                 System.out.println("                                    INSERT NAME: " + "\u001B[92m" + this.namePlayer + "\u001B[0m" + "\n");
