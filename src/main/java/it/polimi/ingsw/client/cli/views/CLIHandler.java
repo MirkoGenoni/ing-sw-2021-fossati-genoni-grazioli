@@ -1,6 +1,7 @@
 package it.polimi.ingsw.client.cli.views;
 
 
+import it.polimi.ingsw.client.cli.WaitingOtherPlayers;
 import it.polimi.ingsw.client.cli.views.leadercardview.LeaderCardView;
 import it.polimi.ingsw.client.cli.views.marketview.MarketView;
 import it.polimi.ingsw.client.cli.views.marketview.NewDepositView;
@@ -18,7 +19,6 @@ import it.polimi.ingsw.model.resource.Resource;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Scanner;
-import java.util.concurrent.TimeUnit;
 
 public class CLIHandler {
     private final ConnectionToServer connection;
@@ -37,65 +37,7 @@ public class CLIHandler {
 
     private boolean turnEnd;
 
-    private final Thread asyncPrintPre = new Thread(()->{
-        System.out.print("                                                                                                                          \n" +
-                "                                                                                                                          \n" +
-                "                                                                                                                          \n");
-        System.out.print("                                    WAITING FOR OTHER PLAYERS");
-
-        while(true) {
-            try {
-                TimeUnit.SECONDS.sleep(1);
-                System.out.print(". ");
-                TimeUnit.SECONDS.sleep(1);
-                System.out.print(". ");
-                TimeUnit.SECONDS.sleep(1);
-                System.out.print(".");
-                TimeUnit.SECONDS.sleep(1);
-            } catch (InterruptedException e) {
-                System.out.print("\u001B[2J\u001B[3J\u001B[H");
-                break;
-            }
-
-            for (int i = 0; i < 5; i++)
-                System.out.print("\b");
-
-            System.out.print("     ");
-
-            for (int i = 0; i < 5; i++)
-                System.out.print("\b");
-
-        }});
-
-    private final Thread asyncPrintPost = new Thread(()->{
-        System.out.print("                                                                                                                          \n" +
-                "                                                                                                                          \n" +
-                "                                                                                                                          \n");
-        System.out.print("                                    WAITING FOR OTHER PLAYERS");
-
-        while(true) {
-            try {
-                TimeUnit.SECONDS.sleep(1);
-                System.out.print(". ");
-                TimeUnit.SECONDS.sleep(1);
-                System.out.print(". ");
-                TimeUnit.SECONDS.sleep(1);
-                System.out.print(".");
-                TimeUnit.SECONDS.sleep(1);
-            } catch (InterruptedException e) {
-                System.out.print("\u001B[2J\u001B[3J\u001B[H");
-                break;
-            }
-
-            for (int i = 0; i < 5; i++)
-                System.out.print("\b");
-
-            System.out.print("     ");
-
-            for (int i = 0; i < 5; i++)
-                System.out.print("\b");
-
-        }});
+    Thread asyncPrint;
 
     public CLIHandler(ConnectionToServer connection){
         this.connection = connection;
@@ -135,6 +77,8 @@ public class CLIHandler {
         stopAsyncPrint();
 
         LeaderCardView leaderCardSelection = new LeaderCardView(new ArrayList<>(received), totalReceived);
+
+            this.asyncPrint = new WaitingOtherPlayers();
 
             this.inactiveLeaders = new ArrayList<>();
 
@@ -394,11 +338,7 @@ public class CLIHandler {
     }
 
     public void initialResourceSelection(int numResources, ArrayList<Resource> depositState){
-        if(asyncPrintPre.isAlive())
-            asyncPrintPre.interrupt();
-        if(asyncPrintPost.isAlive())
-            asyncPrintPost.interrupt();
-
+        stopAsyncPrint();
         InitialResourceView selection= new InitialResourceView(numResources);
         Resource choosen = selection.startChoosing();
 
@@ -436,9 +376,7 @@ public class CLIHandler {
     }
 
     public synchronized void insertInitialData(String DataRequired){
-        if(asyncPrintPre.isAlive())
-            asyncPrintPre.interrupt();
-
+        stopAsyncPrint();
         Scanner in = new Scanner(System.in);
         boolean notDone = true;
 
@@ -509,8 +447,7 @@ public class CLIHandler {
             }
 
             if (DataRequired.equals("namePlayer")) {
-                if(asyncPrintPre.isAlive())
-                    asyncPrintPre.interrupt();
+                WaitingOtherPlayers animation = new WaitingOtherPlayers();
                 String tmpName;
 
                 System.out.print("                                    INSERT NAME: ");
@@ -522,13 +459,15 @@ public class CLIHandler {
                 connection.sendPlayerName(tmpName);
 
                 notDone = false;
-                if(!asyncPrintPre.getState().toString().equals("TERMINATED"))
-                    asyncPrintPre.start();
+                this.asyncPrint = animation;
+                animation.start();
             } else if (!DataRequired.equals("isNewRoom") && !DataRequired.equals("roomNumber")) {
                 System.out.println("                                    INSERT NAME: " + "\u001B[92m" + this.namePlayer + "\u001B[0m" + "\n");
             }
 
             if (DataRequired.equals("numberOfPlayers")) {
+                stopAsyncPrint();
+                WaitingOtherPlayers animation = new WaitingOtherPlayers();
                 String tmpIn;
                 int tmpNumPlayers;
 
@@ -549,15 +488,14 @@ public class CLIHandler {
                 int tmpNumPlayers1 = tmpNumPlayers;
                 notDone = false;
                 connection.sendNumPlayer(tmpNumPlayers);
-                asyncPrintPost.start();
+                this.asyncPrint = animation;
+                animation.start();
             }
         }
     }
 
     public void stopAsyncPrint(){
-        if(asyncPrintPre.isAlive())
-            asyncPrintPre.interrupt();
-        if(asyncPrintPost.isAlive())
-            asyncPrintPost.interrupt();
+        if(this.asyncPrint!=null && this.asyncPrint.isAlive())
+            asyncPrint.interrupt();
     }
 }
