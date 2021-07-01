@@ -115,10 +115,12 @@ public class EventHandlerCLI implements EventToClientVisitor {
     public void visit(NewTurnToClient newTurn) {
         new Thread(() -> {
             acquire();
+
             if (newTurn.isYourTurn()) {
                 handler.newState(newTurn.getPlayers(), newTurn.getMarket(), newTurn.getDevelopmentCards());
                 handler.newTurn();
             }
+
             available.release();
         }).start();
     }
@@ -127,7 +129,11 @@ public class EventHandlerCLI implements EventToClientVisitor {
     public void visit(EndGameToClient message) {
         new Thread(() -> {
             acquire();
-            Messages messageEnd = new Messages("GAME ENDED", false);
+            Messages messageEnd = new Messages(message.getMessage(), false);
+
+            for(String s: message.getPlayersPoint().keySet())
+                System.out.println(s + message.getPlayersPoint().get(s));
+
             messageEnd.printMessage();
             connectionToServer.closeConnection();
             available.release();
