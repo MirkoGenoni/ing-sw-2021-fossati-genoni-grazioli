@@ -509,6 +509,8 @@ public class CLIHandler {
             }
 
             if (DataRequired.equals("namePlayer")) {
+                if(asyncPrintPre.isAlive())
+                    asyncPrintPre.interrupt();
                 String tmpName;
 
                 System.out.print("                                    INSERT NAME: ");
@@ -520,7 +522,8 @@ public class CLIHandler {
                 connection.sendPlayerName(tmpName);
 
                 notDone = false;
-                asyncPrintPre.start();
+                if(!asyncPrintPre.isAlive())
+                    asyncPrintPre.start();
             } else if (!DataRequired.equals("isNewRoom") && !DataRequired.equals("roomNumber")) {
                 System.out.println("                                    INSERT NAME: " + "\u001B[92m" + this.namePlayer + "\u001B[0m" + "\n");
             }
