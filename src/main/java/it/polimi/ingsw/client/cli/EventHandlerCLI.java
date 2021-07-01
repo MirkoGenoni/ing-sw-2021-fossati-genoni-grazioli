@@ -129,7 +129,7 @@ public class EventHandlerCLI implements EventToClientVisitor {
             acquire();
             Messages messageEnd = new Messages("GAME ENDED", false);
             messageEnd.printMessage();
-            connectionToServer.closeConnection();
+            //connectionToServer.closeConnection();
             available.release();
         }).start();
     }

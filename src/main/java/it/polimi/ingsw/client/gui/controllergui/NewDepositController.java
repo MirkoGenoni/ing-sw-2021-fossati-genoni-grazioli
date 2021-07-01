@@ -181,7 +181,7 @@ public class NewDepositController implements GUIController, Initializable {
             case "addDeposit11":
                 numDepositClicked.add(9);
                 break;
-            //TODO reduce code and add comment
+
 
         }
 

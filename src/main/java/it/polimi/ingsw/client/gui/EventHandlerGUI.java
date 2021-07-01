@@ -177,7 +177,7 @@ public class EventHandlerGUI implements EventToClientVisitor {
         System.out.println("\u001B[92m" + "GAME ENDED" + "\u001B[0;0m");
         System.out.println("\u001B[92m" +   "You are disconnected from the server" + "\u001B[0;0m");
 
-        connectionToServer.closeConnection();
+        //connectionToServer.closeConnection();
 
     }
 

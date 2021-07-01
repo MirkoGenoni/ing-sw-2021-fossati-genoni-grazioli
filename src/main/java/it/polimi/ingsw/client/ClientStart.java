@@ -25,6 +25,7 @@ public class ClientStart {
                         selection = false;
                         break;
                     case "GUI":
+                        System.out.println("The GUI is running...");
                         GUI.main(args);
                         selection = false;
                         break;
