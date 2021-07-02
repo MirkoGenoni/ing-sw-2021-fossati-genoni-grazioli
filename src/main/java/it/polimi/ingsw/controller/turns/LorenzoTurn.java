@@ -71,7 +71,10 @@ public class LorenzoTurn {
                 break;
 
         }
-        controller.getConnections().get(controller.getActivePlayer().getName()).sendLorenzoTurn(action, controller.getGame().getPlayersFaithTrack().getPosition(1));
+        if(!lorenzoWin) {
+            controller.getConnections().get(controller.getActivePlayer().getName()).sendLorenzoTurn(action, controller.getGame().getPlayersFaithTrack().getPosition(1));
+        }
+
         return lorenzoWin;
     }
 

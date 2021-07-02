@@ -210,6 +210,7 @@ public class Controller {
             players[0] = tmpP;
             activePlayer = tmpP;
             currentPlayerIndex=0;
+            firstPlayer = currentPlayerIndex;
             singleGame = new SinglePlayerGame(tmpP);
             game = singleGame;
             singleGame.startGame();
