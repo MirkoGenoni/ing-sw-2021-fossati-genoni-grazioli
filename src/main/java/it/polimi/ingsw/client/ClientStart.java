@@ -5,6 +5,9 @@ import it.polimi.ingsw.client.gui.GUI;
 
 import java.util.Scanner;
 
+/**
+ * This class permits to the user to select gui or cli view
+ */
 public class ClientStart {
     public static void main(String[] args) {
         String input;
