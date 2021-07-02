@@ -7,6 +7,11 @@ import it.polimi.ingsw.model.resource.Resource;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+/**
+ * This class is the visualization of the production choice given to the user
+ *
+ * @author Mirko Genoni
+ */
 public class ProductionSelectionView {
     BaseProduction baseProduction;
     DevelopmentCardView developmentCardBoard;
@@ -25,32 +30,65 @@ public class ProductionSelectionView {
     ArrayList<Boolean> selectDevelopment;
 
     //GETTER PER PRODUZIONE BASE
+
+    /**
+     *
+     * @return true if the user uses the base production
+     */
     public boolean isUseBaseProduction() {
         return useBaseProduction;
     }
 
+    /**
+     *
+     * @return the input to the base production
+     */
     public ArrayList<Resource> getInputBaseProduction() {
         return inputBaseProduction;
     }
 
+    /**
+     *
+     * @return the material producted
+     */
     public ProductedMaterials getProdottoBaseProd() {
         return prodottoBaseProd;
     }
 
     //GETTER PER PRODUZIONE LEADER
+
+    /**
+     *
+     * @return true in a position if the user wants to activate a specific additional production
+     */
     public ArrayList<Boolean> getLeaderActivation() {
         return leaderActivation;
     }
 
+    /**
+     *
+     * @return the resource requested to the additional production by the user
+     */
     public ArrayList<Resource> getMaterialLeader() {
         return materialLeader;
     }
 
     //GETTER PER DEVELOPMENT
+
+    /**
+     *
+     * @return true if the user wants to activate the development in that position
+     */
     public ArrayList<Boolean> getSelectDevelopment() {
         return selectDevelopment;
     }
 
+    /**
+     * Constructor of the class initializes all the data structure
+     * @param developmentCardBoard contains all the development card possessed by the player
+     * @param additionalProductionView contains all the additional production possessed by the player
+     * @param totalResourceCounter contains the counter of all the resources possessed by the player
+     */
     public ProductionSelectionView(DevelopmentCardView developmentCardBoard, AdditionalProductionView additionalProductionView , TotalResourceCounter totalResourceCounter){
         this.baseProduction = new BaseProduction();
         this.developmentCardBoard = developmentCardBoard;
@@ -67,6 +105,11 @@ public class ProductionSelectionView {
         this.totalResourceCounter = totalResourceCounter;
     }
 
+    /**
+     * Handles the user input for the production selection (base, leader, development)
+     * @param request contains one of the production available
+     * @return true if the player activates the production requested
+     */
     public boolean activationSelection(String request) {
         Scanner in = new Scanner(System.in);
         String input;
@@ -163,6 +206,10 @@ public class ProductionSelectionView {
         }
     }
 
+    /**
+     * Prints the view for production selection
+     * @param request is the production that is asked to the player if he wants to activate
+     */
     private void printSelection(String request){
         System.out.print("\u001B[2J\u001B[3J\u001B[H");
         System.out.print("                                       ┌───────────────────────────────────────────┐                                       \n" +

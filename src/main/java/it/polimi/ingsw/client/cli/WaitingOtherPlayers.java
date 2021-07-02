@@ -2,7 +2,17 @@ package it.polimi.ingsw.client.cli;
 
 import java.util.concurrent.TimeUnit;
 
+/**
+ * This class is only a thread that prints 3 dots in sequence and then delete them, it's implemented as a
+ * class extending thread because the thread will be interrupted and it's necessary to create always a new thread
+ * because an interrupted thread cannot be restarted
+ *
+ * @author Mirko Genoni
+ */
 public class WaitingOtherPlayers extends Thread {
+    /**
+     * This method prints 3 dots in sequence and then delete them
+     */
     @Override
     public void run() {
         System.out.print("                                                                                                                          \n" +

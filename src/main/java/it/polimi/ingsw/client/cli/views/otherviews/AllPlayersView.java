@@ -10,6 +10,11 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.Scanner;
 
+/**
+ * This class permit to a player to view other player's board or section of the board
+ *
+ * @author Mirko Genoni
+ */
 public class AllPlayersView {
     Map<String, PlayerInformationToClient> information;
     PlayerInformationToClient player;
@@ -20,15 +25,24 @@ public class AllPlayersView {
     LeaderCardView inactiveLeaderCard;
     FaithTrackView faithTrackView;
 
+    /**
+     * Constructor of the class initializes all the data structures
+     * @param information contains all the information of all the players
+     * @param currentPlayer contains the name of the current player
+     * @param inactiveLeaders contains the leaderCard in hand of the current player
+     */
     public AllPlayersView(Map<String, PlayerInformationToClient> information, String currentPlayer, ArrayList<LeaderCardToClient> inactiveLeaders){
         this.information = information;
         this.player = information.get(currentPlayer);
         this.inactiveLeaders = inactiveLeaders;
 
         updateInfo();
-        //LeaderCardView leaderCardRack = new LeaderCardView();
     }
 
+    /**
+     * Handles the user input for the selection of the player's gameboard the current player wants
+     * to see or the part of the gameboard he wants to see
+     */
     public void test() {
         while(true) {
             this.printSelection();
@@ -67,6 +81,9 @@ public class AllPlayersView {
         }
     }
 
+    /**
+     * This method updates the information when the user select another player or go back to his gameboard
+     */
     private void updateInfo(){
         this.developmentCardView = new DevelopmentCardView(player.getDevelopmentCardPlayer(), null);
         this.depositState = new NewDepositView(player.getDeposit(), player.getStrongBox(), player.getAdditionalDepositType(), player.getAdditionalDeposit());
@@ -75,6 +92,9 @@ public class AllPlayersView {
         this.faithTrackView = new FaithTrackView(player.getPopeFavorTiles(), player.getFaithMarkerPosition());
     }
 
+    /**
+     * Prints the visualization for the selection of other player's board or the part of the gameboard selected
+     */
     private synchronized void printSelection(){
         System.out.print("\u001B[2J\u001B[3J\u001B[H");
 

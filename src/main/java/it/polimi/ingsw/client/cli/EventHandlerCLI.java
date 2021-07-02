@@ -14,13 +14,22 @@ import it.polimi.ingsw.events.servertoclient.TurnReselectionToClient;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * This class is an event parser, takes the information from the events received from the server and then calls
+ * the CLIHandler to visualize them
+ *
+ * @author Mirko Genoni
+ */
 public class EventHandlerCLI implements EventToClientVisitor {
     boolean printing;
     private final ConnectionToServer connectionToServer;
     private final CLIHandler handler;
     private final Semaphore available = new Semaphore(1, true);
 
-
+    /**
+     * Constructor of the class initializes all the data structure
+     * @param connectionToServer pass the connection to the server that has been already created
+     */
     public EventHandlerCLI(ConnectionToServer connectionToServer) {
         this.connectionToServer = connectionToServer;
         this.handler = new CLIHandler(this.connectionToServer);
@@ -31,6 +40,10 @@ public class EventHandlerCLI implements EventToClientVisitor {
         event.acceptVisitor(this);
     }
 
+    /**
+     * This method handles a semaphore for all the thread created in this class, for every event received the class
+     * creates a thread, then calls this method to prevent the handle and the print of more than one event at the time
+     */
     public void acquire(){
         try {
             available.acquire();

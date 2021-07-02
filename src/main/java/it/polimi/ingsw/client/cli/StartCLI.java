@@ -8,17 +8,31 @@ import java.net.Socket;
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * This class is the first page of the cli but it initializes only the socket, asking the user to insert only
+ * the ip address and the server port
+ *
+ * @author Mirko Genoni
+ */
 public class StartCLI {
     private String serverAddress;
     private int serverPort;
     private Socket socket;
 
+    /**
+     * Constructor of the class, initializes only the standard ip address and port, that will be modified later
+     * @param serverAddress standard ip address
+     * @param serverPort standart server port
+     */
     public StartCLI(String serverAddress, int serverPort) {
         this.serverAddress = "";
         this.serverAddress = serverAddress;
         this.serverPort = serverPort;
     }
 
+    /**
+     * This method prints the login page and parse the input only of the address and the port
+     */
     public void startClient() {
         System.out.print("\u001B[8;46;123t");
         System.out.print("\u001B[2J\u001B[3J\u001B[H");
@@ -112,7 +126,7 @@ public class StartCLI {
                     try {
                         serverPort = Integer.parseInt(serverPortString);
                         break;
-                    } catch (NumberFormatException e) {
+                    } catch (IllegalArgumentException e) {
                         continue;
                     }
                 } else {

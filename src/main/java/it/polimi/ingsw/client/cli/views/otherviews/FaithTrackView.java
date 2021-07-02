@@ -3,10 +3,18 @@ package it.polimi.ingsw.client.cli.views.otherviews;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+/**
+ * This class handles the visualization of the faith track
+ *
+ * @author Mirko Genoni
+ */
 public class FaithTrackView {
     ArrayList<String> color;
     int position;
 
+    /**
+     * Handles the input for the view of the faith of other players or the faith track's player
+     */
     public void draw(){
         String input = "";
         do {
@@ -18,6 +26,11 @@ public class FaithTrackView {
         } while (!input.equals("quit"));
     }
 
+    /**
+     * Creates the view of the faith track
+     * @param popePass contains the pope pass, if 0 is empty
+     * @param position contains the player's position on the track
+     */
     public FaithTrackView(ArrayList<Integer> popePass, int position){
         color = new ArrayList<>();
 
@@ -30,6 +43,9 @@ public class FaithTrackView {
         this.position = position;
     }
 
+    /**
+     * Print the visualization of the faith track for the user
+     */
     public void printFaithTrack(){
         System.out.print("\u001B[2J\u001B[3J\u001B[H");
         System.out.print("                     ╔═════╗ ╔═════╗ ╔═╗ ╔═════╗ ╔═╗ ╔═╗       ╔═════╗ ╔═════╗ ╔═════╗ ╔═════╗ ╔═╗╔══╗\n" +
@@ -83,6 +99,12 @@ public class FaithTrackView {
                 "                                                     ");
     }
 
+    /**
+     * Calculates the winner points from the player's position
+     *
+     * @param position is the position of the player on the track
+     * @return the winner points of the player's position
+     */
     private ArrayList<Integer> calculateWinnerPoints(int position){
         ArrayList<Integer> tmp = new ArrayList<>();
 

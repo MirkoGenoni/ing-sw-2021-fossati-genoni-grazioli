@@ -6,12 +6,22 @@ import it.polimi.ingsw.model.market.Marble;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+/**
+ * This class handles the representation of the market
+ *
+ * @author Mirko Genoni
+ */
 public class MarketView {
     ArrayList<MarketIcon> marketState;
     MarketIcon outMarble;
     int choiseLine;
     boolean turnEnd;
 
+    /**
+     * Constructor of the class, initializes the visualization of the market
+     *
+     * @param in contains the state of the market
+     */
     public MarketView(MarketToClient in){
         marketState = new ArrayList<>();
 
@@ -25,15 +35,26 @@ public class MarketView {
         turnEnd = true;
     }
 
+    /**
+     *
+     * @return the number of line chosen
+     */
     public int getChoiseLine(){
         return choiseLine;
     }
 
+    /**
+     *
+     * @return false if the player quit before the end of the turn
+     */
     public boolean isTurnEnd(){
         return turnEnd;
     }
 
-
+    /**
+     * Handles the visualization and the user input for the market
+     * @param marketWhiteChange contains Strings that represent the resource changed from the white marble
+     */
     public void launchChoiseView(ArrayList<String> marketWhiteChange){
         turnEnd = true;
         printMarketLineChoice(marketWhiteChange);
@@ -59,6 +80,11 @@ public class MarketView {
         this.choiseLine = num;
     }
 
+    /**
+     * Prints the visualization for the market
+     *
+     * @param marketWhiteChange contains Strings that represent the resource changed from the white marble
+     */
     private void printMarketLineChoice(ArrayList<String> marketWhiteChange){
         System.out.print("\u001B[2J\u001B[3J\u001B[H");
         System.out.println("                                                  ╔═══════════════════════╗                                                \n" +
@@ -101,6 +127,11 @@ public class MarketView {
                 "                                                             ");
     }
 
+    /**
+     * Prints the single line of the market
+     * @param initialValue is the number of column to print
+     * @param line is the number of line to print
+     */
     private void printMarketLine(int initialValue, int line){
         for(int i=0; i<7; i++) {
             if(i==3) {
@@ -118,6 +149,12 @@ public class MarketView {
         System.out.println(" ┃                                                                                                                       ┃ ");
     }
 
+    /**
+     * Add color to the writing for the market white change by the resource that can be transformed
+     * the white marble into
+     * @param material is the name of the resource
+     * @return the name of the resource colored
+     */
     private String addColor(String material){
         switch(material.toLowerCase()){
             case "stone":

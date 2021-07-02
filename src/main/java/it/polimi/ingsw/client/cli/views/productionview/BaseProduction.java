@@ -5,6 +5,11 @@ import it.polimi.ingsw.model.resource.Resource;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+/**
+ * This class is the visualization of the base production
+ *
+ * @author Mirko Genoni
+ */
 public class BaseProduction {
     DevelopmentCardSymbols material1;
     DevelopmentCardSymbols material2;
@@ -12,6 +17,9 @@ public class BaseProduction {
     ArrayList<Resource> resources;
     boolean isTurnEnd;
 
+    /**
+     * The constructor of the class initializes all the data structure
+     */
     public BaseProduction(){
         obtain = DevelopmentCardSymbols.ANYTHING;
         material1 = DevelopmentCardSymbols.ANYTHING;
@@ -19,14 +27,25 @@ public class BaseProduction {
         isTurnEnd = false;
     }
 
+    /**
+     * Return the resource asked for and given
+     * @return the resource asked for and given
+     */
     public ArrayList<Resource> getResources() {
         return new ArrayList<>(this.resources);
     }
 
+    /**
+     * returns false if the user quitted before ending the turn
+     * @return false if the user quitted before ending the turn
+     */
     public boolean isTurnEnd() {
         return isTurnEnd;
     }
 
+    /**
+     * Starts the representation and gets the user input
+     */
     public void startBaseProduction(){
         isTurnEnd = false;
         int valid = 0;
@@ -95,6 +114,9 @@ public class BaseProduction {
         }
     }
 
+    /**
+     * Prints the page of selection for the user
+     */
     private void printBaseProductionSelection(){
         System.out.print("\u001B[2J\u001B[3J\u001B[H");
 
@@ -148,6 +170,10 @@ public class BaseProduction {
         }
     }
 
+    /**
+     * Asks for the resource to give to the base production
+     * @param number is the number of resource asked
+     */
     private void printSelection(int number){
         System.out.print("                                        SELECT RESOURCE"+ number +":  ");
     }

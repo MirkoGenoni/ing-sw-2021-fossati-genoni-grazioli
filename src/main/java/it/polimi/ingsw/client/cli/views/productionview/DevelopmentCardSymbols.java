@@ -1,5 +1,10 @@
 package it.polimi.ingsw.client.cli.views.productionview;
 
+/**
+ * This enum contains all the symbols needed to represent a Development Card
+ *
+ * @author Mirko Genoni
+ */
 public enum DevelopmentCardSymbols {
     SERVANT("servant"),
     SHIELD("shield"),
@@ -16,6 +21,10 @@ public enum DevelopmentCardSymbols {
     private final String[] rapresentation;
     private int number;
 
+    /**
+     * Saves line for line the representation of the symbol
+     * @param type represent the symbol asked
+     */
     DevelopmentCardSymbols(String type) {
         rapresentation = new String[6];
 
@@ -106,15 +115,28 @@ public enum DevelopmentCardSymbols {
         }
     }
 
-
+    /**
+     * This method saves the number that can be needed with the symbol
+     */
     public void setNumber(int number) {
         this.number = number;
     }
 
+    /**
+     * This method returns the number saved
+     *
+     * @return the number saved
+     */
     public int getNumber(){
         return number;
     }
 
+    /**
+     * return line for line the symbol asked
+     *
+     * @param line indicates the number of line asked
+     * @return the line asked
+     */
     public String returnLine(int line){
         return rapresentation[line];
     }

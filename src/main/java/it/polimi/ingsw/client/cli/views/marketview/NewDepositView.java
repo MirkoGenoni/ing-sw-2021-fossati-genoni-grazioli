@@ -8,6 +8,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
+/**
+ * This class handles the visualization of a new deposit state by the user
+ *
+ * @author Mirko Genoni
+ */
 public class NewDepositView {
 
     ArrayList<ResourceIcon> depositState;
@@ -17,7 +22,12 @@ public class NewDepositView {
     boolean additionalDeposit;
 
     /**
-     * this constructor initializes the class for the turn after the market
+     * This constructor initializes the class for the phase after the market
+     * @param depositState is the current deposit of the state
+     * @param informationReceived are the material received by the market
+     * @param additionalDeposit is the boolean that indicates if there ia an additional deposit activated
+     * @param type are the type that the additional deposits can contain
+     * @param additionalDepositState is the current state of the additional deposit
      */
     public NewDepositView(ArrayList<Resource> depositState, ArrayList<Resource> informationReceived, boolean additionalDeposit, ArrayList<Resource> type, ArrayList<Resource> additionalDepositState) {
 
@@ -65,6 +75,13 @@ public class NewDepositView {
     /**
      * this constructor initializes the class for the view turn
      */
+    /**
+     * This constructor initializes the class for the view turn
+     * @param depositState is the current deposit of the state
+     * @param strongbox is the current strongbox state
+     * @param additionalDepositType are the type that the additional deposits can contain
+     * @param additionalDepositState is the current state of the additional deposit
+     */
     public NewDepositView(ArrayList<Resource> depositState, Map<Resource, Integer> strongbox, ArrayList<Resource> additionalDepositType, ArrayList<Resource> additionalDepositState){
         this.depositState = new ArrayList<>();
         this.additionalDepositState = new ArrayList<>();
@@ -105,6 +122,10 @@ public class NewDepositView {
         }
     }
 
+    /**
+     *
+     * @return the deposit state after the user input
+     */
     public ArrayList<Resource> getDepositState() {
 
         ArrayList<Resource> tmp = new ArrayList<>();
@@ -121,6 +142,10 @@ public class NewDepositView {
 
     }
 
+    /**
+     *
+     * @return the resource not inserted into the deposit
+     */
     public int getMarketReceived() {
         int num = 0;
 
@@ -131,6 +156,10 @@ public class NewDepositView {
         return num;
     }
 
+    /**
+     *
+     * @return the state of the additional deposit after the user input
+     */
     public ArrayList<Resource> getAdditionalDepositState() {
         ArrayList<Resource> tmp = new ArrayList<>();
 
@@ -145,10 +174,17 @@ public class NewDepositView {
         return tmp;
     }
 
+    /**
+     *
+     * @return true if there are additional deposit activated
+     */
     public boolean isAdditionalDeposit() {
         return additionalDeposit;
     }
 
+    /**
+     * Handles the visualization and the user input for the selection of a new deposit
+     */
     public void LaunchView() {
         String input = "";
 
@@ -232,6 +268,9 @@ public class NewDepositView {
 
     }
 
+    /**
+     * Handles visualization and user input for the view turn
+     */
     public void draw(){
         String state = "deposit";
         Scanner in = new Scanner(System.in);
@@ -259,6 +298,12 @@ public class NewDepositView {
         } while (!state.equals("quit"));
     }
 
+    /**
+     *
+     * @param deposit contains the current deposit state
+     * @param formatInput contains the resource from the resources inside the one received from the market
+     * @param num contains the position of the deposit the player wants to insert the resources into
+     */
     private void resourceHandle(ArrayList<ResourceIcon> deposit, String formatInput, int num){
         if (informationReceived.get(formatInput) - 1 > -1) {
             informationReceived.put(formatInput, informationReceived.get(formatInput) - 1);
@@ -276,6 +321,10 @@ public class NewDepositView {
         }
     }
 
+    /**
+     * Print the visualization for the new deposit by the player
+     * @param context contains a String that tells if the print is for the reorganize of the deposit or for the view
+     */
     private void printDepositChoise(String context) {
 
         System.out.print("\u001B[2J\u001B[3J\u001B[H");
@@ -363,6 +412,9 @@ public class NewDepositView {
                 "                                                              " + "\u001B[0;00m");
     }
 
+    /**
+     * Prints the visualization for the additional deposits
+     */
     public void printAdditionalDeposit() {
         System.out.print("\u001B[2J\u001B[3J\u001B[H");
 
@@ -425,6 +477,12 @@ public class NewDepositView {
 
     }
 
+    /**
+     * Return the colored symbol for the additional deposit view
+     * @param num contains the number of the position inside the type arraylist of resources that can be inserted
+     *            inside the additional deposits
+     * @return the colored symbol by the resource type
+     */
     private String colorSymbol(int num) {
         String resource = type.get(num).toString();
 
