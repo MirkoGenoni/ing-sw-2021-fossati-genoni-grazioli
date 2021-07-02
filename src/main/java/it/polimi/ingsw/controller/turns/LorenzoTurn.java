@@ -42,7 +42,7 @@ public class LorenzoTurn {
         SoloAction action;
         action = lorenzoIlMagnifico.getToken();
 
-        System.out.println("ho pescato lorenzo " + action.toString());
+        System.out.println("LORENZO PLAYED " + action.toString());
 
         switch (action) {
             case MOVESHUFFLE:
@@ -71,7 +71,6 @@ public class LorenzoTurn {
                 break;
 
         }
-        //controllerToModel.getConnectionsToClient().get(controllerToModel.getCurrentPlayerIndex()).sendLorenzoTurn(action, controllerToModel.getGame().getPlayersFaithTrack().getPosition(1));
         controller.getConnections().get(controller.getActivePlayer().getName()).sendLorenzoTurn(action, controller.getGame().getPlayersFaithTrack().getPosition(1));
         return lorenzoWin;
     }

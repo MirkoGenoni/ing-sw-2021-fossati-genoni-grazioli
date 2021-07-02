@@ -72,7 +72,7 @@ public class LeaderCardTurn {
                         }
                     }
                     catch (LeaderCardException | DevelopmentCardException e){
-                        System.out.println("eccezione tirata" + e.getMessage());
+                        System.out.println("eccezione tirata: " + e.getMessage());
                         e.printStackTrace();
                     }
             }
@@ -99,7 +99,7 @@ public class LeaderCardTurn {
         Gameboard actualPlayerBoard = controller.getActivePlayer().getPlayerBoard();
         //cast
         AdditionalProduction currentLeaderAbility = (AdditionalProduction) leaderToActivate.getSpecialAbility();
-        System.out.println("additionalProduction");
+        //System.out.println("additionalProduction");
 
         CardColor color = CardColor.valueOf(currentLeaderAbility.getCardRequired());
         ArrayList<CardColor> colorRequired = new ArrayList<>();
@@ -109,13 +109,13 @@ public class LeaderCardTurn {
         level.add(levelRequired); //add level in Arraylist
         if (actualPlayerBoard.getDevelopmentCardHandler().checkDevelopmentCard(colorRequired, level)) {
             actualPlayerBoard.getLeaderCardHandler().activateLeaderCard(i);
-            System.out.println("Activated!");
-            //controllerToModel.getConnectionsToClient().get(currentPlayerIndex).sendNotify("Activate the "+ i + " leader");
+            //System.out.println("Activated!");
+
             controller.getConnections().get(controller.getActivePlayer().getName()).sendNotify("Activate the "+ i + " leader");
         } else {
-            //controllerToModel.getConnectionsToClient().get(currentPlayerIndex).sendNotify("Cannot Activate the "+ i + " leader");
+
             controller.getConnections().get(controller.getActivePlayer().getName()).sendNotify("Cannot Activate the "+ i + " leader");
-            System.out.println("Cannot Activate the selected leader");
+            //System.out.println("Cannot Activate the selected leader");
         }
     }
 
@@ -129,7 +129,7 @@ public class LeaderCardTurn {
         Gameboard actualPlayerBoard = controller.getActivePlayer().getPlayerBoard();
         //cast
         BiggerDeposit currentLeaderAbility = (BiggerDeposit) leaderToActivate.getSpecialAbility();
-        System.out.println("biggerDeposit");
+
 
         Resource resource = Resource.valueOf(currentLeaderAbility.getMaterialRequired());
         Integer resourceQuantity = currentLeaderAbility.getQuantityRequired();
@@ -143,11 +143,11 @@ public class LeaderCardTurn {
                 System.out.println(e.getMessage());
                 e.printStackTrace();
             }
-            System.out.println("Activated!");
-            //controllerToModel.getConnectionsToClient().get(currentPlayerIndex).sendNotify("Activate the "+ i + " leader");
+            //System.out.println("Activated!");
+
             controller.getConnections().get(controller.getActivePlayer().getName()).sendNotify("Activate the "+ i + " leader");
         } else {
-            //controllerToModel.getConnectionsToClient().get(currentPlayerIndex).sendNotify("Cannot Activate the "+ i + " leader");
+
             controller.getConnections().get(controller.getActivePlayer().getName()).sendNotify("Cannot Activate the "+ i + " leader");
         }
     }
@@ -162,7 +162,6 @@ public class LeaderCardTurn {
         Gameboard actualPlayerBoard = controller.getActivePlayer().getPlayerBoard();
         //cast
         CostLess currentLeaderAbility = (CostLess) leaderToActivate.getSpecialAbility();
-        System.out.println("costLess");
 
         ArrayList<CardColor> colorsRequired = new ArrayList<>();
 
@@ -174,11 +173,11 @@ public class LeaderCardTurn {
         if (actualPlayerBoard.getDevelopmentCardHandler().checkCountDevelopmentCard(colorsRequired.get(0), quantity1) &&
                 actualPlayerBoard.getDevelopmentCardHandler().checkCountDevelopmentCard(colorsRequired.get(1), quantity2)) {
             actualPlayerBoard.getLeaderCardHandler().activateLeaderCard(i);
-            System.out.println("Card Activated!");
-            //controllerToModel.getConnectionsToClient().get(currentPlayerIndex).sendNotify("Activate the "+ i + " leader");
+            //System.out.println("Card Activated!");
+
             controller.getConnections().get(controller.getActivePlayer().getName()).sendNotify("Activate the "+ i + " leader");
         } else {
-            //controllerToModel.getConnectionsToClient().get(currentPlayerIndex).sendNotify("Cannot Activate the "+ i + " leader");
+
             controller.getConnections().get(controller.getActivePlayer().getName()).sendNotify("Cannot Activate the "+ i + " leader");
         }
     }
@@ -193,7 +192,6 @@ public class LeaderCardTurn {
         Gameboard actualPlayerBoard = controller.getActivePlayer().getPlayerBoard();
         //cast
         MarketWhiteChange currentLeaderAbility = (MarketWhiteChange) leaderToActivate.getSpecialAbility();
-        System.out.println("marketWhiteChange");
 
 
         CardColor color1 = CardColor.valueOf(currentLeaderAbility.getCardRequired1()); //TWICE
@@ -204,11 +202,11 @@ public class LeaderCardTurn {
         if (actualPlayerBoard.getDevelopmentCardHandler().checkCountDevelopmentCard(color1, quantity1) &&
                 actualPlayerBoard.getDevelopmentCardHandler().checkCountDevelopmentCard(color2, quantity2)) {
             actualPlayerBoard.getLeaderCardHandler().activateLeaderCard(i);
-            System.out.println("Card Activated!");
-            //controllerToModel.getConnectionsToClient().get(currentPlayerIndex).sendNotify("Activate the "+ i + " leader");
+            //System.out.println("Card Activated!");
+
             controller.getConnections().get(controller.getActivePlayer().getName()).sendNotify("Activate the "+ i + " leader");
         } else {
-            //controllerToModel.getConnectionsToClient().get(currentPlayerIndex).sendNotify("Cannot Activate the "+ i + " leader");
+
             controller.getConnections().get(controller.getActivePlayer().getName()).sendNotify("Cannot Activate the "+ i + " leader");
         }
     }

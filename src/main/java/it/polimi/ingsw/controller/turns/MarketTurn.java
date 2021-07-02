@@ -53,7 +53,6 @@ public class MarketTurn {
         if(tmpM.contains(Marble.NOTHING)){
             try{
                 ArrayList<LeaderCard> tmpL = activePlayer.getPlayerBoard().getLeaderCardHandler().getLeaderCardsActive();
-                //TODO Probabile isEmpty non necessario
                 //nel caso in cui entrambi i valori sui leader da usare fossero true, converte solo il primo valore
                 if(!tmpL.isEmpty()){                                        // controlla se ci sono carte leader attive
                     for(int i=0; i< tmpL.size() ; i++){
@@ -64,7 +63,6 @@ public class MarketTurn {
                             }
                         }
                     }
-                //TODO forse altro controllo se c'è white-change e ho due false
                 }
             } catch (LeaderCardException e) {
                 System.out.println(activePlayer.getName() + e.getMessage());

@@ -98,21 +98,20 @@ public class ActivateProductionTurn {
                     controller.controlPlayerPath(currentPlayerIndex, controller.getGame().getPlayersFaithTrack().getSection(currentPlayerIndex));
                 }
             }
-            System.out.println("Risorse aggiunte correttamente alla strongbox");
-            System.out.println(controller.getPlayers()[currentPlayerIndex].getName()+ " avanza di "+ faithPoints+ " punti fede");
+            //System.out.println("Risorse aggiunte correttamente alla strongbox");
+            //System.out.println(controller.getPlayers()[currentPlayerIndex].getName()+ " avanza di "+ faithPoints+ " punti fede");
 
-            //controllerToModel.getConnectionsToClient().get(currentPlayerIndex).sendNotify("Risorse aggiunte correttamente alla strongbox");
-            controller.getConnections().get(activePlayer.getName()).sendNotify("Risorse aggiunte correttamente alla strongbox");
-            //controllerToModel.getConnectionsToClient().get(currentPlayerIndex).sendNotify("Avanzi di "+ faithPoints + " punti fede");
-            controller.getConnections().get(activePlayer.getName()).sendNotify("Avanzi di "+ faithPoints + " punti fede");
+            controller.getConnections().get(activePlayer.getName()).sendNotify("Resources correctly added to strongbox");
+
+            controller.getConnections().get(activePlayer.getName()).sendNotify("Gained  "+ faithPoints + " Faith points for FaithTrack");
         }else if(!actualPlayerBoard.getResourceHandler().checkMaterials(materialRequested)){
-            System.out.println("non ci sono abbastanza risorse");
-            //controllerToModel.getConnectionsToClient().get(currentPlayerIndex).sendTurnReselection("Not enough resources");
+            //System.out.println("non ci sono abbastanza risorse");
+
             controller.getConnections().get(activePlayer.getName()).sendTurnReselection("Not enough resources");
             return false;
         }else if(!valid){
-            System.out.println("non hai selezionato nulla");
-            //controllerToModel.getConnectionsToClient().get(currentPlayerIndex).sendTurnReselection("No productions selected");
+            //System.out.println("non hai selezionato nulla");
+
             controller.getConnections().get(activePlayer.getName()).sendTurnReselection("No productions selected");
             return false;
         }
@@ -158,9 +157,9 @@ public class ActivateProductionTurn {
                         materialGranted.put(productedByLeader.get(i),materialGranted.get(productedByLeader.get(i))+1);
                         materialGranted.put(ProductedMaterials.FAITHPOINT, materialGranted.get(ProductedMaterials.FAITHPOINT)+1);
                     }
-                    else{
-                        System.out.println("leader "+i+" not additionalProduction");
-                    }
+                    //else{
+                        //System.out.println("leader "+i+" not additionalProduction");
+                   // }
                 }
             }
 
@@ -185,7 +184,6 @@ public class ActivateProductionTurn {
 
         for(int i=0; i < activeDevelopment.size(); i++){
             if (activeDevelopment.get(i)!=null && useDevelop.get(i)){
-                System.out.println("Active prod number "+ i +" ?");
 
                 Map<Resource,Integer> mapRequest = activeDevelopment.get(i).getMaterialRequired();
                 for(Resource r : mapRequest.keySet())
@@ -195,9 +193,9 @@ public class ActivateProductionTurn {
                 for(ProductedMaterials prod : mapProd.keySet())
                     materialGranted.put(prod, materialGranted.get(prod) + mapProd.get(prod));
             }
-            else {
-                System.out.println("Have not active DevelopmentCard in space " + i);
-            }
+            //else {
+            //    System.out.println("Have not active DevelopmentCard in space " + i);
+            //}
         }
     }
 
