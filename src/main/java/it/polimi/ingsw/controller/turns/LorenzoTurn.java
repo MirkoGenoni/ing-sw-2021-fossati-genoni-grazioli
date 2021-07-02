@@ -18,6 +18,7 @@ public class LorenzoTurn {
     private final SinglePlayerGame singlePlayerGame;
     private final int lorenzoNumPlayer;
     private boolean lorenzoWin;
+    private String lastMove;
 
     /**
      * constructor of the class
@@ -41,6 +42,7 @@ public class LorenzoTurn {
 
         SoloAction action;
         action = lorenzoIlMagnifico.getToken();
+        lastMove = action.name();
 
         System.out.println("LORENZO PLAYED " + action.toString());
 
@@ -136,6 +138,14 @@ public class LorenzoTurn {
         if (controller.getGame().getPlayersFaithTrack().getPosition(lorenzoNumPlayer)==24){
             lorenzoWin = true;
         }
+    }
+
+    /**
+     * Return a string represents the last Lorenzo's move
+     * @return the last Lorenzo's move
+     */
+    public String lastLorenzoMove(){
+        return lastMove;
     }
 
 }
