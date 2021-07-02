@@ -62,6 +62,10 @@ Tested Class | Coverage (lines) |
 
 **MagicDraw** - UML/Sequence Diagram
 
+## Javadoc
+
+The javadoc is available [here](https://mirkogenoni.github.io/ResourceToGithub/allclasses-index.html)
+
 
 
 
