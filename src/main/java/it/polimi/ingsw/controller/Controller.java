@@ -543,7 +543,7 @@ public class Controller {
     public boolean checkMultiplayer(){
         if(turnNumber != 0 && players.length == 1){
             if(lorenzoTurn.playLorenzo()){
-                connections.get(players[currentPlayerIndex].getName()).sendEndGame("You lost, LORENZO WINS!!!", null, players,
+                connections.get(players[currentPlayerIndex].getName()).sendEndGame("You lost, LORENZO WINS!!! with " + lorenzoTurn.lastLorenzoMove(), null, players,
                         game.getPlayersFaithTrack(), true, game.getPlayersFaithTrack().getPosition(1), game.getDevelopmentCardsAvailable(), game.getMarketBoard());
             }
             return false; // if is single game
