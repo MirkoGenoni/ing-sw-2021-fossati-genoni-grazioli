@@ -32,7 +32,6 @@ public class MarketTest {
      * This test checks the right movement of marbles in the grid of the market
      * and that the method returns the right elements of the line choose.
      * This test verifies the behavior of line and row;
-     * @throws Exception
      */
 
     @Test
