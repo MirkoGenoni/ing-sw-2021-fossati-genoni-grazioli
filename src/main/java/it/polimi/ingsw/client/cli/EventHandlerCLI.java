@@ -52,6 +52,9 @@ public class EventHandlerCLI implements EventToClientVisitor {
         }
     }
 
+    /**
+     * This method notifies to the client a disconnection to the server
+     */
     public void notifyDisconnection(){
         new Thread(()-> {
             acquire();
@@ -159,9 +162,9 @@ public class EventHandlerCLI implements EventToClientVisitor {
             acquire();
             Messages messageEnd = new Messages(message.getMessage(), false);
 
-            if(message.getPlayersPoint() != null)
+            /*if(message.getPlayersPoint() != null)
                 for(String s: message.getPlayersPoint().keySet())
-                    System.out.println(s + message.getPlayersPoint().get(s));
+                    System.out.println(s + message.getPlayersPoint().get(s));*/
 
             messageEnd.printMessage();
             //connectionToServer.closeConnection();
