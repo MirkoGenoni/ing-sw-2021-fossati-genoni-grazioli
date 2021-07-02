@@ -54,8 +54,8 @@ public class BuyDevelopmentController implements GUIController, Initializable {
      * @param dev The development cards that the player could buy.
      * @param deposit The deposit of the player.
      * @param strongBox The strongbox of the player
-     * @param additionalDeposit
-     * @param leaderCardActive
+     * @param additionalDeposit The state of the additional deposit.
+     * @param leaderCardActive The leader card active of the player
      */
 
     public void drawDevelopment(DevelopmentCardToClient[][] dev, ArrayList<Resource> deposit, Map<Resource, Integer> strongBox,
