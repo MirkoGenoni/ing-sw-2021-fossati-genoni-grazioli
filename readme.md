@@ -12,16 +12,16 @@ The game has been realized by the group 27 formed by:
 ## Implemented Functionalities
 | Functionality | Status |
 |:-----------------------|:------------------------------------:|
-| Multiplayer rules | <img src="https://github.com/MirkoGenoni/ing-sw-2021-fossati-genoni-grazioli/blob/main/githubresources/Tick.png" width="50" heigth="50">
-| Singleplayer rules | <img src="https://github.com/MirkoGenoni/ing-sw-2021-fossati-genoni-grazioli/blob/main/githubresources/Tick.png" width="50" heigth="50">
-| Socket | <img src="https://github.com/MirkoGenoni/ing-sw-2021-fossati-genoni-grazioli/blob/main/githubresources/Tick.png" width="50" heigth="50">
-| GUI | <img src="https://github.com/MirkoGenoni/ing-sw-2021-fossati-genoni-grazioli/blob/main/githubresources/Tick.png" width="50" heigth="50">
-| CLI | <img src="https://github.com/MirkoGenoni/ing-sw-2021-fossati-genoni-grazioli/blob/main/githubresources/Tick.png" width="50" heigth="50">
-| Multiple games | <img src="https://github.com/MirkoGenoni/ing-sw-2021-fossati-genoni-grazioli/blob/main/githubresources/Tick.png" width="50" heigth="50">
-| Resilience to disconnection | <img src="https://github.com/MirkoGenoni/ing-sw-2021-fossati-genoni-grazioli/blob/main/githubresources/Tick.png" width="50" heigth="50">
-| Persistence | <img src="https://github.com/MirkoGenoni/ing-sw-2021-fossati-genoni-grazioli/blob/main/githubresources/Cross.png" width="50" heigth="50">
-| Parameter Editor | <img src="https://github.com/MirkoGenoni/ing-sw-2021-fossati-genoni-grazioli/blob/main/githubresources/Cross.png" width="50" heigth="50">
-| Local game | <img src="https://github.com/MirkoGenoni/ing-sw-2021-fossati-genoni-grazioli/blob/main/githubresources/Cross.png" width="50" heigth="50">
+| Multiplayer rules | <img src="https://github.com/MirkoGenoni/ResourceToGithub/blob/master/Icon/Tick.png" width="50" heigth="50">
+| Singleplayer rules | <img src="https://github.com/MirkoGenoni/ResourceToGithub/blob/master/Icon/Tick.png" width="50" heigth="50">
+| Socket | <img src="https://github.com/MirkoGenoni/ResourceToGithub/blob/master/Icon/Tick.png" width="50" heigth="50">
+| GUI | <img src="https://github.com/MirkoGenoni/ResourceToGithub/blob/master/Icon/Tick.png" width="50" heigth="50">
+| CLI | <img src="https://github.com/MirkoGenoni/ResourceToGithub/blob/master/Icon/Tick.png" width="50" heigth="50">
+| Multiple games | <img src="https://github.com/MirkoGenoni/ResourceToGithub/blob/master/Icon/Tick.png" width="50" heigth="50">
+| Resilience to disconnection | <img src="https://github.com/MirkoGenoni/ResourceToGithub/blob/master/Icon/Tick.png" width="50" heigth="50">
+| Persistence | <img src="https://github.com/MirkoGenoni/ResourceToGithub/blob/master/Icon/Cross.png" width="50" heigth="50">
+| Parameter Editor | <img src="https://github.com/MirkoGenoni/ResourceToGithub/blob/master/Icon/Cross.png" width="50" heigth="50">
+| Local game | <img src="https://github.com/MirkoGenoni/ResourceToGithub/blob/master/Icon/Cross.png" width="50" heigth="50">
 
 ## How to run
 In the [derivable](https://github.com/MirkoGenoni/ing-sw-2021-fossati-genoni-grazioli/tree/main/deliverables) folder, inside the jar folder there will be two .jar files that needs to be downloaded:
