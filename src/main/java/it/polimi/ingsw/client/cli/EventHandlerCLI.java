@@ -36,6 +36,10 @@ public class EventHandlerCLI implements EventToClientVisitor {
         this.printing = false;
     }
 
+    /**
+     * This method permits to the connection with the server to pass the receive event to this class
+     * @param event The event passed by the connection with the server
+     */
     public void receiveEvent(EventToClient event){
         event.acceptVisitor(this);
     }
