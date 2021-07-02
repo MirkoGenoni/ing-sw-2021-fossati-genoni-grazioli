@@ -196,7 +196,7 @@ public class NewDepositView {
                 printDepositChoise("reorganize");
             }
             if (state.equals("additionalDeposit")) {
-                printAdditionalDeposit();
+                printAdditionalDeposit("reorganize");
             }
 
             Scanner in = new Scanner(System.in);
@@ -280,7 +280,7 @@ public class NewDepositView {
             if (state.equals("deposit"))
                 this.printDepositChoise("view");
             if (state.equals("additionalDeposit"))
-                this.printAdditionalDeposit();
+                this.printAdditionalDeposit("view");
 
             input = in.nextLine();
 
@@ -289,7 +289,8 @@ public class NewDepositView {
                     state = "deposit";
                     break;
                 case "additionaldeposit":
-                    state = "additionalDeposit";
+                    if(this.additionalDepositState!=null && this.additionalDepositState.size()!=0)
+                        state = "additionalDeposit";
                     break;
                 case "quit":
                     state = "quit";
@@ -405,17 +406,20 @@ public class NewDepositView {
                 " ┃                                                      ______________                                                   ┃ \n" +
                 " ┃                                                                                                                       ┃ \n" +
                 " ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛ \n" +
-                "\n" +
-                "                             Choose a material and a position to put into (material,position):                             \n" +
+                "\n");
+        if(context.equals("reorganize"))
+            System.out.print("                             Choose a material and a position to put into (material,position):                             \n" +
                 "                              " + "\u001B[92m" + "[type done when finished or additionalDeposit to change view]                              \n" +
                 "\n" +
                 "                                                              " + "\u001B[0;00m");
-    }
+        else if(context.equals("view"))
+            System.out.print("\u001B[92m" + "                                                Type quit to exit this view                                                " + "\u001B[0;0m" +"\n" +
+                    "                                                              ");    }
 
     /**
      * Prints the visualization for the additional deposits
      */
-    public void printAdditionalDeposit() {
+    public void printAdditionalDeposit(String context) {
         System.out.print("\u001B[2J\u001B[3J\u001B[H");
 
         System.out.println("\u001B[0;00m" +
@@ -454,26 +458,62 @@ public class NewDepositView {
                     " ┃            DEPOSIT                      " + this.additionalDepositState.get(2).returnLine(3) + "                          " + this.additionalDepositState.get(3).returnLine(3) + "                          ┃ \n" +
                     " ┃             ( " + colorSymbol(2) + " )                       " + this.additionalDepositState.get(2).returnLine(4) + "                          " + this.additionalDepositState.get(3).returnLine(4) + "                          ┃ \n" +
                     " ┃                                         " + this.additionalDepositState.get(2).returnLine(5) + "                          " + this.additionalDepositState.get(3).returnLine(5) + "                          ┃ \n" +
-                    " ┃                                              -3-                                    -4-                               ┃ \n");
+                    " ┃                                              -3-                                    -4-                               ┃ \n" +
+                    " ┃                                                                                                                       ┃ \n");
         }
-        System.out.print("\u001B[0;00m" + " ┃                                                                                                                       ┃ \n" +
+
+        System.out.print("\u001B[0;00m" + " ┃                                                      ______________                                                   ┃ \n" +
                 " ┃                                                                                                                       ┃ \n" +
-                " ┃                                                      ______________                                                   ┃ \n" +
+                " ┃                                                       ");
+
+        if(context.equals("reorganize"))
+            System.out.print("TO ORGANIZE:");
+        if(context.equals("view"))
+            System.out.print(" STRONGBOX: ");
+
+        System.out.print("                                                    ┃ \n" +
                 " ┃                                                                                                                       ┃ \n" +
-                " ┃                                                       TO ORGANIZE                                                     ┃ \n" +
-                " ┃                                                                                                                       ┃ \n" +
-                " ┃                                                       Coin:     " + informationReceived.get(ResourceIcon.COIN.toString()) + "                                                     ┃\n" +
-                " ┃                                                       Servant:  " + informationReceived.get(ResourceIcon.SERVANT.toString()) + "                                                     ┃\n" +
-                " ┃                                                       Shield:   " + informationReceived.get(ResourceIcon.SHIELD.toString()) + "                                                     ┃\n" +
-                " ┃                                                       Stone:    " + informationReceived.get(ResourceIcon.STONE.toString()) + "                                                     ┃\n" +
+                " ┃                                                       Coin:     ");
+        if(informationReceived.get(ResourceIcon.COIN.toString())<10)
+            System.out.print("0" + informationReceived.get(ResourceIcon.COIN.toString()));
+        else
+            System.out.print(informationReceived.get(ResourceIcon.COIN.toString()));
+        System.out.print("                                                    ┃\n" +
+                " ┃                                                       Servant:  ");
+        if(informationReceived.get(ResourceIcon.SERVANT.toString())<10)
+            System.out.print("0" + informationReceived.get(ResourceIcon.SERVANT.toString()));
+        else
+            System.out.print(informationReceived.get(ResourceIcon.SERVANT.toString()));
+
+        System.out.print("                                                    ┃\n" +
+                " ┃                                                       Shield:   ");
+
+        if(informationReceived.get(ResourceIcon.SHIELD.toString())<10)
+            System.out.print("0" + informationReceived.get(ResourceIcon.SHIELD.toString()));
+        else
+            System.out.print(informationReceived.get(ResourceIcon.SHIELD.toString()));
+
+        System.out.print("                                                    ┃\n" +
+                " ┃                                                       Stone:    ");
+        if(informationReceived.get(ResourceIcon.STONE.toString())<10)
+            System.out.print("0" + informationReceived.get(ResourceIcon.STONE.toString()));
+        else
+            System.out.print(informationReceived.get(ResourceIcon.STONE.toString()));
+
+        System.out.print("                                                    ┃\n" +
                 " ┃                                                      ______________                                                   ┃ \n" +
                 " ┃                                                                                                                       ┃ \n" +
                 " ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛ \n" +
-                "\n" +
-                "                             Choose a material and a position to put into (material,position):                             \n" +
-                "                                    " + "\u001B[92m" + "[type done when finished or deposit to change view]                                    \n" +
-                "\n" +
-                "                                                              " + "\u001B[0;00m");
+                "\n");
+
+        if(context.equals("reorganize"))
+            System.out.print("                             Choose a material and a position to put into (material,position):                             \n" +
+                    "                              " + "\u001B[92m" + "[type done when finished or additionalDeposit to change view]                              \n" +
+                    "\n" +
+                    "                                                              " + "\u001B[0;00m");
+        else if(context.equals("view"))
+            System.out.print("\u001B[92m" + "                                                Type quit to exit this view                                                " + "\u001B[0;0m" +"\n" +
+                    "                                                              ");
 
     }
 
