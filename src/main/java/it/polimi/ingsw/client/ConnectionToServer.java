@@ -22,6 +22,10 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
 
+/**
+ * This class handles the send of information from the client to the server
+ * Implements Runnable and EventToServerNotifier interface
+ */
 public class ConnectionToServer implements Runnable, EventToServerNotifier {
     private final Socket socket;
     private String address;
@@ -35,20 +39,36 @@ public class ConnectionToServer implements Runnable, EventToServerNotifier {
     private ObjectInputStream input;
     private ObjectOutputStream output;
 
+    /**
+     * The socket created is passed to this class
+     * @param socket is the socket created between client and server
+     */
     public ConnectionToServer(Socket socket) {
         this.socket = socket;
         this.active = true;
         this.eventHandlerCli = new EventHandlerCLI(this);
     }
 
+    /**
+     * Set the ip address to the connection
+     * @param address is the ip address of the server
+     */
     public void setAddress(String address){
         this.address = address;
     }
 
+    /**
+     * Gets the ip address to the connection
+     * @return the address of the server
+     */
     public String getAddress(){
         return this.address;
     }
 
+    /**
+     * Set the event handler for the gui
+     * @param eventHandlerGUI is the event handler of the GUI that interface the client with the server
+     */
     public void setEventHandlerGUI(EventHandlerGUI eventHandlerGUI) {
         this.eventHandlerGUI = eventHandlerGUI;
         activeGui = true;
@@ -85,6 +105,9 @@ public class ConnectionToServer implements Runnable, EventToServerNotifier {
         }
     }
 
+    /**
+     * Notifies a disconnection to the client
+     */
     private void notifyDisconnection(){
         if(activeGui){
             eventHandlerGUI.closeConnectionAlert();
@@ -93,11 +116,21 @@ public class ConnectionToServer implements Runnable, EventToServerNotifier {
         }
     }
 
+    /**
+     * Receives the event form the server of this connection.
+     * @return The event receive form the server.
+     * @throws IOException if the ObjectInputStream throws an error.
+     * @throws ClassNotFoundException if the object received from the server is not a class known.
+     */
     private EventToClient receiveEvent() throws IOException, ClassNotFoundException {
         return (EventToClient) input.readObject();
     }
 
-    // send event to the server
+    /**
+     * Writes events to ObjectOutputStream and sends to server of this connection through the socket.
+     * In case of an IOException calls the disconnection handler to manage the connection.
+     * @param event The event to send to the server.
+     */
     private void sendEvent(EventToServer event){
         try{
             output.writeObject(event);
@@ -109,14 +142,19 @@ public class ConnectionToServer implements Runnable, EventToServerNotifier {
         }
     }
 
-    // send event to the server with a thread
+    /**
+     * Sends the event with a thread to the server of this connection.
+     * @param event The event to send to the server.
+     */
     public synchronized void asyncSendEvent(EventToServer event){
         new Thread(() ->
                 sendEvent(event)
         ).start();
     }
 
-    // close the connection
+    /**
+     * Close the connection and set the server like inactive
+     */
     public void closeConnection(){
         try{
             socket.close();
@@ -126,6 +164,10 @@ public class ConnectionToServer implements Runnable, EventToServerNotifier {
         active = false;
     }
 
+    /**
+     * Sets the name of the client/player of this connection.
+     * @param playerName The name of the client/player of this connection.
+     */
     public void setPlayerName(String playerName) {
         this.playerName = playerName;
     }
