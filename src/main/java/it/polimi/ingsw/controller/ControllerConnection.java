@@ -26,7 +26,7 @@ public class ControllerConnection implements EventToServerVisitor, ObserveConnec
         this.controller = controller;
     }
     /*
-     parsa e costruisce eventiiiii
+     parse and constructs events
      */
 
 

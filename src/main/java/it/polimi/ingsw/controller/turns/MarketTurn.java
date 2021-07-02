@@ -156,7 +156,7 @@ public class MarketTurn {
             }
 
         } catch (LeaderCardException e) {
-
+            //e.printStackTrace();
         }
         //controllerToModel.getConnectionsToClient().get(currentPlayerIndex).sendReorganizeDeposit(new ArrayList<>(this.tmpMarketReturn), controllerToModel.getPlayers()[currentPlayerIndex].getPlayerBoard().getResourceHandler().getDepositState(), isAdditional, additionalType, additionalState);
         controller.getConnections().get(activePlayer.getName()).sendReorganizeDeposit(new ArrayList<>(this.tmpMarketReturn),

@@ -34,9 +34,9 @@ public class LeaderCardTurn {
      * method that manages the actions from a player for its leaders
      * @param playerName the name of the player who's playing the leader turn
      * @param positions the action to do for each leader (0 to do nothing, 1 to play, 2 to discard)
-     * @param isFinal
+     * @param isFinal if the leaderTurn is at the end of the turn
      */
-    public void leaderTurns(String playerName, ArrayList<Integer> positions, boolean isFinal) { //TODO playername inutile
+    public void leaderTurns(String playerName, ArrayList<Integer> positions, boolean isFinal) {
         int currentPlayerIndex = controller.getCurrentPlayerIndex();
         Player activePlayer = controller.getActivePlayer();
         Game game = controller.getGame();
@@ -72,7 +72,7 @@ public class LeaderCardTurn {
                         }
                     }
                     catch (LeaderCardException | DevelopmentCardException e){
-                        System.out.println("eccezione tirata: " + e.getMessage());
+                        System.out.println("eccezione tirata: " + playerName + e.getMessage());
                         e.printStackTrace();
                     }
             }
