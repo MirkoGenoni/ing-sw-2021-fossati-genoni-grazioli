@@ -131,8 +131,9 @@ public class EventHandlerCLI implements EventToClientVisitor {
             acquire();
             Messages messageEnd = new Messages(message.getMessage(), false);
 
-            for(String s: message.getPlayersPoint().keySet())
-                System.out.println(s + message.getPlayersPoint().get(s));
+            if(message.getPlayersPoint() != null)
+                for(String s: message.getPlayersPoint().keySet())
+                    System.out.println(s + message.getPlayersPoint().get(s));
 
             messageEnd.printMessage();
             //connectionToServer.closeConnection();
@@ -153,13 +154,7 @@ public class EventHandlerCLI implements EventToClientVisitor {
     public void visit(LorenzoActionToClient lorenzoAction) {
         new Thread(() -> {
             acquire();
-            System.out.println("lorenzo ha pescato -> " + lorenzoAction.getLorenzoAction().toString());
-            System.out.println("lorenzo si trova " + lorenzoAction.getLorenzoPosition() + "/24");
-            try {
-                TimeUnit.SECONDS.sleep(3);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            handler.printLorenzoTurn(lorenzoAction.getLorenzoAction().toString(), lorenzoAction.getLorenzoPosition());
             connectionToServer.sendReplayLorenzoAction();
             available.release();
         }).start();

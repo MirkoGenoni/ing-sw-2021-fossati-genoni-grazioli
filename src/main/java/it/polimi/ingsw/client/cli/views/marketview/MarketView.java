@@ -34,9 +34,9 @@ public class MarketView {
     }
 
 
-    public void launchChoiseView(){
+    public void launchChoiseView(ArrayList<String> marketWhiteChange){
         turnEnd = true;
-        printMarketLineChoice();
+        printMarketLineChoice(marketWhiteChange);
 
         int num = -1;
 
@@ -59,7 +59,7 @@ public class MarketView {
         this.choiseLine = num;
     }
 
-    private void printMarketLineChoice(){
+    private void printMarketLineChoice(ArrayList<String> marketWhiteChange){
         System.out.print("\u001B[2J\u001B[3J\u001B[H");
         System.out.println("                                                  ╔═══════════════════════╗                                                \n" +
                            "                                                  ║ MARKET LINE SELECTION ║                                                \n" +
@@ -81,13 +81,24 @@ public class MarketView {
                 " ┃                                                         " + outMarble.returnLine(5) + "                                                 ┃ \n" +
                 " ┃                                                         " + outMarble.returnLine(6) + "                                                 ┃ \n" +
                 " ┃                                                                                                                       ┃ \n" +
-                " ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛ ");
+                " ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛ " );
+
+        if(marketWhiteChange.size()!=0)
+            System.out.print("   You got a market white change from the white marble you can obtain: ");
+
+        if(marketWhiteChange.size() > 0)
+            System.out.print(addColor(marketWhiteChange.get(0)));
+        if(marketWhiteChange.size() > 1) {
+            System.out.print(", ");
+            System.out.print(addColor(marketWhiteChange.get(1)));
+        }
+        if(marketWhiteChange.size()>0)
+            System.out.println("");
 
         System.out.print("\n" +
                 "                                                      CHOOSE A LINE:\n" +
                 "                                         " + "\u001B[92m" + "or type quit to return to turn selection\n\n" + "\u001B[0m" +
                 "                                                             ");
-
     }
 
     private void printMarketLine(int initialValue, int line){
@@ -105,5 +116,20 @@ public class MarketView {
             }
         }
         System.out.println(" ┃                                                                                                                       ┃ ");
+    }
+
+    private String addColor(String material){
+        switch(material.toLowerCase()){
+            case "stone":
+                return("\u001B[37m" + "stone" + "\u001B[0;0m");
+            case "coin":
+                return("\u001B[93m" + "coin" + "\u001B[0;0m");
+            case "servant":
+                return("\u001B[35m" + "servant" + "\u001B[0;0m");
+            case "shield":
+                return("\u001B[36m" + "shield" + "\u001B[0;0m");
+            default:
+                return "";
+        }
     }
 }

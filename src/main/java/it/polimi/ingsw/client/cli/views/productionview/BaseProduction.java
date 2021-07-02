@@ -61,6 +61,7 @@ public class BaseProduction {
                 }
             }
 
+            while (true) {
             printBaseProductionSelection();
 
             for (int j = 0; j < this.resources.size(); j++) {
@@ -76,20 +77,20 @@ public class BaseProduction {
                              "                                           " + "\u001B[92m" + "type quit to return to turn selection \n"+ "\u001B[0m");
             System.out.print("                                                            ");
 
-            while (true) {
-                String input = in.nextLine();
-                if (input.equals("YES")) {
-                    valid = 1;
-                    isTurnEnd = true;
-                    break;
-                }
-                if (input.equals("NO"))
-                    break;
-                if(input.equals("quit")) {
-                    valid = -1;
-                    isTurnEnd = false;
-                    break;
-                }
+
+            String input = in.nextLine();
+            if (input.toUpperCase().equals("YES")) {
+                valid = 1;
+                isTurnEnd = true;
+                break;
+            }
+            if (input.toUpperCase().equals("NO"))
+                break;
+            if(input.toUpperCase().equals("QUIT")) {
+                valid = -1;
+                isTurnEnd = false;
+                break;
+            }
             }
         }
     }

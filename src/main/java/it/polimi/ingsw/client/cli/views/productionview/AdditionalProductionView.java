@@ -164,7 +164,7 @@ public class AdditionalProductionView {
                                  "┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛\n");
 
                 if(text){
-                    System.out.print("\n                                               Type YES/NO to activate or not                                               \n" +
+                    System.out.print("\n                                               " + "\u001B[92m" + "Type YES/NO to activate or not " + "\u001B[0;0m" + "                                               \n" +
                             "\n                                                            ");
                 }
                 break;
@@ -201,7 +201,7 @@ public class AdditionalProductionView {
                 System.out.print("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛\n");
 
                 if (text) {
-                    System.out.print("                                      SELECT THE PRODUCTION CARD YOU WANT TO ACTIVATE                                     \n\n" +
+                    System.out.print("                                      " + "\u001B[92m" + "SELECT THE PRODUCTION CARD YOU WANT TO ACTIVATE" + "\u001B[0;0m" + "                                     \n\n" +
                             "                                   |    Type nothing or activate, followed by comma    |                                           \n" +
                             "                                   |                and the card number                |                                           \n\n" +
                             "                                                      ");
@@ -223,7 +223,7 @@ public class AdditionalProductionView {
 
         while(true){
             printAdditionalProductionView(false);
-            System.out.print("\n                              INSERT THE MATERIAL OR MATERIALS YOU WANT FROM THIS PRODUCTION:                              \n" +
+            System.out.print("\n                              " + "\u001B[92m" + "INSERT THE MATERIAL OR MATERIALS YOU WANT FROM THIS PRODUCTION:" + "\u001B[0;0m" + "                              \n" +
                                "                                       (if more than one separate them with a comma)                                       \n" +
                     "\n                                                         ");
             Scanner in = new Scanner(System.in);

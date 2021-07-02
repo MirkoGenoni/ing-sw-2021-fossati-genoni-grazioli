@@ -371,8 +371,8 @@ public class DevelopmentCardView {
                 System.out.print(" and ");
                 System.out.print(addColor(costLess.get(1)));
             }
-
-            System.out.print(")");
+            if(costLess.size()>0)
+                System.out.print(")");
 
             System.out.print("\n\n" +
                     "                                  | Insert a color (green, yellow, blue, purple) to see |                                  \n" +

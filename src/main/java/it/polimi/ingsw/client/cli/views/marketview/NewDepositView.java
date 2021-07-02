@@ -16,40 +16,6 @@ public class NewDepositView {
     Map<String, Integer> informationReceived;
     boolean additionalDeposit;
 
-    /*public static void main(String[] args) {
-        ArrayList<Resource> depositState = new ArrayList<>();
-        for (int i = 0; i < 6; i++) {
-            depositState.add(null);
-        }
-        ArrayList<Resource> informationReceived = new ArrayList<>();
-
-        informationReceived.add(Resource.COIN);
-        informationReceived.add(Resource.COIN);
-        informationReceived.add(Resource.SHIELD);
-        informationReceived.add(Resource.SHIELD);
-        informationReceived.add(Resource.STONE);
-        informationReceived.add(Resource.STONE);
-        informationReceived.add(Resource.SERVANT);
-        informationReceived.add(Resource.SERVANT);
-
-        boolean additionalDeposit = true;
-        ArrayList<Resource> type = new ArrayList<>();
-        type.add(Resource.COIN);
-
-        ArrayList<Resource> additionalDepositState = new ArrayList<>();
-        additionalDepositState.add(null);
-        additionalDepositState.add(null);
-
-
-        NewDepositView prova = new NewDepositView(depositState, informationReceived, additionalDeposit, type, additionalDepositState);
-        prova.LaunchView();
-
-        System.out.println(prova.getDepositState());
-        System.out.println(prova.getMarketReceived());
-        System.out.println(prova.getAdditionalDepositState());
-    }*/
-
-
     /**
      * this constructor initializes the class for the turn after the market
      */
@@ -191,7 +157,7 @@ public class NewDepositView {
         while (true) {
 
             if (state.equals("deposit")) {
-                printDepositChoise();
+                printDepositChoise("reorganize");
             }
             if (state.equals("additionalDeposit")) {
                 printAdditionalDeposit();
@@ -273,7 +239,7 @@ public class NewDepositView {
 
         do {
             if (state.equals("deposit"))
-                this.printDepositChoise();
+                this.printDepositChoise("view");
             if (state.equals("additionalDeposit"))
                 this.printAdditionalDeposit();
 
@@ -310,7 +276,7 @@ public class NewDepositView {
         }
     }
 
-    private void printDepositChoise() {
+    private void printDepositChoise(String context) {
 
         System.out.print("\u001B[2J\u001B[3J\u001B[H");
         System.out.println("\u001B[0;00m" + "                                                  ╔═══════════════════════╗ \n" +
@@ -349,12 +315,44 @@ public class NewDepositView {
 
         System.out.print("\u001B[0;00m" + " ┃                                                      ______________                                                   ┃ \n" +
                 " ┃                                                                                                                       ┃ \n" +
-                " ┃                                                       TO ORGANIZE                                                     ┃ \n" +
+                " ┃                                                       ");
+
+        if(context.equals("reorganize"))
+            System.out.print("TO ORGANIZE:");
+        if(context.equals("view"))
+            System.out.print(" STRONGBOX: ");
+
+        System.out.print("                                                    ┃ \n" +
                 " ┃                                                                                                                       ┃ \n" +
-                " ┃                                                       Coin:     " + informationReceived.get(ResourceIcon.COIN.toString()) + "                                                     ┃\n" +
-                " ┃                                                       Servant:  " + informationReceived.get(ResourceIcon.SERVANT.toString()) + "                                                     ┃\n" +
-                " ┃                                                       Shield:   " + informationReceived.get(ResourceIcon.SHIELD.toString()) + "                                                     ┃\n" +
-                " ┃                                                       Stone:    " + informationReceived.get(ResourceIcon.STONE.toString()) + "                                                     ┃\n" +
+                " ┃                                                       Coin:     ");
+
+        if(informationReceived.get(ResourceIcon.COIN.toString())<10)
+            System.out.print("0" + informationReceived.get(ResourceIcon.COIN.toString()));
+        else
+            System.out.print(informationReceived.get(ResourceIcon.COIN.toString()));
+        System.out.print("                                                    ┃\n" +
+                " ┃                                                       Servant:  ");
+        if(informationReceived.get(ResourceIcon.SERVANT.toString())<10)
+            System.out.print("0" + informationReceived.get(ResourceIcon.SERVANT.toString()));
+        else
+            System.out.print(informationReceived.get(ResourceIcon.SERVANT.toString()));
+
+        System.out.print("                                                    ┃\n" +
+                " ┃                                                       Shield:   ");
+
+        if(informationReceived.get(ResourceIcon.SHIELD.toString())<10)
+            System.out.print("0" + informationReceived.get(ResourceIcon.SHIELD.toString()));
+        else
+            System.out.print(informationReceived.get(ResourceIcon.SHIELD.toString()));
+
+        System.out.print("                                                    ┃\n" +
+                " ┃                                                       Stone:    ");
+        if(informationReceived.get(ResourceIcon.STONE.toString())<10)
+            System.out.print("0" + informationReceived.get(ResourceIcon.STONE.toString()));
+        else
+            System.out.print(informationReceived.get(ResourceIcon.STONE.toString()));
+
+        System.out.print("                                                    ┃\n" +
                 " ┃                                                      ______________                                                   ┃ \n" +
                 " ┃                                                                                                                       ┃ \n" +
                 " ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛ \n" +

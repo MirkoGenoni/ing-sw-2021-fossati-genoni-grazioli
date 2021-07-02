@@ -16,9 +16,11 @@ import it.polimi.ingsw.events.servertoclient.supportclass.MarketToClient;
 import it.polimi.ingsw.events.servertoclient.supportclass.PlayerInformationToClient;
 import it.polimi.ingsw.model.resource.Resource;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.concurrent.TimeUnit;
 
 public class CLIHandler {
     private final ConnectionToServer connection;
@@ -115,7 +117,7 @@ public class CLIHandler {
 
             switch (in) {
                 case "market":
-                    market.launchChoiseView();
+                    market.launchChoiseView(this.getWhiteChange(players.get(this.namePlayer).getLeaderCardActive()));
                     int line1 = market.getChoiseLine();
                     ArrayList<Boolean> tmp = marketWhiteChangeActive(players.get(this.namePlayer).getLeaderCardActive());
                     if (market.isTurnEnd())
@@ -247,7 +249,17 @@ public class CLIHandler {
 
     }
 
-    //TODO ALMENO UN BOOLEAN A TRUE PER LEADER WHITE CHANGE
+    private ArrayList<String> getWhiteChange(ArrayList<LeaderCardToClient> leaderCardActive) {
+        ArrayList<String> whiteChange = new ArrayList<>();
+
+        for (int i = 0; i < leaderCardActive.size(); i++) { //Find market white change power
+            if (leaderCardActive.get(i).getEffect().equals("marketWhiteChange")) {
+                whiteChange.add(leaderCardActive.get(i).getResourceType());
+            }
+        }
+        return whiteChange;
+    }
+
     private ArrayList<Boolean> marketWhiteChangeActive(ArrayList<LeaderCardToClient> leaderCardActive){
         ArrayList<Boolean> leaderCardWhiteChange = new ArrayList<>();
 
@@ -274,57 +286,65 @@ public class CLIHandler {
             j++;
         }
 
-        if(leaderCardWhiteChange.size()!=0) {
-            Messages messages = new Messages("You changed the white marble into " + marbleOut, false);
-            messages.printMessage();
-        }
         return leaderCardWhiteChange;
     }
 
 
     private ArrayList<Boolean> selectWhichWhiteChange(ArrayList<LeaderCardToClient> leaderCardActive){ //CALLED ONLY IF THE PLAYER HAS 2 WHITE-CHANGE
-        char answer;
         ArrayList<Boolean> leaderSelection = new ArrayList<>();
         leaderSelection.add(false);
         leaderSelection.add(false);
 
-        do{
-            for (int i=0;i<leaderCardActive.size(); i++) {
-                answer = selectActivation("Do you want to obtain " + leaderCardActive.get(i).getResourceType() + " from the White Marble? Y/N?");
-                if (answer == 'Y') {
-                    leaderSelection.set(i, true); //TODO FORSE BREAK
-                } else {
-                    leaderSelection.set(i, false);
-                }
+        String input;
+        Scanner in = new Scanner(System.in);
+
+        while(true) {
+            System.out.print("\u001B[2J\u001B[3J\u001B[H");
+            System.out.print("                                                  ╔═══════════════════════════════════╗\n" +
+                    "                                                  ║  YOU GOT TWO MARKET WHITE CHANGE  ║\n" +
+                    "                                                  ╚═══════════════════════════════════╝\n" +
+                    "\n" +
+                    "\n" +
+                    "\n" +
+                    "\n" +
+                    "                                         -> Do you want to change the white marble into " + leaderCardActive.get(0).getResourceType() + "?" +
+                    "\n" +
+                    "                                                             ");
+
+            input = in.nextLine();
+
+            if (input.toLowerCase().equals("yes")) {
+                leaderSelection.set(0, true);
+            } else if (input.toLowerCase().equals("no")) {
+                leaderSelection.set(0, false);
+            } else {
+                continue;
             }
-        }while(leaderSelection.get(0) == leaderSelection.get(1)); //TODO FARE MESSAGGIO SE SCRIVE STUPIDAGGINI
+
+
+            System.out.print("\n" +
+                    "\n" +
+                    "                                       \n" +
+                    "\n" +
+                    "\n" +
+                    "\n" +
+                    "                                         -> Do you want to change the white marble into shield?\n" +
+                    " \n" +
+                    "                                                                 ");
+
+            input = in.nextLine();
+
+            if (input.toLowerCase().equals("yes")) {
+                leaderSelection.set(1, true);
+            } else if (input.toLowerCase().equals("no")) {
+                leaderSelection.set(1, false);
+            }
+
+            if(leaderSelection.get(0)!=leaderSelection.get(1))
+                break;
+        }
 
         return leaderSelection;
-    }
-
-    private char selectActivation (String message) {
-        Scanner scan = new Scanner(System.in);
-        char choose;
-        boolean isValid;
-        do {
-            System.out.println(message);
-            String input;
-            input = scan.nextLine();
-            isValid = false;   //CONTROL
-            input = input.trim();
-            input = input.toUpperCase();
-            choose = input.charAt(0);
-            if (input.length() == 1 && (choose == 'Y' || choose == 'N')) {
-                System.out.println("selected: " + choose);
-                isValid = true;
-            }
-            if (!isValid) {
-                Messages error = new Messages("Please select a correct option", true) ;
-                isValid = false;
-            }
-        } while (!isValid);
-
-        return choose;
     }
 
     private ArrayList<String> costLessCheck(ArrayList<LeaderCardToClient> leaderCardActive){
@@ -503,5 +523,37 @@ public class CLIHandler {
     public void stopAsyncPrint(){
         if(this.asyncPrint!=null && this.asyncPrint.isAlive())
             asyncPrint.interrupt();
+    }
+
+    public void printLorenzoTurn(String action, int position){
+        System.out.print("\u001B[2J\u001B[3J\u001B[H");
+        System.out.print("                                  ╔═╗     ╔═════╗ ╔═════╗ ╔═════╗ ╔══╗╔═╗ ╔═════╗ ╔═════╗                                  \n" +
+                         "                                  ║ ║     ║ ╔═╗ ║ ║  ══ ║ ║ ╔═══╝ ║  ╚╝ ║ ╚═╗  ╔╝ ║ ╔═╗ ║\n" +
+                         "                                  ║ ║     ║ ║ ║ ║ ║ ╔══╗║ ║ ╠═══  ║ ╔╗  ║  ╔╝ ╔╝  ║ ║ ║ ║\n" +
+                         "                                  ║ ╚═══╗ ║ ╚═╝ ║ ║ ║  ║║ ║ ╚═══╗ ║ ║║  ║ ╔╝  ╚═╗ ║ ╚═╝ ║\n" +
+                         "                                  ╚═════╝ ╚═════╝ ╚═╝  ╚╝ ╚═════╝ ╚═╝╚══╝ ╚═════╝ ╚═════╝\n" +
+                "\n\n\n\n\n\n\n");
+        System.out.print("                                                  ┌");
+        for(int i=0; i<13 + action.length(); i++)
+            System.out.print("─");
+        System.out.print("┐\n");
+        System.out.print("                                                  │ HAS PLAYED " + action + " │\n" +
+                "                                                  └");
+        for(int i=0; i< 13 + action.length(); i++)
+            System.out.print("─");
+        System.out.print("┘\n");
+
+        System.out.print("\n\n\n\n\n\n\n");
+        System.out.print("                                                   HE IS IN POSITION: ");
+        if(position<10)
+            System.out.print("0" + position);
+        else
+            System.out.print("0" + position);
+        System.out.println("/24                                                ");
+        try {
+            TimeUnit.SECONDS.sleep(3);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 }
