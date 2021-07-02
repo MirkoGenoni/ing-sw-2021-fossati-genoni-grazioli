@@ -39,6 +39,21 @@ public class EventHandlerCLI implements EventToClientVisitor {
         }
     }
 
+    public void notifyDisconnection(){
+        new Thread(()-> {
+            acquire();
+            Messages messages = new Messages("You are disconnected from the server", false);
+            messages.printMessage();
+            try {
+                TimeUnit.SECONDS.sleep(2);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            available.release();
+        }).start();
+
+    }
+
     // Events that arrive from ConnectionToServer, so from the server
     // -------------------------------------------------------
     // EVENTS FOR THE START OF THE CONNECTION WITH THE CLIENT
