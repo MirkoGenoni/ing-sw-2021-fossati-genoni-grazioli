@@ -2,6 +2,11 @@ package it.polimi.ingsw.client.cli.views.leadercardview;
 
 import java.util.ArrayList;
 
+/**
+ * This class contains the representation of a single leaderCard
+ *
+ * @author Mirko Genoni
+ */
 public class LeaderCardVisualization {
     public String effect;
     public ArrayList<LeaderCardSymbols> requirements;
@@ -12,6 +17,13 @@ public class LeaderCardVisualization {
 
     public int winnerPoints;
 
+    /**
+     * This constructor initializes the class for a leadercard
+     * @param specialAbility is the name of the special ability of the leader card
+     * @param winnerPoints contains the number of winner points
+     * @param requirements contains the cost of activation of the card
+     * @param type contains the output resource type for the various special ability
+     */
     LeaderCardVisualization(String specialAbility, int winnerPoints, ArrayList<String> requirements, String type) {
         this.effect = specialAbility;
         this.requirements = new ArrayList<>();
@@ -38,12 +50,21 @@ public class LeaderCardVisualization {
         saveCard(specialAbility);
     }
 
+    /**
+     * Initializes the class for a blank card
+     * @param in is a random parameter
+     */
     LeaderCardVisualization(String in){
         this.card = new String[22];
         this.effect = "nothing";
         saveCard("nothing");
     }
 
+    /**
+     * Converts the string of a resource into an escape code for the terminal
+     * @param resource is the name of the resource
+     * @return the escape code colored as the resource
+     */
     private String resourceToColorConversion(String resource) {
         switch (resource) {
             case "COIN":
@@ -75,6 +96,11 @@ public class LeaderCardVisualization {
         }
     }
 
+    /**
+     * Saves the representation of the card
+     *
+     * @param specialAbility is the type of special ability of the card
+     */
     private void saveCard(String specialAbility) {
         switch (specialAbility) {
             case "biggerDeposit":
@@ -184,6 +210,11 @@ public class LeaderCardVisualization {
         }
     }
 
+    /**
+     * Returns a line of the representation
+     * @param line is the line of the representation asked
+     * @return the line asked
+     */
     public String printCard(int line) {
         return this.card[line];
     }

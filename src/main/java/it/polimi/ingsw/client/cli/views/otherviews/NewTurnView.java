@@ -2,8 +2,17 @@ package it.polimi.ingsw.client.cli.views.otherviews;
 
 import java.util.Scanner;
 
+/**
+ * This class handles the visualization of the turn choice of the player
+ *
+ * @author Mirko Genoni
+ */
 public class NewTurnView {
 
+    /**
+     * This class handles the user input for the turn choice
+     * @return a String that represents the turn chosen by the player
+     */
     public String startTurnChoise(){
         while(true){
             printTurnChoise();
@@ -29,6 +38,10 @@ public class NewTurnView {
             }
         }
     }
+
+    /**
+     * Prints the representation for the turn choice for the player
+     */
     private void printTurnChoise(){
         System.out.print("\u001B[2J\u001B[3J\u001B[H");
 

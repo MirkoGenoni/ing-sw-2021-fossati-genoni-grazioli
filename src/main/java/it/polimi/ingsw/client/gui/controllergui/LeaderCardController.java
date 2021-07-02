@@ -44,6 +44,7 @@ public class LeaderCardController implements GUIController, Initializable {
     /**
      * Draws the leader cards in the scene.
      * @param leaderCardAvailable The leader cards.
+     * @param isFinal Is true if the leader card event is at the end of the turn, else is not
      */
     public void drawLeader(ArrayList<LeaderCardToClient> leaderCardAvailable, boolean isFinal){
         this.isFinal = isFinal;

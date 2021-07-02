@@ -6,6 +6,12 @@ import it.polimi.ingsw.events.servertoclient.supportclass.DevelopmentCardToClien
 import java.util.ArrayList;
 import java.util.Scanner;
 
+/**
+ * This class handles the view for the buy of development card, the activation of development card and
+ * the position of the development card asked by the user depending on the constructor and handler used
+ *
+ * @author Mirko Genoni
+ */
 public class DevelopmentCardView {
     ArrayList<DevelopmentCardVisualization> cards = new ArrayList<>();
     DevelopmentCardVisualization boughtCard;
@@ -18,39 +24,11 @@ public class DevelopmentCardView {
 
     boolean turnEnd;
 
-    /*public static void main(String[] args) {
-        Map<Resource,Integer> cost = new HashMap<>();
-        Map<Resource,Integer> requirements = new HashMap<>();
-
-        int j=0;
-        for(Resource r: Resource.values()){
-            if (j < 3) {
-                cost.put(r,5);
-                requirements.put(r,5);
-            }
-            j++;
-        }
-        Map<ProductedMaterials,Integer> productionResult = new HashMap<>();
-
-        int k=0;
-
-        for(ProductedMaterials s: ProductedMaterials.values()){
-            if (k < 3)
-            productionResult.put(s,1);
-            k++;
-        }
-
-        DevelopmentCardToClient prova = new DevelopmentCardToClient("prova1", "GREEN", 1, cost, 3, requirements, productionResult);
-
-        ArrayList<DevelopmentCardToClient> in = new ArrayList<>();
-        for(int i=0; i<3; i++)
-            in.add(prova);
-
-        DevelopmentCardView test = new DevelopmentCardView(in);
-        test.startProductionCardBoardView();
-        System.out.println(test.getActivation());
-    }*/
-
+    /**
+     * Constructor for the shop of development card
+     * @param input is the development card shop state
+     * @param totalResourceCounter contains a counter of all the material in possession of the player
+     */
     public DevelopmentCardView(DevelopmentCardToClient[][] input, TotalResourceCounter totalResourceCounter) {
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 3; j++) {
@@ -75,6 +53,12 @@ public class DevelopmentCardView {
         turnEnd = false;
     }
 
+    /**
+     * Constructor for the activation of a development card
+     *
+     * @param input contains all the cards possessed by the player
+     * @param totalResourceCounter contains a counter of all the material in possession of the player
+     */
     public DevelopmentCardView(ArrayList<DevelopmentCardToClient> input, TotalResourceCounter totalResourceCounter) {
         int i = 1;
 
@@ -101,6 +85,12 @@ public class DevelopmentCardView {
         turnEnd = false;
     }
 
+    /**
+     * Constructor for the visualization of the position available for the player to position the development card
+     * @param freeSpace are boolean that indicates if the position is free or not
+     * @param state contains the development card possessed already by the player
+     * @param input contains the card bought by the player
+     */
     public DevelopmentCardView(ArrayList<Boolean> freeSpace, ArrayList<DevelopmentCardToClient> state, DevelopmentCardVisualization input) {
         int i = 0;
 
@@ -128,26 +118,51 @@ public class DevelopmentCardView {
         turnEnd = false;
     }
 
+    /**
+     *
+     * @return the number of card of the color bought
+     */
     public int getNum() {
         return num;
     }
 
+    /**
+     *
+     * @return the color of the card bought
+     */
     public String getColor() {
         return color;
     }
 
+    /**
+     *
+     * @return the development activated by the player
+     */
     public ArrayList<Boolean> getActivation() {
         return activation;
     }
 
+    /**
+     *
+     * @param card
+     * @return
+     */
     public DevelopmentCardVisualization getCard(int card){
         return this.cards.get(card);
     }
 
+    /**
+     * returns false if the user quitted before ending the turn
+     * @return false if the user quitted before ending the turn
+     */
     public boolean isTurnEnd(){
         return this.turnEnd;
     }
 
+    /**
+     * Handles the visualization and the user input for the user that shops a card
+     * @param costLess eventually contains the type of resource discounted by the leader power
+     */
     public void startCardForSaleSelection(ArrayList<String> costLess) {
         int currentView = 0;
         int tmp;
@@ -215,6 +230,9 @@ public class DevelopmentCardView {
         }
     }
 
+    /**
+     * Handles the visualization and the user input to activate a development
+     */
     public void startProductionCardBoardView() {
         turnEnd = false;
         int tmp = -1;
@@ -298,6 +316,10 @@ public class DevelopmentCardView {
         }
     }
 
+    /**
+     * Handles the visualization and the user input for the new position of the development card
+     * @return the position chosen by the player
+     */
     public int startSelectionNewCardSpace(){
         int currentView = 0;
         Scanner in = new Scanner(System.in);
@@ -331,6 +353,9 @@ public class DevelopmentCardView {
         }
     }
 
+    /**
+     * Handles the input for the view board of other players or the development card's player
+     */
     public void draw(){
         String input = "";
         do {
@@ -342,6 +367,12 @@ public class DevelopmentCardView {
         } while (!input.equals("quit"));
     }
 
+    /**
+     * Prints the grid for all the possible situation requested by the player (bought, activated or position)
+     * @param currentView represents the color of the card inside the sop
+     * @param type represents the activity requested by the player (bought, activated or position)
+     * @param costLess contains eventual leader power
+     */
     private void printDevelopmentCardGrid(int currentView, String type, ArrayList<String> costLess) {
         System.out.print("\u001B[2J\u001B[3J\u001B[H");
         System.out.println("                                               ╔═══════════════════════════╗                                               \n" +
@@ -412,6 +443,11 @@ public class DevelopmentCardView {
         }
     }
 
+    /**
+     * Asks the player confirmation if he replaces a card inside his deck with one of a level higher
+     * @param bought contains all the development card possessed by the player
+     * @param substitute conatins the development card just bought
+     */
     private void confirmBoughtSpaceSelection(DevelopmentCardVisualization bought, DevelopmentCardVisualization substitute){
         System.out.print("\u001B[2J\u001B[3J\u001B[H");
         System.out.print("                                                   ╔═══════════════════════════╗ \n" +
@@ -438,6 +474,11 @@ public class DevelopmentCardView {
                 "                                                            ");
     }
 
+    /**
+     * Adds color to the writing of resource for the costless
+     * @param material is the material discounted
+     * @return the name of the material colored
+     */
     private String addColor(String material){
         switch(material.toLowerCase()){
             case "stone":

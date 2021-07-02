@@ -6,10 +6,21 @@ import java.util.Scanner;
 
 import it.polimi.ingsw.events.servertoclient.supportclass.LeaderCardToClient;
 
+/**
+ * This class handle all the visualization regarding the leader card
+ *
+ * @author Mirko Genoni
+ */
 public class LeaderCardView {
     ArrayList<LeaderCardVisualization> cards;
     Map<String, Integer> totalResource;
 
+    /**
+     * This constructor initializes the class for the initial leadercard selection at the start of the game or when the
+     * user can decide to activate or discard the cards
+     * @param leaderCardArray contains the leader card received
+     * @param totalResource contains the counter of all the development card and resources
+     */
     public LeaderCardView(ArrayList<LeaderCardToClient> leaderCardArray, Map<String, Integer> totalResource){
 
         cards = new ArrayList<>();
@@ -33,6 +44,10 @@ public class LeaderCardView {
         }
     }
 
+    /**
+     * Handles the user input for the initial discard of cards by the player
+     * @return the number of the two cards discarded
+     */
     public int[] StartInitialLeaderCardView(){
         while(true){
             printInitialCardRack(this.cards);
@@ -70,6 +85,10 @@ public class LeaderCardView {
         }
     }
 
+    /**
+     * Print the rack of cards containing four cards, two of them will be discarded
+     * @param cards contains all the four cards received
+     */
     private void printInitialCardRack(ArrayList<LeaderCardVisualization> cards) {
         System.out.print("\u001B[2J\u001B[3J\u001B[H");
 
@@ -94,6 +113,11 @@ public class LeaderCardView {
                 "                                                     ");
     }
 
+    /**
+     * Handles the visualization and the user input for the selection by the user for activating or discarding cards
+     * @return an arraylist containing 0 if the user does nothing to the card, 1 if the user wants to activate the card,
+     * 2 if the user wants to discrd the card
+     */
     public ArrayList<Integer> StartCardView(){
 
         String[] activated = new String[3];
@@ -188,6 +212,9 @@ public class LeaderCardView {
         }
     }
 
+    /**
+     * Draw the rack for the view turn
+     */
     public void draw(){
         String input = "";
         while(true) {
@@ -201,6 +228,11 @@ public class LeaderCardView {
         }
     }
 
+    /**
+     * Print the rack for the activation or discarding of leader card
+     * @param state contains the state of the cards (nothing, activate, discard), it's initialized as all nothing
+     * @param type distinguish between discard/activation and view
+     */
     private void printCardRack(String[][] state, String type){
         System.out.print("\u001B[2J\u001B[3J\u001B[H");
 
@@ -239,6 +271,9 @@ public class LeaderCardView {
         }
     }
 
+    /**
+     * Prints the visualization of the current counter of development card and resource
+     */
     private void printCurrentState(){
         System.out.print("\u001B[2J\u001B[3J\u001B[H");
 
@@ -307,6 +342,11 @@ public class LeaderCardView {
                 "                                                             ");
     }
 
+    /**
+     * Returns the number of resource if the map contains that type
+     * @param in contains the name of the resource
+     * @return the number of resources available or 0 if the key is not contained
+     */
     private int getTotal(String in){
         if(totalResource.get(in)!=null)
             return totalResource.get(in);

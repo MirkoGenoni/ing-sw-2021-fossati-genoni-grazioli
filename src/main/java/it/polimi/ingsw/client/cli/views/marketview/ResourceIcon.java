@@ -1,5 +1,10 @@
 package it.polimi.ingsw.client.cli.views.marketview;
 
+/**
+ * This enum contains all the symbols needed to represent the resource inside a deposit
+ *
+ * @author Mirko Genoni
+ */
 public enum ResourceIcon {
 
         COIN("coin"),
@@ -17,7 +22,11 @@ public enum ResourceIcon {
         private final String[] icon_line = new String[6];
         private String[] color = new String[3];
 
-        ResourceIcon(String icon){
+    /**
+     * Constructor of the class, creates the representation of the resource for the deposit
+     * @param icon contains the representation of type of the resource needed
+     */
+    ResourceIcon(String icon){
 
             switch(icon){
                 case "servant":
@@ -76,7 +85,12 @@ public enum ResourceIcon {
             }
         }
 
-        public String returnLine(int line){
+    /**
+     * Return a line of the representation
+     * @param line is the line asked
+     * @return the line asked
+     */
+    public String returnLine(int line){
             return icon_line[line];
         }
 }

@@ -71,14 +71,11 @@ public class ConnectionToClient implements Runnable, EventToClientNotifier {
             input = new ObjectInputStream(clientSocket.getInputStream());
         } catch (IOException e) {
             e.printStackTrace();
-
         }
         try {
             clientSocket.setSoTimeout(21000);
         } catch (SocketException e) {
             e.printStackTrace();
-            disconnectionHandler.setNullConnection(namePlayer);
-            closeConnection();
         }
 
         ping = new Thread(() -> {

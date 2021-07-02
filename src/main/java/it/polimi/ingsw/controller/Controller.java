@@ -228,7 +228,7 @@ public class Controller {
             // -------------------------------------------
             // CHEATING SINGLE PLAYER
             // -------------------------------------------
-            if(false) {
+            if(true) {
                 Map<Resource, Integer> cheatMap = new HashMap<>();
                 for (Resource r : Resource.values())
                     cheatMap.put(r, 99);

@@ -6,6 +6,11 @@ import it.polimi.ingsw.model.resource.Resource;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+/**
+ * This class is the visualization of the additional production view for the user
+ *
+ * @author Mirko Genoni
+ */
 public class AdditionalProductionView {
     Messages noCards = new Messages("You got no active cards with additional production", true);
     ArrayList<AdditionalProductionVisualization> productions;
@@ -13,15 +18,10 @@ public class AdditionalProductionView {
     ArrayList<Resource> requested;
     boolean turnEnd;
 
-    /*public static void main(String[] args) {
-        ArrayList<String> test = new ArrayList<>();
-        test.add("COIN");
-        test.add("SHIELD");
-
-        AdditionalProductionView prova = new AdditionalProductionView(test);
-        prova.startAdditionalProductionView();
-    }*/
-
+    /**
+     * Constructor of the class initializes all the data structures
+     * @param type represents the number of additional production possessed by the user
+     */
     public AdditionalProductionView(ArrayList<String> type){
         activation = new ArrayList<>();
         activation.add(false);
@@ -42,18 +42,33 @@ public class AdditionalProductionView {
         }
     }
 
+    /**
+     *
+     * @return the boolean true if the production is activated
+     */
     public ArrayList<Boolean> getActivation() {
         return new ArrayList<>(activation);
     }
 
+    /**
+     *
+     * @return the material requested as result of the production
+     */
     public ArrayList<Resource> getRequested() {
         return requested;
     }
 
+    /**
+     *
+     * @return false if the user exited the production before the end of the turn
+     */
     public boolean isTurnEnd() {
         return turnEnd;
     }
 
+    /**
+     * Starts the view and handles the user input for activation or not
+     */
     public void startAdditionalProductionView(){
         switch (productions.size()){
 
@@ -140,6 +155,10 @@ public class AdditionalProductionView {
         }
     }
 
+    /**
+     * Prints the view used by the user
+     * @param text is a boolean that activates or deactivates the text under the box of the view
+     */
     private void printAdditionalProductionView(boolean text){
 
         String[] activated = new String[3];
@@ -210,6 +229,9 @@ public class AdditionalProductionView {
         }
     }
 
+    /**
+     * Asks the user the resource he wants to receive and handles the input
+     */
     private void selectResourceProducted(){
         String input;
         String[] formatInput;

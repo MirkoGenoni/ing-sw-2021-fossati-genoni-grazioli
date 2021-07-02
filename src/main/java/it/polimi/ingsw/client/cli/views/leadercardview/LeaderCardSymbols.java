@@ -1,5 +1,10 @@
 package it.polimi.ingsw.client.cli.views.leadercardview;
 
+/**
+ * This class contains all the symbols needed to represent the leader card
+ *
+ * @author Mirko Genoni
+ */
 public enum LeaderCardSymbols {
     SERVANT("servant"),
     SHIELD("shield"),
@@ -10,6 +15,10 @@ public enum LeaderCardSymbols {
 
     private final String[] rapresentation;
 
+    /**
+     * Creates the representation of the symbol
+     * @param type is the symbol required
+     */
     LeaderCardSymbols(String type) {
 
         rapresentation = new String[5];
@@ -72,6 +81,11 @@ public enum LeaderCardSymbols {
         }
     }
 
+    /**
+     * Returns a line of the representation
+     * @param line id the number of line asked for
+     * @return the line asked for
+     */
     public String printLine(int line) {
         return rapresentation[line];
     }

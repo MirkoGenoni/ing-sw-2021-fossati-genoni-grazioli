@@ -7,36 +7,21 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * This class prints the total count of resources possessed by the player for the buy of development
+ * card and the activation of development card
+ *
+ * @author Mirko Genoni
+ */
 public class TotalResourceCounter {
     String[] representation;
 
-    /*public static void main(String[] args) {
-        Map<Resource, Integer> strongbox = new HashMap<>();
-        for(Resource r: Resource.values())
-            strongbox.put(r, 2);
-
-        ArrayList<Resource> deposit = new ArrayList<>();
-        deposit.add(null);
-        deposit.add(Resource.COIN);
-        deposit.add(null);
-        deposit.add(null);
-        deposit.add(Resource.SERVANT);
-        deposit.add(null);
-
-        ArrayList<Resource> additionalDeposit = new ArrayList<>();
-        additionalDeposit.add(null);
-        additionalDeposit.add(null);
-        additionalDeposit.add(Resource.STONE);
-        additionalDeposit.add(Resource.STONE);
-
-        TotalResourceCounter prova = new TotalResourceCounter(strongbox, deposit, additionalDeposit);
-
-        System.out.println("COIN:3 SERVANT:3 STONE:4 SHIELD:2");
-        for(int i=0; i<3; i++){
-            System.out.println(prova.returnLine(i));
-        }
-    }*/
-
+    /**
+     * Constructor of the class initializes all the data structure
+     * @param strongbox is the current state of the player's strongbox
+     * @param deposit is the current state of the player's deposit
+     * @param additionalDeposit is the current state of the player's additionalDeposit
+     */
     public TotalResourceCounter(Map<Resource, Integer> strongbox, ArrayList<Resource> deposit, ArrayList<Resource> additionalDeposit){
         Map<Resource, Integer> tmp = new HashMap<>(strongbox);
 
@@ -62,6 +47,12 @@ public class TotalResourceCounter {
         saveState(tmp, symbols);
     }
 
+    /**
+     * This method saves the visualization of the resource counter
+     *
+     * @param totalResources is a map that contains the count of all the resources
+     * @param symbols contains a square colored by the type of resource
+     */
     private void saveState(Map<Resource, Integer> totalResources, ArrayList<DevelopmentCardSymbols> symbols){
         this.representation[0] = "┃                                                  " + symbols.get(0).returnLine(0) + "            " + symbols.get(1).returnLine(0) + "            " + symbols.get(2).returnLine(0) + "            " + symbols.get(3).returnLine(0) + "               ┃";
 
@@ -89,6 +80,12 @@ public class TotalResourceCounter {
         this.representation[2] = "┃                                                  " + symbols.get(0).returnLine(2) + "            " + symbols.get(1).returnLine(2) + "            " + symbols.get(2).returnLine(2) + "            " + symbols.get(3).returnLine(2) + "               ┃";
     }
 
+    /**
+     * Returns one at the time the visualization
+     *
+     * @param numLine is the number of line asked
+     * @return the line asked
+     */
     public String returnLine(int numLine){
         return representation[numLine];
     }

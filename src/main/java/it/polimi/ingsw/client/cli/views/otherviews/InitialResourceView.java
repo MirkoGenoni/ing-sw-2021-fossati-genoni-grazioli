@@ -6,14 +6,20 @@ import it.polimi.ingsw.model.resource.Resource;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+/**
+ * This class handles the visualisation of the initial resource selection
+ *
+ * @author Mirko Genoni
+ */
 public class InitialResourceView {
     int numResources;
     ArrayList<ResourceIcon> icons;
-    /*public static void main(String[] args) {
-        InitialResourceView prova = new InitialResourceView(2);
-        System.out.println(prova.startChoosing());
-    }*/
 
+    /**
+     * Constructor of the class initialises all the data structure
+     * Creates all the visualization of the resources a player can choose
+     * @param numResources is the number of resources given to the player
+     */
     public InitialResourceView(int numResources){
         this.icons = new ArrayList<>();
         icons.add(ResourceIcon.SHIELD);
@@ -24,6 +30,10 @@ public class InitialResourceView {
         this.numResources = numResources;
     }
 
+    /**
+     * This method handles the input of the player
+     * @return the resource choosen by the player
+     */
     public Resource startChoosing(){
 
         Scanner in = new Scanner(System.in);
@@ -50,6 +60,9 @@ public class InitialResourceView {
         }
     }
 
+    /**
+     * Prints the visualization of the initial resource
+     */
     public void printChoise(){
         System.out.print("\u001B[2J\u001B[3J\u001B[H");
         System.out.print("                                            \n" +

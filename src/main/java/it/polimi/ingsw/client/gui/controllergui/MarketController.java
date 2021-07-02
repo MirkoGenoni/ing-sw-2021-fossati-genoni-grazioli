@@ -89,6 +89,10 @@ public class MarketController implements GUIController, Initializable{
         }
     }
 
+    /**
+     * Manages the effects of the leader card selected.
+     * @param mouseEvent The event of the type MouseEvent.
+     */
     public void selectLeaderEffect(MouseEvent mouseEvent) {
         for(int i=0; i<2; i++){
             if(((ImageView)mouseEvent.getSource()).getId().equals("leaderCardEffect"+i)){

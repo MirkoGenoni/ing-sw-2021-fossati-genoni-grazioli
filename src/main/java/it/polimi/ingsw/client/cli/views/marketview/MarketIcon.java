@@ -1,5 +1,10 @@
 package it.polimi.ingsw.client.cli.views.marketview;
 
+/**
+ * This class contains all the symbols needed to represent the marble of the market
+ *
+ * @author Mirko Genoni
+ */
 public enum MarketIcon {
 
         COIN("coin", "\u001B[93m"),
@@ -16,7 +21,12 @@ public enum MarketIcon {
 
         private final String[] icon_line = new String[7];
 
-        MarketIcon(String icon, String color){
+    /**
+     * Saves the visualization of the marble
+     * @param icon is the icon type needed (coin, shield, servant, stone, faithpoint, nothing)
+     * @param color contains the marble color
+     */
+    MarketIcon(String icon, String color){
             String backGroundColor = "\u001B[0;00m";
 
             this.icon_line[0] = color + "  ▓▓▓▓▓▓▓▓▓  " + backGroundColor;
@@ -29,7 +39,12 @@ public enum MarketIcon {
 
         }
 
-        public String returnLine(int line){
+    /**
+     * Returns a line of the representation
+     * @param line is the number of line asked
+     * @return the line asked
+     */
+    public String returnLine(int line){
             return icon_line[line];
         }
 }

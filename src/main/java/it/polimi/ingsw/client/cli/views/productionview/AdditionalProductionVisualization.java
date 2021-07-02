@@ -1,8 +1,17 @@
 package it.polimi.ingsw.client.cli.views.productionview;
 
+/**
+ * This class contains the representation of an additional production
+ *
+ * @author Mirko Genoni
+ */
 public class AdditionalProductionVisualization {
     String[] additionalProduction;
 
+    /**
+     * Constructor of the class initializes all the data structure
+     * @param type represents the material type asked by the additional production
+     */
     AdditionalProductionVisualization(String type){
         DevelopmentCardSymbols symbolLVL = DevelopmentCardSymbols.valueOf("LEADER");
         DevelopmentCardSymbols production1 = DevelopmentCardSymbols.valueOf("ANYTHING");
@@ -35,6 +44,15 @@ public class AdditionalProductionVisualization {
         saveProduction(colorProduction, symbolLVL, typeRequired, production1, production2);
     }
 
+    /**
+     * Saves the visualization of the additional production
+     *
+     * @param colorProduction is the color of the production
+     * @param symbol is the symbol of the production
+     * @param typeRequired are the material required
+     * @param production1 is the first result
+     * @param production2 is the seconda result
+     */
     private void saveProduction(String colorProduction, DevelopmentCardSymbols symbol, DevelopmentCardSymbols typeRequired, DevelopmentCardSymbols production1, DevelopmentCardSymbols production2){
         this.additionalProduction = new String[25];
         this.additionalProduction[0] = "┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓";
@@ -64,6 +82,11 @@ public class AdditionalProductionVisualization {
         this.additionalProduction[24] = "┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛";
     }
 
+    /**
+     * returns a line of the representation
+     * @param in is the line asked
+     * @return the line asked
+     */
     public String returnLine(int in){
         return additionalProduction[in];
     }

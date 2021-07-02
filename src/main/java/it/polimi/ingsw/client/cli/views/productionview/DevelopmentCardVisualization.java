@@ -6,6 +6,11 @@ import it.polimi.ingsw.model.resource.Resource;
 import java.util.ArrayList;
 import java.util.Map;
 
+/**
+ * This class represents the visualization of a development card
+ *
+ * @author Mirko Genoni
+ */
 public class DevelopmentCardVisualization {
 
     private final int cardNumber;
@@ -21,6 +26,17 @@ public class DevelopmentCardVisualization {
 
     private String[] developmentCard;
 
+    /**
+     * The constructor of the class initializes all the data structure of a normal development card
+     *
+     * @param cardNumber indicates the number of card created
+     * @param color indicates the color of the card
+     * @param victoryPoints indicates the number of victory points given by the card
+     * @param level indicates the level of the card
+     * @param cost indicates the cost of buy of the card
+     * @param materialRequired indicates the material needed for the activation
+     * @param productionResult indicates the resources given by the card
+     */
     public DevelopmentCardVisualization(int cardNumber, String color, int victoryPoints, String level, Map<Resource, Integer> cost, Map<Resource, Integer> materialRequired, Map<ProductedMaterials, Integer> productionResult){
 
         this.cardNumber = cardNumber;
@@ -68,6 +84,11 @@ public class DevelopmentCardVisualization {
         saveCard(size);
     }
 
+    /**
+     * This constructor initializes a blank card, placeholder for a empty space
+     *
+     * @param i is a random initializer
+     */
     public DevelopmentCardVisualization(int i) {
         this.cardNumber = 0;
         this.victoryPoints = 0;
@@ -86,6 +107,10 @@ public class DevelopmentCardVisualization {
         }
     }
 
+    /**
+     * This card is a placeholder that indicates that a development card cannot be positioned in a space
+     * @param s is a random initializer
+     */
     public DevelopmentCardVisualization(String s){
         this.cardNumber = 0;
         this.victoryPoints = 0;
@@ -128,6 +153,11 @@ public class DevelopmentCardVisualization {
         this.developmentCard[26] = "                               ";
     }
 
+    /**
+     * Convert a String that indicates a color in the correspondent escape code
+     * @param color is the color asked
+     * @return the escape code
+     */
     private String colorConvertion(String color){
         switch(color) {
             case "YELLOW":
@@ -148,6 +178,11 @@ public class DevelopmentCardVisualization {
     }
 
 
+    /**
+     * Saves the visualization of the card
+     *
+     * @param size
+     */
     private void saveCard(int[] size){
         this.developmentCard = new String[27];
 
@@ -183,6 +218,12 @@ public class DevelopmentCardVisualization {
         this.developmentCard[26] = "┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛";
     }
 
+    /**
+     * Saves part of the card, in particular the costs of activation and the result
+     * @param in represent the symbol colored by the resource type
+     * @param position indicates if is a cost of activation or a result
+     * @param numbers indicates the multiplicity of the resource
+     */
     private void printResource(ArrayList<DevelopmentCardSymbols> in, int position, ArrayList<Integer> numbers){
         switch(in.size()){
             case 1:
@@ -204,10 +245,20 @@ public class DevelopmentCardVisualization {
         }
     }
 
+    /**
+     * returns a line of the representation
+     *
+     * @param line contains the line asked
+     * @return the line asked
+     */
     public String printCard(int line){
         return developmentCard[line];
     }
 
+    /**
+     * Returns the number of the card
+     * @return is the number of the card
+     */
     public int getCardNumber() {
         return cardNumber;
     }
