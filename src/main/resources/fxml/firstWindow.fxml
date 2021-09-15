@@ -5,13 +5,18 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="506.0" prefWidth="900.0" style="-fx-background-image: url('/graphics/background/copertina.png'); -fx-background-size: 900, 509" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.gui.controllergui.FirstWindowController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="350.0" prefWidth="600.0" style="-fx-background-color: #2A5062" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.gui.controllergui.FirstWindowController">
    <children>
-      <ImageView fx:id="load" fitHeight="150.0" fitWidth="200.0" layoutX="350.0" layoutY="449.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="load" fitHeight="150.0" fitWidth="200.0" layoutX="200.0" layoutY="316.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../graphics/icons/loading.gif" />
          </image>
       </ImageView>
-      <Button fx:id="goButton" layoutX="749.0" layoutY="450" mnemonicParsing="false" onAction="#go" visible="false" style="-fx-background-color: none"/>
+      <ImageView fitHeight="314.0" fitWidth="591.0" layoutX="5.0" layoutY="34.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../graphics/background/copertina.png" />
+         </image>
+      </ImageView>
+      <Button fx:id="goButton" layoutX="500.0" layoutY="305.0" mnemonicParsing="false" onAction="#go" style="-fx-background-color: none" visible="false" />
    </children>
 </AnchorPane>
