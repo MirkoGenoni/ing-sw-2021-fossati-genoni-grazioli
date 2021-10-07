@@ -1,6 +1,7 @@
 # Software engineering project 2020-2021
-The game realized is the digital version of a physical board game made by Cranio Creations and available [here](https://craniointernational.com/products/masters-of-renaissance/)
 
+## Presentation
+The game realized is the digital version of a physical board game made by Cranio Creations and available [here](https://craniointernational.com/products/masters-of-renaissance/)
 
 The game has been realized by the group 27 formed by:
 
@@ -11,16 +12,16 @@ The game has been realized by the group 27 formed by:
 ## Implemented Functionalities
 | Functionality | Status |
 |:-----------------------|:------------------------------------:|
-| Multiplayer rules | <img src="https://github.com/MirkoGenoni/ResourceToGithub/blob/master/Icon/Tick.png" width="50" heigth="50">
-| Singleplayer rules | <img src="https://github.com/MirkoGenoni/ResourceToGithub/blob/master/Icon/Tick.png" width="50" heigth="50">
-| Socket | <img src="https://github.com/MirkoGenoni/ResourceToGithub/blob/master/Icon/Tick.png" width="50" heigth="50">
-| GUI | <img src="https://github.com/MirkoGenoni/ResourceToGithub/blob/master/Icon/Tick.png" width="50" heigth="50">
-| CLI | <img src="https://github.com/MirkoGenoni/ResourceToGithub/blob/master/Icon/Tick.png" width="50" heigth="50">
-| Multiple games | <img src="https://github.com/MirkoGenoni/ResourceToGithub/blob/master/Icon/Tick.png" width="50" heigth="50">
-| Resilience to disconnection | <img src="https://github.com/MirkoGenoni/ResourceToGithub/blob/master/Icon/Tick.png" width="50" heigth="50">
-| Persistence | <img src="https://github.com/MirkoGenoni/ResourceToGithub/blob/master/Icon/Cross.png" width="50" heigth="50">
-| Parameter Editor | <img src="https://github.com/MirkoGenoni/ResourceToGithub/blob/master/Icon/Cross.png" width="50" heigth="50">
-| Local game | <img src="https://github.com/MirkoGenoni/ResourceToGithub/blob/master/Icon/Cross.png" width="50" heigth="50">
+| Multiplayer rules | <img src="https://github.com/MirkoGenoni/ing-sw-2021-fossati-genoni-grazioli/blob/main/githubResources/Tick.png" width="30" heigth="30">
+| Singleplayer rules | <img src="https://github.com/MirkoGenoni/ing-sw-2021-fossati-genoni-grazioli/blob/main/githubResources/Tick.png" width="30" heigth="30">
+| Socket | <img src="https://github.com/MirkoGenoni/ing-sw-2021-fossati-genoni-grazioli/blob/main/githubResources/Tick.png" width="30" heigth="30">
+| GUI | <img src="https://github.com/MirkoGenoni/ing-sw-2021-fossati-genoni-grazioli/blob/main/githubResources/Tick.png" width="30" heigth="30">
+| CLI | <img src="https://github.com/MirkoGenoni/ing-sw-2021-fossati-genoni-grazioli/blob/main/githubResources/Tick.png" width="30" heigth="30">
+| Multiple games | <img src="https://github.com/MirkoGenoni/ing-sw-2021-fossati-genoni-grazioli/blob/main/githubResources/Tick.png" width="30" heigth="30">
+| Resilience to disconnection | <img src="https://github.com/MirkoGenoni/ing-sw-2021-fossati-genoni-grazioli/blob/main/githubResources/Tick.png" width="30" heigth="30">
+| Persistence | <img src="https://github.com/MirkoGenoni/ing-sw-2021-fossati-genoni-grazioli/blob/main/githubResources/Cross.png" width="30" heigth="30">
+| Parameter Editor | <img src="https://github.com/MirkoGenoni/ing-sw-2021-fossati-genoni-grazioli/blob/main/githubResources/Cross.png" width="30" heigth="30">
+| Local game | <img src="https://github.com/MirkoGenoni/ing-sw-2021-fossati-genoni-grazioli/blob/main/githubResources/Cross.png" width="30" heigth="30">
 
 ## How to run
 In the [derivable](https://github.com/MirkoGenoni/ing-sw-2021-fossati-genoni-grazioli/tree/main/deliverables) folder, inside the jar folder there will be two .jar files that needs to be downloaded:
