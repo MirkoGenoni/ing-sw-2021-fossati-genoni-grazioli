@@ -1,7 +1,12 @@
 # Software engineering project 2020-2021
 
 ## Presentation
-The game realized is the digital version of a physical board game made by Cranio Creations and available [here](https://craniointernational.com/products/masters-of-renaissance/)
+
+The development of this project is part of the Software Engineering course at Politecnico di Milano.
+
+[<img src="https://github.com/MirkoGenoni/ing-sw-2021-fossati-genoni-grazioli/blob/main/githubResources/GameIcon.png" width="600">](https://craniointernational.com/products/masters-of-renaissance/)
+
+The game realized is the digital version of the physical board game [Master Of Renaissance](https://craniointernational.com/products/masters-of-renaissance/) made by Cranio Creations.
 
 The game has been realized by the group 27 formed by:
 
@@ -9,6 +14,7 @@ The game has been realized by the group 27 formed by:
 - [Mirko Genoni](https://github.com/MirkoGenoni)
 - [Davide Grazioli](https://github.com/davidegrazioli)
 
+**The graphics are taken from the original game**
 ## Implemented Functionalities
 | Functionality | Status |
 |:-----------------------|:------------------------------------:|
