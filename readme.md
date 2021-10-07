@@ -64,15 +64,15 @@ Tested Class | Coverage (lines) |
 
 ## Software used
 
-**Intellij** - IDE
+[**Intellij**](https://www.jetbrains.com/idea/) - IDE
 
-**MagicDraw** - UML/Sequence Diagram
-
-## Javadoc
-
-The javadoc is available [here](https://mirkogenoni.github.io/ing-sw-2021-fossati-genoni-grazioli/index.html)
+[**MagicDraw**](https://www.3ds.com/products-services/catia/products/no-magic/magicdraw/) - UML/Sequence Diagram
 
 
+## JavaDoc
 
+The JavaDoc is available [here](https://mirkogenoni.github.io/ing-sw-2021-fossati-genoni-grazioli/index.html).
 
+## License
 
+The project is develop in collaboration with [Politecnico di Milano](https://www.polimi.it/) and [Cranio Creations](https://craniointernational.com/).
