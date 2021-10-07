@@ -7,6 +7,7 @@ The game has been realized by the group 27 formed by:
 - [Stefano Fossati](https://github.com/stefanofossati)
 - [Mirko Genoni](https://github.com/MirkoGenoni)
 - [Davide Grazioli](https://github.com/davidegrazioli)
+- [JavaDoc](https://github.com/MirkoGenoni/ing-sw-2021-fossati-genoni-grazioli/blob/main/githubResources/docs/index.html)
 
 
 ## Implemented Functionalities
